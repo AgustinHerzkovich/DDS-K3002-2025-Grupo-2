@@ -1,0 +1,5 @@
+1. En el hecho se mencionan sus posibles orígenes: carga manual, proveniente de un dataset o provisto por un contribuyente. ¿Qué es la carga manual como origen de un hecho? ¿Cuál es la diferencia entre un hecho que se carga de forma manual y uno que es provisto por un contribuyente?
+2. En el formato de archivos .csv se menciona el campo "Fecha del hecho", ¿Este se refiere a la fecha del acontecimiento o a la fecha de carga del hecho?
+3. ¿Ser anónimo es por hecho o para siempre? Es decir, ¿Yo puedo un día subir un hecho siendo anónimo, al día siguiente subo uno con mis datos, y otro día puedo volver a subir un hecho de forma anónima?
+4. ¿Los datos personales de un contribuyente son por hecho o son para siempre? Es decir, ¿Un día puede subir un hecho con el nombre carlos y al otro día con el nombre juan, o una vez que pone sus datos ya se queda así para siempre?
+5. ¿Cuál es la diferencia entre fuente y origen de un hecho?

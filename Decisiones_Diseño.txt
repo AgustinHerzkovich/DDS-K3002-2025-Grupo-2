@@ -2,4 +2,6 @@ Tomamos como fuente al lugar de donde provienen los hechos (estática, dinámica
 
 Tomamos como origen al creador del hecho (carga manual, dataset o contribuyente).
 
-Decidimos poner la lista de hechos en la fuente para no romper el encapsulamiento.
+Decidimos poner la lista de hechos en el origen para no romper el encapsulamiento.
+
+Ponemos el tipo de origen en la clase Origen con composición porque Contribuyente no puede heredar de dos clases: Origen y Usuario.
