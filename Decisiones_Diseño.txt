@@ -1,3 +1,0 @@
-Tomamos como fuente al lugar de donde provienen los hechos (estática, dinámica y proxy), y a su vez, una fuente puede tener más de un origen.
-
-Tomamos como origen al creador del hecho (carga manual, dataset o contribuyente).
