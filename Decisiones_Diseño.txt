@@ -5,3 +5,11 @@ Tomamos como origen al creador del hecho (carga manual, dataset o contribuyente)
 Decidimos poner la lista de hechos en el origen para no romper el encapsulamiento.
 
 Ponemos el tipo de origen en la clase Origen con composición porque Contribuyente no puede heredar de dos clases: Origen y Usuario.
+
+Decidimos que fuente y origen son sinónimos, ya que el enunciado los menciona como si fueran lo mismo, por lo cual tenemos 3 tipos de fuente: estática, dinámica y proxy. Donde dataset es un tipo de fuente estática, contribuyente es un tipo de fuente dinámica, y carga manual aún no sabemos lo que es.
+
+No hacemos la clase visualizador porque no se guarda ningún dato de este y no tiene comportamiento.
+
+Decidimos agregar un userID para los contribuyentes de manera tal que si en un futuro el administrador necesita eliminarlo, tiene una forma de identificarlo unívocamente.
+
+Pusimos un atributo anonimato en el Hecho para que, si este es true, no se asocie a a los datos del contribuyente, y si es false, que se asocie.

@@ -15,3 +15,9 @@ RESP: El enunciado por el momento no es muy claro al respecto, pero asumo que un
 
 5. ¿Cuál es la diferencia entre fuente y origen de un hecho? ¿Puede el origen ser algo más específico que la fuente? (Ej: Como origen un archivo .csv sobre incendios forestales del 2015, como fuente la ONG que divulgó ese y otros archivos).
 RESP: El enunciado por el momento no es muy claro respecto a la diferencia entre fuente y origen. Da la impresión que se tratan como sinónimos. En todo caso, en el atributo "origen" del hecho, se menciona que este solo puede ser de uno de los tres tipos de fuentes posibles.
+
+6. Cito fragmento del enunciado:
+"● una fuente estática: un servicio de solo lectura para publicar información estática, utilizando datasets que provengan de archivos u otras fuentes de datos provistas por otras ONGs,
+● una fuente dinámica: un servicio propio para la subida colaborativa de información, por perfiles anónimos y/o registrados"
+Esto quiere decir que, ¿Una fuente dinámica incluye muchos contribuyentes, o cada contribuyente es una fuente dinámica en sí? Misma pregunta para las fuentes estáticas: ¿Una fuente estática incluye muchos datasets, o cada dataset es una fuente estática en sí?
+RESP:
