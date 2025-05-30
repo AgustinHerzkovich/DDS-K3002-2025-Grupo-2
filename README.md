@@ -1,2 +1,9 @@
-Diseño de Sistemas de Información K3002
-Grupo 2
+## Integrantes:
+
+- Agustín Nicolás Herzkovich  
+- Ezequiel Su  
+- Julián Zorreguieta  
+- Lucas Martín Presotto  
+- Martín Alberto Rincón  
+- Nicolás Mauro Piacentini  
+- Simón Alejandro Rojas Pereira
