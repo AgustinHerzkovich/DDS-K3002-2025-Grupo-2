@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ee10926-4a7a-4fc3-a695-8a46f0005879" name="Changes" comment="" />
+    <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,34 +13,220 @@
   <component name="ComposerSettings">
     <execution />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+      </list>
+    </option>
   </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
-  <component name="ProjectId" id="2xeIdpkbHjWHTWYGXKBQIyhHHE6" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2y41dLl8CLz9chdsbMSDicYqwqO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "git-widget-placeholder": "main",
+    "Spring Boot.AgregadorAplicacion.executor": "Run",
     "go.import.settings.migrated": "true",
     "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/user/Desktop/DDS-K3002-2025-Grupo-2/fuenteProxy/src/main/java/domain",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Desktop\DDS-K3002-2025-Grupo-2\fuenteProxy\src\main\java\domain" />
+      <recent name="C:\Users\user\Desktop\DDS-K3002-2025-Grupo-2\fuenteEstatica\src\main\java\domain" />
+      <recent name="C:\Users\user\Desktop\DDS-K3002-2025-Grupo-2\estadisticas\src\main\java\domain" />
+      <recent name="C:\Users\user\Desktop\DDS-K3002-2025-Grupo-2\agregador\src\main\java\domain" />
+      <recent name="C:\Users\user\Desktop\DDS-K3002-2025-Grupo-2\fuenteDinamica\src\main\java\domain" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="domain" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="domain.Fuentes" />
+      <recent name="domain" />
+      <recent name="domain.FuenteDinamica" />
+      <recent name="domain.FuentesProxy" />
+      <recent name="domain.impl" />
+    </key>
+  </component>
+  <component name="RubyModuleManagerSettings">
+    <option name="blackListedRootsPaths">
+      <list>
+        <option value="$PROJECT_DIR$" />
+      </list>
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="GoApplicationRunConfiguration" />
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AgregadorAplicacion">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="fuenteDinamica" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="fuenteDinamica" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="agregador" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="estadisticas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteDinamica" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteDinamicaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteEstatica" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteEstaticaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteProxy" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteProxyAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.AgregadorAplicacion" />
+      <item itemvalue="Spring Boot.EstadisticasAplicacion" />
+      <item itemvalue="Spring Boot.FuenteDinamicaAplicacion" />
+      <item itemvalue="Spring Boot.FuenteEstaticaAplicacion" />
+      <item itemvalue="Spring Boot.FuenteProxyAplicacion" />
+    </list>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -47,12 +236,17 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6ee10926-4a7a-4fc3-a695-8a46f0005879" name="Changes" comment="" />
-      <created>1748292204616</created>
+      <changelist id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="" />
+      <created>1749079119302</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1748292204616</updated>
-      <workItem from="1748292207521" duration="74000" />
+      <updated>1749079119302</updated>
+      <workItem from="1749079121085" duration="2914000" />
+      <workItem from="1749082061112" duration="560000" />
+      <workItem from="1749082632644" duration="321000" />
+      <workItem from="1749082993320" duration="72000" />
+      <workItem from="1749083081562" duration="62000" />
+      <workItem from="1749083150336" duration="2222000" />
     </task>
     <servers />
   </component>
