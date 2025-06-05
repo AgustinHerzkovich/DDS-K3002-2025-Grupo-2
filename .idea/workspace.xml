@@ -4,7 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="" />
+    <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Fuentes/Fuente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Categoria.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Editor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Etiqueta.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Hecho.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Origen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/RevisionHecho.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Hechos/Ubicacion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Multimedias/Audio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Multimedias/Imagen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Multimedias/Multimedia.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Multimedias/Video.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Repositorios/Repositorio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Repositorios/RepositorioDeHechos.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Usuarios/Contribuyente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Usuarios/IdentidadContribuyente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Categoria.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Editor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Etiqueta.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Hecho.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Origen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/RevisionHecho.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Hechos/Ubicacion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Multimedias/Audio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Multimedias/Imagen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Multimedias/Multimedia.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Multimedias/Video.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Usuarios/Contribuyente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/domain/Usuarios/IdentidadContribuyente.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -253,7 +284,7 @@
       <workItem from="1749082993320" duration="72000" />
       <workItem from="1749083081562" duration="62000" />
       <workItem from="1749083150336" duration="2222000" />
-      <workItem from="1749159110925" duration="28000" />
+      <workItem from="1749159110925" duration="2132000" />
     </task>
     <servers />
   </component>
