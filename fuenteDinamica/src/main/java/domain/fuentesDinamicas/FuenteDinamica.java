@@ -2,7 +2,6 @@ package domain.fuentesDinamicas;
 
 import domain.hechos.Hecho;
 import domain.repositorios.Repositorio;
-import domain.solicitudes.SolicitudEliminacion;
 
 import java.util.List;
 

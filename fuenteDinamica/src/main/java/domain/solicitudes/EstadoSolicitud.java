@@ -11,7 +11,7 @@ public enum Estado{
     SPAM
 }*/
 
-abstract class Estado{
+public abstract class EstadoSolicitud {
     abstract void aceptar(SolicitudEliminacion s);
     abstract void rechazar(SolicitudEliminacion s);
     abstract void prescribir(SolicitudEliminacion s);
