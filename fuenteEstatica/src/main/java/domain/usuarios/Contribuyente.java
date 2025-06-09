@@ -22,7 +22,7 @@ public class Contribuyente {
     }
 
     public IdentidadContribuyente getUltimaIdentidad() {
-        return identidades.getLast();
+        return identidades.get(identidades.size()-1);
     }
 
     public void setAdministrador(Boolean admin) {

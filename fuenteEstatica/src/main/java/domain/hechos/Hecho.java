@@ -1,10 +1,11 @@
 package domain.hechos;
 
+
 import domain.hechos.multimedias.Multimedia;
 import domain.usuarios.IdentidadContribuyente;
 import domain.solicitudes.SolicitudEliminacion;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +17,10 @@ public class Hecho {
     private String descripcion;
     private Categoria categoria;
     private Ubicacion ubicacion_acontecimiento;
-    private LocalDateTime fecha_acontecimiento;
-    private LocalDateTime fecha_carga;
+    private LocalDate fecha_acontecimiento;
+    private LocalDate fecha_carga;
     private List<SolicitudEliminacion> solicitudes;
-    private LocalDateTime fecha_ultimaModificacion;
+    private LocalDate fecha_ultimaModificacion;
     private Origen origen;
     private String contenido_texto;
     private Optional<List<Multimedia>> contenido_multimedia;
@@ -28,13 +29,13 @@ public class Hecho {
     private Boolean anonimato;
     private IdentidadContribuyente autor;
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion_acontecimiento = new Ubicacion(latitud, longitud);
         this.fecha_acontecimiento = fecha_acontecimiento;
-        this.fecha_carga = LocalDateTime.now();
+        this.fecha_carga = LocalDate.now();
         this.solicitudes = new ArrayList<>();
         this.fecha_ultimaModificacion = this.fecha_carga;
         this.origen = origen;
@@ -53,6 +54,18 @@ public class Hecho {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    public LocalDate getFechaAcontecimiento() {
+        return fecha_acontecimiento;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
     }
 
     public void ocultar() {
@@ -85,7 +98,7 @@ public class Hecho {
         return etiquetas.contains(etiqueta);
     }
 
-    public Boolean ocurrioEntre(LocalDateTime fecha_inicial, LocalDateTime fecha_final) {
+    public Boolean ocurrioEntre(LocalDate fecha_inicial, LocalDate fecha_final) {
         return fecha_acontecimiento.isAfter(fecha_inicial) && fecha_acontecimiento.isBefore(fecha_final);
     }
 

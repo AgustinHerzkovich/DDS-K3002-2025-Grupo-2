@@ -5,93 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/fuentesDinamicas/FuenteDinamica.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/repositorios/Repositorio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/repositorios/RepositorioDeSolicitudes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/solicitudes/DetectorDeSpam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/solicitudes/Estado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/Fuente.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Editor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/RevisionHecho.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/DetectorDeSpam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDePertenencia.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesMetamapa/FuenteProxy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Origen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/multimedias/Imagen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/solicitudes/DetectorDeSpam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/solicitudes/Estado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/otros/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/otros/src/main/java/repositorios/Repositorio.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/otros/src/main/java/repositorios/RepositorioDeColecciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Colecciones/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/otros/src/main/java/colecciones/Coleccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Colecciones/Criterios/CriterioDeDistancia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeDistancia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Colecciones/Criterios/CriterioDeFecha.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Colecciones/Criterios/CriterioDePertenencia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Solicitudes/DetectorDeSpam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Solicitudes/Estado.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/Estado.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/Solicitudes/SolicitudEliminacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/fuentesDinamicas/Fuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/FuenteDinamica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Origen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/RevisionHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/RevisionHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Multimedias/Audio.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/multimedias/Audio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Multimedias/Imagen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/multimedias/Imagen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Multimedias/Multimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/multimedias/Multimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Multimedias/Video.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/multimedias/Video.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Repositorios/Repositorio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Repositorios/RepositorioDeHechos.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/repositorios/RepositorioDeHechos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/usuarios/Contribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/Usuarios/IdentidadContribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/usuarios/IdentidadContribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/Fuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstatica.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Origen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/RevisionHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/RevisionHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Multimedias/Audio.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Audio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Multimedias/Imagen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Imagen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Multimedias/Multimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/multimedias/Multimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Multimedias/Video.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/multimedias/Video.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/usuarios/Contribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/Usuarios/IdentidadContribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/usuarios/IdentidadContribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/Conexion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Criterios/CriterioDeDistancia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Criterios/CriterioDeFecha.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeFecha.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Criterios/CriterioDePertenencia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesMetamapa/Fuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/FuenteDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/FuenteDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/FuenteProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/FuenteProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Origen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/RevisionHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/RevisionHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/MetamapaExterno.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesMetamapa/FuenteMetamapa.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Multimedias/Audio.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/multimedias/Audio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Multimedias/Imagen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/multimedias/Imagen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Multimedias/Multimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Multimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Multimedias/Video.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Video.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/usuarios/Contribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/Usuarios/IdentidadContribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/usuarios/IdentidadContribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
     </list>
-    <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="" />
+    <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="">
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+    </list>
+    <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="">
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/usuarios/Contribuyente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,6 +45,45 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/fuenteEstatica/pom.xml">
+      <ranges>
+        <range start1="18" end1="18" start2="18" end2="19" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="24" end1="24" start2="25" end2="37" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="25" end1="26" start2="38" end2="38" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java">
+      <ranges>
+        <range start1="3" end1="4" start2="3" end2="4" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="5" end1="7" start2="5" end2="6" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="10" end1="10" start2="9" end2="11" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="18" end1="18" start2="19" end2="24" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="21" end1="24" start2="27" end2="40" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="25" end1="27" start2="41" end2="42" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="28" end1="39" start2="43" end2="46" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="41" end1="43" start2="48" end2="50" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="47" end1="48" start2="54" end2="55" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="50" end1="50" start2="57" end2="67" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="51" end1="52" start2="68" end2="68" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java">
+      <ranges>
+        <range start1="2" end1="2" start2="2" end2="3" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="6" end1="7" start2="7" end2="8" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="18" end1="20" start2="19" end2="21" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="21" end1="22" start2="22" end2="23" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="30" end1="31" start2="31" end2="32" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="36" end1="37" start2="37" end2="38" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="56" end1="56" start2="57" end2="69" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="87" end1="88" start2="100" end2="101" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
@@ -124,21 +97,28 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.testCargarArchivos.cargarArchivos.executor": "Run",
+    "JUnit.testCargarArchivos.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "Spring Boot.AgregadorAplicacion.executor": "Run",
+    "Spring Boot.FuenteEstaticaAplicacion.executor": "Run",
     "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/fuenteProxy/src/main/java/domain",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nicol/Documents/tpDiseno/DDS-K3002-2025-Grupo-2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/nuevo/src/main/java/org/springframework/Main.java",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "run.configurations.included.in.services": "true",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "vue.rearranger.settings.migration": "true"
@@ -151,6 +131,10 @@
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\fuenteEstatica\src\main\java\domain" />
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\fuenteEstatica\src\main\java\domain\fuentesEstaticas" />
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\nuevo\src\main\java\fuentesMetamapa" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\fuenteEstatica\src\test" />
+      <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\fuenteEstatica" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="domain" />
@@ -181,18 +165,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AgregadorAplicacion">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="fuenteDinamica" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="fuenteDinamica" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="JUnit.testCargarArchivos.cargarArchivos">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="fuenteDinamica" />
       <option name="ENV_FILES" value="" />
@@ -229,41 +202,6 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
-    </configuration>
-    <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="agregador" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="estadisticas" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteDinamica" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteDinamicaAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteEstatica" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteEstaticaAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteProxy" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteProxyAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
     <configuration default="true" type="Tox" factoryName="Tox">
       <module name="fuenteDinamica" />
@@ -314,21 +252,96 @@
       <option name="USE_PATTERN" value="false" />
       <method v="2" />
     </configuration>
+    <configuration name="testCargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fuenteEstatica" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testCargarArchivos.cargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fuenteEstatica" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
+      <option name="METHOD_NAME" value="cargarArchivos" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="fuenteDinamica" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="fuenteDinamica" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="agregador" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="estadisticas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteDinamica" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteDinamicaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteEstatica" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteEstaticaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteProxy" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteProxyAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
+      <item itemvalue="JUnit.testCargarArchivos" />
+      <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
       <item itemvalue="Spring Boot.AgregadorAplicacion" />
       <item itemvalue="Spring Boot.EstadisticasAplicacion" />
       <item itemvalue="Spring Boot.FuenteDinamicaAplicacion" />
       <item itemvalue="Spring Boot.FuenteEstaticaAplicacion" />
       <item itemvalue="Spring Boot.FuenteProxyAplicacion" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.testCargarArchivos" />
+        <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="" />
@@ -343,11 +356,23 @@
       <workItem from="1749083081562" duration="62000" />
       <workItem from="1749083150336" duration="2222000" />
       <workItem from="1749159110925" duration="6054000" />
+      <workItem from="1749499664497" duration="5476000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>

@@ -15,7 +15,7 @@ public class Categoria {
         return nombre;
     }
 
-    public Boolean esIdenticaA(Categoria categoria) {
-        return this.nombre.equals(categoria.getNombre());
+    public Boolean esIdenticaA(String nombre_categoria) {
+        return this.nombre.equals(nombre_categoria);
     }
 }
