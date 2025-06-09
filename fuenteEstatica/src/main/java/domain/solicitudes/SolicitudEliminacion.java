@@ -3,14 +3,14 @@ package domain.solicitudes;
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /// Entiendase por "cosolicitud": Solicitud de eliminacion que apunta al mismo hecho que la solicitud actual
 ///
 /// Si una solicitud:
 /// Esta pendiente: Se la puede rechazar(), aceptar() o marcarSpam() manualmente
 ///                 tambien se la puede prescribir(), pero eso lo envia la misma solicitud que pasa a aceptar (por ahora, puede que cambie si envia las prescripciones el hecho)
-/// Esta prescripta: Se la puede rechazar() : Pasa a Rechazada
+/// Esta prescripta: Se la puede rechazar() o marcarSpam() -> Pasa a Rechazada o MarcarSpam
 ///                 tambien se la puede anularPrescripcion(), pero eso lo envia la misma solicitud que anula la aceptacion (por ahora)
 /// Esta aceptada: Se la puede anularAceptacion() : Pasa a Pendiente
 /// Esta rechazada: Se la puede anularRechazo() : Pasa a Pendiente o Prescripta
@@ -38,8 +38,8 @@ public class SolicitudEliminacion {
     private EstadoSolicitud estado;
     private final Contribuyente solicitante;
     private Contribuyente administrador;
-    private final LocalDateTime fecha_subida;
-    private LocalDateTime fecha_resolucion;
+    private final LocalDate fecha_subida;
+    private LocalDate fecha_resolucion;
     private final Hecho hecho;
     private final String motivo;
 
@@ -48,9 +48,6 @@ public class SolicitudEliminacion {
         this.estado = estado;
     }
 
-    public void setFechaResolucion(LocalDateTime fecha){
-        this.fecha_resolucion = fecha;
-    }
 
 
     public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
@@ -67,7 +64,7 @@ public class SolicitudEliminacion {
 
         this.solicitante = solicitante;
         this.administrador = null;
-        this.fecha_subida = LocalDateTime.now();
+        this.fecha_subida = LocalDate.now();
         this.fecha_resolucion = null;
         this.hecho = hecho;
         this.motivo = motivo;
@@ -114,7 +111,7 @@ public class SolicitudEliminacion {
     }
 
     /////////////////////////////////////
-/*
+
     public void preescribirCosolicitudes(){
         SolicitudEliminacion[] cosolicitudes = this.hecho.getSolicitudesDeEliminacion();
         for(SolicitudEliminacion sol : cosolicitudes){
@@ -130,7 +127,7 @@ public class SolicitudEliminacion {
             // anularPrescripcion() chequea si esta prescripta y solamente si lo está, pasa a pendiente
         }
     }
-*/
+
     //////////////////////////////////////
 
         public Boolean hechoVisible(){
@@ -154,7 +151,7 @@ public class SolicitudEliminacion {
         return motivo;
     }
 
-    public LocalDateTime getFecha_subida() {
+    public LocalDate getFecha_subida() {
         return fecha_subida;
     }
 
@@ -162,11 +159,11 @@ public class SolicitudEliminacion {
         return solicitante;
     }
 
-    public LocalDateTime getFecha_resolucion() {
+    public LocalDate getFecha_resolucion() {
         return fecha_resolucion;
     }
 
-    public void setFecha_resolucion(LocalDateTime fecha_resolucion) {
+    public void setFecha_resolucion(LocalDate fecha_resolucion) {
         this.fecha_resolucion = fecha_resolucion;
     }
 

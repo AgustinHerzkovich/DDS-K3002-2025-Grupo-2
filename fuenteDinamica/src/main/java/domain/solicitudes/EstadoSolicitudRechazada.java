@@ -1,5 +1,7 @@
 package domain.solicitudes;
 
+import java.time.LocalDate;
+
 public class EstadoSolicitudRechazada extends EstadoSolicitud {
     public EstadoSolicitudRechazada(SolicitudEliminacion slt) {
         super(slt);
@@ -31,6 +33,7 @@ public class EstadoSolicitudRechazada extends EstadoSolicitud {
             solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         else
             solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
+        solicitud.setFecha_resolucion(null);
     }
 
     @Override
