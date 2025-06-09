@@ -31,6 +31,7 @@ public class EstadoSolicitudRechazada extends EstadoSolicitud {
             solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         else
             solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
+        solicitud.setFecha_resolucion(null);
     }
 
     @Override

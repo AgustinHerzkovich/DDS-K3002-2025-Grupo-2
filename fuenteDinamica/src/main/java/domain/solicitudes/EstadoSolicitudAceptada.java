@@ -1,5 +1,7 @@
 package domain.solicitudes;
 
+import java.time.LocalDate;
+
 public class EstadoSolicitudAceptada extends EstadoSolicitud {
     public EstadoSolicitudAceptada(SolicitudEliminacion slt) {
         super(slt);
@@ -26,7 +28,7 @@ public class EstadoSolicitudAceptada extends EstadoSolicitud {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         solicitud.anularPrescripcionCosolicitudes();
         solicitud.mostrarHecho();
-        solicitud.setFechaResolucion(null);
+        solicitud.setFecha_resolucion(null);
 
     }
 
