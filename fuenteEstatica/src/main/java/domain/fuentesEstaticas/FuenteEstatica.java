@@ -21,7 +21,7 @@ public class FuenteEstatica implements Fuente {
 
     public List<Hecho> importarHechos() {
         List<Hecho> hechos = new ArrayList<>();
-        archivos.forEach(archivo -> hechos.addAll(lectorArchivo.leerHechos(10, archivo))); // Cantidad provisoria
+        archivos.forEach(archivo -> hechos.addAll(lectorArchivo.leerHechos(archivo)));
         return hechos;
     }
 }

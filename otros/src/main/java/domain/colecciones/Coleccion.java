@@ -1,4 +1,4 @@
-package colecciones;
+package domain.colecciones;
 
 import domain.colecciones.criterios.CriterioDePertenencia;
 import domain.fuentes.Fuente;

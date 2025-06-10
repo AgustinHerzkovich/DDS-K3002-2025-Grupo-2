@@ -16,12 +16,11 @@ public class testCargarArchivos {
 
         fuente.agregarArchivo(path_alternativo + "desastres_naturales_argentina.csv");
         fuente.agregarArchivo(path_alternativo + "desastres_sanitarios_contaminacion_argentina.csv");
-        //fuente.agregarArchivo(path_alternativo + "desastres_sanitarios_contaminacion_argentina.xlsx");
         fuente.agregarArchivo(path_alternativo + "desastres_tecnologicos_argentina.csv");
 
         List<Hecho> hechos = fuente.importarHechos();
 
-        assertEquals(30, hechos.size());
+        assertEquals(34617, hechos.size());
 
         for (Hecho h : hechos) {
             System.out.println("Titulo: " + h.getTitulo());

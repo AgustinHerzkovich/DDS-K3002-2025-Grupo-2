@@ -4,54 +4,52 @@ import domain.hechos.multimedias.Multimedia;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 // EDITOR
 public class Editor{
-    private Optional<String> titulo;
-    private Optional<String> descripcion;
-    private Optional<Categoria> categoria;
-    private Optional<Ubicacion> ubicacion_acontecimiento;
-    private Optional<LocalDateTime> fecha_acontecimiento;
-    private Optional<String> contenido_texto;
-    private Optional<List<Multimedia>> contenido_multimedia;
+    private String titulo;
+    private String descripcion;
+    private Categoria categoria;
+    private Ubicacion ubicacion_acontecimiento;
+    private LocalDateTime fecha_acontecimiento;
+    private String contenido_texto;
+    private List<Multimedia> contenido_multimedia;
 
     public Editor(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion_acontecimiento, LocalDateTime fecha_acontecimiento, String contenido_texto, List<Multimedia> contenido_multimedia){
-        this.titulo = Optional.ofNullable(titulo);
-        this.descripcion = Optional.ofNullable(descripcion);
-        this.categoria = Optional.ofNullable(categoria);
-        this.ubicacion_acontecimiento = Optional.ofNullable(ubicacion_acontecimiento);
-        this.fecha_acontecimiento = Optional.ofNullable(fecha_acontecimiento);
-        this.contenido_texto = Optional.ofNullable(contenido_texto);
-        this.contenido_multimedia = Optional.ofNullable(contenido_multimedia);
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+        this.ubicacion_acontecimiento = ubicacion_acontecimiento;
+        this.fecha_acontecimiento = fecha_acontecimiento;
+        this.contenido_texto = contenido_texto;
+        this.contenido_multimedia = contenido_multimedia;
     }
 
-    public Optional<LocalDateTime> getFechaAcontecimiento() {
+    public LocalDateTime getFechaAcontecimiento() {
         return fecha_acontecimiento;
     }
 
-    public Optional<Ubicacion> getUbicacionAcontecimiento() {
+    public Ubicacion getUbicacionAcontecimiento() {
         return ubicacion_acontecimiento;
     }
 
-    public Optional<Categoria> getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public Optional<String> getDescripcion() {
+    public String getDescripcion() {
         return descripcion;
     }
 
-
-    public Optional<String> getTitulo() {
+    public String getTitulo() {
         return titulo;
     }
 
-    public Optional<String> getContenidoTexto() {
+    public String getContenidoTexto() {
         return contenido_texto;
     }
 
-    public Optional<List<Multimedia>> getContenidoMultimedia() {
+    public List<Multimedia> getContenidoMultimedia() {
         return contenido_multimedia;
     }
 }

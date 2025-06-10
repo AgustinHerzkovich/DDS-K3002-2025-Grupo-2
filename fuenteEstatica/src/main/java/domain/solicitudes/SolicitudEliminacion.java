@@ -111,7 +111,7 @@ public class SolicitudEliminacion {
     }
 
     /////////////////////////////////////
-
+/*
     public void preescribirCosolicitudes(){
         SolicitudEliminacion[] cosolicitudes = this.hecho.getSolicitudesDeEliminacion();
         for(SolicitudEliminacion sol : cosolicitudes){
@@ -127,7 +127,7 @@ public class SolicitudEliminacion {
             // anularPrescripcion() chequea si esta prescripta y solamente si lo está, pasa a pendiente
         }
     }
-
+*/
     //////////////////////////////////////
 
         public Boolean hechoVisible(){

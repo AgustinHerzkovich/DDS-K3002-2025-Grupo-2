@@ -1,4 +1,4 @@
-package repositorios;
+package domain.repositorios;
 
 import java.util.List;
 

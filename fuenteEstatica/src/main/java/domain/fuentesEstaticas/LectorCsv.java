@@ -22,14 +22,14 @@ public class LectorCsv{
         categorias = new ArrayList<>();
     }
 
-    public List<Hecho> leerHechos(Integer cantidad, String path) {
+    public List<Hecho> leerHechos(String path) {
         List<Hecho> hechos = new ArrayList<Hecho>();
 
         try (CSVReader reader = new CSVReader(new FileReader(path))) {
             List<String[]> filas = reader.readAll();
 
             // Saltar header
-            for (int i = 1; i < filas.size() && hechos.size() < cantidad; i++) {
+            for (int i = 1; i < filas.size(); i++) {
                 String[] fila = filas.get(i);
                 if (fila.length >= 6) {
                     String titulo = fila[0];
@@ -60,8 +60,8 @@ public class LectorCsv{
         return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha_hecho, Origen.DATASET, null, null, true, null);
     }
 
-    // TODO: cuando hagamos la base de datos usar a los repositorios que nos da springboot y sacar la lista de categorias
-    // mismo con todo tipo de repositorio o lista auxiliar que vayamos a usar. Recordar meter las dependencias del jpa para evitar problemas
+    // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema
+
     public void borrarHecho(String titulo, List<Hecho> hechos) {
         hechos.removeIf(hecho -> hecho.tieneMismoTitulo(titulo));
     }
