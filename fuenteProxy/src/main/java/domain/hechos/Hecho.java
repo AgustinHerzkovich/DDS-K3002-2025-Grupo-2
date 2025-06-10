@@ -92,4 +92,8 @@ public class Hecho {
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
         solicitudes.add(solicitud);
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
 }
