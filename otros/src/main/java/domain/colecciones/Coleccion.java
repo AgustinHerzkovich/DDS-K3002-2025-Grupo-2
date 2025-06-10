@@ -13,14 +13,12 @@ public class Coleccion{
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenencia> criterios_pertenencia;
-    private Fuente fuente;
     private String identificadorHandle;
 
-    public Coleccion(String titulo, String descripcion, Fuente fuente, String identificadorHandle) {
+    public Coleccion(String titulo, String descripcion, String identificadorHandle) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criterios_pertenencia = new ArrayList<>();
-        this.fuente = fuente;
         this.identificadorHandle = identificadorHandle; // TODO: No recibirlo en el constructor, sino pedirlo a una pagina que genere UUID
     }
 
