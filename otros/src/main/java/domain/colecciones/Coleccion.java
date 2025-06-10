@@ -21,7 +21,7 @@ public class Coleccion{
         this.descripcion = descripcion;
         this.criterios_pertenencia = new ArrayList<>();
         this.fuente = fuente;
-        this.identificadorHandle = identificadorHandle;
+        this.identificadorHandle = identificadorHandle; // TODO: No recibirlo en el constructor, sino pedirlo a una pagina que genere UUID
     }
 
     public List<Hecho> mostrarHechos(){
