@@ -41,6 +41,10 @@ public class LectorCsv{
 
                     borrarHecho(titulo, hechos); // Si ya existe un hecho con ese título, lo elimina
 
+                    if (!existeCategoria(categoria)) {
+                        categorias.add(new Categoria(categoria));
+                    }
+
                     Categoria categoria_hecho = buscarCategoria(categoria);
 
                     hechos.add(formatearHecho(titulo, descripcion, categoria_hecho, latitud, longitud, fecha));
@@ -64,5 +68,9 @@ public class LectorCsv{
 
     public Categoria buscarCategoria(String nombre_categoria) {
         return categorias.stream().filter(categoria -> categoria.esIdenticaA(nombre_categoria)).findFirst().orElse(new Categoria(nombre_categoria));
+    }
+
+    public Boolean existeCategoria(String nombre_categoria) {
+        return categorias.stream().anyMatch(categoria -> categoria.esIdenticaA(nombre_categoria));
     }
 }
