@@ -14,19 +14,18 @@ public class RepositorioDeHechos implements Repositorio<Hecho> {
     }
 
     public void agregar(Hecho hecho){
-        // TODO
+        hechos.add(hecho);
     }
 
     public void quitar(Hecho hecho) {
-        // TODO
+        hechos.remove(hecho);
     }
 
     public Hecho buscar(Hecho hecho) {
-       // TOD0
-        return null;
+       return hechos.stream().filter(h -> h.equals(hecho)).findFirst().orElse(null);
     }
 
     public List<Hecho> listar(){
-        return null;
+        return hechos;
     }
 }

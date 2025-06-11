@@ -5,7 +5,7 @@ import domain.hechos.Hecho;
 import java.util.List;
 
 // FUENTE PROXY
-public abstract class FuenteProxy {
+public abstract class FuenteProxy extends Fuente {
     public List<Hecho> importarHechos(){
         //TODO
     }

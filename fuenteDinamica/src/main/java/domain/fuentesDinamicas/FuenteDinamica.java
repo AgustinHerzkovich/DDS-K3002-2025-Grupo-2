@@ -9,11 +9,13 @@ import domain.solicitudes.SolicitudEliminacion;
 import java.util.List;
 
 // FUENTE DINAMICA
-public class FuenteDinamica implements Fuente {
+public class FuenteDinamica extends Fuente {
+    private Long id;
     private Repositorio<Hecho> repositorio_hechos;
     private Repositorio<SolicitudEliminacion> repositorio_solicitudes;
 
-    public FuenteDinamica(RepositorioDeHechos repositorio_hechos, RepositorioDeSolicitudes repositorio_solicitudes) {
+    public FuenteDinamica(RepositorioDeHechos repositorio_hechos, RepositorioDeSolicitudes repositorio_solicitudes,Long id) {
+        super(id);
         this.repositorio_hechos = repositorio_hechos;
         this.repositorio_solicitudes = repositorio_solicitudes;
     }
@@ -44,5 +46,9 @@ public class FuenteDinamica implements Fuente {
 
     public SolicitudEliminacion buscarSolicitud(SolicitudEliminacion solicitud){
         return repositorio_solicitudes.buscar(solicitud);
+    }
+
+    public List<SolicitudEliminacion> buscarSolicitudes() {
+        return repositorio_solicitudes.listar();
     }
 }

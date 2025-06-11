@@ -14,18 +14,18 @@ public class RepositorioDeSolicitudes implements Repositorio<SolicitudEliminacio
     }
 
     public void agregar(SolicitudEliminacion solicitud){
-        // TODO
+        solicitudes.add(solicitud);
     }
 
     public void quitar(SolicitudEliminacion solicitud) {
-        // TODO
+        solicitudes.remove(solicitud);
     }
 
     public SolicitudEliminacion buscar(SolicitudEliminacion solicitud) {
-        // TODO
+        return solicitudes.stream().filter(h -> h.equals(solicitud)).findFirst().orElse(null);
     }
 
     public List<SolicitudEliminacion> listar(){
-        // TODO
+        return solicitudes;
     }
 }

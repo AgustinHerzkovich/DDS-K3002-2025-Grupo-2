@@ -10,7 +10,7 @@ public class EstadoSolicitudPendiente extends EstadoSolicitud {
     @Override
     void aceptar () {
     solicitud.setEstado(new EstadoSolicitudAceptada(solicitud));
-    solicitud.preescribirCosolicitudes();
+//    solicitud.preescribirCosolicitudes();
     solicitud.esconderHecho();
     solicitud.setFecha_resolucion(LocalDate.now());
     }

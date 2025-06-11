@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 // FUENTE ESTATICA
-public class FuenteEstatica implements Fuente {
+public class FuenteEstatica extends Fuente {
     private List<String> archivos;
     private LectorCsv lector_archivo;
     private Long id; // TODO automatizar para evitar repeticion de ids entre fuentes
 
     public FuenteEstatica(LectorCsv lector_archivo, Long id){
+        super(id);
         this.archivos = new ArrayList<>();
         this.lector_archivo = lector_archivo;
-        this.id = id;
     }
 
     public void agregarArchivo(String archivo){
@@ -25,9 +25,5 @@ public class FuenteEstatica implements Fuente {
         List<Hecho> hechos = new ArrayList<>();
         archivos.forEach(archivo -> hechos.addAll(lector_archivo.leerHechos(archivo)));
         return hechos;
-    }
-
-    public Long getId(){
-        return id;
     }
 }
