@@ -10,8 +10,8 @@ import java.util.List;
 
 // FUENTE DINAMICA
 public class FuenteDinamica implements Fuente {
-    private Repositorio repositorio_hechos;
-    private Repositorio repositorio_solicitudes;
+    private Repositorio<Hecho> repositorio_hechos;
+    private Repositorio<SolicitudEliminacion> repositorio_solicitudes;
 
     public FuenteDinamica(RepositorioDeHechos repositorio_hechos, RepositorioDeSolicitudes repositorio_solicitudes) {
         this.repositorio_hechos = repositorio_hechos;
@@ -34,7 +34,7 @@ public class FuenteDinamica implements Fuente {
         return repositorio_hechos.listar();
     }
 
-    public void agregarSolicitud(SolicitudEliminacion solicitud){
+   public void agregarSolicitud(SolicitudEliminacion solicitud){
         repositorio_solicitudes.agregar(solicitud);
     }
 

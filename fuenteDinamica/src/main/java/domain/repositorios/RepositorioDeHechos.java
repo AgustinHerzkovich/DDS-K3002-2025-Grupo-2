@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // REPOSITORIO DE HECHOS
-public class RepositorioDeHechos implements Repositorio {
+public class RepositorioDeHechos implements Repositorio<Hecho> {
     private List<Hecho> hechos;
 
     public RepositorioDeHechos() {
@@ -22,10 +22,11 @@ public class RepositorioDeHechos implements Repositorio {
     }
 
     public Hecho buscar(Hecho hecho) {
-       // TODO
+       // TOD0
+        return null;
     }
 
     public List<Hecho> listar(){
-        // TODO
+        return null;
     }
 }

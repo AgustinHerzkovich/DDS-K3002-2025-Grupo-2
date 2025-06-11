@@ -1,7 +1,5 @@
 package domain.hechos;
 
-
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
@@ -32,10 +30,8 @@ public class Hecho {
     private Boolean anonimato;
     private IdentidadContribuyente autor;
 
-    public Hecho() {
-
-    }
-    /*
+    public Hecho() {}
+    
     public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -58,7 +54,7 @@ public class Hecho {
             this.autor = null;
         }
     }
-*/
+    
     public String getTitulo() {
         return titulo;
     }

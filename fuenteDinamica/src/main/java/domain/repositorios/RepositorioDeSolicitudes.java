@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // REPOSITORIO DE SOLICITUDES
-public class RepositorioDeSolicitudes implements Repositorio {
+public class RepositorioDeSolicitudes implements Repositorio<SolicitudEliminacion> {
     private List<SolicitudEliminacion> solicitudes;
 
     public RepositorioDeSolicitudes() {
