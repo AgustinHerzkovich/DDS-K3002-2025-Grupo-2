@@ -1,12 +1,17 @@
-package domain.fuentesEstaticas;
+package domain;
 
+import domain.fuentesEstaticas.FuenteEstatica;
+import domain.fuentesEstaticas.LectorCsv;
 import domain.hechos.Hecho;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController // Le decimos que esta clase es un controlador REST
@@ -18,15 +23,12 @@ public class FuenteEstaticaController {
     public FuenteEstaticaController() throws IOException {
         LectorCsv lector_mock = new LectorCsv();
         FuenteEstatica fuente = new FuenteEstatica(lector_mock, 1L);
-        // Usa Spring para buscar todos los archivos en resources/ArchivosCsvPrueba/
+
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] recursos = resolver.getResources("classpath:ArchivosCsvPrueba/*.csv");
+        Resource[] recursos = resolver.getResources("classpath:/ArchivosCsvPrueba/*.csv");
 
         for (Resource recurso : recursos) {
-            String path = recurso.getFilename(); // nombre del archivo
-            if (path != null) {
-                fuente.agregarArchivo("ArchivosCsvPrueba/" + path); // ruta relativa dentro de resources
-            }
+            fuente.agregarArchivo(recurso.getFile().getPath());
         }
 
         fuentes.put(fuente.getId(), fuente);
