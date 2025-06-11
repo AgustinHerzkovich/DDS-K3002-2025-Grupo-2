@@ -6,20 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Editor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Editor.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Editor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/test/ArchivosCsvPrueba/desastres_sanitarios_contaminacion_argentina.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/test/java/testCargarArchivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/test/java/testCargarArchivos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otros/src/main/java/colecciones/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/otros/src/main/java/domain/colecciones/Coleccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otros/src/main/java/repositorios/Repositorio.java" beforeDir="false" afterPath="$PROJECT_DIR$/otros/src/main/java/domain/repositorios/Repositorio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/otros/src/main/java/repositorios/RepositorioDeColecciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/otros/src/main/java/domain/repositorios/RepositorioDeColecciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Editor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeFecha.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeFecha.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/Conexion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/FuenteDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesDemo/FuenteDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Editor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
     </list>
     <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="" />
+    <list id="9c478027-294f-47ef-9664-898642ed3b60" name="Changes by nicol" comment="" />
     <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +41,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java">
+      <ranges>
+        <range start1="3" end1="4" start2="3" end2="7" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="6" end1="6" start2="9" end2="10" changelist="9c478027-294f-47ef-9664-898642ed3b60" />
+        <range start1="7" end1="7" start2="11" end2="12" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+        <range start1="9" end1="9" start2="14" end2="17" changelist="9c478027-294f-47ef-9664-898642ed3b60" />
+        <range start1="10" end1="11" start2="18" end2="19" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="12" end1="13" start2="20" end2="21" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="14" end1="15" start2="22" end2="23" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="23" end1="24" start2="31" end2="32" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="27" end1="27" start2="35" end2="111" changelist="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" />
+      </ranges>
+    </file>
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -54,35 +70,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.testCargarArchivos.cargarArchivos.executor": "Run",
-    "JUnit.testCargarArchivos.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "Spring Boot.AgregadorAplicacion.executor": "Run",
-    "Spring Boot.FuenteEstaticaAplicacion.executor": "Run",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/nicol/Documents/tpDiseno/DDS-K3002-2025-Grupo-2",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/nuevo/src/main/java/org/springframework/Main.java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.testCargarArchivos.cargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testCargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AgregadorAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteEstaticaAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nicol/Documents/tpDiseno/DDS-K3002-2025-Grupo-2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/nuevo/src/main/java/org/springframework/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\fuenteProxy\src\main\java\domain" />
@@ -315,7 +331,8 @@
       <workItem from="1749083150336" duration="2222000" />
       <workItem from="1749159110925" duration="6054000" />
       <workItem from="1749499664497" duration="5476000" />
-      <workItem from="1749514208987" duration="3160000" />
+      <workItem from="1749514208987" duration="3994000" />
+      <workItem from="1749600034611" duration="1221000" />
     </task>
     <servers />
   </component>

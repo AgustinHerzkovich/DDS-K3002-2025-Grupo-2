@@ -8,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.opencsv.exceptions.CsvException;
 import domain.hechos.Hecho;
 import domain.hechos.Categoria;
 import domain.hechos.Origen;

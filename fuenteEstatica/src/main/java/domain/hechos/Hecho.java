@@ -23,7 +23,7 @@ public class Hecho {
     private LocalDate fecha_ultimaModificacion;
     private Origen origen;
     private String contenido_texto;
-    private Optional<List<Multimedia>> contenido_multimedia;
+    private List<Multimedia> contenido_multimedia;
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
@@ -40,7 +40,7 @@ public class Hecho {
         this.fecha_ultimaModificacion = this.fecha_carga;
         this.origen = origen;
         this.contenido_texto = contenido_texto;
-        this.contenido_multimedia = Optional.ofNullable(contenido_multimedia);
+        this.contenido_multimedia = contenido_multimedia;
         this.etiquetas = new ArrayList<>();
         this.visible = true;
         this.anonimato = anonimato;
@@ -78,8 +78,28 @@ public class Hecho {
 
     public void mostrar() { visible = true; }
 
-    public void editar(Editor editor) {
-        // TODO
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha, String contenido_texto, List<Multimedia> contenido_multimedia) {
+        if (titulo != null) {
+            this.titulo = titulo;
+        }
+        if (descripcion != null) {
+            this.descripcion = descripcion;
+        }
+        if (categoria != null) {
+            this.categoria = categoria;
+        }
+        if (ubicacion != null) {
+            this.ubicacion_acontecimiento = ubicacion;
+        }
+        if (fecha != null) {
+            this.fecha_acontecimiento = fecha;
+        }
+        if (contenido_texto != null) {
+            this.contenido_texto = contenido_texto;
+        }
+        if (contenido_multimedia != null) {
+            this.contenido_multimedia = contenido_multimedia;
+        }
     }
 
     public Boolean tieneMismoTitulo(String otro_titulo) {

@@ -8,11 +8,11 @@ import java.util.List;
 // FUENTE ESTATICA
 public class FuenteEstatica implements Fuente {
     private List<String> archivos;
-    private LectorCsv lectorArchivo;
+    private LectorCsv lector_archivo;
 
-    public FuenteEstatica(LectorCsv lectorArchivo){
+    public FuenteEstatica(LectorCsv lector_archivo){
         this.archivos = new ArrayList<>();
-        this.lectorArchivo = lectorArchivo;
+        this.lector_archivo = lector_archivo;
     }
 
     public void agregarArchivo(String archivo){
@@ -21,7 +21,7 @@ public class FuenteEstatica implements Fuente {
 
     public List<Hecho> importarHechos() {
         List<Hecho> hechos = new ArrayList<>();
-        archivos.forEach(archivo -> hechos.addAll(lectorArchivo.leerHechos(archivo)));
+        archivos.forEach(archivo -> hechos.addAll(lector_archivo.leerHechos(archivo)));
         return hechos;
     }
 }
