@@ -4,8 +4,8 @@ package domain.hechos.multimedias;
 public class Imagen extends Multimedia {
     private String resolucion;
 
-    public Imagen(String formato, String resolucion) {
-        this.formato = formato;
+    public Imagen(String formato, Integer tamanio, String resolucion) {
+        super(formato, tamanio);
         this.resolucion = resolucion;
     }
 
