@@ -1,5 +1,6 @@
 package domain;
 
+import domain.fuentesEstaticas.Fuente;
 import domain.fuentesEstaticas.FuenteEstatica;
 import domain.fuentesEstaticas.LectorCsv;
 import domain.hechos.Hecho;
@@ -28,6 +29,15 @@ public class FuenteEstaticaController {
         }
 
         fuentes.put(fuente.getId(), fuente);
+    }
+
+    @GetMapping
+    public List<Hecho> todaslasfuentes() {
+        List <Hecho> hechos = new ArrayList<Hecho>();
+        for (Fuente f : fuentes.values()) {
+            hechos.addAll(f.importarHechos());
+        }
+        return hechos;
     }
 
     @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
