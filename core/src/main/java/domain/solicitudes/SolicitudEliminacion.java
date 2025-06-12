@@ -42,7 +42,7 @@ public class SolicitudEliminacion {
     private LocalDate fecha_resolucion;
     private final Hecho hecho;
     private final String motivo;
-    private DetectorDeSpam detector;
+    private final DetectorDeSpam detector;
 
 
     public void setEstado(EstadoSolicitud estado) {
@@ -113,23 +113,15 @@ public class SolicitudEliminacion {
     }
 
     /////////////////////////////////////
-/*
+    ///
     public void preescribirCosolicitudes(){
-        SolicitudEliminacion[] cosolicitudes = this.hecho.getSolicitudesDeEliminacion();
-        for(SolicitudEliminacion sol : cosolicitudes){
-            sol.prescribir();
-            // prescribir() chequea si esta pendiente y solamente si lo está, prescribe
-        }
+        hecho.prescribirSolicitudes();
+        // Redirige del estado que la llama al hecho, ya que el estado no conoce el hecho pero le quiere mandar un mensake a él
     }
 
     public void anularPrescripcionCosolicitudes(){
-        SolicitudEliminacion[] cosolicitudes = this.hecho.getSolicitudesDeEliminacion();
-        for(SolicitudEliminacion sol : cosolicitudes){
-            sol.anularPrescripcion();
-            // anularPrescripcion() chequea si esta prescripta y solamente si lo está, pasa a pendiente
-        }
+        hecho.anularPrescripcionSolicitudes();
     }
-*/
     //////////////////////////////////////
 
         public Boolean hechoVisible(){

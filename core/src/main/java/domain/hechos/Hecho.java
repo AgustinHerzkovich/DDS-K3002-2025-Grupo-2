@@ -124,4 +124,18 @@ public class Hecho {
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
         solicitudes.add(solicitud);
     }
+
+    public void prescribirSolicitudes(){
+        // Cuando se acepta una solicitud, todas las demas se prescriben (solo afecta las pendientes)
+        for(SolicitudEliminacion sol : this.solicitudes){
+            sol.prescribir();
+        }
+    }
+    public void anularPrescripcionSolicitudes(){
+        // Cuando se anula una solicitud aceptada, todas las demás se de-prescriben (Solo afecta a las prescriptas)
+        for(SolicitudEliminacion sol : this.solicitudes){
+            sol.anularPrescripcion();
+        }
+    }
+
 }
