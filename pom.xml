@@ -15,6 +15,7 @@
         <module>agregador</module>
         <module>estadisticas</module>
         <module>otros</module>
+        <module>core</module>
     </modules>
 
     <properties>

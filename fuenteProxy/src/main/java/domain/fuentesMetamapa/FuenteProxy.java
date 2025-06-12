@@ -1,6 +1,7 @@
 package domain.fuentesMetamapa;
 
 import domain.hechos.Hecho;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 

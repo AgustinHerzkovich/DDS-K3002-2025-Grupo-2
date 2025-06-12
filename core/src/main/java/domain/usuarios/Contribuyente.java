@@ -1,6 +1,7 @@
 package domain.usuarios;
 
 import domain.solicitudes.SolicitudEliminacion;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

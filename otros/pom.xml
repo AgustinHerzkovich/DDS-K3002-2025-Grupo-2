@@ -19,6 +19,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>core</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <!-- Jackson: ya gestionado por Spring Boot -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
