@@ -8,39 +8,39 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     }
 
     @Override
-    void aceptar () {
+    public void aceptar () {
     }
 
     @Override
-    void rechazar () {
+    public void rechazar () {
         solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
         solicitud.setFecha_resolucion(LocalDate.now());
     }
 
     @Override
-    void prescribir () {
+    public void prescribir () {
     }
 
     @Override
-    void marcarSpam () {
+    public void marcarSpam () {
         solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
         solicitud.setFecha_resolucion(LocalDate.now());
     }
 
     @Override
-    void anularAceptacion () {
+    public void anularAceptacion () {
     }
 
     @Override
-    void anularRechazo () {
+    public void anularRechazo () {
     }
 
     @Override
-    void anularPrescripcion () {
+    public void anularPrescripcion () {
         solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
     }
 
     @Override
-    void anularMarcaSpam () {
+    public void anularMarcaSpam () {
     }
 }

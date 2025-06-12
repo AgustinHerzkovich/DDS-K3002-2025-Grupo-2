@@ -8,35 +8,35 @@ public class EstadoSolicitudSpam extends EstadoSolicitud {
     }
 
     @Override
-    void aceptar () {
+    public void aceptar () {
     }
 
     @Override
-    void rechazar () {
+    public void rechazar () {
     }
 
     @Override
-    void prescribir () {
+    public void prescribir () {
     }
 
     @Override
-    void marcarSpam () {
+    public void marcarSpam () {
     }
 
     @Override
-    void anularAceptacion () {
+    public void anularAceptacion () {
     }
 
     @Override
-    void anularRechazo () {
+    public void anularRechazo () {
     }
 
     @Override
-    void anularPrescripcion () {
+    public void anularPrescripcion () {
     }
 
     @Override
-    void anularMarcaSpam () {
+    public void anularMarcaSpam () {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         solicitud.setFecha_resolucion(LocalDate.now());
     }

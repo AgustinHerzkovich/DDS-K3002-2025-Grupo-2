@@ -16,12 +16,12 @@ public abstract class EstadoSolicitud {
     public EstadoSolicitud(SolicitudEliminacion slt){
         solicitud = slt;
     }
-    abstract void aceptar();
-    abstract void rechazar();
-    abstract void prescribir();
-    abstract void marcarSpam();
-    abstract void anularAceptacion();
-    abstract void anularRechazo();
-    abstract void anularPrescripcion();
-    abstract void anularMarcaSpam();
+    public abstract void aceptar();
+    public abstract void rechazar();
+    public abstract void prescribir();
+    public abstract void marcarSpam();
+    public abstract void anularAceptacion();
+    public abstract void anularRechazo();
+    public abstract void anularPrescripcion();
+    public abstract void anularMarcaSpam();
 }

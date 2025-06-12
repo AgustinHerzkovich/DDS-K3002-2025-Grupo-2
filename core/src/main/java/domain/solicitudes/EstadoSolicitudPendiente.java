@@ -8,7 +8,7 @@ public class EstadoSolicitudPendiente extends EstadoSolicitud {
     }
 
     @Override
-    void aceptar () {
+    public void aceptar () {
     solicitud.setEstado(new EstadoSolicitudAceptada(solicitud));
     solicitud.preescribirCosolicitudes();
     solicitud.esconderHecho();
@@ -16,35 +16,35 @@ public class EstadoSolicitudPendiente extends EstadoSolicitud {
     }
 
     @Override
-    void rechazar () {
+    public void rechazar () {
     solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
     solicitud.setFecha_resolucion(LocalDate.now());
     }
 
     @Override
-    void prescribir () {
+    public void prescribir () {
     solicitud.setEstado(new EstadoSolicitudPrescripta(solicitud));
     }
 
     @Override
-    void marcarSpam () {
+    public void marcarSpam () {
         solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
         solicitud.setFecha_resolucion(LocalDate.now());
     }
 
     @Override
-    void anularAceptacion () {
+    public void anularAceptacion () {
     }
 
     @Override
-    void anularRechazo () {
+    public void anularRechazo () {
     }
 
     @Override
-    void anularPrescripcion () {
+    public void anularPrescripcion () {
     }
 
     @Override
-    void anularMarcaSpam () {
+    public void anularMarcaSpam () {
     }
 }
