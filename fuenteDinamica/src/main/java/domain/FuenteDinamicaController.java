@@ -37,7 +37,7 @@ public class FuenteDinamicaController {
         fuentes.put(fuente.getId(), fuente);
     }
 
-    @GetMapping("/hechos/{id}") //Se ejecuta al hacer GET en este id
+    @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
     public List<Hecho> hechos(@PathVariable("id") Long id) {
         FuenteDinamica fuente = fuentes.get(id);
         if (fuente == null){
@@ -46,7 +46,7 @@ public class FuenteDinamicaController {
         return fuente.importarHechos();
     }
 
-    @GetMapping("/solicitudes/{id}")
+    @GetMapping("/{id}/solicitudes")
     public List<SolicitudEliminacion> solicitudes(@PathVariable("id") Long id) {
         FuenteDinamica fuente = fuentes.get(id);
         if (fuente == null){

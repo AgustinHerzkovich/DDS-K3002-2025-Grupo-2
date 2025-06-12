@@ -30,7 +30,7 @@ public class FuenteEstaticaController {
         fuentes.put(fuente.getId(), fuente);
     }
 
-    @GetMapping("/hechos/{id}") //Se ejecuta al hacer GET en este id
+    @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
     public List<Hecho> hechos(@PathVariable("id") Long id) {
         FuenteEstatica fuente = fuentes.get(id);
         if (fuente == null){
