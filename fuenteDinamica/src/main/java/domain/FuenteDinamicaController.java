@@ -1,5 +1,6 @@
 package domain;
 
+import domain.fuentesDinamicas.Fuente;
 import domain.fuentesDinamicas.FuenteDinamica;
 import domain.hechos.Categoria;
 import domain.hechos.Hecho;
@@ -35,6 +36,15 @@ public class FuenteDinamicaController {
         fuente.agregarSolicitud(solicitud);
 
         fuentes.put(fuente.getId(), fuente);
+    }
+
+    @GetMapping
+    public List<Hecho> todaslasfuentes() {
+        List <Hecho> hechos = new ArrayList<Hecho>();
+        for (Fuente f : fuentes.values()) {
+            hechos.addAll(f.importarHechos());
+        }
+        return hechos;
     }
 
     @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
