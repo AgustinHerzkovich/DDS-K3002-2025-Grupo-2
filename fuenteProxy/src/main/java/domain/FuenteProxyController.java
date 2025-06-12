@@ -1,4 +1,4 @@
-package domain.controllers;
+package domain;
 
 import domain.fuentesMetamapa.FuenteMetamapa;
 import domain.hechos.Hecho;
@@ -6,13 +6,12 @@ import domain.hechos.Hecho;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
-
 import java.util.List;
 
 
 @RestController
 @RequestMapping()
-public class Controller {
+public class FuenteProxyController {
     private final FuenteMetamapa fuente = new FuenteMetamapa();
 
     @GetMapping("/hechos")
