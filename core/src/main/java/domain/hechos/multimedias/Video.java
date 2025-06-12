@@ -5,8 +5,8 @@ public class Video extends Multimedia {
     private Integer resolucion;
     private Integer duracion;
 
-    public Video(String formato, Integer resolucion, Integer duracion) {
-        this.formato = formato;
+    public Video(String formato, Integer tamanio, Integer resolucion, Integer duracion) {
+        super(formato, tamanio);
         this.resolucion = resolucion;
         this.duracion = duracion;
     }

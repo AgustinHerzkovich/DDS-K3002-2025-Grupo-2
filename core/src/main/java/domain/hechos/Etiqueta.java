@@ -14,7 +14,7 @@ public class Etiqueta {
         return nombre;
     }
 
-    public boolean esIdenticaA(Etiqueta etiqueta) {
-        return this.nombre.equals(etiqueta.getNombre());
+    public boolean esIdenticaA(String etiqueta_nombre) {
+        return this.nombre.equals(etiqueta_nombre);
     }
 }

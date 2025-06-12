@@ -4,8 +4,8 @@ package domain.hechos.multimedias;
 public class Audio extends Multimedia {
     private Integer duracion;
 
-    public Audio(String formato, Integer duracion) {
-        this.formato = formato;
+    public Audio(String formato, Integer tamanio, Integer duracion) {
+        super(formato, tamanio);
         this.duracion = duracion;
     }
 
