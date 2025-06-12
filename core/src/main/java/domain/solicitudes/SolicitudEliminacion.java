@@ -44,13 +44,6 @@ public class SolicitudEliminacion {
     private final String motivo;
     private final DetectorDeSpam detector;
 
-
-    public void setEstado(EstadoSolicitud estado) {
-        this.estado = estado;
-    }
-
-
-
     public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo, DetectorDeSpam detector) {
         this.motivo = motivo;
         this.detector = detector;
@@ -74,6 +67,11 @@ public class SolicitudEliminacion {
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
     }
+
+    public void setEstado(EstadoSolicitud estado) {
+        this.estado = estado;
+    }
+
 
     /////////////////////////////////////
 
@@ -124,20 +122,21 @@ public class SolicitudEliminacion {
     }
     //////////////////////////////////////
 
-        public Boolean hechoVisible(){
+    public Boolean hechoVisible(){
             return hecho.esVisible();
         }
-        public void esconderHecho(){
+
+    public void esconderHecho(){
             hecho.ocultar();
         }
-        public void mostrarHecho(){
+
+    public void mostrarHecho(){
             hecho.mostrar();
         }
 
     //////////////////////////////////////
 
-
-        public Boolean esSpam(){
+    public Boolean esSpam(){
                 return detector.esSpam(this.motivo);
         }
 
@@ -163,5 +162,9 @@ public class SolicitudEliminacion {
 
     public Contribuyente getAdministrador() {
         return administrador;
+    }
+
+    public void setAdministrador(Contribuyente administrador) {
+            this.administrador = administrador;
     }
 }
