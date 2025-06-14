@@ -27,7 +27,7 @@ Respondiendo a tus preguntas, depende como lo diseñes. Por ejemplo, podés expo
 Espero haber contestado tu consulta, cualquier cosa no dudes en preguntar nuevamente.
 
 7. un contribuyente es toda persona humana que sube un hecho o solo son contribuyentes los que suben algo de forma no anónima? remarcar contradicción entre el enunciado y la respuesta que dio el ayudante.
-RESP: A definir.
+RESP: Nueva redefinición adoptada: una persona puede subir un hecho tanto registrado como no registrado, entendiendo por registrado a que la persona tiene una cuenta en el sistema, es decir usuario y contraseña, y se encuentra logueado. Si sube un hecho sin estar registrado, es decir, sin cuenta, solo lo podrá hacer de manera anónima, y este mismo no podrá ser editado. En cambio, si sube un hecho registrado con cuenta, puede optar por subirlo de forma anónima o no anónima, incluyendo en este último caso los datos personales del autor que lo subió, y permitiendo en ambos casos, la edición del hecho.
 
 8. para esta iteración debemos modelar todo aquello que no se encuentre en el alcance de la entrega 1? por ejemplo fuentes dinámicas. osea entendemos que para esta entrega no se pide pero tal vez estaría bueno hacerlo de cara al futuro.
 RESP: Podemos ir modelando lo que sigue pero solo se entrega lo del alcance de la entrega 1.
@@ -37,3 +37,12 @@ RESP: Quiere decir que el está el hecho en la fuente pero lo desestimamos, es d
 
 10. Hasta el momento, existen dos tipos de hechos: de texto y con soporte para contenido multimedia. El texto se refiere a la descripción del hecho o es un texto aparte?
 RESP: Es otro texto aparte.
+
+11. Se pueden quitar getters y setters del diagrama de clases?
+RESP: Sí.
+
+12. Debemos hacer un diagrama de clase por cada componente(fuente estática, dinámica, proxy, agregador, etc)?
+RESP: Sí.
+
+13. Debemos modelar en diagrama de clases componentes de capas superiores tales como controladores o servicios?
+RESP: Podría modelarse como un diagrama de clases de nivel superior, considerando que las clases de un nivel superior conocen a las de nivel inferior, pero no viceversa. De todos modos no es estrictamente necesario hacerlo, y se puede dejar los diagramas de clases únicamente para modelar la lógica de negocio.
