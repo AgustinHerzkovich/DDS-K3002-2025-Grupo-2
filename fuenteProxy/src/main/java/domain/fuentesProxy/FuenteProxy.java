@@ -1,4 +1,4 @@
-package domain.fuentes;
+package domain.fuentesProxy;
 
 import domain.hechos.Hecho;
 import java.util.List;
