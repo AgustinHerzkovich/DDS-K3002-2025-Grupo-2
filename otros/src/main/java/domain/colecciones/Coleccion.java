@@ -7,6 +7,7 @@ import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,11 +21,11 @@ import java.util.stream.Collectors;
 // COLECCION
 @Service
 public class Coleccion{
-
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenencia> criterios_pertenencia;
     private String fuente;
+    @Getter
     private String identificador_handle;
 
     public Coleccion(String titulo, String descripcion) {
@@ -67,10 +68,6 @@ public class Coleccion{
             System.err.println("Error al consumir la API: " + e.getMessage());
             return List.of(); // Si hay error retorna lista vacia
         }
-    }
-
-    public String getIdentificador() {
-        return identificador_handle;
     }
 
     public Boolean cumpleCriterios(Hecho hecho){

@@ -1,4 +1,4 @@
-package domain.fuentes.fuentesDemo;
+package domain.fuentesProxy.fuentesDemo;
 
 import java.time.LocalDate;
 import java.util.Map;

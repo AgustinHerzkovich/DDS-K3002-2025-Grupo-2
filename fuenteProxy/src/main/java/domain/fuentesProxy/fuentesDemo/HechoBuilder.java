@@ -1,4 +1,4 @@
-package domain.fuentes.fuentesDemo;
+package domain.fuentesProxy.fuentesDemo;
 
 import domain.hechos.Categoria;
 import domain.hechos.Hecho;

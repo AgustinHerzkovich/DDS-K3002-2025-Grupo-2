@@ -1,7 +1,7 @@
-package domain.fuentes.fuentesMetamapa;
+package domain.fuentesProxy.fuentesMetamapa;
 
 import domain.hechos.Hecho;
-import domain.fuentes.FuenteProxy;
+import domain.fuentesProxy.FuenteProxy;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

@@ -1,6 +1,6 @@
-package domain.fuentes.fuentesDemo;
+package domain.fuentesProxy.fuentesDemo;
 
-import domain.fuentes.FuenteProxy;
+import domain.fuentesProxy.FuenteProxy;
 import domain.hechos.Hecho;
 
 import java.time.LocalDate;

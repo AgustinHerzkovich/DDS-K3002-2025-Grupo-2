@@ -1,7 +1,7 @@
 package domain;
 
-import domain.fuentes.fuentesMetamapa.FuenteMetamapa;
-import domain.fuentes.FuenteProxy;
+import domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
+import domain.fuentesProxy.FuenteProxy;
 import domain.hechos.Hecho;
 
 import org.springframework.scheduling.annotation.Scheduled;
