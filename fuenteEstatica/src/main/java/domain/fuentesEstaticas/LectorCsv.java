@@ -22,54 +22,101 @@ public class LectorCsv{
     }
 
     public List<Hecho> leerHechos(String path) {
-        List<Hecho> hechos = new ArrayList<Hecho>();
+        List<String[]> datos = extract(path);
+        return load(transform(datos));
+    }
 
+    // ----------------------
+    // EXTRACT
+    // ----------------------
+    private List<String[]> extract(String path) {
         try (CSVReader reader = new CSVReader(new FileReader(path))) {
             List<String[]> filas = reader.readAll();
-
-            // Saltar header
-            for (int i = 1; i < filas.size(); i++) {
-                String[] fila = filas.get(i);
-                if (fila.length >= 6) {
-                    String titulo = fila[0];
-                    String descripcion = fila[1];
-                    String categoria = fila[2];
-                    Double latitud = Double.parseDouble(fila[3]);
-                    Double longitud = Double.parseDouble(fila[4]);
-                    LocalDate fecha = LocalDate.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-                    borrarHecho(titulo, hechos); // Si ya existe un hecho con ese título, lo elimina
-
-                    if (!existeCategoria(categoria)) {
-                        categorias.add(new Categoria(categoria));
-                    }
-
-                    Categoria categoria_hecho = buscarCategoria(categoria);
-
-                    hechos.add(formatearHecho(titulo, descripcion, categoria_hecho, latitud, longitud, fecha));
-                }
-            }
+            return filas.subList(1, filas.size()); // Saltear header
         } catch (Exception e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage()); // Se arroja una excepción en caso de no poder leerse el archivo
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+            return new ArrayList<>();
         }
+    }
+
+    // ----------------------
+    // TRANSFORM
+    // ----------------------
+    private List<HechoParcial> transform(List<String[]> filas) {
+        List<HechoParcial> hechosParciales = new ArrayList<>();
+
+        for (String[] fila : filas) {
+            if (fila.length < 6) continue;
+
+            try {
+                String titulo = fila[0];
+                String descripcion = fila[1];
+                String nombreCategoria = fila[2];
+                Double latitud = Double.parseDouble(fila[3]);
+                Double longitud = Double.parseDouble(fila[4]);
+                LocalDate fecha = LocalDate.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                Categoria categoria = obtenerOCrearCategoria(nombreCategoria);
+
+                hechosParciales.add(new HechoParcial(titulo, descripcion, categoria, latitud, longitud, fecha));
+            } catch (Exception e) {
+                System.out.println("Fila inválida: " + String.join(",", fila) + " - " + e.getMessage());
+            }
+        }
+
+        return hechosParciales;
+    }
+
+    // ----------------------
+    // LOAD
+    // ----------------------
+    private List<Hecho> load(List<HechoParcial> hechosParciales) {
+        List<Hecho> hechos = new ArrayList<>();
+
+        for (HechoParcial parcial : hechosParciales) {
+            borrarHecho(parcial.titulo(), hechos);
+            hechos.add(formatearHecho(parcial));
+        }
+
         return hechos;
     }
 
-    public Hecho formatearHecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_hecho){
-        return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha_hecho, Origen.DATASET);
+    private Hecho formatearHecho(HechoParcial parcial) {
+        return new Hecho(
+                parcial.titulo(),
+                parcial.descripcion(),
+                parcial.categoria(),
+                parcial.latitud(),
+                parcial.longitud(),
+                parcial.fecha(),
+                Origen.DATASET
+        );
     }
 
-    // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema
+    private Categoria obtenerOCrearCategoria(String nombre) {
+        return categorias.stream()
+                .filter(cat -> cat.esIdenticaA(nombre))
+                .findFirst()
+                .orElseGet(() -> {
+                    Categoria nueva = new Categoria(nombre);
+                    categorias.add(nueva);
+                    return nueva;
+                });
+    }
 
-    public void borrarHecho(String titulo, List<Hecho> hechos) {
+    private void borrarHecho(String titulo, List<Hecho> hechos) {
         hechos.removeIf(hecho -> hecho.tieneMismoTitulo(titulo));
     }
 
-    public Categoria buscarCategoria(String nombre_categoria) {
-        return categorias.stream().filter(categoria -> categoria.esIdenticaA(nombre_categoria)).findFirst().orElse(new Categoria(nombre_categoria));
-    }
+    // Record auxiliar para transportar datos antes de crear un Hecho
+    private record HechoParcial(
+            String titulo,
+            String descripcion,
+            Categoria categoria,
+            Double latitud,
+            Double longitud,
+            LocalDate fecha
+    ) {}
 
-    public Boolean existeCategoria(String nombre_categoria) {
-        return categorias.stream().anyMatch(categoria -> categoria.esIdenticaA(nombre_categoria));
-    }
+    // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema
 }
