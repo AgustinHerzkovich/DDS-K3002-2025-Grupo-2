@@ -18,8 +18,8 @@ public class FuenteEstaticaController {
     private final Map<Long, FuenteEstatica> fuentes = new HashMap<>(); // Registro simulado (en memoria)
 
     public FuenteEstaticaController() throws IOException {
-        LectorCsv lector_mock = new LectorCsv();
-        FuenteEstatica fuente = new FuenteEstatica(lector_mock, 1L);
+        LectorCsv lectorCsv = new LectorCsv();
+        FuenteEstatica fuente = new FuenteEstatica(lectorCsv, 1L);
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] recursos = resolver.getResources("classpath:/ArchivosCsvPrueba/*.csv");

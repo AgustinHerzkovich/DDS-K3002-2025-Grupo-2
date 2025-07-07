@@ -13,7 +13,7 @@ public class Etiqueta {
         this.descripcion = descripcion;
     }
 
-    public boolean esIdenticaA(String etiqueta_nombre) {
-        return this.nombre.equals(etiqueta_nombre);
+    public boolean esIdenticaA(String etiquetaNombre) {
+        return this.nombre.equals(etiquetaNombre);
     }
 }

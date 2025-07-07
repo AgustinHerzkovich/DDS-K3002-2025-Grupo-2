@@ -13,27 +13,27 @@ import java.util.List;
 @Entity
 public class Contribuyente {
     @Id
-    private String contribuyente_id;
+    private String contribuyenteId;
     @Setter
-    private Boolean es_administrador;
+    private Boolean esAdministrador;
     @OneToMany
     private List<IdentidadContribuyente> identidades;
     @OneToMany
-    private List<SolicitudEliminacion> solicitudes_eliminacion;
+    private List<SolicitudEliminacion> solicitudesEliminacion;
 
-    public Contribuyente(String contribuyente_id, Boolean es_administrador) {
-        this.contribuyente_id = contribuyente_id;
-        this.es_administrador = es_administrador;
+    public Contribuyente(String contribuyenteId, Boolean esAdministrador) {
+        this.contribuyenteId = contribuyenteId;
+        this.esAdministrador = esAdministrador;
         this.identidades = new ArrayList<>();
-        this.solicitudes_eliminacion = new ArrayList<>();
+        this.solicitudesEliminacion = new ArrayList<>();
     }
 
     public Contribuyente() {
 
     }
 
-    public void modificarIdentidad(String nombre, String apellido, LocalDate fecha_nacimiento) {
-        IdentidadContribuyente nueva_identidad = new IdentidadContribuyente(nombre, apellido, fecha_nacimiento, this);
+    public void modificarIdentidad(String nombre, String apellido, LocalDate fechaNacimiento) {
+        IdentidadContribuyente nueva_identidad = new IdentidadContribuyente(nombre, apellido, fechaNacimiento, this);
         this.agregarIdentidad(nueva_identidad);
     }
 
@@ -46,6 +46,6 @@ public class Contribuyente {
     }
 
     public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
-        this.solicitudes_eliminacion.add(solicitud);
+        this.solicitudesEliminacion.add(solicitud);
     }
 }

@@ -4,16 +4,16 @@ import domain.dto.HechoInEstaticaDTO;
 import domain.hechos.Hecho;
 
 public class HechoInEstaticaDTOToHecho implements Mapper<HechoInEstaticaDTO, Hecho> {
-    public Hecho map(HechoInEstaticaDTO hecho_dto) {
+    public Hecho map(HechoInEstaticaDTO hechoDto) {
         Hecho hecho = new Hecho();
-        hecho.setTitulo(hecho_dto.getTitulo());
-        hecho.setDescripcion(hecho_dto.getDescripcion());
-        hecho.setCategoria(hecho_dto.getCategoria());
-        hecho.setUbicacion(hecho_dto.getUbicacion());
-        hecho.setFecha_acontecimiento(hecho_dto.getFecha_acontecimiento());
-        hecho.setOrigen(hecho_dto.getOrigen());
-        hecho.setVisible(hecho_dto.getVisible());
-        hecho.setEtiquetas(hecho_dto.getEtiquetas());
+        hecho.setTitulo(hechoDto.getTitulo());
+        hecho.setDescripcion(hechoDto.getDescripcion());
+        hecho.setCategoria(hechoDto.getCategoria());
+        hecho.setUbicacion(hechoDto.getUbicacion());
+        hecho.setFechaAcontecimiento(hechoDto.getFechaAcontecimiento());
+        hecho.setOrigen(hechoDto.getOrigen());
+        hecho.setVisible(hechoDto.getVisible());
+        hecho.setEtiquetas(hechoDto.getEtiquetas());
         return hecho;
     }
 }

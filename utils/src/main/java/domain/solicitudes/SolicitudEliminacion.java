@@ -52,9 +52,9 @@ public class SolicitudEliminacion {
     @ManyToOne
     private Contribuyente administrador;
     @Getter
-    private LocalDate fecha_subida;
+    private LocalDate fechaSubida;
     @Getter @Setter
-    private LocalDate fecha_resolucion;
+    private LocalDate fechaResolucion;
     @ManyToOne
     private Hecho hecho;
     @Getter
@@ -78,8 +78,8 @@ public class SolicitudEliminacion {
 
         this.solicitante = solicitante;
         this.administrador = null;
-        this.fecha_subida = LocalDate.now();
-        this.fecha_resolucion = null;
+        this.fechaSubida = LocalDate.now();
+        this.fechaResolucion = null;
         this.hecho = hecho;
         hecho.agregarASolicitudes(this);
         // Le manda mensaje a su hecho para que lo agregue

@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 public class AlgoritmoIrrestricto implements Algoritmo{
     @Override
-    public List<Hecho> curarHechos(List<List<Hecho>> listalistahechos){
+    public List<Hecho> curarHechos(List<List<Hecho>> hechos){
 
-        return  listalistahechos.stream().flatMap(List::stream).collect(Collectors.toList());
+        return  hechos.stream().flatMap(List::stream).collect(Collectors.toList());
 
     }
 }

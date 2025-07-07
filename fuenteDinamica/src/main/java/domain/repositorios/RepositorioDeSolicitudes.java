@@ -7,7 +7,7 @@ import java.util.List;
 
 // REPOSITORIO DE SOLICITUDES
 public class RepositorioDeSolicitudes implements Repositorio<SolicitudEliminacion> {
-    private List<SolicitudEliminacion> solicitudes;
+    private final List<SolicitudEliminacion> solicitudes;
 
     public RepositorioDeSolicitudes() {
         this.solicitudes = new ArrayList<SolicitudEliminacion>();

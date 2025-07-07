@@ -1,6 +1,5 @@
 package domain.repositorios;
 
-import domain.colecciones.Coleccion;
 import domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,9 +13,9 @@ public interface RepositorioHechosXColeccion extends JpaRepository<Hecho, Long> 
 
     }
     // Todos los hechos de una colección
-    List<Hecho> findByColeccionId(Long coleccionId);
+    List<Hecho> findByColeccionId(Long idColeccion);
 
     // Hechos consensuados de una colección
-    List<Hecho> findByColeccionIdAndConsensuadoTrue(Long coleccionId);
+    List<Hecho> findByColeccionIdAndConsensuadoTrue(Long idColeccion);
 
 }

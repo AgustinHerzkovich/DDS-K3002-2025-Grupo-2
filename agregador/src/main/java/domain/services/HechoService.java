@@ -11,28 +11,28 @@ import java.util.List;
 // TODO: Analizar si tal vez conviene separar algunos metodos a un ColeccionService por ejemplo
 @Service
 public class HechoService {
-    private final RepositorioDeColecciones repositorio_de_colecciones;
-    private final RepositorioDeHechos repositorio_de_hechos;
+    private final RepositorioDeColecciones repositorioDeColeccioness;
+    private final RepositorioDeHechos repositorioDeHechos;
 
-    public HechoService(RepositorioDeColecciones repositorio_de_colecciones, RepositorioDeHechos repositorio_de_hechos) {
-        this.repositorio_de_colecciones = repositorio_de_colecciones;
-        this.repositorio_de_hechos = repositorio_de_hechos;
+    public HechoService(RepositorioDeColecciones repositorioDeColeccioness, RepositorioDeHechos repositorioDeHechos) {
+        this.repositorioDeColeccioness = repositorioDeColeccioness;
+        this.repositorioDeHechos = repositorioDeHechos;
     }
 
     public void guardarColeccion(Coleccion coleccion) {
-        repositorio_de_colecciones.save(coleccion);
+        repositorioDeColeccioness.save(coleccion);
     }
 
     public List<Coleccion> obtenerColecciones() {
-        return repositorio_de_colecciones.findAll();
+        return repositorioDeColeccioness.findAll();
     }
 
-    public List<Hecho> obtenerHechosIrrestrictosPorColeccion(String id_coleccion) {
-        return repositorio_de_hechos.findByColeccionId(id_coleccion);
+    public List<Hecho> obtenerHechosIrrestrictosPorColeccion(Long idColeccion) {
+        return repositorioDeHechos.findByCollectionId(idColeccion);
     }
 
-    public List<Hecho> obtenerHechosCuradosPorColeccion(String id_coleccion) {
-        return repositorio_de_hechos.findCuredByColeccionId(id_coleccion);
+    public List<Hecho> obtenerHechosCuradosPorColeccion(Long idColeccion) {
+        return repositorioDeHechos.findCuredByCollectionId(idColeccion); // todo: esto deberia ir en repositorio de hechos x coleccion?
     }
 }
 

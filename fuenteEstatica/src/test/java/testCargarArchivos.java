@@ -12,11 +12,11 @@ public class testCargarArchivos {
     public void cargarArchivos() {
         FuenteEstatica fuente = new FuenteEstatica(new LectorCsv(), 1L);
 
-        String path_alternativo = "src/main/resources/ArchivosCsvPrueba/";
+        String pathAlternativo = "src/main/resources/ArchivosCsvPrueba/";
 
-        fuente.agregarArchivo(path_alternativo + "desastres_naturales_argentina.csv");
-        fuente.agregarArchivo(path_alternativo + "desastres_sanitarios_contaminacion_argentina.csv");
-        fuente.agregarArchivo(path_alternativo + "desastres_tecnologicos_argentina.csv");
+        fuente.agregarArchivo(pathAlternativo + "desastres_naturales_argentina.csv");
+        fuente.agregarArchivo(pathAlternativo + "desastres_sanitarios_contaminacion_argentina.csv");
+        fuente.agregarArchivo(pathAlternativo + "desastres_tecnologicos_argentina.csv");
 
         List<Hecho> hechos = fuente.importarHechos();
 
@@ -28,7 +28,7 @@ public class testCargarArchivos {
             System.out.println("Categoria: " + h.getCategoria().getNombre());
             System.out.println("Latitud: " + h.getUbicacion().getLatitud().toString());
             System.out.println("Longitud: " + h.getUbicacion().getLongitud().toString());
-            System.out.println("Fecha del hecho: " + h.getFecha_acontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.println("Fecha del hecho: " + h.getFechaAcontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println();
         }
     }

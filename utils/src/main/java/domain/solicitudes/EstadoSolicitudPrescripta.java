@@ -14,7 +14,7 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     @Override
     public void rechazar () {
         solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
-        solicitud.setFecha_resolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDate.now());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     @Override
     public void marcarSpam () {
         solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
-        solicitud.setFecha_resolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDate.now());
     }
 
     @Override

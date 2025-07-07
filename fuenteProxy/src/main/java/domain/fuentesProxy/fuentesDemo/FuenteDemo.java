@@ -11,14 +11,14 @@ import java.util.Map;
 
 // FUENTE DEMO
 public class FuenteDemo extends FuenteProxy {
-    private LocalDate ultima_consulta;
+    private LocalDate ultimaConsulta;
     private Conexion biblioteca;
     private List<Hecho> hechos;
     private String url;
 
     public FuenteDemo(Long id, Conexion biblioteca, String url) {
         super(id);
-        this.ultima_consulta = LocalDate.now();
+        this.ultimaConsulta = LocalDate.now();
         this.biblioteca = biblioteca;
         this.url = url;
     }
@@ -29,10 +29,10 @@ public class FuenteDemo extends FuenteProxy {
         // delegar peticion de hechos a la biblioteca
 
         HechoBuilder hechoBuilder = new HechoBuilder();
-        Hecho hecho = hechoBuilder.construirHecho(biblioteca.siguienteHecho(url, ultima_consulta));
+        Hecho hecho = hechoBuilder.construirHecho(biblioteca.siguienteHecho(url, ultimaConsulta));
         while (hecho != null){
             Map<String, Object> datos = new HashMap<String, Object>();
-            datos = biblioteca.siguienteHecho(url, ultima_consulta);
+            datos = biblioteca.siguienteHecho(url, ultimaConsulta);
             hecho = hechoBuilder.construirHecho(datos); //TODO hechobuilder es una clase costruidora de hechos
             // la idea esta en que recibe un map de objetos y strings con lo que son y lo construye.
             // si el map esta en null, devuelve null y se corta la recursividad del while

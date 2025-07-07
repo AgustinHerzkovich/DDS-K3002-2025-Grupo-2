@@ -12,7 +12,7 @@ public class testColeccionConsumeHechos {
     public void verHechosFuenteEstatica() {
         Coleccion coleccion = new Coleccion("Desastres naturales", "capo");
 
-        System.out.println(coleccion.getIdentificador_handle());
+        System.out.println(coleccion.getIdentificadorHandle());
 
         List<Hecho> hechos = coleccion.mostrarHechos();
 
@@ -24,7 +24,7 @@ public class testColeccionConsumeHechos {
             System.out.println("Categoria: " + h.getCategoria().getNombre());
             System.out.println("Latitud: " + h.getUbicacion().getLatitud().toString());
             System.out.println("Longitud: " + h.getUbicacion().getLongitud().toString());
-            System.out.println("Fecha del hecho: " + h.getFecha_acontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.println("Fecha del hecho: " + h.getFechaAcontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println();
         }
     }
@@ -33,7 +33,7 @@ public class testColeccionConsumeHechos {
     public void verHechosFuenteDinamica() {
         Coleccion coleccion = new Coleccion("Incendio Forestal", "capo");
 
-        System.out.println(coleccion.getIdentificador_handle());
+        System.out.println(coleccion.getIdentificadorHandle());
 
         List<Hecho> hechos = coleccion.mostrarHechos();
 
@@ -45,7 +45,7 @@ public class testColeccionConsumeHechos {
             System.out.println("Categoria: " + h.getCategoria().getNombre());
             System.out.println("Latitud: " + h.getUbicacion().getLatitud().toString());
             System.out.println("Longitud: " + h.getUbicacion().getLongitud().toString());
-            System.out.println("Fecha del hecho: " + h.getFecha_acontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.println("Fecha del hecho: " + h.getFechaAcontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println();
         }
 

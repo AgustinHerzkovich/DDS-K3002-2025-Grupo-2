@@ -26,7 +26,7 @@ public class EstadoSolicitudAceptada extends EstadoSolicitud {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         solicitud.anularPrescripcionCosolicitudes();
         solicitud.mostrarHecho();
-        solicitud.setFecha_resolucion(null);
+        solicitud.setFechaResolucion(null);
 
     }
 

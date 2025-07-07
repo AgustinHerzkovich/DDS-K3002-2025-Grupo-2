@@ -29,17 +29,17 @@ public class EjecutarAlgoritmoConsensoScheduller {
     public void curarHechos() {
         List<Coleccion> colecciones = repositorioDeColecciones.findAll();
         for (Coleccion coleccion : colecciones) {
-            AlgoritmoConsenso algoritmo_consenso = coleccion.getAlgoritmo_consenso();
-            switch (algoritmo_consenso) {
+            AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
+            switch (algoritmoConsenso) {
                 case IRRESTRICTO -> algoritmo = new AlgoritmoIrrestricto();
                 case MAYORIA_SIMPLE -> algoritmo = new AlgoritmoMayoriaSimple();
                 case MULTIPLES_MENCIONES -> algoritmo = new AlgoritmoMultiplesMenciones();
                 case ABSOLUTO -> algoritmo = new AlgoritmoAbsoluto();
             }
 
-            List<Hecho> hechos = repositorioDeHechos.findByColeccionId(coleccion.getIdentificador_handle()); // ESTE SUPUESTAMENTE SE CONECTA CON HECHOXCOLECCOIN PARA OBTENER ESOS HECHOS
-            List<Hecho> hechos_curados = algoritmo.curarHechos(hechos);
-            RepositorioHechosXColeccion.update(hechos_curados);
+            List<Hecho> hechos = repositorioDeHechos.findByColeccionId(coleccion.getIdentificadorHandle()); // ESTE SUPUESTAMENTE SE CONECTA CON HECHOXCOLECCOIN PARA OBTENER ESOS HECHOS
+            List<Hecho> hechosCurados = algoritmo.curarHechos(hechos);
+            RepositorioHechosXColeccion.update(hechosCurados);
         }
         // por cada coleccion me fijo su algoritmo
         // busco en el repositorio de hechos por coleccion y me fijo la cantidad de veces que aparecen

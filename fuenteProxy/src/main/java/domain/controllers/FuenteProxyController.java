@@ -29,7 +29,7 @@ public class FuenteProxyController {
     }
     @Scheduled(cron = "0 0 * * * *")  // Ejecuta al minuto 0 de cada hora
     public void pedirHechosCadaUnaHora() {
-        fuentes.forEach( (id_no_importa, fuente) -> {fuente.pedirHechos();}); // TODO esto no es responsabilidad de ProxyController
+        fuentes.forEach( (idNoImporta, fuente) -> {fuente.pedirHechos();}); // TODO esto no es responsabilidad de ProxyController
         //todo necesitamos crear una clase nueva para realizar esta tarea
     }
 
@@ -37,44 +37,44 @@ public class FuenteProxyController {
     @GetMapping("/{id}/hechos")
     public List<Hecho> obtenerHechos(@PathVariable("id") Long id,
                                      @RequestParam(required=false) String categoria_buscada,
-                                     @RequestParam(required=false) LocalDate fecha_reporte_desde,
-                                     @RequestParam(required=false) LocalDate fecha_reporte_hasta,
-                                     @RequestParam(required=false) LocalDate fecha_acontecimiento_desde,
-                                     @RequestParam(required=false) LocalDate fecha_acontecimiento_hasta,
+                                     @RequestParam(required=false) LocalDate fechaReporteDesde,
+                                     @RequestParam(required=false) LocalDate fechaReporteHasta,
+                                     @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
+                                     @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
                                      @RequestParam(required=false) Double latitud,
                                      @RequestParam(required=false) Double longitud) {
         List<Hecho> hechosObtenidos = fuentes.get(id).importarHechos();
-        return filtrarHechos(hechosObtenidos, categoria_buscada, fecha_reporte_desde, fecha_reporte_hasta, fecha_acontecimiento_desde, fecha_acontecimiento_hasta, latitud, longitud);
+        return filtrarHechos(hechosObtenidos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 /*
     @GetMapping("/{id_fuente}/colecciones/{identificador}/hechos")
     public Hecho obtenerHechosColeccion(@PathVariable("id_fuente") Long id_fuente,
                                         @PathVariable("identificador") String identificador,
                                         @RequestParam(required=false) String categoria_buscada,
-                                        @RequestParam(required=false) LocalDate fecha_reporte_desde,
-                                        @RequestParam(required=false) LocalDate fecha_reporte_hasta,
-                                        @RequestParam(required=false) LocalDate fecha_acontecimiento_desde,
-                                        @RequestParam(required=false) LocalDate fecha_acontecimiento_hasta,
+                                        @RequestParam(required=false) LocalDate fechaReporteDesde,
+                                        @RequestParam(required=false) LocalDate fechaReporteHasta,
+                                        @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
+                                        @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
                                         @RequestParam(required=false) Double latitud,
                                         @RequestParam(required=false) Double longitud) {
         List<Hecho> hechosObtenidos =
-        return filtrarHechos(hechosObtenidos, categoria_buscada, fecha_reporte_desde, fecha_reporte_hasta, fecha_acontecimiento_desde, fecha_acontecimiento_hasta, latitud, longitud);
+        return filtrarHechos(hechosObtenidos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 */
     public List<Hecho> filtrarHechos(List<Hecho> hechos,
                                      String categoria_buscada,
-                                     LocalDate fecha_reporte_desde,
-                                     LocalDate fecha_reporte_hasta,
-                                     LocalDate fecha_acontecimiento_desde,
-                                     LocalDate fecha_acontecimiento_hasta,
+                                     LocalDate fechaReporteDesde,
+                                     LocalDate fechaReporteHasta,
+                                     LocalDate fechaAcontecimientoDesde,
+                                     LocalDate fechaAcontecimientoHasta,
                                      Double latitud,
                                      Double longitud) {
         return hechos.stream()
                 .filter(h -> categoria_buscada == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria_buscada))
-                .filter(h -> fecha_reporte_desde == null ||  h.seCargoDespuesDe(fecha_reporte_desde))
-                .filter(h -> fecha_reporte_hasta == null || h.seCargoAntesDe(fecha_reporte_hasta))
-                .filter(h -> fecha_acontecimiento_desde == null || h.ocurrioDespuesDe(fecha_acontecimiento_desde))
-                .filter(h -> fecha_acontecimiento_hasta == null || h.ocurrioAntesDe(fecha_acontecimiento_hasta))
+                .filter(h -> fechaReporteDesde == null ||  h.seCargoDespuesDe(fechaReporteDesde))
+                .filter(h -> fechaReporteHasta == null || h.seCargoAntesDe(fechaReporteHasta))
+                .filter(h -> fechaAcontecimientoDesde == null || h.ocurrioDespuesDe(fechaAcontecimientoDesde))
+                .filter(h -> fechaAcontecimientoHasta == null || h.ocurrioAntesDe(fechaAcontecimientoHasta))
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.

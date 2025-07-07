@@ -38,6 +38,6 @@ public class EstadoSolicitudSpam extends EstadoSolicitud {
     @Override
     public void anularMarcaSpam () {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
-        solicitud.setFecha_resolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDate.now());
     }
 }

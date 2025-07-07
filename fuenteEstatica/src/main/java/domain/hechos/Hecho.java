@@ -1,6 +1,5 @@
 package domain.hechos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,22 +13,21 @@ public class Hecho {
     @Getter private String descripcion;
     @Getter private Categoria categoria;
     @Getter private Ubicacion ubicacion;
-    @JsonProperty("fechaAcontecimiento")
-    @Getter private LocalDate fecha_acontecimiento;
-    private LocalDate fecha_carga;
+    @Getter private LocalDate fechaAcontecimiento;
+    private LocalDate fechaCarga;
     private Origen origen;
     private List<Etiqueta> etiquetas;
     private Boolean visible;
 
     public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fechaAcontecimiento, Origen origen) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = new Ubicacion(latitud, longitud);
-        this.fecha_acontecimiento = fecha_acontecimiento;
-        this.fecha_carga = LocalDate.now();
+        this.fechaAcontecimiento = fechaAcontecimiento;
+        this.fechaCarga = LocalDate.now();
         this.origen = origen;
         this.etiquetas = new ArrayList<>();
         this.visible = true;
@@ -59,12 +57,12 @@ public class Hecho {
             this.ubicacion = ubicacion;
         }
         if (fecha != null) {
-            this.fecha_acontecimiento = fecha;
+            this.fechaAcontecimiento = fecha;
         }
     }
 
-    public Boolean tieneMismoTitulo(String otro_titulo) {
-        return titulo.equals(otro_titulo);
+    public Boolean tieneMismoTitulo(String otroTitulo) {
+        return titulo.equals(otroTitulo);
     }
 
     public void etiquetar(Etiqueta etiqueta) {
@@ -75,25 +73,25 @@ public class Hecho {
         return etiquetas.contains(etiqueta);
     }
 
-    public Boolean ocurrioEntre(LocalDate fecha_inicial, LocalDate fecha_final) {
-        return ocurrioDespuesDe(fecha_inicial) && ocurrioAntesDe(fecha_final);
+    public Boolean ocurrioEntre(LocalDate fechaInicial, LocalDate fechaFinal) {
+        return ocurrioDespuesDe(fechaInicial) && ocurrioAntesDe(fechaFinal);
     }
 
     public Boolean ocurrioAntesDe(LocalDate fecha)
     {
-        return fecha_acontecimiento.isBefore(fecha);
+        return fechaAcontecimiento.isBefore(fecha);
     }
 
     public Boolean ocurrioDespuesDe(LocalDate fecha)
     {
-        return fecha_acontecimiento.isAfter(fecha);
+        return fechaAcontecimiento.isAfter(fecha);
     }
 
     public Boolean seCargoAntesDe(LocalDate fecha) {
-        return fecha_carga.isBefore(fecha);
+        return fechaCarga.isBefore(fecha);
     }
 
     public Boolean seCargoDespuesDe(LocalDate fecha) {
-        return fecha_carga.isAfter(fecha);
+        return fechaCarga.isAfter(fecha);
     }
 }
