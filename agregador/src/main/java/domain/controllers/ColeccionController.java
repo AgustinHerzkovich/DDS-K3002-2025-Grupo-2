@@ -4,6 +4,7 @@ import domain.colecciones.Coleccion;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
 import domain.repositorios.RepositorioDeHechos;
+import domain.services.HechoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +13,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/agregador")
 public class ColeccionController {
-    private final RepositorioDeColecciones repositorio_de_colecciones;
-    private final RepositorioDeHechos repositorio_hechos;
+    private final HechoService hecho_service;
 
-    public ColeccionController(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeHechos repositorioHechos) {
-        repositorio_de_colecciones = repositorioDeColecciones;
-        repositorio_hechos = repositorioHechos;
+    public ColeccionController(HechoService hechoService) {
+        hecho_service = hechoService;
     }
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         // logica de crear una coleccion en el repositorio //todo
-        repositorio_de_colecciones.save(coleccion);
+        hecho_service.guardarColeccion(coleccion);
         return ResponseEntity.ok(coleccion);
     }
 
@@ -32,13 +31,13 @@ public class ColeccionController {
     @GetMapping("/colecciones")
     public List<Coleccion> mostrarColecciones() {
         // logica de buscar las colecciones del repositorio //todo
-        return repositorio_de_colecciones.findAll();
+        return hecho_service.obtenerColecciones();
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String id_coleccion) {
         // logica de buscar los hechos del repositorio //todo
-        return repositorio_hechos.findByColeccionId(id_coleccion);
+        return hecho_service.obtenerHechosIrrestrictosPorColeccion(id_coleccion);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")

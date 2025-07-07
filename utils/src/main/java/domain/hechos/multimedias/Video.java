@@ -1,6 +1,9 @@
 package domain.hechos.multimedias;
 
+import jakarta.persistence.Entity;
+
 // VIDEO
+@Entity
 public class Video extends Multimedia {
     private Integer resolucion;
     private Integer duracion;
@@ -9,6 +12,10 @@ public class Video extends Multimedia {
         super(formato, tamanio);
         this.resolucion = resolucion;
         this.duracion = duracion;
+    }
+
+    public Video() {
+
     }
 
     @Override

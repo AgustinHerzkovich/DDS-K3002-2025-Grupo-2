@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+// TODO: Analizar si tal vez conviene separar algunos metodos a un ColeccionService por ejemplo
 @Service
 public class HechoService {
     private final RepositorioDeColecciones repositorio_de_colecciones;
@@ -49,6 +50,18 @@ public class HechoService {
         }
     }
     return filtrado;
+    }
+
+    public void guardarColeccion(Coleccion coleccion) {
+        repositorio_de_colecciones.save(coleccion);
+    }
+
+    public List<Coleccion> obtenerColecciones() {
+        return repositorio_de_colecciones.findAll();
+    }
+
+    public List<Hecho> obtenerHechosIrrestrictosPorColeccion(String id_coleccion) {
+        return repositorio_de_hechos.findByColeccionId(id_coleccion);
     }
 }
 
