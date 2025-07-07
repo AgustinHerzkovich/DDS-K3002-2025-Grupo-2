@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class CargarHechosScheduller {
@@ -31,7 +32,7 @@ public class CargarHechosScheduller {
         //List<Coleccion> colecciones = repositorio_de_colecciones.findAll(); // TRAE TODOS LAS COLECCIONES DEL REPOSITORIO DE COLECCIONES
         //List<Fuente> fuentes = colecciones.stream().flatMap(coleccion -> coleccion.getFuentes().stream()).toList();
         //List<Fuente> fuentes_sin_repetir = filtrarFuentesRepetidas(fuentes);
-        List<Hecho> ultimosHechos = fuenteService.hechosUltimaPeticion();
+        List<Map.Entry<List<Hecho>, Fuente>> ultimosHechos = fuenteService.hechosUltimaPeticion();
         hechoService.guardarHechos(ultimosHechos);
     }
 /*

@@ -4,8 +4,6 @@ import domain.algoritmos.*;
 import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
 import domain.hechos.Hecho;
-import domain.repositorios.RepositorioDeColecciones;
-import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioHechosXColeccion;
 import domain.services.ColeccionService;
 import domain.services.HechoService;
@@ -19,10 +17,9 @@ public class EjecutarAlgoritmoConsensoScheduller {
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
     private final RepositorioHechosXColeccion respositorioDeHechosXColeccion;
-    private final ColeccionService coleccionService;
     private Algoritmo algoritmo;
 
-    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioHechosXColeccion respositorioDeHechosXColeccion, ColeccionService coleccionService) {
+    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioHechosXColeccion respositorioDeHechosXColeccion) {
         this.hechoService = hechoService;
         this.coleccionService = coleccionService;
         this.respositorioDeHechosXColeccion = respositorioDeHechosXColeccion;
@@ -40,6 +37,7 @@ public class EjecutarAlgoritmoConsensoScheduller {
                 case ABSOLUTO -> algoritmo = new AlgoritmoAbsoluto();
             }
 
+            // TODO: aqui deberia retornar la lista de tuplas para luego pasarsela al algoritmo y que haga todos los calculos
             List<Hecho> hechos = hechoService.obtenerHechosPorColeccion(coleccion.getIdentificadorHandle()); // todo TESTEAR EL SELECT
             List<Hecho> hechosCurados = algoritmo.curarHechos(hechos); // TODO: seguir desde acá
             repositorioHechosXColeccion.update(hechosCurados);
