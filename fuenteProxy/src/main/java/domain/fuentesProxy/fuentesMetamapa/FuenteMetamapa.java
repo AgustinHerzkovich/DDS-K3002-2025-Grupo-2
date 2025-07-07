@@ -12,6 +12,10 @@ import java.util.List;
 
 // METAMAPA EXTERNO
 public class FuenteMetamapa extends FuenteProxy {
+    private String endpointHechos;
+    private String endpointColecciones;
+    private String endpointSolicitudes;
+
     public FuenteMetamapa(Long id) {
         super(id);
     }

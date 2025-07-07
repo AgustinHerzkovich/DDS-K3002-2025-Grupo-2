@@ -12,20 +12,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/agregador")
 public class ColeccionController {
-    private final HechoService hecho_service;
-    private final FuenteService fuente_service;
+    private final HechoService hechoService;
+    private final FuenteService fuenteService;
 
-    public ColeccionController(HechoService hecho_service, FuenteService fuente_service) {
-        this.hecho_service = hecho_service;
-        this.fuente_service = fuente_service;
+    public ColeccionController(HechoService hechoService, FuenteService fuenteService) {
+        this.hechoService = hechoService;
+        this.fuenteService = fuenteService;
     }
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         // logica de crear una coleccion en el repositorio //todo
-        hecho_service.guardarColeccion(coleccion);
-        fuente_service.guardarFuentes(coleccion.getFuentes());
+        hechoService.guardarColeccion(coleccion);
+        fuenteService.guardarFuentes(coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
     }
 
@@ -33,20 +33,20 @@ public class ColeccionController {
     @GetMapping("/colecciones")
     public List<Coleccion> mostrarColecciones() {
         // logica de buscar las colecciones del repositorio //todo
-        return hecho_service.obtenerColecciones();
+        return hechoService.obtenerColecciones();
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String id_coleccion) {
+    public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion) {
         // logica de buscar los hechos del repositorio //todo
-        return hecho_service.obtenerHechosIrrestrictosPorColeccion(id_coleccion);
+        return hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String id_coleccion){
+    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion){
 
 
-        return hecho_service.obtenerHechosCuradosPorColeccion(id_coleccion);
+        return hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
     }
 
     // Operaciones UPDATE sobre Colecciones

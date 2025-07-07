@@ -6,16 +6,16 @@ import java.time.LocalDate;
 
 // CRITERIO DE FECHA
 public class CriterioDeFecha implements CriterioDePertenencia{
-    private LocalDate fecha_inicial;
-    private LocalDate fecha_final;
+    private LocalDate fechaInicial;
+    private LocalDate fechaFinal;
 
-    public CriterioDeFecha(LocalDate fecha_inicial, LocalDate fecha_final) {
-        this.fecha_inicial = fecha_inicial;
-        this.fecha_final = fecha_final;
+    public CriterioDeFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
+        this.fechaInicial = fechaInicial;
+        this.fechaFinal = fechaFinal;
     }
 
     @Override
     public Boolean cumpleCriterio(Hecho hecho){
-        return hecho.ocurrioEntre(fecha_inicial, fecha_final);
+        return hecho.ocurrioEntre(fechaInicial, fechaFinal);
     }
 }

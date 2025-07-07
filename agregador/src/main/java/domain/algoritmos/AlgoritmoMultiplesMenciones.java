@@ -6,11 +6,11 @@ import java.util.*;
 
 public class AlgoritmoMultiplesMenciones implements Algoritmo {
     @Override
-    public List<Hecho> curarHechos(List<List<Hecho>> listalistahechos){
+    public List<Hecho> curarHechos(List<List<Hecho>> hechos){
         Map<Hecho, Integer> conteo = new HashMap<>();
         Map<String, Set<Hecho>> hechosPorTitulo = new HashMap<>();
 
-        for (List<Hecho> fuente : listalistahechos) {
+        for (List<Hecho> fuente : hechos) {
             for (Hecho hecho : fuente) {
                 // Contar ocurrencias exactas de cada hecho
                 conteo.merge(hecho, 1, Integer::sum);

@@ -2,21 +2,19 @@ package domain.algoritmos;
 
 import domain.hechos.Hecho;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-suñiga
 public class AlgoritmoAbsoluto implements Algoritmo {
     @Override
-    public List<Hecho> curarHechos(List<List<Hecho>> listalistahechos) {
+    public List<Hecho> curarHechos(List<List<Hecho>> hechos) {
         // Se verifica cada hecho que este en todas las fuentes
-        int total = listalistahechos.size();
+        int total = hechos.size();
         Map<Hecho, Integer> conteo = new HashMap<>();
         if (total > 1) {
-            for (List<Hecho> lista : listalistahechos) {
+            for (List<Hecho> lista : hechos) {
                 for (Hecho hecho : lista) {
                     conteo.merge(hecho, 1, Integer::sum);
                 }
@@ -25,7 +23,7 @@ public class AlgoritmoAbsoluto implements Algoritmo {
             return nuevaLista;
         }else{
 
-            return listalistahechos.stream().flatMap(List::stream).collect(Collectors.toList());
+            return hechos.stream().flatMap(List::stream).collect(Collectors.toList());
         }
 
         // o

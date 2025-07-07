@@ -2,17 +2,19 @@ package domain.services;
 
 import domain.repositorios.RepositorioDeFuentes;
 import domain.colecciones.fuentes.Fuente;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class FuenteService {
-    private final RepositorioDeFuentes repositorio_de_fuentes;
+    private final RepositorioDeFuentes repositorioDeFuentes;
 
-    public FuenteService(RepositorioDeFuentes repositorio_de_fuentes) {
-        this.repositorio_de_fuentes = repositorio_de_fuentes;
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes) {
+        this.repositorioDeFuentes = repositorioDeFuentes;
     }
 
     public void guardarFuentes(List<Fuente> fuentes) {
-        repositorio_de_fuentes.saveOnlyNew(fuentes);
+        repositorioDeFuentes.saveOnlyNew(fuentes);
     }
 }

@@ -5,19 +5,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Convenciones.md" beforeDir="false" afterPath="$PROJECT_DIR$/Convenciones.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoAbsoluto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoAbsoluto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMayoriaSimple.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMayoriaSimple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMultiplesMenciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMultiplesMenciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/Coleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/Fuente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/controllers/ColeccionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeDistancia.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeDistancia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeFecha.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeFecha.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/dto/HechoInEstaticaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/dto/HechoInEstaticaDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/mappers/HechoInEstaticaDTOToHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/mappers/HechoInEstaticaDTOToHecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/Repositorio.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioDeColecciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioDeColecciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioHechosXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioHechosXColeccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/test/java/testColeccionConsumeHechos.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/test/java/testColeccionConsumeHechos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/fuentesDinamicas/FuenteDinamica.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/fuentesDinamicas/FuenteDinamica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/repositorios/RepositorioDeSolicitudes.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/repositorios/RepositorioDeSolicitudes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteEstaticaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteEstaticaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/FuenteEstatica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/fuentesEstaticas/LectorCsv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Ubicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/test/java/testCargarArchivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/test/java/testCargarArchivos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/controllers/FuenteProxyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/controllers/FuenteProxyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeDistancia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeDistancia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeFecha.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/criterios/CriterioDeFecha.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/BibliotecaPrueba.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/BibliotecaPrueba.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/Conexion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/FuenteDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/FuenteDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesMetamapa/FuenteMetamapa.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesMetamapa/FuenteMetamapa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/test/java/TestClase.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/test/java/TestClase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/CompilerTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Categoria.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Etiqueta.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Origen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/multimedias/Multimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/multimedias/Multimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitud.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitud.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudAceptada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudPendiente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudPrescripta.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudPrescripta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudRechazada.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudRechazada.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudSpam.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudSpam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/SolicitudEliminacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/SolicitudEliminacion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/usuarios/Contribuyente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/usuarios/IdentidadContribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/usuarios/IdentidadContribuyente.java" afterDir="false" />
@@ -76,48 +115,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.TestClase.executor": "Run",
-    "JUnit.TestClase.prueba.executor": "Run",
-    "JUnit.testCargarArchivos.cargarArchivos.executor": "Run",
-    "JUnit.testCargarArchivos.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.verHechosFuente.executor": "Debug",
-    "JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AgregadorAplicacion.executor": "Run",
-    "Spring Boot.FuenteDinamicaAplicacion.executor": "Run",
-    "Spring Boot.FuenteEstaticaAplicacion.executor": "Run",
-    "Spring Boot.FuenteProxyAplicacion.executor": "Run",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/agregador/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/core/src/main/java/org/springframework/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.TestClase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestClase.prueba.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testCargarArchivos.cargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testCargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuente.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AgregadorAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteDinamicaAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteEstaticaAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteProxyAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/agregador/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/core/src/main/java/org/springframework/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\agregador\src" />
@@ -409,6 +448,7 @@
       <workItem from="1751834040366" duration="7948000" />
       <workItem from="1751843066003" duration="1902000" />
       <workItem from="1751847542014" duration="3916000" />
+      <workItem from="1751902239069" duration="2730000" />
     </task>
     <servers />
   </component>

@@ -15,7 +15,7 @@ import domain.hechos.Origen;
 
 // LECTOR CSV
 public class LectorCsv{
-    private List<Categoria> categorias;
+    private final List<Categoria> categorias;
 
     public LectorCsv() {
         categorias = new ArrayList<>();

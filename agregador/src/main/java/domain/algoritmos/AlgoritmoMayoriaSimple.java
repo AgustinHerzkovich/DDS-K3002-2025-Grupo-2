@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 
 public class AlgoritmoMayoriaSimple implements Algoritmo{
     @Override
-    public List<Hecho> curarHechos(List<List<Hecho>> listalistahechos) {
+    public List<Hecho> curarHechos(List<List<Hecho>> hechos) {
 
-        int total = listalistahechos.size();
+        int total = hechos.size();
         if(total >1) {
             Map<Hecho, Integer> conteo = new HashMap<>();
-            for (List<Hecho> fuente : listalistahechos) {
+            for (List<Hecho> fuente : hechos) {
                 for (Hecho hecho : fuente) {
                     conteo.merge(hecho, 1, Integer::sum);
                 }

@@ -23,9 +23,9 @@ public class FuenteDinamicaController {
     private final Map<Long, FuenteDinamica> fuentes = new HashMap<>(); // Registro simulado (en memoria)
 
     public FuenteDinamicaController() {
-        RepositorioDeHechos repo_hecho = new RepositorioDeHechos();
-        RepositorioDeSolicitudes repo_solicitudes = new RepositorioDeSolicitudes();
-        FuenteDinamica fuente = new FuenteDinamica(repo_hecho, repo_solicitudes, 1L);
+        RepositorioDeHechos repoHecho = new RepositorioDeHechos();
+        RepositorioDeSolicitudes repoSolicitudes = new RepositorioDeSolicitudes();
+        FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes, 1L);
 
         Contribuyente juanceto01 = new Contribuyente("juanceto01", false);
         Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5,LocalDate.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));

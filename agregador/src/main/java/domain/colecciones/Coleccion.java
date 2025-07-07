@@ -1,6 +1,5 @@
 package domain.colecciones;
 
-import domain.algoritmos.Algoritmo;
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
@@ -20,16 +19,16 @@ public class Coleccion{
     private String titulo;
     private String descripcion;
     @Transient
-    private List<CriterioDePertenencia> criterios_pertenencia;
+    private List<CriterioDePertenencia> criteriosDePertenencia;
     @Getter
     @Transient
     private List<Fuente> fuentes;
     @Getter
     @Id
-    private String identificador_handle;
+    private String identificadorHandle;
     @Getter
     @Enumerated(EnumType.STRING)
-    private AlgoritmoConsenso algoritmo_consenso;
+    private AlgoritmoConsenso algoritmoConsenso;
     //tiene todos los hechos que de las fuentes de esta coleccion
     //TODO: SUPONEMOS QUE REPOSITORIO HECHOS X COLECCION ES UN REPOSITORIO QUE CONTIENE TODOS LOS HECHOS DE ESTA COLECCION
     //JUNTO CON SUS RESPECTIVOS ATRIBUTOS.
@@ -43,13 +42,13 @@ public class Coleccion{
     // TODO: Ver que no se cargue dos veces el mismo hecho si dos colecciones comparten la fuente
 
 
-    public Coleccion(String titulo, String descripcion, List<CriterioDePertenencia> criterios_pertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmo) {
+    public Coleccion(String titulo, String descripcion, List<CriterioDePertenencia> criteriosDePertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
-        this.criterios_pertenencia = criterios_pertenencia;
+        this.criteriosDePertenencia = criteriosDePertenencia;
         this.fuentes = fuentes;
-        this.identificador_handle = UUID.randomUUID().toString().replace("-", "");
-        this.algoritmo_consenso = algoritmo;
+        this.identificadorHandle = UUID.randomUUID().toString().replace("-", "");
+        this.algoritmoConsenso = algoritmo;
         // Tal vez convenga delegar esto en otra clase
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -72,7 +71,7 @@ public class Coleccion{
 
     }
 
-    public Boolean cumpleCriterios(List<CriterioDePertenencia> criterios_pertenencia, Hecho hecho){
-        return criterios_pertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
+    public Boolean cumpleCriterios(List<CriterioDePertenencia> criterios, Hecho hecho){
+        return criterios.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
     }
 }

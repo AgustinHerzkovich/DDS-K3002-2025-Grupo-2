@@ -16,15 +16,15 @@ public class IdentidadContribuyente {
     private Long id;
     private String nombre;
     private String apellido;
-    private LocalDate fecha_nacimiento;
+    private LocalDate fechaNacimiento;
     @ManyToOne
     private Contribuyente contribuyente;
-    private List<Hecho> hechos_contribuidos;
+    private List<Hecho> hechosContribuidos;
 
-    public IdentidadContribuyente(String nombre, String apellido, LocalDate fecha_nacimiento,  Contribuyente contribuyente){
+    public IdentidadContribuyente(String nombre, String apellido, LocalDate fechaNacimiento, Contribuyente contribuyente){
         this.nombre = nombre;
         this.apellido = apellido;
-        this.fecha_nacimiento = fecha_nacimiento;
+        this.fechaNacimiento = fechaNacimiento;
         this.contribuyente = contribuyente;
     }
 
@@ -33,8 +33,8 @@ public class IdentidadContribuyente {
     }
 
     public Integer getEdad() {
-        return Period.between(fecha_nacimiento, LocalDate.now()).getYears();
+        return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
 
-    public void agregarHechoContrubuido(Hecho hecho) { this.hechos_contribuidos.add(hecho); }
+    public void agregarHechoContrubuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

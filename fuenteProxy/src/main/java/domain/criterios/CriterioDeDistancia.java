@@ -5,17 +5,17 @@ import domain.hechos.Ubicacion;
 
 // CRITERIO DE DISTANCIA
 public class CriterioDeDistancia implements CriterioDePertenencia {
-    private Ubicacion ubicacion_base;
-    private Double distancia_minima;
+    private Ubicacion ubicacionBase;
+    private Double distanciaMinima;
 
-    public CriterioDeDistancia(Ubicacion ubicacion_base,  Double distancia_minima) {
-        this.ubicacion_base = ubicacion_base;
-        this.distancia_minima = distancia_minima;
+    public CriterioDeDistancia(Ubicacion ubicacionBase, Double distanciaMinima) {
+        this.ubicacionBase = ubicacionBase;
+        this.distanciaMinima = distanciaMinima;
     }
 
     @Override
     public Boolean cumpleCriterio(Hecho hecho){
         Ubicacion ubicacion_hecho = hecho.getUbicacion();
-        return ubicacion_base.distanciaA(ubicacion_hecho) >= distancia_minima;
+        return ubicacionBase.distanciaA(ubicacion_hecho) >= distanciaMinima;
     }
 }

@@ -15,8 +15,8 @@ public class Ubicacion {
         this.longitud = longitud;
     }
 
-    public double distanciaA(Ubicacion otra_ubicacion) {
-        return haversine(this.latitud, this.longitud, otra_ubicacion.getLatitud(), otra_ubicacion.getLongitud());
+    public double distanciaA(Ubicacion otraUbicacion) {
+        return haversine(this.latitud, this.longitud, otraUbicacion.getLatitud(), otraUbicacion.getLongitud());
     }
 
     public Double haversine(Double latitud1, Double longitud1, Double latitud2, Double longitud2) {

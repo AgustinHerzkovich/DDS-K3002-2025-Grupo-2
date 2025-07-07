@@ -11,44 +11,44 @@ import java.util.List;
 // FUENTE DINAMICA
 public class FuenteDinamica extends Fuente {
     private Long id;
-    private Repositorio<Hecho> repositorio_hechos;
-    private Repositorio<SolicitudEliminacion> repositorio_solicitudes;
+    private final Repositorio<Hecho> repositorioHechos;
+    private final Repositorio<SolicitudEliminacion> repositorioSolicitudes;
 
-    public FuenteDinamica(RepositorioDeHechos repositorio_hechos, RepositorioDeSolicitudes repositorio_solicitudes,Long id) {
+    public FuenteDinamica(RepositorioDeHechos repositorioHechos, RepositorioDeSolicitudes repositorioSolicitudes, Long id) {
         super(id);
-        this.repositorio_hechos = repositorio_hechos;
-        this.repositorio_solicitudes = repositorio_solicitudes;
+        this.repositorioHechos = repositorioHechos;
+        this.repositorioSolicitudes = repositorioSolicitudes;
     }
 
     public void agregarHecho(Hecho hecho){
-        repositorio_hechos.agregar(hecho);
+        repositorioHechos.agregar(hecho);
     }
 
     public void quitarHecho(Hecho hecho){
-        repositorio_hechos.quitar(hecho);
+        repositorioHechos.quitar(hecho);
     }
 
     public Hecho buscarHecho(Hecho hecho){
-        return repositorio_hechos.buscar(hecho);
+        return repositorioHechos.buscar(hecho);
     }
 
     public List<Hecho> importarHechos() {
-        return repositorio_hechos.listar();
+        return repositorioHechos.listar();
     }
 
    public void agregarSolicitud(SolicitudEliminacion solicitud){
-        repositorio_solicitudes.agregar(solicitud);
+        repositorioSolicitudes.agregar(solicitud);
     }
 
     public void quitarSolicitud(SolicitudEliminacion solicitud){
-        repositorio_solicitudes.quitar(solicitud);
+        repositorioSolicitudes.quitar(solicitud);
     }
 
     public SolicitudEliminacion buscarSolicitud(SolicitudEliminacion solicitud){
-        return repositorio_solicitudes.buscar(solicitud);
+        return repositorioSolicitudes.buscar(solicitud);
     }
 
     public List<SolicitudEliminacion> buscarSolicitudes() {
-        return repositorio_solicitudes.listar();
+        return repositorioSolicitudes.listar();
     }
 }

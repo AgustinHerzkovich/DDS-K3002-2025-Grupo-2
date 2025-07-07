@@ -1,6 +1,5 @@
 package domain.hechos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // HECHO
 @Getter
@@ -27,17 +25,16 @@ public class Hecho {
     private Categoria categoria;
     @Embedded
     private Ubicacion ubicacion;
-    @JsonProperty("fechaAcontecimiento")
-    private LocalDate fecha_acontecimiento;
-    private LocalDate fecha_carga;
+    private LocalDate fechaAcontecimiento;
+    private LocalDate fechaCarga;
     @OneToMany
     private List<SolicitudEliminacion> solicitudes;
-    private LocalDate fecha_ultimaModificacion;
+    private LocalDate fechaUltimaModificacion;
     @Embedded
     private Origen origen;
-    private String contenido_texto;
+    private String contenidoTexto;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Multimedia> contenido_multimedia;
+    private List<Multimedia> contenidoMultimedia;
     @ManyToMany
     private List<Etiqueta> etiquetas;
     private Boolean visible;
@@ -47,18 +44,18 @@ public class Hecho {
 
     public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fecha_acontecimiento, Origen origen, String contenido_texto, List<Multimedia> contenido_multimedia, Boolean anonimato, IdentidadContribuyente autor) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fechaAcontecimiento, Origen origen, String contenidoTexto, List<Multimedia> contenidoMultimedia, Boolean anonimato, IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = new Ubicacion(latitud, longitud);
-        this.fecha_acontecimiento = fecha_acontecimiento;
-        this.fecha_carga = LocalDate.now();
+        this.fechaAcontecimiento = fechaAcontecimiento;
+        this.fechaCarga = LocalDate.now();
         this.solicitudes = new ArrayList<>();
-        this.fecha_ultimaModificacion = this.fecha_carga;
+        this.fechaUltimaModificacion = this.fechaCarga;
         this.origen = origen;
-        this.contenido_texto = contenido_texto;
-        this.contenido_multimedia = contenido_multimedia;
+        this.contenidoTexto = contenidoTexto;
+        this.contenidoMultimedia = contenidoMultimedia;
         this.etiquetas = new ArrayList<>();
         this.visible = true;
         this.anonimato = anonimato;
@@ -80,7 +77,7 @@ public class Hecho {
 
     public void mostrar() { visible = true; }
 
-    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha, String contenido_texto, List<Multimedia> contenido_multimedia) {
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
         if (titulo != null) {
             this.titulo = titulo;
         }
@@ -94,18 +91,18 @@ public class Hecho {
             this.ubicacion = ubicacion;
         }
         if (fecha != null) {
-            this.fecha_acontecimiento = fecha;
+            this.fechaAcontecimiento = fecha;
         }
-        if (contenido_texto != null) {
-            this.contenido_texto = contenido_texto;
+        if (contenidoTexto != null) {
+            this.contenidoTexto = contenidoTexto;
         }
-        if (contenido_multimedia != null) {
-            this.contenido_multimedia = contenido_multimedia;
+        if (contenidoMultimedia != null) {
+            this.contenidoMultimedia = contenidoMultimedia;
         }
     }
 
-    public Boolean tieneMismoTitulo(String otro_titulo) {
-        return titulo.equals(otro_titulo);
+    public Boolean tieneMismoTitulo(String otroTitulo) {
+        return titulo.equals(otroTitulo);
     }
 
     public void etiquetar(Etiqueta etiqueta) {
@@ -116,8 +113,8 @@ public class Hecho {
         return etiquetas.contains(etiqueta);
     }
 
-    public Boolean ocurrioEntre(LocalDate fecha_inicial, LocalDate fecha_final) {
-        return ocurrioDespuesDe(fecha_inicial) && ocurrioAntesDe(fecha_final);
+    public Boolean ocurrioEntre(LocalDate fechaInicial, LocalDate fechaFinal) {
+        return ocurrioDespuesDe(fechaInicial) && ocurrioAntesDe(fechaFinal);
     }
 
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
@@ -139,19 +136,19 @@ public class Hecho {
 
     public Boolean ocurrioAntesDe(LocalDate fecha)
     {
-        return fecha_acontecimiento.isBefore(fecha);
+        return fechaAcontecimiento.isBefore(fecha);
     }
 
     public Boolean ocurrioDespuesDe(LocalDate fecha)
     {
-        return fecha_acontecimiento.isAfter(fecha);
+        return fechaAcontecimiento.isAfter(fecha);
     }
 
     public Boolean seCargoAntesDe(LocalDate fecha) {
-        return fecha_carga.isBefore(fecha);
+        return fechaCarga.isBefore(fecha);
     }
 
     public Boolean seCargoDespuesDe(LocalDate fecha) {
-        return fecha_carga.isAfter(fecha);
+        return fechaCarga.isAfter(fecha);
     }
 }

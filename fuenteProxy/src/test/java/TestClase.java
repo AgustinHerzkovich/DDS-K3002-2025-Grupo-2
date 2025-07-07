@@ -16,7 +16,7 @@ public class TestClase {
             System.out.println("Categoria: " + h.getCategoria().getNombre());
             System.out.println("Latitud: " + h.getUbicacion().getLatitud().toString());
             System.out.println("Longitud: " + h.getUbicacion().getLongitud().toString());
-            System.out.println("Fecha del hecho: " + h.getFecha_acontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            System.out.println("Fecha del hecho: " + h.getFechaAcontecimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println("Ubicacion latitud: "+h.getUbicacion().getLatitud());
             System.out.println("Ubicacion longitud: "+h.getUbicacion().getLongitud());
         }

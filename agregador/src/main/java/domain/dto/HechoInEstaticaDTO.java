@@ -15,8 +15,8 @@ public class HechoInEstaticaDTO {
     private String descripcion;
     private Categoria categoria;
     private Ubicacion ubicacion;
-    private LocalDate fecha_acontecimiento;
-    private LocalDate fecha_carga;
+    private LocalDate fechaAcontecimiento;
+    private LocalDate fechaCarga;
     private Origen origen;
     private Boolean visible;
     private List<Etiqueta> etiquetas;
