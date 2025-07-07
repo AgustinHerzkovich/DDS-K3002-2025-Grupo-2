@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -31,15 +32,15 @@ public class FuenteService {
         repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
     }
 
-    public List<Hecho> hechosUltimaPeticion() {
+    public List<Map.Entry<List<Hecho>, Fuente>> hechosUltimaPeticion() { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         List<Fuente> fuentes = repositorioDeFuentes.findAll();
-        List<Hecho> hechos = new ArrayList<>();
+        List<Map.Entry<List<Hecho>, Fuente>> lista = new ArrayList<>();
+        List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
         ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         RestTemplate restTemplate = new RestTemplate();
         HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
-
         for (Fuente fuente : fuentes) {
             String url = fuente.getUrl() + "/hechos";
             LocalDate fecha = fuente.getUltimaPeticion();
@@ -60,12 +61,12 @@ public class FuenteService {
                     hechos = mapper.readValue(json, new TypeReference<>() {
                     });
                 }
-
+                lista.add(Map.entry(hechos, fuente)); // Agrego la lista de hechos y la fuente a la lista de pares
                 fuente.setUltimaPeticion(LocalDate.now()); //actualizar fuente con la fecha de la ultima peticion
             } catch (Exception e) {
                 System.err.println("Error al consumir la API en " + fuente.getId().getIdExterno() + ": " + e.getMessage());
             }
         }
-        return hechos;
+        return lista;
     }
 }

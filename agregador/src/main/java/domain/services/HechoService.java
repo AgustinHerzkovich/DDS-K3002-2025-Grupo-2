@@ -1,10 +1,12 @@
 package domain.services;
 
+import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeHechos;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 // TODO: Analizar si tal vez conviene separar algunos metodos a un ColeccionService por ejemplo
 @Service
@@ -15,11 +17,10 @@ public class HechoService {
         this.repositorioDeHechos = repositorioDeHechos;
     }
 
-    public void guardarHechos(List<Hecho> hechos) {
-        repositorioDeHechos.saveAll(hechos);
-        //COMO LAS FUENTES NO ESTAN REPETIDAS, NO HACE FALTA HACER UN SAVE ALL POR FUENTE
-        //ADEMAS, SI UN HECHO SE REPITE EN DISTINTAS FUENTES, SE GUARDA VARIAS VECES
-        // ESTO ESTA BIEN PORQUE ES UN TEMA DE CONSENSO. NOS SIRVE
+    public void guardarHechos(List<Map.Entry<List<Hecho>, Fuente>> hechos) {
+        repositorioDeHechos.saveAll(hechos); // TODO: Esto debe recibir una lista de tuplas Map y ver que hacer con la fuente
+        //todo hay que crear una tabla hechosXFuente que relacione los hechos con las fuentes de donde provienen
+        // implica hacer 2 clases mas y la puta madre que lo pario todo, pero bueno, es lo que hay
     }
 
     public List<Hecho> obtenerHechosPorColeccion(String idColeccion) {
