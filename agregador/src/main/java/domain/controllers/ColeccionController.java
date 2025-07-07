@@ -2,8 +2,7 @@ package domain.controllers;
 
 import domain.colecciones.Coleccion;
 import domain.hechos.Hecho;
-import domain.repositorios.RepositorioDeColecciones;
-import domain.repositorios.RepositorioDeHechos;
+import domain.services.FuenteService;
 import domain.services.HechoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,11 @@ import java.util.List;
 @RequestMapping("/agregador")
 public class ColeccionController {
     private final HechoService hecho_service;
+    private final FuenteService fuente_service;
 
-    public ColeccionController(HechoService hechoService) {
-        hecho_service = hechoService;
+    public ColeccionController(HechoService hecho_service, FuenteService fuente_service) {
+        this.hecho_service = hecho_service;
+        this.fuente_service = fuente_service;
     }
 
     // Operaciones CREATE sobre Colecciones
@@ -24,6 +25,7 @@ public class ColeccionController {
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         // logica de crear una coleccion en el repositorio //todo
         hecho_service.guardarColeccion(coleccion);
+        fuente_service.guardarFuentes(coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
     }
 
@@ -41,8 +43,10 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<Hecho> mostrarHechosCurados(){
-        return null; // TODO
+    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String id_coleccion){
+
+
+        return hecho_service.obtenerHechosCuradosPorColeccion(id_coleccion);
     }
 
     // Operaciones UPDATE sobre Colecciones

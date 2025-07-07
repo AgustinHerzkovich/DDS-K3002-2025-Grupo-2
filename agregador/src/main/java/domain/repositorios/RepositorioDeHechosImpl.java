@@ -1,6 +1,6 @@
 package domain.repositorios;
 
-import domain.colecciones.Fuente;
+import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

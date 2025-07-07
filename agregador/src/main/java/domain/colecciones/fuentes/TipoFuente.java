@@ -1,4 +1,4 @@
-package domain.colecciones;
+package domain.colecciones.fuentes;
 
 public enum TipoFuente {
     ESTATICA,

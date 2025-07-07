@@ -1,4 +1,4 @@
-package domain.colecciones;
+package domain.colecciones.fuentes;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,9 +7,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import domain.dto.HechoInEstaticaDTO;
 import domain.hechos.Hecho;
 import domain.mappers.HechoInEstaticaDTOToHecho;
-import io.micrometer.observation.ObservationFilter;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,20 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
+@Entity
 public class Fuente{
+    @EmbeddedId
     @Getter
-    private String id_interno;
-    @Getter
-    private String id_externo;
+    private FuenteId id;
     private TipoFuente tipo;
     private LocalDate ultima_peticion;
 
     public Fuente(String id_externo, TipoFuente tipo) {
-        this.id_interno = UUID.randomUUID().toString();
-        this.id_externo = id_externo;
+        this.id = new FuenteId(UUID.randomUUID().toString(), id_externo);
+        this.id.setId_externo(id_externo);
         this.tipo = tipo;
         this.ultima_peticion = null;
+    }
+
+    public Fuente() {
+
     }
 
     public String getUrl() {
@@ -47,7 +50,7 @@ public class Fuente{
                 url += "8082/fuentesProxy/";
                 break;
         }
-        url += id_externo;
+        url += id.getId_externo();
         return url;
     }
 
@@ -80,7 +83,7 @@ public class Fuente{
                 todosLosHechos.addAll(hechos);
             }
         } catch (Exception e) {
-            System.err.println("Error al consumir la API en " + id_externo + ": " + e.getMessage());
+            System.err.println("Error al consumir la API en " + id.getId_externo() + ": " + e.getMessage());
         }
 
         return todosLosHechos; // Retorna una lista de hechos obtenidos de la fuente
