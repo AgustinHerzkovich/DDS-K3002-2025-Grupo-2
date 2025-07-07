@@ -2,6 +2,7 @@ package domain.solicitudes;
 
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,17 +37,30 @@ import java.time.LocalDate;
 // TODO: Cuando se haga esto de la persistencia, hay que hacer que los cambios de estado de la solicitud se vean reflejados en el medio persistente
 
 // SOLICITUD DE ELIMINACION
+@Entity
 public class SolicitudEliminacion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
+    private Long id;
     @Setter
+    @Embedded
     private EstadoSolicitud estado;
-    @Getter private final Contribuyente solicitante;
-    @Getter @Setter private Contribuyente administrador;
-    @Getter private final LocalDate fecha_subida;
-    @Getter @Setter private LocalDate fecha_resolucion;
-    private final Hecho hecho;
     @Getter
-    private final String motivo;
-    private final DetectorDeSpam detector;
+    @ManyToOne
+    private Contribuyente solicitante;
+    @Getter @Setter
+    @ManyToOne
+    private Contribuyente administrador;
+    @Getter
+    private LocalDate fecha_subida;
+    @Getter @Setter
+    private LocalDate fecha_resolucion;
+    @ManyToOne
+    private Hecho hecho;
+    @Getter
+    private String motivo;
+    @Transient
+    private DetectorDeSpam detector;
 
     public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo, DetectorDeSpam detector) {
         this.motivo = motivo;
@@ -70,6 +84,10 @@ public class SolicitudEliminacion {
         hecho.agregarASolicitudes(this);
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
+    }
+
+    public SolicitudEliminacion() {
+
     }
 
     /////////////////////////////////////

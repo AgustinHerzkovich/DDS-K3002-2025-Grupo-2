@@ -2,9 +2,11 @@ package domain.hechos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 // UBICACION
+@Embeddable
 public class Ubicacion {
     @Getter private Double latitud;
     @Getter private Double longitud;
@@ -13,6 +15,10 @@ public class Ubicacion {
     public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {
         this.latitud = latitud;
         this.longitud = longitud;
+    }
+
+    public Ubicacion() {
+
     }
 
     public double distanciaA(Ubicacion otra_ubicacion) {

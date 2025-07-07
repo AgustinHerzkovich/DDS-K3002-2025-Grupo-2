@@ -1,6 +1,7 @@
 package domain.usuarios;
 
 import domain.solicitudes.SolicitudEliminacion;
+import jakarta.persistence.*;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -9,11 +10,15 @@ import java.util.List;
 
 
 //CONTRIBUYENTE
+@Entity
 public class Contribuyente {
+    @Id
     private String contribuyente_id;
     @Setter
     private Boolean es_administrador;
+    @OneToMany
     private List<IdentidadContribuyente> identidades;
+    @OneToMany
     private List<SolicitudEliminacion> solicitudes_eliminacion;
 
     public Contribuyente(String contribuyente_id, Boolean es_administrador) {
@@ -21,6 +26,10 @@ public class Contribuyente {
         this.es_administrador = es_administrador;
         this.identidades = new ArrayList<>();
         this.solicitudes_eliminacion = new ArrayList<>();
+    }
+
+    public Contribuyente() {
+
     }
 
     public void modificarIdentidad(String nombre, String apellido, LocalDate fecha_nacimiento) {

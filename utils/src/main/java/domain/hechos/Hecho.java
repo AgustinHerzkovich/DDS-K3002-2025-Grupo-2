@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,30 +15,33 @@ import java.util.List;
 // HECHO
 @Getter
 @Setter
+@Entity
 public class Hecho {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
     private String descripcion;
-    @Transient
+    @Embedded
     private Categoria categoria;
-    @Transient
+    @Embedded
     private Ubicacion ubicacion;
     @JsonProperty("fechaAcontecimiento")
     private LocalDate fecha_acontecimiento;
     private LocalDate fecha_carga;
-    @Transient
+    @OneToMany
     private List<SolicitudEliminacion> solicitudes;
     private LocalDate fecha_ultimaModificacion;
-    @Transient
+    @Embedded
     private Origen origen;
     private String contenido_texto;
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Multimedia> contenido_multimedia;
-    @Transient
+    @ManyToMany
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
-    @Transient
+    @ManyToOne
     private IdentidadContribuyente autor;
 
     public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
