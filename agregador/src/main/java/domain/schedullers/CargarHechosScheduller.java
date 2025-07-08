@@ -28,12 +28,12 @@ public class CargarHechosScheduller {
 
     @Scheduled(fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
-        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
+        //System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
         //List<Coleccion> colecciones = repositorio_de_colecciones.findAll(); // TRAE TODOS LAS COLECCIONES DEL REPOSITORIO DE COLECCIONES
         //List<Fuente> fuentes = colecciones.stream().flatMap(coleccion -> coleccion.getFuentes().stream()).toList();
         //List<Fuente> fuentes_sin_repetir = filtrarFuentesRepetidas(fuentes);
-        List<Map.Entry<List<Hecho>, Fuente>> ultimosHechos = fuenteService.hechosUltimaPeticion();
-        hechoService.guardarHechos(ultimosHechos);
+        Map<Fuente, List<Hecho>> ultimosHechos = fuenteService.hechosUltimaPeticion();
+        hechoService.guardarHechosPorFuente(ultimosHechos);
     }
 /*
     private List<Fuente> filtrarFuentesRepetidas(List<Fuente> fuentes) {

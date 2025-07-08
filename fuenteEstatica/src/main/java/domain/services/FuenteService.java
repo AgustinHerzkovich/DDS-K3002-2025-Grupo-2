@@ -8,7 +8,9 @@ import domain.repositorios.RepositorioDeFuentes;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,19 +23,31 @@ public class FuenteService {
         this.lectorCsv = new LectorCsv();
     }
 
-    public List<Hecho> obtenerTodosLosHechos() {
+    public List<Hecho> obtenerTodosLosHechosConFechaMayorA(LocalDate fechaMayorA) {
         List<Hecho> hechos = new ArrayList<>();
         repositorioDeFuentes.findAll().forEach(fuente ->
                 hechos.addAll(fuente.importarHechos())
         );
-        return hechos;
 
+        if (fechaMayorA == null) {
+            return hechos;
+        }
+
+        return hechos.stream()
+                .filter(hecho -> hecho.seCargoDespuesDe(fechaMayorA))
+                .collect(Collectors.toList());
     }
 
-    public List<Hecho> obtenerHechosPorFuente(Long id) {
+    public List<Hecho> obtenerHechosPorFuenteConFechaMayorA(Long id, LocalDate fechaMayorA) {
         Fuente fuente = repositorioDeFuentes.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró la fuente con id " + id));
-        return fuente.importarHechos();
+        if (fechaMayorA == null) {
+            return fuente.importarHechos();
+        }
+
+        return fuente.importarHechos().stream()
+                .filter(hecho -> hecho.seCargoDespuesDe(fechaMayorA))
+                .collect(Collectors.toList());
     }
 
     public FuenteEstatica crearFuenteEstatica(List<String> archivos) {

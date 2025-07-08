@@ -1,39 +1,40 @@
 package domain.algoritmos;
 
+import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AlgoritmoAbsoluto implements Algoritmo {
     @Override
-    public List<Hecho> curarHechos(List<List<Hecho>> hechos) {
-        // Se verifica cada hecho que este en todas las fuentes
-        int total = hechos.size();
-        Map<Hecho, Integer> conteo = new HashMap<>();
-        if (total > 1) {
-            for (List<Hecho> lista : hechos) {
-                for (Hecho hecho : lista) {
-                    conteo.merge(hecho, 1, Integer::sum);
-                }
-            }
-            List<Hecho> nuevaLista = conteo.entrySet().stream().filter(e -> e.getValue() == total).map(Map.Entry::getKey).toList();
-            return nuevaLista;
-        }else{
-
-            return hechos.stream().flatMap(List::stream).collect(Collectors.toList());
+    public List<Hecho> curarHechos(Map<Fuente, List<Hecho>> hechosPorFuente) {
+        // Si el mapa está vacío, devolvemos una lista vacía
+        if (hechosPorFuente.isEmpty()) {
+            return List.of();
         }
 
-        // o
+        var iterador = hechosPorFuente.values().iterator();
 
-        // Se agrupa por hecho y se cuentan ocurrencias. Si cant > cantidad de fuentes / 2, entra
+        // Empezamos con el conjunto de títulos de la primera lista
+        var interseccion = iterador.next().stream()
+                .map(Hecho::getTitulo)
+                .collect(Collectors.toSet());
 
-        // o
+        // Intersectamos con los títulos de las listas restantes
+        while (iterador.hasNext()) {
+            var titulos = iterador.next().stream()
+                    .map(Hecho::getTitulo)
+                    .collect(Collectors.toSet());
+            interseccion.retainAll(titulos); // Retiene solo los títulos comunes
+        }
 
-        // Se busca un hecho que aparezca en 2 fuentes y no este contradecido por otra fuente
-
+        // Recopilamos los objetos Hecho cuyo título está en la intersección
+        return hechosPorFuente.values().stream()
+                .flatMap(List::stream)
+                .filter(hecho -> interseccion.contains(hecho.getTitulo()))
+                .distinct()
+                .collect(Collectors.toList());
     }
-
 }

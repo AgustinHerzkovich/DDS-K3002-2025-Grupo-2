@@ -11,9 +11,11 @@ import domain.solicitudes.DetectorDeSpamPrueba;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.Contribuyente;
 import domain.usuarios.IdentidadContribuyente;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -35,7 +37,7 @@ public class FuenteDinamicaController {
         FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes, 1L);
 
         Contribuyente juanceto01 = new Contribuyente("juanceto01", false);
-        Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5,LocalDate.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));
+        Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5, LocalDateTime.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));
         fuente.agregarHecho(hecho);  //String nombre, String apellido, LocalDate fecha_nacimiento,  Contribuyente contribuyente
         SolicitudEliminacion solicitud = new SolicitudEliminacion(juanceto01, hecho,"momito fue sin querer sacame el ban porque quiero seguir comentando wasd", new DetectorDeSpamPrueba());
         fuente.agregarSolicitud(solicitud);
@@ -53,12 +55,22 @@ public class FuenteDinamicaController {
     }
 
     @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
-    public List<Hecho> hechos(@PathVariable("id") Long id) {
+    public List<Hecho> hechos(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "fechaMayorA", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaMayorA
+            ) {
         FuenteDinamica fuente = fuentes.get(id);
         if (fuente == null){
             throw new NoSuchElementException("No se encontro la fuente con id " + id);// TODO: mas adelante implementar exceptions personalizados
         }
-        return fuente.importarHechos();
+        if (fechaMayorA == null) {
+            return fuente.importarHechos();
+        }
+
+        return fuente.importarHechos().stream()
+                .filter(hecho -> hecho.seActualizoDespuesDe(fechaMayorA))
+                .toList();
     }
 
     @GetMapping("/{id}/solicitudes")

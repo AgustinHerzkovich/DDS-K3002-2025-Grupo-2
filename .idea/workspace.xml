@@ -5,22 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/agregador/TODOS.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioHechosXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/repositorios/RepositorioHechosXColeccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/HechoBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/domain/fuentesProxy/fuentesDemo/HechoBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudSpam.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/solicitudes/EstadoSolicitudSpam.java" afterDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
     <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="" />
     <list id="a438059e-4ff7-4c57-864e-ebac2c7c1b04" name="Changes by jzorr" comment="" />
-    <list id="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" name="Changes by Lucas" comment="" />
-    <list id="ec1f42f6-379e-43f1-94e5-a93e9c6e1269" name="Changes by Martin" comment="" />
-    <list id="9c478027-294f-47ef-9664-898642ed3b60" name="Changes by nicol" comment="">
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java" afterDir="false" />
+    <list id="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" name="Changes by Lucas" comment="">
       <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" afterDir="false" />
     </list>
+    <list id="ec1f42f6-379e-43f1-94e5-a93e9c6e1269" name="Changes by Martin" comment="" />
+    <list id="9c478027-294f-47ef-9664-898642ed3b60" name="Changes by nicol" comment="" />
     <list id="19a8df37-f901-4e9b-80ce-4ad11eafbc62" name="Changes by sroja" comment="" />
-    <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="" />
+    <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="">
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoAbsoluto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoAbsoluto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMayoriaSimple.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMayoriaSimple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMultiplesMenciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoMultiplesMenciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/Coleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/Fuente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/controllers/ColeccionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteEstaticaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteEstaticaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/services/FuenteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,14 +81,89 @@
   }
 }</component>
   <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/Algoritmo.java">
+      <ranges>
+        <range start1="2" end1="2" start2="2" end2="3" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="5" end1="5" start2="6" end2="7" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="6" end1="6" start2="8" end2="9" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="7" end1="9" start2="10" end2="11" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/agregador/src/main/java/domain/services/HechoService.java">
+      <ranges>
+        <range start1="3" end1="3" start2="3" end2="4" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="5" end1="5" start2="6" end2="7" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="9" end1="9" start2="11" end2="12" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="10" end1="11" start2="13" end2="13" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="14" end1="14" start2="16" end2="17" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="15" end1="16" start2="18" end2="19" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="17" end1="17" start2="20" end2="21" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="19" end1="23" start2="23" end2="25" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="25" end1="25" start2="27" end2="39" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="28" end1="28" start2="42" end2="54" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="34" end1="38" start2="60" end2="60" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/utils/src/main/java/domain/hechos/Hecho.java">
+      <ranges>
+        <range start1="6" end1="6" start2="6" end2="7" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="9" end1="10" start2="10" end2="11" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="17" end1="17" start2="18" end2="19" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="20" end1="21" start2="22" end2="23" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="27" end1="29" start2="29" end2="31" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="31" end1="32" start2="33" end2="34" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="46" end1="47" start2="48" end2="49" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="52" end1="53" start2="54" end2="55" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="79" end1="80" start2="81" end2="82" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="115" end1="116" start2="117" end2="118" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="136" end1="137" start2="138" end2="139" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="141" end1="142" start2="143" end2="144" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="146" end1="147" start2="148" end2="149" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="150" end1="151" start2="152" end2="153" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="153" end1="153" start2="155" end2="159" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="154" end1="155" start2="160" end2="160" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoIrrestricto.java">
+      <ranges>
+        <range start1="2" end1="2" start2="2" end2="3" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="5" end1="5" start2="6" end2="7" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="9" end1="13" start2="11" end2="16" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="14" end1="14" start2="17" end2="18" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/controllers/FuenteDinamicaController.java">
+      <ranges>
+        <range start1="13" end1="13" start2="13" end2="14" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="16" end1="16" start2="17" end2="18" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="37" end1="38" start2="39" end2="40" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="55" end1="56" start2="57" end2="62" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="60" end1="61" start2="66" end2="73" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/EjecutarAlgoritmoConsensoScheduller.java">
+      <ranges>
+        <range start1="5" end1="5" start2="5" end2="6" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="13" end1="13" start2="14" end2="15" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="18" end1="19" start2="20" end2="21" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="21" end1="22" start2="23" end2="24" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="24" end1="25" start2="26" end2="27" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="39" end1="43" start2="41" end2="44" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="49" end1="54" start2="50" end2="50" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+      </ranges>
+    </file>
     <file path="$PROJECT_DIR$/agregador/src/main/java/domain/services/FuenteService.java">
       <ranges>
-        <range start1="19" end1="19" start2="19" end2="20" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
-        <range start1="33" end1="34" start2="34" end2="35" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
-        <range start1="35" end1="36" start2="36" end2="38" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
-        <range start1="41" end1="42" start2="43" end2="43" changelist="9c478027-294f-47ef-9664-898642ed3b60" />
-        <range start1="62" end1="63" start2="63" end2="64" changelist="9c478027-294f-47ef-9664-898642ed3b60" />
-        <range start1="68" end1="69" start2="69" end2="70" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="17" end1="21" start2="17" end2="19" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="34" end1="35" start2="32" end2="33" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="36" end1="38" start2="34" end2="36" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="43" end1="43" start2="41" end2="42" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="47" end1="49" start2="46" end2="47" changelist="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" />
+        <range start1="50" end1="50" start2="48" end2="49" changelist="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" />
+        <range start1="63" end1="65" start2="62" end2="64" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="66" end1="66" start2="65" end2="66" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
+        <range start1="69" end1="70" start2="69" end2="70" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
+        <range start1="72" end1="72" start2="72" end2="75" changelist="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" />
       </ranges>
     </file>
   </component>
@@ -169,6 +270,92 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.AgregadorAplicacion">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestClase.prueba" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fuenteProxy" />
       <option name="PACKAGE_NAME" value="" />
@@ -229,43 +416,6 @@
       <option name="filePath" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.FlaskServer">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
     <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="agregador" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
@@ -301,55 +451,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Autodetect">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="JUnit.TestClase.prueba" />
       <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
@@ -375,7 +476,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.23774.435" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -416,6 +518,7 @@
       <workItem from="1751902239069" duration="2730000" />
       <workItem from="1751913053685" duration="11916000" />
       <workItem from="1751925067273" duration="1309000" />
+      <workItem from="1752000466287" duration="7684000" />
     </task>
     <servers />
   </component>
@@ -472,7 +575,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteEstaticaController.java</url>
-          <line>19</line>
+          <line>23</line>
           <properties class="domain.controllers.FuenteEstaticaController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

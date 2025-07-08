@@ -1,0 +1,6 @@
+Cargar la tabla hechosXColeccion cuando se piden los hechos a una fuente
+filtrar hechos por criterio de pertenencia en coleccion
+Crear la tabla hechosXFuente y llenarla con los hechos de las fuentes
+Sacar el @Transient de los criterios de pertenencia y de la lista de fuentes
+Hacer el DER
+Hacer BDD Fake

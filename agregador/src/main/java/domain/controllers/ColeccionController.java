@@ -24,7 +24,6 @@ public class ColeccionController {
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
-        // logica de crear una coleccion en el repositorio //todo
         coleccionService.guardarColeccion(coleccion);
         fuenteService.guardarFuentes(coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
@@ -33,11 +32,9 @@ public class ColeccionController {
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
     public List<Coleccion> mostrarColecciones() {
-        // logica de buscar las colecciones del repositorio //todo
         return coleccionService.obtenerColecciones();
     }
 
-    // todo: ponerle los request params
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
                                                  @RequestParam(required=false) String categoria_buscada,
@@ -47,11 +44,9 @@ public class ColeccionController {
                                                  @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
                                                  @RequestParam(required=false) Double latitud,
                                                  @RequestParam(required=false) Double longitud) {
-        // logica de buscar los hechos del repositorio //todo
         return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    // todo: ponerle los request params
     @GetMapping("/colecciones/{id}/hechosCurados")
     public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion,
                                             @RequestParam(required=false) String categoria_buscada,

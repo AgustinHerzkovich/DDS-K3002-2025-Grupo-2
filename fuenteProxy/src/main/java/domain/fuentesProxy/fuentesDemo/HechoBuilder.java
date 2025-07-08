@@ -7,6 +7,7 @@ import domain.hechos.multimedias.Multimedia;
 import domain.usuarios.IdentidadContribuyente;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class HechoBuilder {
         Categoria categoria = (Categoria) datos.get("categoria"); // o convertilo si viene como otra cosa
         Double latitud = (Double) datos.get("latitud");
         Double longitud = (Double) datos.get("longitud");
-        LocalDate fechaAcontecimiento = (LocalDate) datos.get("fecha_acontecimiento");
+        LocalDateTime fechaAcontecimiento = (LocalDate) datos.get("fecha_acontecimiento");
         Origen origen = (Origen) datos.get("origen");
         String contenidoTexto = (String) datos.get("contenido_texto");
         List<Multimedia> contenidoMultimedia = (List<Multimedia>) datos.get("contenido_multimedia");

@@ -4,10 +4,11 @@ import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +16,22 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // TODO: Cambiar por UUID jijojijo se jijean los jijolines
     private String titulo;
     private String descripcion;
     @Embedded
     private Categoria categoria;
     @Embedded
     private Ubicacion ubicacion;
-    private LocalDate fechaAcontecimiento;
-    private LocalDate fechaCarga;
+    private LocalDateTime fechaAcontecimiento;
+    private LocalDateTime fechaCarga;
     @OneToMany
     private List<SolicitudEliminacion> solicitudes;
-    private LocalDate fechaUltimaModificacion;
+    private LocalDateTime fechaUltimaModificacion;
     @Embedded
     private Origen origen;
     private String contenidoTexto;
@@ -44,13 +46,13 @@ public class Hecho {
 
     public Hecho() {} // Constructor vacio para que se pueda deserealizar el JSON
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDate fechaAcontecimiento, Origen origen, String contenidoTexto, List<Multimedia> contenidoMultimedia, Boolean anonimato, IdentidadContribuyente autor) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fechaAcontecimiento, Origen origen, String contenidoTexto, List<Multimedia> contenidoMultimedia, Boolean anonimato, IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = new Ubicacion(latitud, longitud);
         this.fechaAcontecimiento = fechaAcontecimiento;
-        this.fechaCarga = LocalDate.now();
+        this.fechaCarga = LocalDateTime.now();
         this.solicitudes = new ArrayList<>();
         this.fechaUltimaModificacion = this.fechaCarga;
         this.origen = origen;
@@ -77,7 +79,7 @@ public class Hecho {
 
     public void mostrar() { visible = true; }
 
-    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDate fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
         if (titulo != null) {
             this.titulo = titulo;
         }
@@ -113,7 +115,7 @@ public class Hecho {
         return etiquetas.contains(etiqueta);
     }
 
-    public Boolean ocurrioEntre(LocalDate fechaInicial, LocalDate fechaFinal) {
+    public Boolean ocurrioEntre(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
         return ocurrioDespuesDe(fechaInicial) && ocurrioAntesDe(fechaFinal);
     }
 
@@ -134,21 +136,25 @@ public class Hecho {
         }
     }
 
-    public Boolean ocurrioAntesDe(LocalDate fecha)
+    public Boolean ocurrioAntesDe(LocalDateTime fecha)
     {
         return fechaAcontecimiento.isBefore(fecha);
     }
 
-    public Boolean ocurrioDespuesDe(LocalDate fecha)
+    public Boolean ocurrioDespuesDe(LocalDateTime fecha)
     {
         return fechaAcontecimiento.isAfter(fecha);
     }
 
-    public Boolean seCargoAntesDe(LocalDate fecha) {
+    public Boolean seCargoAntesDe(LocalDateTime fecha) {
         return fechaCarga.isBefore(fecha);
     }
 
-    public Boolean seCargoDespuesDe(LocalDate fecha) {
+    public Boolean seCargoDespuesDe(LocalDateTime fecha) {
         return fechaCarga.isAfter(fecha);
+    }
+
+    public Boolean seActualizoDespuesDe(LocalDateTime fecha) {
+        return fechaUltimaModificacion.isAfter(fecha);
     }
 }

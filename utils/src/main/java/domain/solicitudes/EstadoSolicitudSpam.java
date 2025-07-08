@@ -1,6 +1,7 @@
 package domain.solicitudes;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EstadoSolicitudSpam extends EstadoSolicitud {
     public EstadoSolicitudSpam(SolicitudEliminacion slt) {
@@ -38,6 +39,6 @@ public class EstadoSolicitudSpam extends EstadoSolicitud {
     @Override
     public void anularMarcaSpam () {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
-        solicitud.setFechaResolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDateTime.now());
     }
 }
