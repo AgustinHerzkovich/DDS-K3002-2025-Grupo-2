@@ -1,25 +1,14 @@
 package domain.fuentesDinamicas;
 
-import domain.hechos.Hecho;
-import domain.repositorios.Repositorio;
-import domain.repositorios.RepositorioDeHechos;
-import domain.repositorios.RepositorioDeSolicitudes;
-import domain.solicitudes.SolicitudEliminacion;
-
-import java.util.List;
 
 // FUENTE DINAMICA
 public class FuenteDinamica extends Fuente {
     private Long id;
-    private final Repositorio<Hecho> repositorioHechos;
-    private final Repositorio<SolicitudEliminacion> repositorioSolicitudes;
 
-    public FuenteDinamica(RepositorioDeHechos repositorioHechos, RepositorioDeSolicitudes repositorioSolicitudes, Long id) {
+    public FuenteDinamica(Long id) {
         super(id);
-        this.repositorioHechos = repositorioHechos;
-        this.repositorioSolicitudes = repositorioSolicitudes;
     }
-
+/*
     public void agregarHecho(Hecho hecho){
         repositorioHechos.agregar(hecho);
     }
@@ -50,5 +39,5 @@ public class FuenteDinamica extends Fuente {
 
     public List<SolicitudEliminacion> buscarSolicitudes() {
         return repositorioSolicitudes.listar();
-    }
+    }*/ //TODO: Mover esto al service
 }

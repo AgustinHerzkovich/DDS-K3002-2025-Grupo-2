@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
 
+
+// TODO: Implementar posteo de solicitudes de eliminacion
+// HechoController
+// SolicitudController
+// HechoService
+// SolicitudService
+// Persistencia de Hechos y Solicitudes
 @RestController // Le decimos que esta clase es un controlador REST
 // Esto significa que es lo que *expone la api* para que sea consumido
 @RequestMapping("/fuentesDinamicas") // Define ruta base para todos los endpoints de esta clase
