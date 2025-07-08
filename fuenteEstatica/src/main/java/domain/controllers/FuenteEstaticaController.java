@@ -4,6 +4,9 @@ import domain.fuentesEstaticas.Fuente;
 import domain.fuentesEstaticas.FuenteEstatica;
 import domain.fuentesEstaticas.LectorCsv;
 import domain.hechos.Hecho;
+import domain.services.FuenteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -15,39 +18,25 @@ import java.util.*;
 // Esto significa que es lo que *expone la api* para que sea consumido
 @RequestMapping("/fuentesEstaticas") // Define ruta base para todos los endpoints de esta clase
 public class FuenteEstaticaController {
-    private final Map<Long, FuenteEstatica> fuentes = new HashMap<>(); // Registro simulado (en memoria)
+    private final FuenteService fuenteService;
 
-    public FuenteEstaticaController() throws IOException {
-        LectorCsv lectorCsv = new LectorCsv();
-        FuenteEstatica fuente = new FuenteEstatica(lectorCsv, 1L);
-
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] recursos = resolver.getResources("classpath:/ArchivosCsvPrueba/*.csv");
-
-        for (Resource recurso : recursos) {
-            fuente.agregarArchivo(recurso.getFile().getPath());
-        }
-
-        fuentes.put(fuente.getId(), fuente);
+    public FuenteEstaticaController(FuenteService fuenteService) {
+        this.fuenteService = fuenteService;
     }
 
     @GetMapping
-    public List<Hecho> todaslasfuentes() {
-        List <Hecho> hechos = new ArrayList<Hecho>();
-        for (Fuente f : fuentes.values()) {
-            hechos.addAll(f.importarHechos());
-        }
-        return hechos;
+    public List<Hecho> obtenerTodosLosHechos() {
+        return fuenteService.obtenerTodosLosHechos();
     }
 
     @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
-    public List<Hecho> hechos(@PathVariable("id") Long id) {
-        FuenteEstatica fuente = fuentes.get(id);
-        if (fuente == null){
-            throw new NoSuchElementException("No se encontro la fuente con id " + id);// TODO: mas adelante implementar exceptions personalizados
-        }
-        return fuente.importarHechos();
+    public List<Hecho> obtenerHechosPorFuente(@PathVariable("id") Long id) {
+        return fuenteService.obtenerHechosPorFuente(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<FuenteEstatica> crearFuente(@RequestBody List<String> archivos) {
+        FuenteEstatica nuevaFuente = fuenteService.crearFuenteEstatica(archivos);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFuente);
     }
 }
-
-
