@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /// Entiendase por "cosolicitud": Solicitud de eliminacion que apunta al mismo hecho que la solicitud actual
 ///
@@ -52,9 +52,9 @@ public class SolicitudEliminacion {
     @ManyToOne
     private Contribuyente administrador;
     @Getter
-    private LocalDate fechaSubida;
+    private LocalDateTime fechaSubida;
     @Getter @Setter
-    private LocalDate fechaResolucion;
+    private LocalDateTime fechaResolucion;
     @ManyToOne
     private Hecho hecho;
     @Getter
@@ -78,7 +78,7 @@ public class SolicitudEliminacion {
 
         this.solicitante = solicitante;
         this.administrador = null;
-        this.fechaSubida = LocalDate.now();
+        this.fechaSubida = LocalDateTime.now();
         this.fechaResolucion = null;
         this.hecho = hecho;
         hecho.agregarASolicitudes(this);

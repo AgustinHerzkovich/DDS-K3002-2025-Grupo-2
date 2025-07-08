@@ -3,7 +3,7 @@ package domain.fuentesProxy.fuentesDemo;
 import domain.fuentesProxy.FuenteProxy;
 import domain.hechos.Hecho;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,14 +11,14 @@ import java.util.Map;
 
 // FUENTE DEMO
 public class FuenteDemo extends FuenteProxy {
-    private LocalDate ultimaConsulta;
+    private LocalDateTime ultimaConsulta;
     private Conexion biblioteca;
     private List<Hecho> hechos;
     private String url;
 
     public FuenteDemo(Long id, Conexion biblioteca, String url) {
         super(id);
-        this.ultimaConsulta = LocalDate.now();
+        this.ultimaConsulta = LocalDateTime.now();
         this.biblioteca = biblioteca;
         this.url = url;
     }

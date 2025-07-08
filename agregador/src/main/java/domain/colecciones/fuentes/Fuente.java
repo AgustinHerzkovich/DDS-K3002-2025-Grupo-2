@@ -14,7 +14,7 @@ import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +28,7 @@ public class Fuente{
     private TipoFuente tipo;
     @Getter
     @Setter
-    private LocalDate ultimaPeticion;
+    private LocalDateTime ultimaPeticion;
 
     public Fuente(String idExterno, TipoFuente tipo) {
         this.id = new FuenteId(UUID.randomUUID().toString(), idExterno);

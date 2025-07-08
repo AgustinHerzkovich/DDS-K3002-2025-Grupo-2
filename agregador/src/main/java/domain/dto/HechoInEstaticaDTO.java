@@ -6,7 +6,7 @@ import domain.hechos.Origen;
 import domain.hechos.Ubicacion;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -15,8 +15,8 @@ public class HechoInEstaticaDTO {
     private String descripcion;
     private Categoria categoria;
     private Ubicacion ubicacion;
-    private LocalDate fechaAcontecimiento;
-    private LocalDate fechaCarga;
+    private LocalDateTime fechaAcontecimiento;
+    private LocalDateTime fechaCarga;
     private Origen origen;
     private Boolean visible;
     private List<Etiqueta> etiquetas;

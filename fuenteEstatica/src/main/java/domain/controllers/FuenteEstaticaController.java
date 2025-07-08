@@ -13,7 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import java.io.IOException;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController // Le decimos que esta clase es un controlador REST
@@ -29,7 +29,7 @@ public class FuenteEstaticaController {
     @GetMapping
     public List<Hecho> obtenerTodosLosHechos(
             @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaMayorA
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
             ) {
         return fuenteService.obtenerTodosLosHechosConFechaMayorA(fechaMayorA);
     }
@@ -38,7 +38,7 @@ public class FuenteEstaticaController {
     public List<Hecho> obtenerHechosPorFuente(
             @PathVariable("id") Long id,
             @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaMayorA
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
             ) {
         return fuenteService.obtenerHechosPorFuenteConFechaMayorA(id, fechaMayorA);
     }

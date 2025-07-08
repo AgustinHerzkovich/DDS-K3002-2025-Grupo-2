@@ -2,14 +2,14 @@ package domain.criterios;
 
 import domain.hechos.Hecho;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 // CRITERIO DE FECHA
 public class CriterioDeFecha implements CriterioDePertenencia{
-    private LocalDate fechaInicial;
-    private LocalDate fechaFinal;
+    private LocalDateTime fechaInicial;
+    private LocalDateTime fechaFinal;
 
-    public CriterioDeFecha(LocalDate fechaInicial, LocalDate fechaFinal) {
+    public CriterioDeFecha(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
     }

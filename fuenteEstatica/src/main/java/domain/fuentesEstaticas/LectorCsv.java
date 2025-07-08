@@ -3,7 +3,7 @@ package domain.fuentesEstaticas;
 
 import com.opencsv.CSVReader;
 import java.io.FileReader;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class LectorCsv{
                 String nombreCategoria = fila[2];
                 Double latitud = Double.parseDouble(fila[3]);
                 Double longitud = Double.parseDouble(fila[4]);
-                LocalDate fecha = LocalDate.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                LocalDateTime fecha = LocalDateTime.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
                 Categoria categoria = obtenerOCrearCategoria(nombreCategoria);
 
@@ -115,7 +115,7 @@ public class LectorCsv{
             Categoria categoria,
             Double latitud,
             Double longitud,
-            LocalDate fecha
+            LocalDateTime fecha
     ) {}
 
     // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema

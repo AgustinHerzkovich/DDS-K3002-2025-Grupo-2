@@ -7,7 +7,7 @@ import domain.services.FuenteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,6 +26,7 @@ public class ColeccionController {
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         coleccionService.guardarColeccion(coleccion);
         fuenteService.guardarFuentes(coleccion.getFuentes());
+        coleccionService.guardarFuentesPorColeccion(coleccion.getIdentificadorHandle(), coleccion.getFuentes()); // todo: seguir desde aca
         return ResponseEntity.ok(coleccion);
     }
 
@@ -38,10 +39,10 @@ public class ColeccionController {
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
                                                  @RequestParam(required=false) String categoria_buscada,
-                                                 @RequestParam(required=false) LocalDate fechaReporteDesde,
-                                                 @RequestParam(required=false) LocalDate fechaReporteHasta,
-                                                 @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
-                                                 @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                                 @RequestParam(required=false) LocalDateTime fechaReporteDesde,
+                                                 @RequestParam(required=false) LocalDateTime fechaReporteHasta,
+                                                 @RequestParam(required=false) LocalDateTime fechaAcontecimientoDesde,
+                                                 @RequestParam(required=false) LocalDateTime fechaAcontecimientoHasta,
                                                  @RequestParam(required=false) Double latitud,
                                                  @RequestParam(required=false) Double longitud) {
         return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
@@ -50,10 +51,10 @@ public class ColeccionController {
     @GetMapping("/colecciones/{id}/hechosCurados")
     public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion,
                                             @RequestParam(required=false) String categoria_buscada,
-                                            @RequestParam(required=false) LocalDate fechaReporteDesde,
-                                            @RequestParam(required=false) LocalDate fechaReporteHasta,
-                                            @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
-                                            @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                            @RequestParam(required=false) LocalDateTime fechaReporteDesde,
+                                            @RequestParam(required=false) LocalDateTime fechaReporteHasta,
+                                            @RequestParam(required=false) LocalDateTime fechaAcontecimientoDesde,
+                                            @RequestParam(required=false) LocalDateTime fechaAcontecimientoHasta,
                                             @RequestParam(required=false) Double latitud,
                                             @RequestParam(required=false) Double longitud){
         return coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);

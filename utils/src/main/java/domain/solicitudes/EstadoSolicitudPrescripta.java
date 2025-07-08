@@ -1,6 +1,6 @@
 package domain.solicitudes;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     public EstadoSolicitudPrescripta(SolicitudEliminacion slt) {
@@ -14,7 +14,7 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     @Override
     public void rechazar () {
         solicitud.setEstado(new EstadoSolicitudRechazada(solicitud));
-        solicitud.setFechaResolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDateTime.now());
     }
 
     @Override
@@ -24,7 +24,7 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     @Override
     public void marcarSpam () {
         solicitud.setEstado(new EstadoSolicitudSpam(solicitud));
-        solicitud.setFechaResolucion(LocalDate.now());
+        solicitud.setFechaResolucion(LocalDateTime.now());
     }
 
     @Override

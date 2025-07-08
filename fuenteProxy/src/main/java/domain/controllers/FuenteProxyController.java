@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,10 +36,10 @@ public class FuenteProxyController {
     @GetMapping("/{id}/hechos")
     public List<Hecho> obtenerHechos(@PathVariable("id") Long id,
                                      @RequestParam(required=false) String categoria_buscada,
-                                     @RequestParam(required=false) LocalDate fechaReporteDesde,
-                                     @RequestParam(required=false) LocalDate fechaReporteHasta,
-                                     @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
-                                     @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                     @RequestParam(required=false) LocalDateTime fechaReporteDesde,
+                                     @RequestParam(required=false) LocalDateTime fechaReporteHasta,
+                                     @RequestParam(required=false) LocalDateTime fechaAcontecimientoDesde,
+                                     @RequestParam(required=false) LocalDateTime fechaAcontecimientoHasta,
                                      @RequestParam(required=false) Double latitud,
                                      @RequestParam(required=false) Double longitud) {
         List<Hecho> hechosObtenidos = fuentes.get(id).importarHechos();
@@ -50,10 +50,10 @@ public class FuenteProxyController {
     public Hecho obtenerHechosColeccion(@PathVariable("id_fuente") Long id_fuente,
                                         @PathVariable("identificador") String identificador,
                                         @RequestParam(required=false) String categoria_buscada,
-                                        @RequestParam(required=false) LocalDate fechaReporteDesde,
-                                        @RequestParam(required=false) LocalDate fechaReporteHasta,
-                                        @RequestParam(required=false) LocalDate fechaAcontecimientoDesde,
-                                        @RequestParam(required=false) LocalDate fechaAcontecimientoHasta,
+                                        @RequestParam(required=false) LocalDateTime fechaReporteDesde,
+                                        @RequestParam(required=false) LocalDateTime fechaReporteHasta,
+                                        @RequestParam(required=false) LocalDateTime fechaAcontecimientoDesde,
+                                        @RequestParam(required=false) LocalDateTime fechaAcontecimientoHasta,
                                         @RequestParam(required=false) Double latitud,
                                         @RequestParam(required=false) Double longitud) {
         List<Hecho> hechosObtenidos =
@@ -62,10 +62,10 @@ public class FuenteProxyController {
 */
     public List<Hecho> filtrarHechos(List<Hecho> hechos,
                                      String categoria_buscada,
-                                     LocalDate fechaReporteDesde,
-                                     LocalDate fechaReporteHasta,
-                                     LocalDate fechaAcontecimientoDesde,
-                                     LocalDate fechaAcontecimientoHasta,
+                                     LocalDateTime fechaReporteDesde,
+                                     LocalDateTime fechaReporteHasta,
+                                     LocalDateTime fechaAcontecimientoDesde,
+                                     LocalDateTime fechaAcontecimientoHasta,
                                      Double latitud,
                                      Double longitud) {
         return hechos.stream()

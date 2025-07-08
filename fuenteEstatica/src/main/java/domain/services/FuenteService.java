@@ -8,7 +8,7 @@ import domain.repositorios.RepositorioDeFuentes;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class FuenteService {
         this.lectorCsv = new LectorCsv();
     }
 
-    public List<Hecho> obtenerTodosLosHechosConFechaMayorA(LocalDate fechaMayorA) {
+    public List<Hecho> obtenerTodosLosHechosConFechaMayorA(LocalDateTime fechaMayorA) {
         List<Hecho> hechos = new ArrayList<>();
         repositorioDeFuentes.findAll().forEach(fuente ->
                 hechos.addAll(fuente.importarHechos())
@@ -38,7 +38,7 @@ public class FuenteService {
                 .collect(Collectors.toList());
     }
 
-    public List<Hecho> obtenerHechosPorFuenteConFechaMayorA(Long id, LocalDate fechaMayorA) {
+    public List<Hecho> obtenerHechosPorFuenteConFechaMayorA(Long id, LocalDateTime fechaMayorA) {
         Fuente fuente = repositorioDeFuentes.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró la fuente con id " + id));
         if (fechaMayorA == null) {

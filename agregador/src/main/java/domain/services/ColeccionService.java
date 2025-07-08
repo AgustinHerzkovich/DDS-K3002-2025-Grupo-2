@@ -1,21 +1,25 @@
 package domain.services;
 
 import domain.colecciones.Coleccion;
+import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
+import domain.repositorios.RepositorioDeFuentesXColeccion;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
+    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoService hechoService;
     
-    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService) {
+    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService) {
         this.repositorioDeColecciones = repositorioDeColecciones;
+        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
     }
 
@@ -29,10 +33,10 @@ public class ColeccionService {
 
     public List<Hecho> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
                                                              String categoria_buscada,
-                                                             LocalDate fechaReporteDesde,
-                                                             LocalDate fechaReporteHasta,
-                                                             LocalDate fechaAcontecimientoDesde,
-                                                             LocalDate fechaAcontecimientoHasta,
+                                                             LocalDateTime fechaReporteDesde,
+                                                             LocalDateTime fechaReporteHasta,
+                                                             LocalDateTime fechaAcontecimientoDesde,
+                                                             LocalDateTime fechaAcontecimientoHasta,
                                                              Double latitud,
                                                              Double longitud) {
         List<Hecho> hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
@@ -42,10 +46,10 @@ public class ColeccionService {
 
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion,
                                                         String categoria_buscada,
-                                                        LocalDate fechaReporteDesde,
-                                                        LocalDate fechaReporteHasta,
-                                                        LocalDate fechaAcontecimientoDesde,
-                                                        LocalDate fechaAcontecimientoHasta,
+                                                        LocalDateTime fechaReporteDesde,
+                                                        LocalDateTime fechaReporteHasta,
+                                                        LocalDateTime fechaAcontecimientoDesde,
+                                                        LocalDateTime fechaAcontecimientoHasta,
                                                         Double latitud,
                                                         Double longitud) {
         List<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
@@ -55,10 +59,10 @@ public class ColeccionService {
 
     public List<Hecho> filtrarHechosQueryParam(List<Hecho> hechos,
                                                String categoria_buscada,
-                                               LocalDate fechaReporteDesde,
-                                               LocalDate fechaReporteHasta,
-                                               LocalDate fechaAcontecimientoDesde,
-                                               LocalDate fechaAcontecimientoHasta,
+                                               LocalDateTime fechaReporteDesde,
+                                               LocalDateTime fechaReporteHasta,
+                                               LocalDateTime fechaAcontecimientoDesde,
+                                               LocalDateTime fechaAcontecimientoHasta,
                                                Double latitud,
                                                Double longitud) {
         return hechos.stream()
@@ -75,5 +79,9 @@ public class ColeccionService {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
         repositorioDeColecciones.delete(coleccion);
+    }
+
+    public void guardarFuentesPorColeccion(String identificadorHandle, List<Fuente> fuentes) {
+        // TODO: Implementar esto
     }
 }

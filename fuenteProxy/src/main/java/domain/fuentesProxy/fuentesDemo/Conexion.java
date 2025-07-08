@@ -1,8 +1,8 @@
 package domain.fuentesProxy.fuentesDemo;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 //CONEXION
 public interface Conexion {
-    Map<String,Object> siguienteHecho(String url, LocalDate fechaUltimaConsulta);
+    Map<String,Object> siguienteHecho(String url, LocalDateTime fechaUltimaConsulta);
 }

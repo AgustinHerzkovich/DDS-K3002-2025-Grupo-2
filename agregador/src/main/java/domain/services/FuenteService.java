@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -42,11 +42,11 @@ public class FuenteService {
 
         for (Fuente fuente : fuentes) {
             String url = fuente.getUrl() + "/hechos";
-            LocalDate fecha = fuente.getUltimaPeticion();
+            LocalDateTime fecha = fuente.getUltimaPeticion();
             if (fecha != null) {
                 url += "?fechaMayorA=" + fecha;
             }
-            fuente.setUltimaPeticion(LocalDate.now()); // actualizar fuente con la fecha de la ultima peticion
+            fuente.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
 
             try {
                 ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);

@@ -1,6 +1,6 @@
 package domain.solicitudes;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 
 public class EstadoSolicitudSpam extends EstadoSolicitud {
