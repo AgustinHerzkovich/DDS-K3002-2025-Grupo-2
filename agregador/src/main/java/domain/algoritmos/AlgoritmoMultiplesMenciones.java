@@ -8,35 +8,29 @@ import java.util.*;
 public class AlgoritmoMultiplesMenciones implements Algoritmo {
     @Override
     public List<Hecho> curarHechos(Map<Fuente, List<Hecho>> hechosPorFuente) {
-        Map<String, Map<Hecho, Set<Fuente>>> hechosPorTitulo = new HashMap<>();
+        Map<Hecho, Set<Fuente>> ocurrencias = new HashMap<>();
+        Map<String, Set<Hecho>> hechosPorTitulo = new HashMap<>();
 
-        // Agrupar por título → hecho → fuentes
-        for (Map.Entry<Fuente, List<Hecho>> entrada : hechosPorFuente.entrySet()) {
-            Fuente fuente = entrada.getKey();
-            for (Hecho hecho : entrada.getValue()) {
-                String titulo = hecho.getTitulo();
-
-                hechosPorTitulo
-                        .computeIfAbsent(titulo, t -> new HashMap<>())
-                        .computeIfAbsent(hecho, h -> new HashSet<>())
-                        .add(fuente);
+        // Agrupar hechos por objeto y por título
+        for (Map.Entry<Fuente, List<Hecho>> entry : hechosPorFuente.entrySet()) {
+            Fuente fuente = entry.getKey();
+            for (Hecho hecho : entry.getValue()) {
+                ocurrencias.computeIfAbsent(hecho, h -> new HashSet<>()).add(fuente);
+                hechosPorTitulo.computeIfAbsent(hecho.getTitulo(), t -> new HashSet<>()).add(hecho);
             }
         }
 
         List<Hecho> consensuados = new ArrayList<>();
 
-        for (Map.Entry<String, Map<Hecho, Set<Fuente>>> entradaPorTitulo : hechosPorTitulo.entrySet()) {
-            Map<Hecho, Set<Fuente>> versionesDelHecho = entradaPorTitulo.getValue();
+        for (Map.Entry<Hecho, Set<Fuente>> entry : ocurrencias.entrySet()) {
+            Hecho hecho = entry.getKey();
+            Set<Fuente> fuentesQueLoTienen = entry.getValue();
 
-            // Buscamos una versión del hecho que esté en al menos 2 fuentes
-            Optional<Map.Entry<Hecho, Set<Fuente>>> posibleConsensuado = versionesDelHecho.entrySet().stream()
-                    .filter(e -> e.getValue().size() >= 2)
-                    .findFirst();
-
-            if (posibleConsensuado.isPresent()) {
-                // Verificamos que no haya otras versiones con el mismo título en otras fuentes
-                if (versionesDelHecho.size() == 1) {
-                    consensuados.add(posibleConsensuado.get().getKey());
+            if (fuentesQueLoTienen.size() >= 2) {
+                // No debe haber otras versiones con mismo título pero distintos atributos
+                Set<Hecho> versiones = hechosPorTitulo.get(hecho.getTitulo());
+                if (versiones.size() == 1) {
+                    consensuados.add(hecho);
                 }
             }
         }
