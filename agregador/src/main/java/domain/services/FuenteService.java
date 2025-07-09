@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -74,15 +73,10 @@ public class FuenteService {
                     puerto = config.puerto_dinamica;
                     tipo = "fuentesDinamicas";
                     break;
-                case PROXY_DEMO:
+                case PROXY:
                     ip = config.ip_proxy;
                     puerto = config.puerto_proxy;
                     tipo = "fuentesProxy";
-                    break;
-                case PROXY_METAMAPA:
-                    ip = config.ip_proxy;
-                    puerto = config.puerto_proxy;
-                    tipo = "fuentesMetamapa";
                     break;
             }
             String url = "http://" + ip + ":" + puerto + "/" + tipo + "/" + fuente.getId().getIdExterno() + "/hechos";
@@ -115,6 +109,3 @@ public class FuenteService {
         return hashMap;
     }
 }
-
-
-

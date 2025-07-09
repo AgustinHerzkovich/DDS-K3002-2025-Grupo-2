@@ -14,10 +14,10 @@ import lombok.Setter;
 @Setter
 public class FuenteId implements Serializable {
     private String idInterno;
-    private String idExterno;
+    private Long idExterno;
 
 
-    public FuenteId(String idInterno, String idExterno) {
+    public FuenteId(String idInterno, Long idExterno) {
         this.idInterno = idInterno;
         this.idExterno = idExterno;
     }
