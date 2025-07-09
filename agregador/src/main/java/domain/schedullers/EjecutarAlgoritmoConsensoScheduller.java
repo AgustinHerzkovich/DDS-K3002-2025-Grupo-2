@@ -5,7 +5,7 @@ import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
-import domain.repositorios.RepositorioHechosXColeccion;
+import domain.repositorios.RepositorioDeHechosXColeccion;
 import domain.services.ColeccionService;
 import domain.services.HechoService;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,13 +18,13 @@ import java.util.Map;
 public class EjecutarAlgoritmoConsensoScheduller {
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
-    private final RepositorioHechosXColeccion repositorioHechosXColeccion;
+    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private Algoritmo algoritmo;
 
-    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioHechosXColeccion repositorioDeHechosXColeccion) {
+    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion) {
         this.hechoService = hechoService;
         this.coleccionService = coleccionService;
-        this.repositorioHechosXColeccion = repositorioDeHechosXColeccion;
+        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
     }
 
     @Scheduled(cron = "0 0 3 * * *") // Se ejecuta a las 3 AM
@@ -41,7 +41,9 @@ public class EjecutarAlgoritmoConsensoScheduller {
 
             Map<Fuente,List<Hecho>> hechos = hechoService.obtenerHechosPorColeccionPorFuente(coleccion.getIdentificadorHandle());
             List<Hecho> hechosCurados = algoritmo.curarHechos(hechos);
-            repositorioHechosXColeccion.updateAll(hechosCurados, true);
+            for (Hecho hecho : hechosCurados) {
+                repositorioDeHechosXColeccion.update(hecho.getId(), true);
+            }
         }
         // por cada coleccion me fijo su algoritmo
         // busco en el repositorio de hechos por coleccion y me fijo la cantidad de veces que aparecen

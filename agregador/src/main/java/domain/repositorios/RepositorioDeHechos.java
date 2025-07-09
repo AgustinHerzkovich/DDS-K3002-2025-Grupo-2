@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RepositorioDeHechos extends JpaRepository<Hecho, Long>, RepositorioDeHechosCustom {
+public interface RepositorioDeHechos extends JpaRepository<Hecho, Long> {
     // TODO: Revisar la query
     @Query("""
         SELECT h

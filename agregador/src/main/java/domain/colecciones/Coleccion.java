@@ -19,6 +19,7 @@ public class Coleccion{
     private String titulo;
     private String descripcion;
     @Transient
+    @Getter
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @Getter
     @Transient
