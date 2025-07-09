@@ -4,7 +4,7 @@ import domain.solicitudes.SolicitudEliminacion;
 import jakarta.persistence.*;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class Contribuyente {
 
     }
 
-    public void modificarIdentidad(String nombre, String apellido, LocalDateTime fechaNacimiento) {
+    public void modificarIdentidad(String nombre, String apellido, LocalDate fechaNacimiento) {
         IdentidadContribuyente nueva_identidad = new IdentidadContribuyente(nombre, apellido, fechaNacimiento, this);
         this.agregarIdentidad(nueva_identidad);
     }
