@@ -27,4 +27,12 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
         WHERE hc.coleccion.identificadorHandle = :idColeccion AND hc.consensuado = true
     """)
     List<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion);
+
+    // TODO: Revisar la query
+    @Query("""
+        SELECT h
+        FROM Hecho h
+        WHERE h.id = :idHecho
+    """)
+    Hecho findByHechoId(@Param("idHecho") String idHecho);
 }

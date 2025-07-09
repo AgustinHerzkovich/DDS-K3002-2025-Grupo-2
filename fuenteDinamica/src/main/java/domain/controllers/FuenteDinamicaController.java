@@ -1,6 +1,5 @@
 package domain.controllers;
 
-import domain.fuentesDinamicas.Fuente;
 import domain.fuentesDinamicas.FuenteDinamica;
 import domain.hechos.Categoria;
 import domain.hechos.Hecho;
@@ -34,7 +33,7 @@ public class FuenteDinamicaController {
     public FuenteDinamicaController() {
         RepositorioDeHechos repoHecho = new RepositorioDeHechos();
         RepositorioDeSolicitudes repoSolicitudes = new RepositorioDeSolicitudes();
-        FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes, 1L);
+        FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes);
 
         Contribuyente juanceto01 = new Contribuyente("juanceto01", false);
         Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5, LocalDateTime.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));

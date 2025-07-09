@@ -2,6 +2,8 @@ package domain.fuentesProxy.fuentesDemo;
 
 import domain.fuentesProxy.FuenteProxy;
 import domain.hechos.Hecho;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -10,18 +12,20 @@ import java.util.Map;
 
 
 // FUENTE DEMO
+@Entity
+@NoArgsConstructor
 public class FuenteDemo extends FuenteProxy {
     private LocalDateTime ultimaConsulta;
     private Conexion biblioteca;
     private List<Hecho> hechos;
     private String url;
 
-    public FuenteDemo(Long id, Conexion biblioteca, String url) {
-        super(id);
+    public FuenteDemo(Conexion biblioteca, String url) {
         this.ultimaConsulta = LocalDateTime.now();
         this.biblioteca = biblioteca;
         this.url = url;
     }
+
     @Override
     public void pedirHechos() {
         // todo: basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
@@ -41,7 +45,7 @@ public class FuenteDemo extends FuenteProxy {
         }
     }
 
-    @Override
+    //@Override
     public List<Hecho> importarHechos() {
         return hechos;
     }

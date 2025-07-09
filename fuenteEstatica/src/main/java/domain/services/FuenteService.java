@@ -1,6 +1,5 @@
 package domain.services;
 
-import domain.fuentesEstaticas.Fuente;
 import domain.fuentesEstaticas.FuenteEstatica;
 import domain.fuentesEstaticas.LectorCsv;
 import domain.hechos.Hecho;
@@ -39,7 +38,7 @@ public class FuenteService {
     }
 
     public List<Hecho> obtenerHechosPorFuenteConFechaMayorA(Long id, LocalDateTime fechaMayorA) {
-        Fuente fuente = repositorioDeFuentes.findById(id)
+        FuenteEstatica fuente = repositorioDeFuentes.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró la fuente con id " + id));
         if (fechaMayorA == null) {
             return fuente.importarHechos();
@@ -51,7 +50,7 @@ public class FuenteService {
     }
 
     public FuenteEstatica crearFuenteEstatica(List<String> archivos) {
-        FuenteEstatica nuevaFuente = new FuenteEstatica(lectorCsv, null); // El ID lo generará JPA
+        FuenteEstatica nuevaFuente = new FuenteEstatica(lectorCsv); // El ID lo generará JPA
         archivos.forEach(nuevaFuente::agregarArchivo);
         return repositorioDeFuentes.save(nuevaFuente);
     }

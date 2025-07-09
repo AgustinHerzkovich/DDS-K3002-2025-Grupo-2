@@ -48,4 +48,8 @@ public class EstadoSolicitudPrescripta extends EstadoSolicitud {
     @Override
     public void anularMarcaSpam () {
     }
+    @Override
+    public String getNombreEstado() {
+        return "PRESCRIPTA";
+    }
 }

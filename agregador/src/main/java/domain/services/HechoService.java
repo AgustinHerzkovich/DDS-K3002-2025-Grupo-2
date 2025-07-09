@@ -36,6 +36,10 @@ public class HechoService {
         repositorioDeHechos.saveAll(hechos);
     }
 
+    public List<Hecho> obtenerHechos() {
+        return repositorioDeHechos.findAll();
+    }
+
     public void guardarHechosPorFuente(Map<Fuente, List<Hecho>> hechosPorFuente) {
         for (Map.Entry<Fuente, List<Hecho>> entry : hechosPorFuente.entrySet()) {
             Fuente fuente = entry.getKey();
@@ -61,16 +65,18 @@ public class HechoService {
             }
 
             Coleccion coleccion = fuenteXcoleccionOpt.get().getColeccion();
-            List<CriterioDePertenencia> criterios = coleccion.getCriteriosDePertenencia();
 
             // Filtrar los hechos que cumplen con todos los criterios de pertenencia
             List<HechoXColeccion> hechosFiltrados = hechos.stream()
-                    .filter(hecho -> criterios.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho)))
+                    .filter(coleccion::cumpleCriterios)
                     .map(hecho -> new HechoXColeccion(hecho, coleccion))
                     .toList();
 
             repositorioDeHechosXColeccion.saveAll(hechosFiltrados); // Solo guardar los hechos si cumplen con todos los criterios de pertenencia
         }
+    }
+    public Hecho obtenerHechoPorId(String idHecho) {
+        return repositorioDeHechos.findByHechoId(idHecho);
     }
 
     public List<Hecho> obtenerHechosPorColeccion(String idColeccion) {

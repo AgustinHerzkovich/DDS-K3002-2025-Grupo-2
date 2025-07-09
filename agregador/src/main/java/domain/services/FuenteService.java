@@ -29,6 +29,10 @@ public class FuenteService {
         this.config = cargarConfiguracion();
     }
 
+    public void guardarFuente(Fuente fuente) {
+        repositorioDeFuentes.saveIfNotExists(fuente); // Se guarda la fuente en el repositorio si es que no existía ya
+    }
+
     public void guardarFuentes(List<Fuente> fuentes) {
         repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
     }

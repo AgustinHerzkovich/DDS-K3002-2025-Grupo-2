@@ -46,4 +46,9 @@ public class EstadoSolicitudRechazada extends EstadoSolicitud {
     @Override
     public void anularMarcaSpam () {
     }
+
+    @Override
+    public String getNombreEstado() {
+        return "RECHAZADA";
+    }
 }
