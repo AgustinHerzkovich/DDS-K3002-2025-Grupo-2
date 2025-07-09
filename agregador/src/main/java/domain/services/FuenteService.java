@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import domain.colecciones.fuentes.TipoFuente;
+import domain.config.ConfiguracionRed;
 import domain.dto.HechoInEstaticaDTO;
 import domain.hechos.Hecho;
 import domain.mappers.HechoInEstaticaDTOToHecho;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,13 +23,28 @@ import java.util.*;
 @Service
 public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
+    private final ConfiguracionRed config;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes) {
         this.repositorioDeFuentes = repositorioDeFuentes;
+        this.config = cargarConfiguracion();
     }
 
     public void guardarFuentes(List<Fuente> fuentes) {
         repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
+    }
+
+    private ConfiguracionRed cargarConfiguracion() { // Metodo para cargar la configuración de red desde un archivo JSON
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            InputStream input = getClass().getClassLoader().getResourceAsStream("config.json");
+            if (input == null) {
+                throw new RuntimeException("No se encontró config.json en resources");
+            }
+            return mapper.readValue(input, ConfiguracionRed.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al cargar configuración", e);
+        }
     }
 
     public Map<Fuente, List<Hecho>> hechosUltimaPeticion() { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
@@ -41,7 +58,35 @@ public class FuenteService {
         HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
 
         for (Fuente fuente : fuentes) {
-            String url = fuente.getUrl() + "/hechos";
+            // Armo la url a la cual consultar según la fuente
+            String ip = "";
+            Integer puerto = 0;
+            String tipo = "";
+            TipoFuente tipoFuente = fuente.getTipo();
+            switch (tipoFuente) {
+                case ESTATICA:
+                    ip = config.ip_estatica;
+                    puerto = config.puerto_estatica;
+                    tipo = "fuentesEstaticas";
+                    break;
+                case DINAMICA:
+                    ip = config.ip_dinamica;
+                    puerto = config.puerto_dinamica;
+                    tipo = "fuentesDinamicas";
+                    break;
+                case PROXY_DEMO:
+                    ip = config.ip_proxy;
+                    puerto = config.puerto_proxy;
+                    tipo = "fuentesProxy";
+                    break;
+                case PROXY_METAMAPA:
+                    ip = config.ip_proxy;
+                    puerto = config.puerto_proxy;
+                    tipo = "fuentesMetamapa";
+                    break;
+            }
+            String url = "http://" + ip + ":" + puerto + "/" + tipo + "/" + fuente.getId().getIdExterno() + "/hechos";
+
             LocalDateTime fecha = fuente.getUltimaPeticion();
             if (fecha != null) {
                 url += "?fechaMayorA=" + fecha;
