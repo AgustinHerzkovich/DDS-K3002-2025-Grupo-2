@@ -1,7 +1,9 @@
 package domain.services;
 
+import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteId;
 import domain.colecciones.fuentes.FuenteXColeccion;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +33,10 @@ public class ColeccionService {
 
     public List<Coleccion> obtenerColecciones() {
         return repositorioDeColecciones.findAll();
+    }
+
+    public Coleccion obtenerColeccion(String idColeccion) {
+        return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
     public List<Hecho> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
@@ -76,6 +83,7 @@ public class ColeccionService {
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
     }
+
     public void eliminarColeccion(String idColeccion) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
@@ -87,5 +95,27 @@ public class ColeccionService {
             FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
             repositorioDeFuentesXColeccion.save(fuentePorColeccion);
         }
+    }
+
+    public void modificarAlgoritmoDeColeccion(String idColeccion, AlgoritmoConsenso nuevoAlgoritmo) {
+        Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
+                .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+        coleccion.setAlgoritmoConsenso(nuevoAlgoritmo);
+        repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
+    }
+
+    public void agregarFuenteAColeccion(String idColeccion, Fuente fuente) {
+        Coleccion coleccion = obtenerColeccion(idColeccion);
+
+        FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
+        repositorioDeFuentesXColeccion.save(fuentePorColeccion);
+    }
+
+    public void quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) {
+        Coleccion coleccion = obtenerColeccion(idColeccion);
+
+        Optional<FuenteXColeccion> fuenteXColeccionOpt = repositorioDeFuentesXColeccion.findByFuenteIdAndColeccion(fuenteId, coleccion);
+
+        fuenteXColeccionOpt.ifPresent(repositorioDeFuentesXColeccion::delete);
     }
 }

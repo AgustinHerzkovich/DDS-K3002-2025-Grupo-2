@@ -1,9 +1,9 @@
 package domain.repositorios;
 
-import domain.fuentesEstaticas.Fuente;
+import domain.fuentesEstaticas.FuenteEstatica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepositorioDeFuentes extends JpaRepository<Fuente, Long> {
+public interface RepositorioDeFuentes extends JpaRepository<FuenteEstatica, Long> {
 }

@@ -1,17 +1,12 @@
 package domain.controllers;
 
-import domain.fuentesEstaticas.Fuente;
 import domain.fuentesEstaticas.FuenteEstatica;
-import domain.fuentesEstaticas.LectorCsv;
 import domain.hechos.Hecho;
 import domain.services.FuenteService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import java.io.IOException;
 
 import java.time.LocalDateTime;
 import java.util.*;

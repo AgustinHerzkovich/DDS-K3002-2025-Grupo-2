@@ -1,6 +1,9 @@
 package domain.controllers;
 
+import domain.colecciones.AlgoritmoConsenso;
 import domain.colecciones.Coleccion;
+import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteId;
 import domain.hechos.Hecho;
 import domain.services.ColeccionService;
 import domain.services.FuenteService;
@@ -36,6 +39,11 @@ public class ColeccionController {
         return coleccionService.obtenerColecciones();
     }
 
+    @GetMapping("/colecciones/{id}")
+    public Coleccion mostrarColeccion(@PathVariable("id") String idColeccion) {
+        return coleccionService.obtenerColeccion(idColeccion);
+    }
+
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
                                                  @RequestParam(required=false) String categoria_buscada,
@@ -60,6 +68,28 @@ public class ColeccionController {
         return coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
+    @PatchMapping("/colecciones/{id}/algoritmo")
+    public ResponseEntity<Void> modificarAlgoritmo(@PathVariable("id") String idColeccion,
+                                                   @RequestBody AlgoritmoConsenso nuevoAlgoritmo) {
+        coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/colecciones/{id}/fuentes")
+    public ResponseEntity<Void> agregarFuente(@PathVariable("id") String idColeccion,
+                                              @RequestBody Fuente fuente) {
+        fuenteService.guardarFuente(fuente);
+        coleccionService.agregarFuenteAColeccion(idColeccion, fuente);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/colecciones/{id}/fuentes")
+    public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
+                                             @RequestBody FuenteId fuenteId) {
+        coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/colecciones/{id}")
     public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
         // logica de eliminar una coleccion del repositorio
@@ -67,15 +97,3 @@ public class ColeccionController {
         return ResponseEntity.noContent().build();
     }
 }
-
-// Operaciones UPDATE sobre Colecciones
-//PATCH MAPPING
-// Operaciones DELETE sobre Colecciones
-//DELETE MAPPING
-
-// modificacion del algoritmo: PATCH sobre coleccion
-// Agregar o quitar fuentes de hechos de una colección.: PATCH sobre coleccion
-// Aprobar o denegar una solicitud de eliminación de un hecho.: PATCH sobre solicitud
-
-// Generar una solicitud de eliminación a un hecho.: POST sobre solicitud
-// Reportar un hecho: POST sobre reporte ???

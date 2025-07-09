@@ -10,7 +10,7 @@ import java.util.List;
 public class testCargarArchivos {
     @Test
     public void cargarArchivos() {
-        FuenteEstatica fuente = new FuenteEstatica(new LectorCsv(), 1L);
+        FuenteEstatica fuente = new FuenteEstatica(new LectorCsv());
 
         String pathAlternativo = "src/main/resources/ArchivosCsvPrueba/";
 

@@ -40,4 +40,5 @@ public abstract class EstadoSolicitud {
     public abstract void anularRechazo();
     public abstract void anularPrescripcion();
     public abstract void anularMarcaSpam();
+    public abstract String getNombreEstado();
 }

@@ -45,4 +45,9 @@ public class EstadoSolicitudSpam extends EstadoSolicitud {
         solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
         solicitud.setFechaResolucion(LocalDateTime.now());
     }
+
+    @Override
+    public String getNombreEstado() {
+        return "SPAM";
+    }
 }

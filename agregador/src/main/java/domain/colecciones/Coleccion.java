@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.InputStream;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 // TODO: Los Transient son temporales porque estamos testeando con la base de datos en memoria H2.
 // COLECCION
 @Entity
+@NoArgsConstructor
 public class Coleccion{
     private String titulo;
     private String descripcion;
@@ -28,6 +31,7 @@ public class Coleccion{
     @Id
     private String identificadorHandle;
     @Getter
+    @Setter
     @Enumerated(EnumType.STRING)
     private AlgoritmoConsenso algoritmoConsenso = AlgoritmoConsenso.IRRESTRICTO;
     //tiene todos los hechos que de las fuentes de esta coleccion
@@ -65,11 +69,7 @@ public class Coleccion{
         }
     }
 
-    public Coleccion() {
-
-    }
-
-    public Boolean cumpleCriterios(List<CriterioDePertenencia> criterios, Hecho hecho){
-        return criterios.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
+    public Boolean cumpleCriterios(Hecho hecho){
+        return criteriosDePertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
     }
 }

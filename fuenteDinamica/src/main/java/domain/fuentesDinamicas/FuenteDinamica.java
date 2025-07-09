@@ -1,13 +1,17 @@
 package domain.fuentesDinamicas;
 
+import lombok.Getter;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 // FUENTE DINAMICA
-public class FuenteDinamica extends Fuente {
+public class FuenteDinamica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
-    public FuenteDinamica(Long id) {
-        super(id);
-    }
 /*
     public void agregarHecho(Hecho hecho){
         repositorioHechos.agregar(hecho);

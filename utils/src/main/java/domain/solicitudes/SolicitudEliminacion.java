@@ -42,7 +42,7 @@ public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
-    @Setter
+    @Setter @Getter
     @OneToOne
     private EstadoSolicitud estado;
     @Getter
@@ -55,6 +55,7 @@ public class SolicitudEliminacion {
     private LocalDateTime fechaSubida;
     @Getter @Setter
     private LocalDateTime fechaResolucion;
+    @Getter
     @ManyToOne
     private Hecho hecho;
     @Getter
