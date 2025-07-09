@@ -1,24 +1,35 @@
 package domain.services;
 
+import domain.colecciones.Coleccion;
+import domain.colecciones.HechoXColeccion;
 import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteXColeccion;
 import domain.colecciones.fuentes.HechoXFuente;
+import domain.criterios.CriterioDePertenencia;
 import domain.hechos.Hecho;
+import domain.repositorios.RepositorioDeFuentesXColeccion;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeHechosXFuente;
+import domain.repositorios.RepositorioDeHechosXColeccion;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class HechoService {
     private final RepositorioDeHechos repositorioDeHechos;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
+    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
+        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -33,7 +44,32 @@ public class HechoService {
                 HechoXFuente hechoPorFuente = new HechoXFuente(hecho, fuente);
                 repositorioDeHechosXFuente.save(hechoPorFuente);
             }
-            this.guardarHechos(hechos); // Guarda los hechos asociados a la fuente
+        }
+    }
+
+    public void guardarHechosPorColeccion(Map<Fuente, List<Hecho>> hechosPorFuente) {
+        for (Map.Entry<Fuente, List<Hecho>> entry : hechosPorFuente.entrySet()) {
+            Fuente fuente = entry.getKey();
+            List<Hecho> hechos = entry.getValue();
+
+            // Buscar la colección asociada a la fuente
+            Optional<FuenteXColeccion> fuenteXcoleccionOpt = repositorioDeFuentesXColeccion.findByFuente(fuente);
+
+            if (fuenteXcoleccionOpt.isEmpty()) {
+                System.out.println("No se encontró colección para la fuente: " + fuente.getId());
+                continue;
+            }
+
+            Coleccion coleccion = fuenteXcoleccionOpt.get().getColeccion();
+            List<CriterioDePertenencia> criterios = coleccion.getCriteriosDePertenencia();
+
+            // Filtrar los hechos que cumplen con todos los criterios de pertenencia
+            List<HechoXColeccion> hechosFiltrados = hechos.stream()
+                    .filter(hecho -> criterios.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho)))
+                    .map(hecho -> new HechoXColeccion(hecho, coleccion))
+                    .toList();
+
+            repositorioDeHechosXColeccion.saveAll(hechosFiltrados); // Solo guardar los hechos si cumplen con todos los criterios de pertenencia
         }
     }
 
@@ -45,7 +81,7 @@ public class HechoService {
         // Obtiene todos los hechos hechos por fuente asociados a la colección
         List<HechoXFuente> hechosXFuente = repositorioDeHechosXFuente.findByCollectionId(idColeccion);
 
-        // Transforma la lista de HechoXFuente a un mapa agrupado por Fuente
+        // Transforma la lista de HechoXFuente a un map agrupado por Fuente
         return hechosXFuente.stream()
                 .collect(Collectors.groupingBy(
                         HechoXFuente::getFuente,

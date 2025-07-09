@@ -26,7 +26,7 @@ public class ColeccionController {
     public ResponseEntity<Coleccion> crearColeccion(Coleccion coleccion) {
         coleccionService.guardarColeccion(coleccion);
         fuenteService.guardarFuentes(coleccion.getFuentes());
-        coleccionService.guardarFuentesPorColeccion(coleccion.getIdentificadorHandle(), coleccion.getFuentes()); // todo: seguir desde aca
+        coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
     }
 

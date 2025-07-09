@@ -2,6 +2,7 @@ package domain.services;
 
 import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteXColeccion;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
 import domain.repositorios.RepositorioDeFuentesXColeccion;
@@ -81,7 +82,10 @@ public class ColeccionService {
         repositorioDeColecciones.delete(coleccion);
     }
 
-    public void guardarFuentesPorColeccion(String identificadorHandle, List<Fuente> fuentes) {
-        // TODO: Implementar esto
+    public void guardarFuentesPorColeccion(Coleccion coleccion, List<Fuente> fuentes) {
+        for (Fuente fuente : fuentes) {
+            FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
+            repositorioDeFuentesXColeccion.save(fuentePorColeccion);
+        }
     }
 }

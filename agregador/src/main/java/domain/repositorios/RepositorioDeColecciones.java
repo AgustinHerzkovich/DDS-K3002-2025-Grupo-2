@@ -7,6 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepositorioDeColecciones extends JpaRepository<Coleccion, String> {
-    // REPOSITORIO DE COLECCIONES
-
 }

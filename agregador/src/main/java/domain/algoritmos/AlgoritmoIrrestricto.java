@@ -15,5 +15,4 @@ public class AlgoritmoIrrestricto implements Algoritmo{
                 .distinct()             // eliminamos objetos duplicados (basado en equals y hashCode)
                 .collect(Collectors.toList()); // los convertimos en lista
     }
-
 }

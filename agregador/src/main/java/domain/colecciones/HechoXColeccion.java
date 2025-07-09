@@ -6,13 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class HechoXColeccion {
-
-    // Getters y Setters
     @Setter
     @EmbeddedId
     private HechoXColeccionId id = new HechoXColeccionId();
@@ -28,14 +28,10 @@ public class HechoXColeccion {
     @Setter
     private boolean consensuado;
 
-    public void setHecho(Hecho hecho) {
+    public HechoXColeccion(Hecho hecho, Coleccion coleccion) {
         this.hecho = hecho;
-        this.id.setHechoId(hecho.getId());
-    }
-
-    public void setColeccion(Coleccion coleccion) {
         this.coleccion = coleccion;
-        this.id.setColeccionId(coleccion.getIdentificadorHandle());
+        this.id = new HechoXColeccionId(hecho.getId(), coleccion.getIdentificadorHandle());
     }
 }
 

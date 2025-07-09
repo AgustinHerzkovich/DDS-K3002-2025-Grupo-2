@@ -4,6 +4,7 @@ import domain.colecciones.fuentes.Fuente;
 import domain.colecciones.fuentes.FuenteId;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,15 +14,19 @@ public class RepositorioDeFuentesImpl implements RepositorioDeFuentesCustom {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired // Inyecto el repositorio de fuentes normal
+    private RepositorioDeFuentes repositorioDeFuentes;
+
     @Override
     public void saveIfNotExists(Fuente nuevaFuente) {
         if (nuevaFuente == null) return;
 
         // Verificar si la fuente ya existe
-        FuenteId id = nuevaFuente.getId();
+        var id = nuevaFuente.getId();
 
         // Buscar la fuente existente por ID
-        findById(id).orElseGet(() -> save(nuevaFuente)); // Si no existe, se guarda la nueva fuente
+        repositorioDeFuentes.findById(id)
+                .orElseGet(() -> repositorioDeFuentes.save(nuevaFuente)); // Si no existe, se guarda la nueva fuente
     }
 
     @Override
@@ -34,7 +39,7 @@ public class RepositorioDeFuentesImpl implements RepositorioDeFuentesCustom {
                 .toList();
 
         // Obtener los ids existentes en la base de datos
-        List<Fuente> existentes = findAllById(idsNuevos);
+        var existentes = repositorioDeFuentes.findAllById(idsNuevos);
         var idsExistentes = existentes.stream()
                 .map(Fuente::getId)
                 .collect(java.util.stream.Collectors.toSet());
@@ -45,6 +50,6 @@ public class RepositorioDeFuentesImpl implements RepositorioDeFuentesCustom {
                 .toList();
 
         // Solo guardar las fuentes que no existen
-        saveAll(soloNuevas);
+        repositorioDeFuentes.saveAll(soloNuevas);
     }
 }
