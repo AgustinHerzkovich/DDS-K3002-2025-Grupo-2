@@ -2,11 +2,17 @@ package domain.criterios;
 
 import domain.hechos.Hecho;
 import domain.hechos.Ubicacion;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 // CRITERIO DE DISTANCIA
-public class CriterioDeDistancia implements CriterioDePertenencia {
-    private final Ubicacion ubicacionbase;
-    private final Double distanciaMinima;
+@Entity
+@DiscriminatorValue("DISTANCIA")
+@NoArgsConstructor
+public class CriterioDeDistancia extends CriterioDePertenencia {
+    private Ubicacion ubicacionbase;
+    private Double distanciaMinima;
 
     public CriterioDeDistancia(Ubicacion ubicacionbase, Double distanciaMinima) {
         this.ubicacionbase = ubicacionbase;

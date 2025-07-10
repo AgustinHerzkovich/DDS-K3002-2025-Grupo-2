@@ -14,18 +14,18 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Los Transient son temporales porque estamos testeando con la base de datos en memoria H2.
 // COLECCION
 @Entity
 @NoArgsConstructor
 public class Coleccion{
     private String titulo;
     private String descripcion;
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "coleccion_id")
     @Getter
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @Getter
-    @Transient
+    @OneToMany
     private List<Fuente> fuentes;
     @Getter
     @Id
