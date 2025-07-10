@@ -7,6 +7,7 @@ import domain.repositorios.RepositorioDeFuentes;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeHechosXFuente;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +24,7 @@ public class HechoService {
         this.repositorioDeFuentes = repositorioDeFuentes;
     }
 
+    @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
     public List<Hecho> obtenerHechos() {
         return repositorioDeHechos.findAll();
     }
@@ -35,14 +37,17 @@ public class HechoService {
         repositorioDeHechosXFuente.save(hechoXFuente);
     }
 
+    @Transactional(readOnly = true)
     public List<Hecho> obtenerHechosDeFuente(Long id) {
         FuenteDinamica fuente = repositorioDeFuentes.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Fuente no encontrada con ID: " + id));
-        return repositorioDeHechosXFuente.findByFuente(fuente).stream()
+        List<HechoXFuente> hechosPorFuente = repositorioDeHechosXFuente.findByFuente(fuente);
+        return hechosPorFuente.stream()
                 .map(HechoXFuente::getHecho)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<Hecho> obtenerHechosDeFuenteConFechaMayorA(Long id, LocalDateTime fechaMayorA) {
         return obtenerHechosDeFuente(id).stream().filter(hecho -> hecho.seActualizoDespuesDe(fechaMayorA))
                 .toList();

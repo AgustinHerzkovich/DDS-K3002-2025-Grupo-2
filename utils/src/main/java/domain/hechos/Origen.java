@@ -1,9 +1,6 @@
 package domain.hechos;
 
-import jakarta.persistence.Embeddable;
-
 // ORIGEN
-@Embeddable
 public enum Origen {
     CARGA_MANUAL, // No sabemos bien qué es, puede ser que lo carga un administrador directamente
     DATASET, // Proveniente de una fuente estática

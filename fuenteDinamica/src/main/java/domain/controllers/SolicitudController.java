@@ -1,13 +1,11 @@
 package domain.controllers;
 
-import domain.fuentesDinamicas.FuenteDinamica;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")

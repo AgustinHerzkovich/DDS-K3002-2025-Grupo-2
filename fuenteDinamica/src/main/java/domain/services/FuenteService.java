@@ -12,8 +12,9 @@ public class FuenteService {
         this.repositorioDeFuentes = repositorioDeFuentes;
     }
 
-    public void guardarFuente(FuenteDinamica fuente) {
-        repositorioDeFuentes.save(fuente);
+    public FuenteDinamica guardarFuente() {
+        FuenteDinamica fuente = new FuenteDinamica();
+        return repositorioDeFuentes.save(fuente);
     }
 
     public void eliminarFuente(FuenteDinamica fuente) {

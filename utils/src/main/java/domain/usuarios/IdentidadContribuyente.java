@@ -1,13 +1,15 @@
 package domain.usuarios;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
-
 
 // IDENTIDAD CONTRIBUYENTE
 @Entity
@@ -18,6 +20,8 @@ public class IdentidadContribuyente {
     private Long id;
     private String nombre;
     private String apellido;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
     @ManyToOne
     private Contribuyente contribuyente;
@@ -29,6 +33,7 @@ public class IdentidadContribuyente {
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.contribuyente = contribuyente;
+        this.hechosContribuidos = new ArrayList<>();
     }
 
     public Integer getEdad() {

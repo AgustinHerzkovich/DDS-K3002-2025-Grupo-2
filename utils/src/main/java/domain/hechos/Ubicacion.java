@@ -5,13 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // UBICACION
 @Embeddable
 @NoArgsConstructor
+@Getter
+@Setter
 public class Ubicacion {
-    @Getter private Double latitud;
-    @Getter private Double longitud;
+    private Double latitud;
+    private Double longitud;
 
     @JsonCreator
     public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {

@@ -1,5 +1,8 @@
 package domain.hechos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.IdentidadContribuyente;
@@ -31,26 +34,40 @@ public class Hecho {
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     @OneToMany(mappedBy = "hecho") // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
+    @JsonIgnore
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private Origen origen;
     private String contenidoTexto;
-    @OneToMany(cascade = CascadeType.ALL) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
+    // todo: quitar el fetch type eager, es temporal
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
+    @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany
+    @JsonIgnore
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
-    @ManyToOne
-    private IdentidadContribuyente autor;
+    @ManyToOne(cascade = CascadeType.PERSIST) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
+    private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fechaAcontecimiento, Origen origen, String contenidoTexto, List<Multimedia> contenidoMultimedia, Boolean anonimato, IdentidadContribuyente autor) {
+    @JsonCreator
+    public Hecho(@JsonProperty("titulo") String titulo,
+                 @JsonProperty("descripcion") String descripcion,
+                 @JsonProperty("categoria") Categoria categoria,
+                 @JsonProperty("ubicacion") Ubicacion ubicacion,
+                 @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
+                 @JsonProperty("origen") Origen origen,
+                 @JsonProperty("contenidoTexto") String contenidoTexto,
+                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
+                 @JsonProperty("anonimato") Boolean anonimato,
+                 @JsonProperty("autor") IdentidadContribuyente autor) {
         this.id = UUID.randomUUID().toString().replace("-", "");
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
-        this.ubicacion = new Ubicacion(latitud, longitud);
+        this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
         this.fechaCarga = LocalDateTime.now();
         this.solicitudes = new ArrayList<>();
@@ -61,12 +78,7 @@ public class Hecho {
         this.etiquetas = new ArrayList<>();
         this.visible = true;
         this.anonimato = anonimato;
-        if (anonimato) {
-            this.autor = autor;
-        }
-        else {
-            this.autor = null;
-        }
+        this.autor = anonimato ? autor : null;
     }
 
     public void ocultar() {

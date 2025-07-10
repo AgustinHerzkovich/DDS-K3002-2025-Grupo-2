@@ -12,6 +12,8 @@ import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.Contribuyente;
 import domain.usuarios.IdentidadContribuyente;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -33,26 +35,17 @@ public class FuenteController {
 
     public FuenteController(FuenteService fuenteService) {
         this.fuenteService = fuenteService;
-        RepositorioDeHechos repoHecho = new RepositorioDeHechos();
-        RepositorioDeSolicitudes repoSolicitudes = new RepositorioDeSolicitudes();
-        FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes);
-
-        Contribuyente juanceto01 = new Contribuyente("juanceto01", false);
-        Hecho hecho = new Hecho("Titulo prueba","Descripcion prueba",new Categoria("soyCategoria"),13.0,14.5, LocalDateTime.parse("2004-07-08"), Origen.CONTRIBUYENTE,"hola soy un contenido texto :v",null,false, new IdentidadContribuyente("pepe","gonzalez", LocalDate.parse("2004-10-31"), juanceto01));
-        fuente.agregarHecho(hecho);  //String nombre, String apellido, LocalDateTime fecha_nacimiento,  Contribuyente contribuyente
-        SolicitudEliminacion solicitud = new SolicitudEliminacion(juanceto01, hecho,"momito fue sin querer sacame el ban porque quiero seguir comentando wasd", new DetectorDeSpamPrueba());
-        fuente.agregarSolicitud(solicitud);
-
-        fuentes.put(fuente.getId(), fuente);
     }
 
     @PostMapping
-    public void crearFuente(@RequestBody FuenteDinamica fuente) {
-        fuenteService.guardarFuente(fuente);
+    public ResponseEntity<FuenteDinamica> crearFuente() {
+        FuenteDinamica nuevaFuente = fuenteService.guardarFuente();
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFuente);
     }
 
     @DeleteMapping
-    public void eliminarFuente(@RequestBody FuenteDinamica fuente) {
+    public ResponseEntity<FuenteDinamica> eliminarFuente(@RequestBody FuenteDinamica fuente) {
         fuenteService.eliminarFuente(fuente);
+        return ResponseEntity.status(HttpStatus.OK).body(fuente);
     }
 }

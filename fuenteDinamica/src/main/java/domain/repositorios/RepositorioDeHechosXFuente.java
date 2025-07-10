@@ -6,9 +6,9 @@ import domain.fuentesDinamicas.HechoXFuenteId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, HechoXFuenteId> {
-    Optional<HechoXFuente> findByFuente(FuenteDinamica fuente);
+    List<HechoXFuente> findByFuente(FuenteDinamica fuente);
 }
