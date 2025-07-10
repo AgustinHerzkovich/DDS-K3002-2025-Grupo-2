@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,20 +27,29 @@ public class FuenteEstatica {
 
     public FuenteEstatica(LectorCsv lectorArchivo) {
         this.lectorArchivo = lectorArchivo;
+        this.archivos = new ArrayList<>();
     }
 
-    public void agregarArchivo(String archivo){
-        archivos.add(archivo);
+    public void agregarArchivo(String rutaRelativa){
+        archivos.add(rutaRelativa);
     }
-
 
     public List<Hecho> importarHechos() {
         if (lectorArchivo == null) {
             lectorArchivo = new LectorCsv(); // Inicialización lazy
         }
         List<Hecho> hechos = new ArrayList<>();
-        archivos.forEach(archivo -> hechos.addAll(lectorArchivo.leerHechos(archivo)));
+        archivos.forEach(rutaRelativa -> {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream(rutaRelativa)) {
+                if (is == null) {
+                    System.out.println("No se encontró el archivo: " + rutaRelativa);
+                    return;
+                }
+                hechos.addAll(lectorArchivo.leerHechos(is));
+            } catch (IOException e) {
+                System.out.println("Error al abrir el archivo: " + e.getMessage());
+            }
+        });
         return hechos;
-
     }
 }

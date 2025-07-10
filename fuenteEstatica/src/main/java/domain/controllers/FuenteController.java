@@ -14,14 +14,14 @@ import java.util.*;
 @RestController // Le decimos que esta clase es un controlador REST
 // Esto significa que es lo que *expone la api* para que sea consumido
 @RequestMapping("/fuentesEstaticas") // Define ruta base para todos los endpoints de esta clase
-public class FuenteEstaticaController {
+public class FuenteController {
     private final FuenteService fuenteService;
 
-    public FuenteEstaticaController(FuenteService fuenteService) {
+    public FuenteController(FuenteService fuenteService) {
         this.fuenteService = fuenteService;
     }
 
-    @GetMapping
+    @GetMapping("/hechos")
     public List<Hecho> obtenerTodosLosHechos(
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA

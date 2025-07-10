@@ -3,6 +3,9 @@ package domain.fuentesEstaticas;
 
 import com.opencsv.CSVReader;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,16 +24,16 @@ public class LectorCsv{
         categorias = new ArrayList<>();
     }
 
-    public List<Hecho> leerHechos(String path) {
-        List<String[]> datos = extract(path);
+    public List<Hecho> leerHechos(InputStream inputStream) {
+        List<String[]> datos = extract(inputStream);
         return load(transform(datos));
     }
 
     // ----------------------
     // EXTRACT
     // ----------------------
-    private List<String[]> extract(String path) {
-        try (CSVReader reader = new CSVReader(new FileReader(path))) {
+    private List<String[]> extract(InputStream inputStream) {
+        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
             List<String[]> filas = reader.readAll();
             return filas.subList(1, filas.size()); // Saltear header
         } catch (Exception e) {
@@ -54,7 +57,7 @@ public class LectorCsv{
                 String nombreCategoria = fila[2];
                 Double latitud = Double.parseDouble(fila[3]);
                 Double longitud = Double.parseDouble(fila[4]);
-                LocalDateTime fecha = LocalDateTime.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                LocalDateTime fecha = LocalDate.parse(fila[5], DateTimeFormatter.ofPattern("dd/MM/yyyy")).atStartOfDay(); // Hardcodeo la hora en 00:00:00
 
                 Categoria categoria = obtenerOCrearCategoria(nombreCategoria);
 
@@ -117,6 +120,4 @@ public class LectorCsv{
             Double longitud,
             LocalDateTime fecha
     ) {}
-
-    // TODO: cuando hagamos el agregador el chequeo de categoria se debe hacer ahi ya que ahi se almacenaran todas las categorias existentes en el sistema
 }

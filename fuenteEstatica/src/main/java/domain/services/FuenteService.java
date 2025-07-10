@@ -7,6 +7,9 @@ import domain.repositorios.RepositorioDeFuentes;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,8 +53,11 @@ public class FuenteService {
     }
 
     public FuenteEstatica crearFuenteEstatica(List<String> archivos) {
-        FuenteEstatica nuevaFuente = new FuenteEstatica(lectorCsv); // El ID lo generará JPA
-        archivos.forEach(nuevaFuente::agregarArchivo);
+        FuenteEstatica nuevaFuente = new FuenteEstatica(lectorCsv);
+        archivos.forEach(nombreArchivo -> {
+            String rutaRelativa = "ArchivosCsvPrueba/" + nombreArchivo;
+            nuevaFuente.agregarArchivo(rutaRelativa);
+        });
         return repositorioDeFuentes.save(nuevaFuente);
     }
 }
