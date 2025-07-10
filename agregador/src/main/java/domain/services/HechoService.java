@@ -99,4 +99,7 @@ public class HechoService {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
     }
 
+    public void guardarHecho(Hecho hecho) {
+        repositorioDeHechos.save(hecho);
+    }
 }

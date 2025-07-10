@@ -3,7 +3,6 @@ package domain.controllers;
 import java.util.List;
 import domain.services.HechoService;
 import domain.services.SolicitudService;
-import domain.solicitudes.EstadoSolicitud;
 import domain.solicitudes.SolicitudEliminacion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

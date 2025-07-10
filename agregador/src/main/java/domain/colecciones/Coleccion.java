@@ -34,15 +34,6 @@ public class Coleccion{
     @Setter
     @Enumerated(EnumType.STRING)
     private AlgoritmoConsenso algoritmoConsenso = AlgoritmoConsenso.IRRESTRICTO;
-    //tiene todos los hechos que de las fuentes de esta coleccion
-    //SUPONEMOS QUE REPOSITORIO HECHOS X COLECCION ES UN REPOSITORIO QUE CONTIENE TODOS LOS HECHOS DE ESTA COLECCION
-    //JUNTO CON SUS RESPECTIVOS ATRIBUTOS.
-
-    // La base de datos nos pasa una tupla:
-            //          (Hecho, EsConsensuado)
-    // Como sabemos establecemos el valor de EsConsensuado en la BD?
-            // Se corre un proceso a las 2 de la mañana que actualiza la BD
-    // Como se sabe que algoritmo usar?
 
     public Coleccion(String titulo, String descripcion, List<CriterioDePertenencia> criteriosDePertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;
