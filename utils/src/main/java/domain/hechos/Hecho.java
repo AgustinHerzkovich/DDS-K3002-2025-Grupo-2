@@ -24,8 +24,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Hecho {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String titulo;
+    @Column(length = 1000) // Le asigno VARCHAR(1000)
     private String descripcion;
     @Embedded
     private Categoria categoria;
@@ -63,7 +65,6 @@ public class Hecho {
                  @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
                  @JsonProperty("anonimato") Boolean anonimato,
                  @JsonProperty("autor") IdentidadContribuyente autor) {
-        this.id = UUID.randomUUID().toString().replace("-", "");
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -153,10 +154,7 @@ public class Hecho {
         return fechaAcontecimiento.isBefore(fecha);
     }
 
-    public Boolean ocurrioDespuesDe(LocalDateTime fecha)
-    {
-        return fechaAcontecimiento.isAfter(fecha);
-    }
+    public Boolean ocurrioDespuesDe(LocalDateTime fecha) { return fechaAcontecimiento.isAfter(fecha); }
 
     public Boolean seCargoAntesDe(LocalDateTime fecha) {
         return fechaCarga.isBefore(fecha);

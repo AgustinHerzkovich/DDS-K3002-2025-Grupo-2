@@ -11,6 +11,7 @@ import domain.hechos.Hecho;
 import domain.mappers.HechoInEstaticaDTOToHecho;
 import domain.repositorios.RepositorioDeFuentes;
 import domain.colecciones.fuentes.Fuente;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,10 +30,12 @@ public class FuenteService {
         this.config = cargarConfiguracion();
     }
 
+    @Transactional
     public void guardarFuente(Fuente fuente) {
         repositorioDeFuentes.saveIfNotExists(fuente); // Se guarda la fuente en el repositorio si es que no existía ya
     }
 
+    @Transactional
     public void guardarFuentes(List<Fuente> fuentes) {
         repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
     }
