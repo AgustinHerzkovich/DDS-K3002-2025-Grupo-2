@@ -1,0 +1,42 @@
+package domain.controllers;
+
+import domain.fuentesDinamicas.FuenteDinamica;
+import domain.services.SolicitudService;
+import domain.solicitudes.SolicitudEliminacion;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@RestController
+@RequestMapping("/fuentesDinamicas")
+public class SolicitudController {
+    private final SolicitudService solicitudService;
+
+    public SolicitudController(SolicitudService solicitudService) {
+        this.solicitudService = solicitudService;
+    }
+
+    @PostMapping("/solicitudes")
+    public ResponseEntity<Void> crearSolicitud(@RequestBody SolicitudEliminacion solicitud) {
+        solicitudService.guardarSolicitud(solicitud);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/solicitudes")
+    public List<SolicitudEliminacion> obtenerSolicitudes() {
+        return solicitudService.obtenerSolicitudes();
+    }
+
+    @GetMapping("/solicitudes/{id}")
+    public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
+        return solicitudService.obtenerSolicitud(id);
+    }
+
+    @DeleteMapping("/solicitudes/{id}")
+    public ResponseEntity<Void> eliminarSolicitud(@PathVariable("id") Long id) {
+        solicitudService.eliminarSolicitud(id);
+        return ResponseEntity.ok().build();
+    }
+}

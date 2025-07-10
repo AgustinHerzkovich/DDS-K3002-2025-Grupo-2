@@ -6,6 +6,7 @@ import domain.hechos.Hecho;
 import domain.hechos.Origen;
 import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeSolicitudes;
+import domain.services.FuenteService;
 import domain.solicitudes.DetectorDeSpamPrueba;
 import domain.solicitudes.SolicitudEliminacion;
 import domain.usuarios.Contribuyente;
@@ -27,10 +28,11 @@ import java.util.*;
 @RestController // Le decimos que esta clase es un controlador REST
 // Esto significa que es lo que *expone la api* para que sea consumido
 @RequestMapping("/fuentesDinamicas") // Define ruta base para todos los endpoints de esta clase
-public class FuenteDinamicaController {
-    private final Map<Long, FuenteDinamica> fuentes = new HashMap<>(); // Registro simulado (en memoria)
+public class FuenteController {
+    private final FuenteService fuenteService;
 
-    public FuenteDinamicaController() {
+    public FuenteController(FuenteService fuenteService) {
+        this.fuenteService = fuenteService;
         RepositorioDeHechos repoHecho = new RepositorioDeHechos();
         RepositorioDeSolicitudes repoSolicitudes = new RepositorioDeSolicitudes();
         FuenteDinamica fuente = new FuenteDinamica(repoHecho, repoSolicitudes);
@@ -44,40 +46,13 @@ public class FuenteDinamicaController {
         fuentes.put(fuente.getId(), fuente);
     }
 
-    @GetMapping
-    public List<Hecho> todaslasfuentes() {
-        List <Hecho> hechos = new ArrayList<Hecho>();
-        for (Fuente f : fuentes.values()) {
-            hechos.addAll(f.importarHechos());
-        }
-        return hechos;
+    @PostMapping
+    public void crearFuente(@RequestBody FuenteDinamica fuente) {
+        fuenteService.guardarFuente(fuente);
     }
 
-    @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
-    public List<Hecho> hechos(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
-            ) {
-        FuenteDinamica fuente = fuentes.get(id);
-        if (fuente == null){
-            throw new NoSuchElementException("No se encontro la fuente con id " + id);// TODO: mas adelante implementar exceptions personalizados
-        }
-        if (fechaMayorA == null) {
-            return fuente.importarHechos();
-        }
-
-        return fuente.importarHechos().stream()
-                .filter(hecho -> hecho.seActualizoDespuesDe(fechaMayorA))
-                .toList();
-    }
-
-    @GetMapping("/{id}/solicitudes")
-    public List<SolicitudEliminacion> solicitudes(@PathVariable("id") Long id) {
-        FuenteDinamica fuente = fuentes.get(id);
-        if (fuente == null){
-            throw new NoSuchElementException("No se encontro la fuente con id " + id);// TODO: mas adelante implementar exceptions personalizados
-        }
-        return fuente.buscarSolicitudes();
+    @DeleteMapping
+    public void eliminarFuente(@RequestBody FuenteDinamica fuente) {
+        fuenteService.eliminarFuente(fuente);
     }
 }
