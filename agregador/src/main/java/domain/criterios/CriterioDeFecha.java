@@ -1,13 +1,19 @@
 package domain.criterios;
 
 import domain.hechos.Hecho;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 // CRITERIO DE FECHA
-public class CriterioDeFecha implements CriterioDePertenencia{
-    private final LocalDateTime fechaInicial;
-    private final LocalDateTime fechaFinal;
+@Entity
+@DiscriminatorValue("FECHA")
+@NoArgsConstructor
+public class CriterioDeFecha extends CriterioDePertenencia{
+    private LocalDateTime fechaInicial;
+    private LocalDateTime fechaFinal;
 
     public CriterioDeFecha(LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
         this.fechaInicial = fechaInicial;
