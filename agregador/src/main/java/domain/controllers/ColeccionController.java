@@ -27,8 +27,8 @@ public class ColeccionController {
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(@RequestBody Coleccion coleccion) {
-        coleccionService.guardarColeccion(coleccion);
         fuenteService.guardarFuentes(coleccion.getFuentes());
+        coleccionService.guardarColeccion(coleccion);
         coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         return ResponseEntity.ok(coleccion);
     }

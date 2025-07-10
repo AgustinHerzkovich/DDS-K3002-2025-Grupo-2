@@ -21,9 +21,8 @@ public class Fuente{
     @Setter
     private LocalDateTime ultimaPeticion;
 
-    public Fuente(Long idExterno, TipoFuente tipo) {
-        this.id = new FuenteId(UUID.randomUUID().toString(), idExterno);
-        this.id.setIdExterno(idExterno);
+    public Fuente(FuenteId id,TipoFuente tipo) {
+        this.id = id;
         this.tipo = tipo;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
     }

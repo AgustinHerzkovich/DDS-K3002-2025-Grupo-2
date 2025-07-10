@@ -1,5 +1,7 @@
 package domain.colecciones;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
 import domain.criterios.CriterioDePertenencia;
@@ -17,30 +19,33 @@ import java.util.UUID;
 // COLECCION
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class Coleccion{
     private String titulo;
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "coleccion_id")
-    @Getter
     private List<CriterioDePertenencia> criteriosDePertenencia;
-    @Getter
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Fuente> fuentes;
-    @Getter
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String identificadorHandle;
-    @Getter
-    @Setter
     @Enumerated(EnumType.STRING)
     private AlgoritmoConsenso algoritmoConsenso = AlgoritmoConsenso.IRRESTRICTO;
 
-    public Coleccion(String titulo, String descripcion, List<CriterioDePertenencia> criteriosDePertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmo) {
+    @JsonCreator
+    public Coleccion(
+            @JsonProperty("titulo") String titulo,
+            @JsonProperty("descripcion") String descripcion,
+            @JsonProperty("criteriosDePertenencia") List<CriterioDePertenencia> criteriosDePertenencia,
+            @JsonProperty("fuentes") List<Fuente> fuentes,
+            @JsonProperty("algoritmo") AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criteriosDePertenencia = criteriosDePertenencia;
         this.fuentes = fuentes;
-        this.identificadorHandle = UUID.randomUUID().toString().replace("-", "");
         this.algoritmoConsenso = algoritmo;
         // Tal vez convenga delegar esto en otra clase
         try {

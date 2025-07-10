@@ -16,9 +16,4 @@ public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColec
     // TODO: usar estos metodos
     List<HechoXColeccion> findByColeccion_IdentificadorHandle(String idColeccion);
     //List<HechoXColeccion> findByColeccionIdAndConsensuadoIsTrue(Long idColeccion);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE HechoXColeccion h SET h.consensuado = :consensuado WHERE h.hecho.id = :uuid")
-    void update(@Param("uuid") String uuid, @Param("consensuado") Boolean consensuado);
 }
