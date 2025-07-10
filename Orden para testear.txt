@@ -1,0 +1,83 @@
+Orden para testear:
+Abrir swaggers
+http://localhost:puerto/documentacion-apis
+
+Levantar Fuente Estática
+Postear una Fuente Estática
+Request body:
+[
+  "desastres_naturales_argentina.csv",
+  "desastres_sanitarios_contaminacion_argentina.csv",
+  "desastres_tecnologicos_argentina.csv"
+]
+
+Levantar Fuente Dinámica
+Postear una Fuente Dinámica (Request body vacio)
+Postear un hecho en esa fuente creada
+Request body:
+{
+  "titulo": "Titulo ejemplo",
+  "descripcion": "Descripcion ejemplo",
+  "categoria": {
+    "nombre": "Categoria ejemplo"
+  },
+  "ubicacion": {
+    "latitud": 0,
+    "longitud": 0
+  },
+  "fechaAcontecimiento": "2025-07-10T19:28:54.832Z",
+  "origen": "CARGA_MANUAL",
+  "contenidoTexto": "Contenido texto ejemplo",
+  "contenidoMultimedia": [
+    {
+      "tipo": "video",
+      "formato": "mp4",
+      "tamanio": 100,
+      "resolucion": "1920x1080",
+      "duracion": 30
+    }
+  ],
+  "anonimato": false,
+  "autor": {
+    "nombre": "Nombre ejemplo",
+    "apellido": "Apellido ejemplo",
+    "fechaNacimiento": "2001-10-10",
+    "contribuyente": {
+      "contribuyenteId": "Id ejemplo",
+      "esAdministrador": false
+    }
+  }
+}
+
+Levantar agregador
+Postear una colección que tenga las dos fuentes de arriba
+Request body:
+{
+  "titulo": "Coleccion 1",
+  "descripcion": "Coleccion de colecciones jijo",
+  "criteriosDePertenencia": [
+    {
+      "tipo": "fecha",
+      "fechaInicial": "2010-01-01T20:44:13.170",
+      "fechaFinal": "2020-12-20T20:44:13.170"
+    }
+  ],
+  "fuentes": [
+    {
+      "id": {
+        "idExterno": 1
+      },
+      "tipo": "ESTATICA"
+    },
+    {
+      "id": {
+        "idExterno": 1
+      },
+      "tipo": "DINAMICA"
+    }
+  ],
+  "algoritmoConsenso": "ABSOLUTO"
+}
+Esperar 1 minuto a que arranque la carga de hechos
+Finaliza carga de hechos
+Probar get de hechos totales, irrestrictos y curados

@@ -29,8 +29,7 @@ public class EjecutarAlgoritmoConsensoScheduller {
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
     }
 
-    //@Scheduled(cron = "0 0 3 * * *") // Se ejecuta a las 3 AM
-    @Scheduled(initialDelay = 60000)
+    @Scheduled(cron = "0 0 3 * * *") // Se ejecuta a las 3 AM
     public void curarHechos() {
         System.out.println("Se ha iniciado la curación de hechos. Esto puede tardar un rato.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
