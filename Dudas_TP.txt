@@ -47,20 +47,14 @@ RESP: Sí.
 13. Debemos modelar en diagrama de clases componentes de capas superiores tales como controladores o servicios?
 RESP: Podría modelarse como un diagrama de clases de nivel superior, considerando que las clases de un nivel superior conocen a las de nivel inferior, pero no viceversa. De todos modos no es estrictamente necesario hacerlo, y se puede dejar los diagramas de clases únicamente para modelar la lógica de negocio.
 
-14. Ponemos las consultas en su respectivo service o aparte en otro service? ejemplo, si tenemos una inserción en hechoRepo y en hechoXColeccionRepo, ponemos las consultas en hechoService o en otro service?
-RESP:
+14. No entendemos qué es lo de Reportar un hecho  en la API pública para otras instancias de MetaMapa.
+RESP: El enunciado no lo aclara por el momento.
 
-15. No entendemos qué es lo de Reportar un hecho  en la API pública para otras instancias de MetaMapa.
-RESP:
+15. No entendemos si la función de FuenteMetamapa es únicamente pedir los hechos a otro metamapa cuando el agregador se los pide o, si FuenteMetamapa también puede hacer posteos sobre agregador, esto está dudoso por lo que dice en la página 14 sobre API pública para otras instancias de MetaMapa.
+RESP: El enunciado no lo aclara por el momento. Es correcta la interpretación de que pide hechos.
 
-16. No entendemos si la función de FuenteMetamapa es únicamente pedir los hechos a otro metamapa cuando el agregador se los pide o, si FuenteMetamapa también puede hacer posteos sobre agregador, esto está dudoso por lo que dice en la página 14 sobre API pública para otras instancias de MetaMapa.
-RESP:
+16. Quién apunta a la UI Solicitudes que está en agregador? Es acaso FuenteMetamapa?
+RESP: El enunciado no lo aclara por el momento. Se debe esclarecer el diagrama de despliegue en un futuro.
 
-17. Quién apunta a la UI Solicitudes que está en agregador? Es acaso FuenteMetamapa?
-RESP:
-
-18. Preguntar si está bien la implementación de Solicitudes de Eliminación.
-RESP:
-
-19. Qué hacemos en el diagrama con las clases Algoritmos? ya que solo las llama el scheduller.
-RESP:
+17. Qué hacemos en el diagrama con las clases Algoritmos? ya que solo las llama el scheduller.
+RESP: Refactorizar y aplicar algún patrón strategy, eliminando tal vez el enum.
