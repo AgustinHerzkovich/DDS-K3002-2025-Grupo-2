@@ -1,18 +1,19 @@
 package domain.fuentesEstaticas;
 
+import domain.lectores.LectorArchivo;
 import domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 // FUENTE ESTATICA
 @Entity
-@NoArgsConstructor
 public class FuenteEstatica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +23,8 @@ public class FuenteEstatica {
     @CollectionTable(name = "fuente_estatica_archivos")
     @Column(name = "ruta_archivo")
     private  List<String> archivos;
-    @Transient
-    private LectorCsv lectorArchivo;
 
-    public FuenteEstatica(LectorCsv lectorArchivo) {
-        this.lectorArchivo = lectorArchivo;
+    public FuenteEstatica() {
         this.archivos = new ArrayList<>();
     }
 
@@ -34,22 +32,32 @@ public class FuenteEstatica {
         archivos.add(rutaRelativa);
     }
 
-    public List<Hecho> importarHechos() {
-        if (lectorArchivo == null) {
-            lectorArchivo = new LectorCsv(); // Inicialización lazy
-        }
+    public List<Hecho> importarHechos(Function<String, Optional<LectorArchivo>> proveedorLector) {
         List<Hecho> hechos = new ArrayList<>();
-        archivos.forEach(rutaRelativa -> {
+        for (String rutaRelativa : archivos) {
             try (InputStream is = getClass().getClassLoader().getResourceAsStream(rutaRelativa)) {
                 if (is == null) {
                     System.out.println("No se encontró el archivo: " + rutaRelativa);
-                    return;
+                    continue;
                 }
-                hechos.addAll(lectorArchivo.leerHechos(is));
+
+                String extension = obtenerExtension(rutaRelativa);
+                Optional<LectorArchivo> lectorOpt = proveedorLector.apply(extension);
+                if (lectorOpt.isEmpty()) {
+                    System.out.println("No hay lector disponible para extensión: " + extension);
+                    continue;
+                }
+
+                hechos.addAll(lectorOpt.get().leerHechos(is));
             } catch (IOException e) {
                 System.out.println("Error al abrir el archivo: " + e.getMessage());
             }
-        });
+        }
         return hechos;
+    }
+
+    private String obtenerExtension(String ruta) {
+        int i = ruta.lastIndexOf('.');
+        return (i >= 0) ? ruta.substring(i + 1) : "";
     }
 }

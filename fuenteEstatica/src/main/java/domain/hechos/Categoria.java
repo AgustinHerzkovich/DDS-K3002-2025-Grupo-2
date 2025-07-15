@@ -10,12 +10,10 @@ import java.time.LocalDateTime;
 public class Categoria {
     @Getter
     private String nombre;
-    private LocalDateTime fechaCreacion;
 
     @JsonCreator
     public Categoria(@JsonProperty("nombre") String nombre) {
         this.nombre = nombre;
-        this.fechaCreacion = LocalDateTime.now();
     }
 
     public Boolean esIdenticaA(String categoria_nombre) {
