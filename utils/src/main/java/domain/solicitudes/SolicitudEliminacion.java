@@ -4,6 +4,7 @@ import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -38,16 +39,18 @@ import java.time.LocalDateTime;
 
 // SOLICITUD DE ELIMINACION
 @Entity
+@NoArgsConstructor
 public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
     @Setter @Getter
-    @OneToOne
-    private EstadoSolicitud estado;
-    @Getter
     @ManyToOne
     private Contribuyente solicitante;
+    @Setter @Getter
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_id")
+    private EstadoSolicitud estado;
     @Getter @Setter
     @ManyToOne
     private Contribuyente administrador;
@@ -57,15 +60,14 @@ public class SolicitudEliminacion {
     private LocalDateTime fechaResolucion;
     @Getter
     @ManyToOne
+    @Setter
     private Hecho hecho;
     @Getter
     private String motivo;
-    @Transient
-    private DetectorDeSpam detector;
 
-    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo, DetectorDeSpam detector) {
+    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo) {
         this.motivo = motivo;
-        this.detector = detector;
+
         if (this.esSpam()){
             this.estado = new EstadoSolicitudSpam(this);
         }else{
@@ -85,10 +87,6 @@ public class SolicitudEliminacion {
         hecho.agregarASolicitudes(this);
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
-    }
-
-    public SolicitudEliminacion() {
-
     }
 
     /////////////////////////////////////
@@ -155,6 +153,7 @@ public class SolicitudEliminacion {
     //////////////////////////////////////
 
     public Boolean esSpam(){
-                return detector.esSpam(this.motivo);
-        }
+        return new DetectorDeSpamPrueba().esSpam(this.getMotivo());
+    }
+
 }

@@ -27,8 +27,11 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos() {
-        return hechoService.obtenerHechos();
+    public List<Hecho> obtenerHechos(
+            @RequestParam(value = "fechaMayorA", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
+    ) {
+        return hechoService.obtenerHechosConFechaMayorA(fechaMayorA);
     }
 
     @GetMapping("/hechos/{id}")
