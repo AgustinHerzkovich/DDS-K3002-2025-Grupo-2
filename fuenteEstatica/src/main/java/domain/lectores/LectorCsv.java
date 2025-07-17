@@ -79,7 +79,7 @@ public class LectorCsv implements LectorArchivo {
             throw new IllegalArgumentException("Hecho sin título ni descripción");
         }
 
-        return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha);
+        return new Hecho(titulo, descripcion, categoria, latitud, longitud, fecha, Origen.DATASET);
     }
 
     private Categoria obtenerOCrearCategoria(String nombre) {
