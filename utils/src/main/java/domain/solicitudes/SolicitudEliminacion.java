@@ -69,12 +69,12 @@ public class SolicitudEliminacion {
         this.motivo = motivo;
 
         if (this.esSpam()){
-            this.estado = new EstadoSolicitudSpam(this);
+            this.estado = new EstadoSolicitudSpam();
         }else{
             if(hecho.esVisible()){
-                this.estado = new EstadoSolicitudPendiente(this);
+                this.estado = new EstadoSolicitudPendiente();
             }else{
-                this.estado = new EstadoSolicitudPrescripta(this);
+                this.estado = new EstadoSolicitudPrescripta();
                 // Si por algun motivo "llega tarde" una solicitud y ya se elimino el hecho
             }
         }
@@ -92,38 +92,38 @@ public class SolicitudEliminacion {
     /////////////////////////////////////
 
     public void aceptar(Contribuyente admin){
-        estado.aceptar();
+        estado.aceptar(this);
         this.administrador = admin;
     }
 
     public void anularAceptacion(){
-        estado.anularAceptacion();
+        estado.anularAceptacion(this);
     }
 
     public void rechazar(Contribuyente admin){
-        estado.rechazar();
+        estado.rechazar(this);
         this.administrador = admin;
     }
 
     public void anularRechazo(){
-        estado.anularRechazo();
+        estado.anularRechazo(this);
     }
 
     public void prescribir(){
-        estado.prescribir();
+        estado.prescribir(this);
     }
 
     public void anularPrescripcion(){
-        estado.anularPrescripcion();
+        estado.anularPrescripcion(this);
     }
 
     public void marcarSpam(Contribuyente admin){
-        estado.marcarSpam();
+        estado.marcarSpam(this);
         this.administrador = admin;
     }
 
     public void anularMarcaSpam(){
-    estado.anularMarcaSpam();
+    estado.anularMarcaSpam(this);
     }
 
     /////////////////////////////////////
