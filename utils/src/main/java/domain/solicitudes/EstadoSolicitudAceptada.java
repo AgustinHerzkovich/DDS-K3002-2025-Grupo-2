@@ -1,50 +1,15 @@
 package domain.solicitudes;
 
 import jakarta.persistence.Entity;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 public class EstadoSolicitudAceptada extends EstadoSolicitud {
-    public EstadoSolicitudAceptada(SolicitudEliminacion slt) {
-        super(slt);
-    }
-
     @Override
-    public void aceptar( ) {
-    }
-
-    @Override
-    public void rechazar( ) {
-    }
-
-    @Override
-    public void prescribir( ) {
-    }
-
-    @Override
-    public void marcarSpam( ) {
-    }
-
-    @Override
-    public void anularAceptacion( ) {
-        solicitud.setEstado(new EstadoSolicitudPendiente(solicitud));
+    public void anularAceptacion(SolicitudEliminacion solicitud) {
+        solicitud.setEstado(new EstadoSolicitudPendiente());
         solicitud.anularPrescripcionCosolicitudes();
         solicitud.mostrarHecho();
         solicitud.setFechaResolucion(null);
-
-    }
-
-    @Override
-    public void anularRechazo() {
-    }
-
-    @Override
-    public void anularPrescripcion() {
-    }
-
-    @Override
-    public void anularMarcaSpam() {
     }
 
     @Override
