@@ -114,17 +114,23 @@ public class ColeccionService {
         };
     }
 
-    public void agregarFuenteAColeccion(String idColeccion, Fuente fuente) {
-        Coleccion coleccion = obtenerColeccion(idColeccion);
+    public void agregarFuenteAColeccion(Coleccion coleccion, Fuente fuente) {
+        coleccion.agregarFuente(fuente);
 
         FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 
-    public void quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) {
-        Coleccion coleccion = obtenerColeccion(idColeccion);
-
+    public void quitarFuenteDeColeccion(Coleccion coleccion, FuenteId fuenteId) {
         Optional<FuenteXColeccion> fuenteXColeccionOpt = repositorioDeFuentesXColeccion.findByFuenteIdAndColeccion(fuenteId, coleccion);
+
+        fuenteXColeccionOpt.ifPresent(fxc -> {
+            Fuente fuente = fxc.getFuente();
+            coleccion.quitarFuente(fuente);
+            repositorioDeFuentesXColeccion.delete(fxc);
+        });
+
+        guardarColeccion(coleccion); // Updateo la colección después de quitar la fuente
 
         fuenteXColeccionOpt.ifPresent(repositorioDeFuentesXColeccion::delete);
     }

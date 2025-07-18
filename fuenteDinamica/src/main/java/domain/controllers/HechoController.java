@@ -23,6 +23,7 @@ public class HechoController {
             @PathVariable("id") Long id,
             @RequestBody Hecho hecho) {
         hechoService.guardarHechoEnFuente(id, hecho);
+        System.out.println("Se ha agregado el hecho " + hecho.getId() + " a la fuente con id " + id);
         return ResponseEntity.ok().build();
     }
 

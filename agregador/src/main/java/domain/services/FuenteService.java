@@ -72,7 +72,7 @@ public class FuenteService {
             String ip = "";
             Integer puerto = 0;
             String tipo = "";
-            TipoFuente tipoFuente = fuente.getTipo();
+            TipoFuente tipoFuente = fuente.getId().getTipo();
             switch (tipoFuente) {
                 case ESTATICA:
                     ip = config.ip_estatica;
@@ -102,7 +102,7 @@ public class FuenteService {
                 ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
                 String json = response.getBody();
 
-                if (Objects.requireNonNull(fuente.getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
+                if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
                     List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
                     });
                     hechos = hechosDto.stream().map(mapperDto::map).toList();

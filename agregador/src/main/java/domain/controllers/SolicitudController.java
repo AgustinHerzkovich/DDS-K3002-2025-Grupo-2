@@ -22,6 +22,7 @@ public class SolicitudController {
     @PostMapping("/solicitudes/")
     public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
         SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
+        System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
         return ResponseEntity.ok(solicitud);
     }
 
@@ -45,6 +46,7 @@ public class SolicitudController {
         }
         hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible) TODO: se debe actualizar el hecho antes de volver a guardarlo, es decir quitarle las solicitudes
 
+        System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
         return ResponseEntity.ok().build();
     }
 }

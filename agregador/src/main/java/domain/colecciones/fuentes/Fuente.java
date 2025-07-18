@@ -16,14 +16,11 @@ public class Fuente{
     @Getter
     private FuenteId id;
     @Getter
-    private TipoFuente tipo;
-    @Getter
     @Setter
     private LocalDateTime ultimaPeticion;
 
-    public Fuente(FuenteId id,TipoFuente tipo) {
+    public Fuente(FuenteId id) {
         this.id = id;
-        this.tipo = tipo;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
     }
 }

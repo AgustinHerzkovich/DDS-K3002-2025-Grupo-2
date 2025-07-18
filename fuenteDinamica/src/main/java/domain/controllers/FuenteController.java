@@ -40,12 +40,14 @@ public class FuenteController {
     @PostMapping
     public ResponseEntity<FuenteDinamica> crearFuente() {
         FuenteDinamica nuevaFuente = fuenteService.guardarFuente();
+        System.out.println("Se ha creado una nueva fuente dinámica: " + nuevaFuente.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFuente);
     }
 
     @DeleteMapping
     public ResponseEntity<FuenteDinamica> eliminarFuente(@RequestBody FuenteDinamica fuente) {
         fuenteService.eliminarFuente(fuente);
+        System.out.println("Se ha eliminado la fuente dinámica: " + fuente.getId());
         return ResponseEntity.status(HttpStatus.OK).body(fuente);
     }
 }

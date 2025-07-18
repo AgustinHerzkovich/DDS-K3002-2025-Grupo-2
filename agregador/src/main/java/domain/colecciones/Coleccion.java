@@ -70,4 +70,14 @@ public class Coleccion{
     public Boolean cumpleCriterios(Hecho hecho){
         return criteriosDePertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
     }
+
+    public void agregarFuente(Fuente fuente) {
+        if (!fuentes.contains(fuente)) {
+            fuentes.add(fuente);
+        }
+    }
+
+    public void quitarFuente(Fuente fuente) {
+        fuentes.remove(fuente);
+    }
 }

@@ -42,29 +42,23 @@ import java.time.LocalDateTime;
 // SOLICITUD DE ELIMINACION
 @Entity
 @NoArgsConstructor
+@Getter @Setter
 public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
-    @Setter @Getter
     @ManyToOne(cascade = CascadeType.ALL)
     private Contribuyente solicitante;
-    @Setter @Getter
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "estado_id")
     private EstadoSolicitud estado;
-    @Getter @Setter
     @ManyToOne
     private Contribuyente administrador;
     @Getter
     private LocalDateTime fechaSubida;
-    @Getter @Setter
     private LocalDateTime fechaResolucion;
-    @Getter
     @ManyToOne
-    @Setter
     private Hecho hecho;
-    @Getter
     private String motivo;
 
     @JsonCreator
