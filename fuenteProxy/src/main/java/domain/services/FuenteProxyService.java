@@ -32,4 +32,8 @@ public class FuenteProxyService {
         }
        return listaDeHechosADevolver;
     }
+
+    public void guardarFuente(FuenteProxy fuenteProxy) {
+        repositorioDeFuentesProxy.save(fuenteProxy);
+    }
 }
