@@ -29,7 +29,7 @@ Request body:
     "latitud": 0,
     "longitud": 0
   },
-  "fechaAcontecimiento": "2025-07-10T19:28:54.832Z",
+  "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
   "origen": "CARGA_MANUAL",
   "contenidoTexto": "Contenido texto ejemplo",
   "contenidoMultimedia": [

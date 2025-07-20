@@ -5,10 +5,14 @@ import domain.colecciones.Coleccion;
 import domain.colecciones.fuentes.Fuente;
 import domain.colecciones.fuentes.FuenteId;
 import domain.colecciones.fuentes.FuenteXColeccion;
+import domain.colecciones.fuentes.HechoXFuente;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeColecciones;
 import domain.repositorios.RepositorioDeFuentesXColeccion;
+import domain.repositorios.RepositorioDeHechosXColeccion;
+import domain.repositorios.RepositorioDeHechosXFuente;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,11 +24,15 @@ public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoService hechoService;
-    
-    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService) {
+    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
+
+    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
+        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
     }
 
     public void guardarColeccion(Coleccion coleccion) {
@@ -121,6 +129,7 @@ public class ColeccionService {
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 
+    @Transactional
     public void quitarFuenteDeColeccion(Coleccion coleccion, FuenteId fuenteId) {
         Optional<FuenteXColeccion> fuenteXColeccionOpt = repositorioDeFuentesXColeccion.findByFuenteIdAndColeccion(fuenteId, coleccion);
 
@@ -131,6 +140,6 @@ public class ColeccionService {
             repositorioDeColecciones.save(coleccion); // Updatea la colección después de quitar la fuente
         });
 
-        fuenteXColeccionOpt.ifPresent(repositorioDeFuentesXColeccion::delete);
+        repositorioDeHechosXColeccion.deleteAllByFuenteId(fuenteId); // Eliminar hechos asociados a la fuente de la colección
     }
 }

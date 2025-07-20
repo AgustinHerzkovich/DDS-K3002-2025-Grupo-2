@@ -1,5 +1,7 @@
 package domain.repositorios;
 
+import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteId;
 import domain.colecciones.fuentes.HechoXFuente;
 import domain.colecciones.fuentes.HechoXFuenteId;
 import org.springframework.data.jpa.repository.JpaRepository;
