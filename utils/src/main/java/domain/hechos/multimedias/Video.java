@@ -24,6 +24,6 @@ public class Video extends Multimedia {
 
     @Override
     public void reproducir() {
-        // TODO
+        // Implementar
     }
 }

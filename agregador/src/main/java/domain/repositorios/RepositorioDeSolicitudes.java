@@ -6,23 +6,9 @@ import domain.solicitudes.SolicitudEliminacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface RepositorioDeSolicitudes extends JpaRepository<SolicitudEliminacion, Long> {
-
-    // TODO: Revisar la query
-    @Query("""
-        SELECT s
-        FROM SolicitudEliminacion s
-        WHERE s.id = :idHecho
-    """)
-    List<SolicitudEliminacion> findByHechoId(@Param("idHecho") String idHecho);
-
-    // TODO: Revisar la query
-    /*@Query("""
-        SELECT s
-        FROM SolicitudEliminacion s
-        WHERE s.id = :idSolicitud
-    """)
-    SolicitudEliminacion findBySolictudId(@Param("idSolicitud") Long idSolicitud);
-    */
+    List<SolicitudEliminacion> findByHecho(Hecho hecho);
 }

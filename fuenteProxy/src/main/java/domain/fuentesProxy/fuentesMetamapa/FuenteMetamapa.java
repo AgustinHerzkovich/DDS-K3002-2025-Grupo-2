@@ -11,7 +11,19 @@ import domain.fuentesProxy.FuenteProxy;
 @Entity
 @NoArgsConstructor
 public class FuenteMetamapa extends FuenteProxy {
-    private String endpointHechos = "https://7239874289/agregador/hechos";
+
+    public String getEndpointHechos() {
+        return endpointHechos;
+    }
+
+    public void setEndpointHechos(String endpointHechos) {
+        this.endpointHechos = endpointHechos;
+    }
+
+    private String endpointHechos;
+    public FuenteMetamapa(String endpointHechos) {
+        this.endpointHechos = endpointHechos;
+    }
     //private String endpointColecciones = "https://7239874289/agregador/coleccion/1";
     //private String endpointSolicitudes = "https://7239874289/agregador/solicitud";
 

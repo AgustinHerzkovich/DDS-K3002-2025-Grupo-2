@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
-    // TODO: Revisar la query
     @Query("""
         SELECT h
         FROM Hecho h
@@ -19,7 +18,6 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     """)
     List<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion);
 
-    // TODO: Revisar la query
     @Query("""
         SELECT h
         FROM Hecho h
@@ -28,7 +26,6 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     """)
     List<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion);
 
-    // TODO: Revisar la query
     @Query("""
         SELECT h
         FROM Hecho h

@@ -29,7 +29,7 @@ Request body:
     "latitud": 0,
     "longitud": 0
   },
-  "fechaAcontecimiento": "2025-07-10T19:28:54.832Z",
+  "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
   "origen": "CARGA_MANUAL",
   "contenidoTexto": "Contenido texto ejemplo",
   "contenidoMultimedia": [
@@ -69,18 +69,20 @@ Request body:
   "fuentes": [
     {
       "id": {
+        "tipo": "ESTATICA",
         "idExterno": 1
-      },
-      "tipo": "ESTATICA"
+      }
     },
     {
       "id": {
+        "tipo": "DINAMICA",
         "idExterno": 1
-      },
-      "tipo": "DINAMICA"
+      }
     }
   ],
-  "algoritmoConsenso": "ABSOLUTO"
+  "algoritmoConsenso": {
+    "tipo": "absoluto"
+  }
 }
 Esperar 30 segundos a que arranque la carga de hechos
 Finaliza carga de hechos

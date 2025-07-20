@@ -2,6 +2,7 @@ package domain.usuarios;
 
 import domain.solicitudes.SolicitudEliminacion;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -15,16 +16,17 @@ import java.util.List;
 @NoArgsConstructor
 public class Contribuyente {
     @Id
-    private String contribuyenteId;
+    @Getter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long contribuyenteId;
     @Setter
     private Boolean esAdministrador;
-    @OneToMany(mappedBy = "contribuyente")
+    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER)
     private List<IdentidadContribuyente> identidades;
     @OneToMany(mappedBy = "solicitante")
     private List<SolicitudEliminacion> solicitudesEliminacion;
 
-    public Contribuyente(String contribuyenteId, Boolean esAdministrador) {
-        this.contribuyenteId = contribuyenteId;
+    public Contribuyente(Boolean esAdministrador) {
         this.esAdministrador = esAdministrador;
         this.identidades = new ArrayList<>();
         this.solicitudesEliminacion = new ArrayList<>();
@@ -36,6 +38,9 @@ public class Contribuyente {
     }
 
     public IdentidadContribuyente getUltimaIdentidad() {
+        if (identidades == null || identidades.isEmpty()) {
+            return null;
+        }
         return identidades.getLast();
     }
 

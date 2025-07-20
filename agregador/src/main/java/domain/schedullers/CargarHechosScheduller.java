@@ -20,7 +20,7 @@ public class CargarHechosScheduller {
         this.hechoService = hechoService;
     }
 
-    @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Scheduled(initialDelay = 60000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
         Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion();

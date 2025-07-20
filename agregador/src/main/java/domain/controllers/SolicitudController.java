@@ -1,6 +1,8 @@
 package domain.controllers;
 
 import java.util.List;
+
+import domain.dto.SolicitudDTO;
 import domain.services.HechoService;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
@@ -18,8 +20,9 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes/")
-    public ResponseEntity<SolicitudEliminacion> crearSolicitud(SolicitudEliminacion solicitud) {
-        solicitudService.guardarSolicitud(solicitud);
+    public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
+        SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
+        System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
         return ResponseEntity.ok(solicitud);
     }
 
@@ -31,7 +34,7 @@ public class SolicitudController {
         SolicitudEliminacion sol;
         try {
             solis = solicitudService.solicitudesRelacionadas(id);
-            sol = solis.getFirst(); // El primero es la solicitud a cambiar
+            sol = solicitudService.obtenerSolicitud(id); // El primero es la solicitud a cambiar
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,6 +46,7 @@ public class SolicitudController {
         }
         hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible)
 
+        System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
         return ResponseEntity.ok().build();
     }
 }

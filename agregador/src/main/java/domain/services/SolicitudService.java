@@ -3,17 +3,23 @@ package domain.services;
 import java.util.List;
 
 
+import domain.dto.SolicitudDTO;
+import domain.hechos.Hecho;
+import domain.mappers.SolicitudMapper;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
+import domain.usuarios.Contribuyente;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SolicitudService {
 
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
+    private final HechoService hechoService;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
+        this.hechoService = hechoService;
     }
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
@@ -23,14 +29,28 @@ public class SolicitudService {
             throw new IllegalArgumentException("Solicitud no encontrada con ID: " + id);
         }
 
-        List <SolicitudEliminacion> solicitudesADevolver = repositorioDeSolicitudes.findByHechoId(sol.getHecho().getId());
-        solicitudesADevolver.add(sol);
-        return solicitudesADevolver;
+        return repositorioDeSolicitudes.findByHecho(sol.getHecho());
     }
 
-    public void guardarSolicitud(SolicitudEliminacion solicitud) {
-        repositorioDeSolicitudes.save(solicitud);
+    public SolicitudEliminacion obtenerSolicitud(Long id) {
+        return repositorioDeSolicitudes.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
+
+    public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
+        Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
+        SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);
+        hecho.agregarASolicitudes(solicitud);
+        hechoService.guardarHecho(hecho);
+        return solicitudGuardada;
+    }
+
+    public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
+        Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
+        SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, hecho);
+        return guardarSolicitud(solicitud);
+    }
+
     public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado) {
        switch (nuevoEstado) {
             case "PENDIENTE":
@@ -64,7 +84,5 @@ public class SolicitudService {
             default:
                 throw new IllegalArgumentException("Estado no válido: " + nuevoEstado);
         }
-
-
     }
 }

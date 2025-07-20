@@ -17,12 +17,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FuenteId implements Serializable {
-    private String idInterno;
+    private TipoFuente tipo;
     private Long idExterno;
 
     @JsonCreator
-    public FuenteId(@JsonProperty("idExterno") Long idExterno) {
-        this.idInterno = UUID.randomUUID().toString();
+    public FuenteId(@JsonProperty("tipo") TipoFuente tipo, @JsonProperty("idExterno") Long idExterno) {
+        this.tipo = tipo;
         this.idExterno = idExterno;
     }
 }

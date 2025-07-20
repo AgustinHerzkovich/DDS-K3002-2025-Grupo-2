@@ -22,6 +22,6 @@ public class Audio extends Multimedia {
 
     @Override
     public void reproducir() {
-        // TODO
+        // Implementar
     }
 }

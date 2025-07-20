@@ -5,7 +5,6 @@ import domain.colecciones.HechoXColeccion;
 import domain.colecciones.fuentes.Fuente;
 import domain.colecciones.fuentes.FuenteXColeccion;
 import domain.colecciones.fuentes.HechoXFuente;
-import domain.criterios.CriterioDePertenencia;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeFuentesXColeccion;
 import domain.repositorios.RepositorioDeHechos;
@@ -37,7 +36,7 @@ public class HechoService {
     }
 
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
 
     public void guardarHechosPorFuente(Map<Fuente, List<Hecho>> hechosPorFuente) {
