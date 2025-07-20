@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 // Repositorio de Fuentes general
 @Repository
-public interface RepositorioDeFuentes extends JpaRepository<Fuente, FuenteId>, RepositorioDeFuentesCustom {
+public interface RepositorioDeFuentes extends JpaRepository<Fuente, FuenteId> {
 }

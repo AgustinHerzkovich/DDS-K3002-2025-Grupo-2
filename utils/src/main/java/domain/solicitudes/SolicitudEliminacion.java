@@ -1,9 +1,12 @@
 package domain.solicitudes;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -18,61 +21,43 @@ import java.time.LocalDateTime;
 /// Esta aceptada: Se la puede anularAceptacion() : Pasa a Pendiente
 /// Esta rechazada: Se la puede anularRechazo() : Pasa a Pendiente o Prescripta
 /// Esta spam: Se la puede anularMarcaSpam() : Pasa a Pendiente o Prescripta
-///
-/// Metodos de la clase:
-/// + SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo)
-/// + void aceptar()
-/// + void anularAceptacion()
-/// + void rechazar()
-/// + void anularRechazo()
-/// + void prescribir()
-/// + void anularPrescripcion()
-/// + void marcarSpam()
-/// + void anularMarcaSpam()
-/// + boolean esSpam()
-/// - void preescribirCosolicitudes()
-/// - void anularPrescripcionCosolicitudes()
-
-
-// TODO: Cuando se haga esto de la persistencia, hay que hacer que los cambios de estado de la solicitud se vean reflejados en el medio persistente
 
 // SOLICITUD DE ELIMINACION
 @Entity
+@NoArgsConstructor
+@Getter @Setter
 public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
-    @Setter @Getter
-    @OneToOne
-    private EstadoSolicitud estado;
-    @Getter
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Contribuyente solicitante;
-    @Getter @Setter
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estado_id")
+    private EstadoSolicitud estado;
     @ManyToOne
     private Contribuyente administrador;
     @Getter
     private LocalDateTime fechaSubida;
-    @Getter @Setter
     private LocalDateTime fechaResolucion;
-    @Getter
     @ManyToOne
     private Hecho hecho;
-    @Getter
     private String motivo;
-    @Transient
-    private DetectorDeSpam detector;
 
-    public SolicitudEliminacion(Contribuyente solicitante, Hecho hecho, String motivo, DetectorDeSpam detector) {
+    @JsonCreator
+    public SolicitudEliminacion
+            (@JsonProperty("solicitante") Contribuyente solicitante,
+             @JsonProperty("hecho") Hecho hecho,
+             @JsonProperty("motivo") String motivo) {
         this.motivo = motivo;
-        this.detector = detector;
+
         if (this.esSpam()){
-            this.estado = new EstadoSolicitudSpam(this);
+            this.estado = new EstadoSolicitudSpam();
         }else{
             if(hecho.esVisible()){
-                this.estado = new EstadoSolicitudPendiente(this);
+                this.estado = new EstadoSolicitudPendiente();
             }else{
-                this.estado = new EstadoSolicitudPrescripta(this);
+                this.estado = new EstadoSolicitudPrescripta();
                 // Si por algun motivo "llega tarde" una solicitud y ya se elimino el hecho
             }
         }
@@ -87,45 +72,41 @@ public class SolicitudEliminacion {
         // IMPORTANTE: debe estar cargado el hecho en memoria
     }
 
-    public SolicitudEliminacion() {
-
-    }
-
     /////////////////////////////////////
 
     public void aceptar(Contribuyente admin){
-        estado.aceptar();
+        estado.aceptar(this);
         this.administrador = admin;
     }
 
     public void anularAceptacion(){
-        estado.anularAceptacion();
+        estado.anularAceptacion(this);
     }
 
     public void rechazar(Contribuyente admin){
-        estado.rechazar();
+        estado.rechazar(this);
         this.administrador = admin;
     }
 
     public void anularRechazo(){
-        estado.anularRechazo();
+        estado.anularRechazo(this);
     }
 
     public void prescribir(){
-        estado.prescribir();
+        estado.prescribir(this);
     }
 
     public void anularPrescripcion(){
-        estado.anularPrescripcion();
+        estado.anularPrescripcion(this);
     }
 
     public void marcarSpam(Contribuyente admin){
-        estado.marcarSpam();
+        estado.marcarSpam(this);
         this.administrador = admin;
     }
 
     public void anularMarcaSpam(){
-    estado.anularMarcaSpam();
+    estado.anularMarcaSpam(this);
     }
 
     /////////////////////////////////////
@@ -155,6 +136,7 @@ public class SolicitudEliminacion {
     //////////////////////////////////////
 
     public Boolean esSpam(){
-                return detector.esSpam(this.motivo);
-        }
+        return new DetectorDeSpamPrueba().esSpam(this.getMotivo());
+    }
+
 }

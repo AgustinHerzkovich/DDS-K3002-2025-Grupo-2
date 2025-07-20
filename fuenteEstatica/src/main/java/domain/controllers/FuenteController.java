@@ -41,6 +41,7 @@ public class FuenteController {
     @PostMapping
     public ResponseEntity<FuenteEstatica> crearFuente(@RequestBody List<String> archivos) {
         FuenteEstatica nuevaFuente = fuenteService.crearFuenteEstatica(archivos);
+        System.out.println("Se ha creado una nueva fuente estática: " + nuevaFuente.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFuente);
     }
 }

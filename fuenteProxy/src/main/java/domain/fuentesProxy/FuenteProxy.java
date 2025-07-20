@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 // FUENTE PROXY
+@Getter
 @Entity
 @NoArgsConstructor
 public abstract class FuenteProxy{
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

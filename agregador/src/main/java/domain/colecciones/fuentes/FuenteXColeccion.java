@@ -16,6 +16,7 @@ public class FuenteXColeccion {
     @EmbeddedId
     private FuenteXColeccionId id;
 
+    @Getter
     @ManyToOne
     @MapsId("fuenteId")
     private Fuente fuente;

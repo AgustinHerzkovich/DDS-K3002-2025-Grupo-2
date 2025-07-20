@@ -32,12 +32,16 @@ public class FuenteService {
 
     @Transactional
     public void guardarFuente(Fuente fuente) {
-        repositorioDeFuentes.saveIfNotExists(fuente); // Se guarda la fuente en el repositorio si es que no existía ya
+        if (!repositorioDeFuentes.existsById(fuente.getId())) {
+            repositorioDeFuentes.save(fuente); // Se guarda la fuente en el repositorio si es que no existía ya
+        }
     }
 
     @Transactional
     public void guardarFuentes(List<Fuente> fuentes) {
-        repositorioDeFuentes.saveAllIfNotExists(fuentes); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
+        for (Fuente fuente: fuentes) {
+            guardarFuente(fuente); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
+        }
     }
 
     private ConfiguracionRed cargarConfiguracion() { // Metodo para cargar la configuración de red desde un archivo JSON
@@ -68,7 +72,7 @@ public class FuenteService {
             String ip = "";
             Integer puerto = 0;
             String tipo = "";
-            TipoFuente tipoFuente = fuente.getTipo();
+            TipoFuente tipoFuente = fuente.getId().getTipo();
             switch (tipoFuente) {
                 case ESTATICA:
                     ip = config.ip_estatica;
@@ -98,7 +102,7 @@ public class FuenteService {
                 ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
                 String json = response.getBody();
 
-                if (Objects.requireNonNull(fuente.getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
+                if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
                     List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
                     });
                     hechos = hechosDto.stream().map(mapperDto::map).toList();

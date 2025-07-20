@@ -29,6 +29,11 @@ public class HechoService {
         return repositorioDeHechos.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Hecho> obtenerHechosConFechaMayorA(LocalDateTime fechaMayorA) {
+        return repositorioDeHechos.findAll().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
+    }
+
     public void guardarHechoEnFuente(Long id, Hecho hecho) {
         FuenteDinamica fuente = repositorioDeFuentes.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Fuente no encontrada con ID: " + id));

@@ -1,13 +1,17 @@
 package domain.repositorios;
 
+import domain.colecciones.fuentes.Fuente;
+import domain.colecciones.fuentes.FuenteId;
 import domain.colecciones.fuentes.HechoXFuente;
 import domain.colecciones.fuentes.HechoXFuenteId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, HechoXFuenteId> {
     @Query("""
         SELECT hxf

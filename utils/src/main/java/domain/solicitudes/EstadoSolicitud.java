@@ -13,19 +13,14 @@ public enum Estado{
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import domain.hechos.multimedias.Audio;
-import domain.hechos.multimedias.Imagen;
-import domain.hechos.multimedias.Video;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@NoArgsConstructor
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
         include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON
@@ -42,20 +37,14 @@ public abstract class EstadoSolicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "estado")
-    protected SolicitudEliminacion solicitud;  //Solicitud a la que apunta
 
-    public EstadoSolicitud(SolicitudEliminacion slt){
-        solicitud = slt;
-    }
-
-    public abstract void aceptar();
-    public abstract void rechazar();
-    public abstract void prescribir();
-    public abstract void marcarSpam();
-    public abstract void anularAceptacion();
-    public abstract void anularRechazo();
-    public abstract void anularPrescripcion();
-    public abstract void anularMarcaSpam();
+    public void aceptar(SolicitudEliminacion solicitud) {}
+    public void rechazar(SolicitudEliminacion solicitud) {}
+    public void prescribir(SolicitudEliminacion solicitud) {}
+    public void marcarSpam(SolicitudEliminacion solicitud) {}
+    public void anularAceptacion(SolicitudEliminacion solicitud) {}
+    public void anularRechazo(SolicitudEliminacion solicitud) {}
+    public void anularPrescripcion(SolicitudEliminacion solicitud) {}
+    public void anularMarcaSpam(SolicitudEliminacion solicitud) {}
     public abstract String getNombreEstado();
 }

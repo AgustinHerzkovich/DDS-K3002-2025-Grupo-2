@@ -22,6 +22,6 @@ public class Imagen extends Multimedia {
 
     @Override
     public void reproducir() {
-        // TODO
+        // Implementar
     }
 }

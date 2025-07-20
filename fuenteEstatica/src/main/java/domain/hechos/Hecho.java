@@ -17,14 +17,14 @@ public class Hecho {
     private LocalDateTime fechaCarga;
     private Origen origen;
 
-    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fechaAcontecimiento) {
+    public Hecho(String titulo, String descripcion, Categoria categoria, Double latitud, Double longitud, LocalDateTime fechaAcontecimiento, Origen origen) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = new Ubicacion(latitud, longitud);
         this.fechaAcontecimiento = fechaAcontecimiento;
         this.fechaCarga = LocalDateTime.now();
-        this.origen = Origen.DATASET;
+        this.origen = origen;
     }
 
     public Boolean seCargoDespuesDe(LocalDateTime fecha) {

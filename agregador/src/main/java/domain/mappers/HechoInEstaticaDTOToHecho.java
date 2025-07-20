@@ -14,7 +14,7 @@ public class HechoInEstaticaDTOToHecho implements Mapper<HechoInEstaticaDTO, Hec
                                 hechoDto.getCategoria(),
                                 hechoDto.getUbicacion(),
                                 hechoDto.getFechaAcontecimiento(),
-                                Origen.DATASET,
+                                hechoDto.getOrigen(),
                                 "",
                                 new ArrayList<>(),
                                 true,

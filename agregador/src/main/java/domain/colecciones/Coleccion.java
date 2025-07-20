@@ -33,7 +33,7 @@ public class Coleccion{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String identificadorHandle;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "algoritmo_id")
     private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
 
@@ -69,5 +69,15 @@ public class Coleccion{
 
     public Boolean cumpleCriterios(Hecho hecho){
         return criteriosDePertenencia.stream().allMatch(criterio -> criterio.cumpleCriterio(hecho));
+    }
+
+    public void agregarFuente(Fuente fuente) {
+        if (!fuentes.contains(fuente)) {
+            fuentes.add(fuente);
+        }
+    }
+
+    public void quitarFuente(Fuente fuente) {
+        fuentes.remove(fuente);
     }
 }

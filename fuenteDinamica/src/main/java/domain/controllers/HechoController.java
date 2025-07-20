@@ -23,11 +23,19 @@ public class HechoController {
             @PathVariable("id") Long id,
             @RequestBody Hecho hecho) {
         hechoService.guardarHechoEnFuente(id, hecho);
+        System.out.println("Se ha agregado el hecho " + hecho.getId() + " a la fuente con id " + id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos() {
+    public List<Hecho> obtenerHechos(
+            @RequestParam(value = "fechaMayorA", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
+    ) {
+        if (fechaMayorA != null) {
+            return hechoService.obtenerHechosConFechaMayorA(fechaMayorA);
+        }
+
         return hechoService.obtenerHechos();
     }
 
@@ -44,7 +52,6 @@ public class HechoController {
     ) {
         if (fechaMayorA != null) {
             return hechoService.obtenerHechosDeFuenteConFechaMayorA(id, fechaMayorA);
-
         }
 
         return hechoService.obtenerHechosDeFuente(id);
