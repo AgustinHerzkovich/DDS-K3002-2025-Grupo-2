@@ -100,7 +100,7 @@ public class ColeccionController {
     public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
         // logica de eliminar una coleccion del repositorio
         coleccionService.eliminarColeccion(idColeccion);
-        System.out.println("Coleccion: " + idColeccion + "eliminada");
+        System.out.println("Coleccion: " + idColeccion + " eliminada");
         return ResponseEntity.ok().build();
     }
 }
