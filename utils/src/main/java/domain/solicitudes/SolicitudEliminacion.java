@@ -30,7 +30,7 @@ public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = { CascadeType.MERGE })
     private Contribuyente solicitante;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "estado_id")

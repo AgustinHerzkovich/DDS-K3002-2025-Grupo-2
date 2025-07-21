@@ -6,6 +6,7 @@ import domain.dto.SolicitudDTO;
 import domain.services.HechoService;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class SolicitudController {
         System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
         return ResponseEntity.ok(solicitud);
     }
-
+    @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
     public ResponseEntity<Void> actualizarEstadoSolicitud(
             @PathVariable("id") Long id,

@@ -9,17 +9,22 @@ import domain.mappers.SolicitudMapper;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
 import domain.usuarios.Contribuyente;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import domain.repositorios.RepositorioDeContribuyentes;
+import domain.services.ContribuyenteService;
 
 @Service
 public class SolicitudService {
 
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
     private final HechoService hechoService;
+    private final ContribuyenteService contribuyenteService;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
         this.hechoService = hechoService;
+        this.contribuyenteService = contribuyenteService;
     }
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
@@ -37,8 +42,12 @@ public class SolicitudService {
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
+    @Transactional
     public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
+        Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getContribuyenteId());
+        solicitud.setSolicitante(solicitante);
+        solicitante.agregarSolicitudEliminacion(solicitud);
         SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);
         hecho.agregarASolicitudes(solicitud);
         hechoService.guardarHecho(hecho);
@@ -47,7 +56,9 @@ public class SolicitudService {
 
     public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
+
         SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, hecho);
+
         return guardarSolicitud(solicitud);
     }
 
