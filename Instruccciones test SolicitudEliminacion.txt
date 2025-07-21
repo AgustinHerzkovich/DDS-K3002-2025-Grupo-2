@@ -1,0 +1,23 @@
+1) Cargar las fuentes de la prueba base y el agregador.
+
+2) Elegir un hecho con SELECT y copiar el ID del hecho.
+
+3) Insertar un contribuyente en la BD: INSERT INTO CONTRIBUYENTE (ID, TRUE).
+
+4)
+Postear la solicitud
+{
+  "solicitante": {
+    "contribuyenteId": 1,
+    "esAdministrador": true,
+    "ultimaIdentidad": {
+      "fechaNacimiento": "2025-07-21",
+      "edad": 0
+    }
+  },
+  "hechoId": "COMPLETARESTOCONLASOLICITUD",
+  "motivo": "Las lluvias de hielo me parecen ofensivas. Por favor borralo"
+}
+
+5) Hacer SELECT en la tabla solicitudes y ver que todito salga bien
+

@@ -24,6 +24,7 @@ public class Contribuyente {
     @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER)
     private List<IdentidadContribuyente> identidades;
     @OneToMany(mappedBy = "solicitante")
+    @Getter
     private List<SolicitudEliminacion> solicitudesEliminacion;
 
     public Contribuyente(Boolean esAdministrador) {
