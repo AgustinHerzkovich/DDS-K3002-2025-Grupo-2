@@ -63,7 +63,9 @@ public class SolicitudService {
     }
 
     public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado) {
-       switch (nuevoEstado) {
+        //nuevoEstado = nuevoEstado.replace("\"", "").trim();
+        // Se puede hacer eso para que se deba mandar el estado entre comillas.
+        switch (nuevoEstado) {
             case "PENDIENTE":
                 switch (solicitud.getEstado().getNombreEstado()) {
                     case "ACEPTADA":

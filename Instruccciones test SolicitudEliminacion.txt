@@ -21,3 +21,19 @@ Postear la solicitud
 
 5) Hacer SELECT en la tabla solicitudes y ver que todito salga bien
 
+6) Aceptar solicitud:
+Se puede hacer el post de swagger que tenga de ID la id de la solicitud, y en el body diga:
+ACEPTADA
+o
+RECHAZADA
+o algo asi... SIN COMILLAS
+
+Si se quiere que sea con comillas, deje comentado el codigo para cambiarlo en SolicitudService arriba del switch.
+
+7) Ponerle de nuevo PENDIENTE y agregar otra solicitud mas
+8) Aceptar una de las dos solicitudes
+9) Verificar que la otra queda prescripta
+10) Viene Edgar Codd y te felicita por tu test exitoso de persistencia de solicitudes
+
+
+
