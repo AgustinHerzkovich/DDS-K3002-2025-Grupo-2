@@ -35,5 +35,8 @@ Si se quiere que sea con comillas, deje comentado el codigo para cambiarlo en So
 9) Verificar que la otra queda prescripta
 10) Viene Edgar Codd y te felicita por tu test exitoso de persistencia de solicitudes
 
+// TODO: Crear contribuyentes dinamicamente si no existen en la BD al momento de crear la solicitud
+(Si se quiere que sea asi)
 
+// TODO:  Buscar una mejor manera de persistir el estado de las solicitudes. Actualmente se crean multiples registros de id en su tabla respectiva de estado por cada estado nuevo. No tiene sentido, ya que no se guarda ningun atributo. solo el ID. Lo ideal seria que sea solo un ID para cada estado. (O que al menos se eliminen los ID en desuso)
 
