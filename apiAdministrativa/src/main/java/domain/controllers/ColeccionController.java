@@ -1,95 +1,66 @@
 package domain.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.colecciones.Coleccion;
-import domain.colecciones.fuentes.Fuente;
-import domain.colecciones.fuentes.FuenteId;
 import domain.config.ConfigService;
-import domain.hechos.Hecho;
-import domain.services.ColeccionService;
-import domain.services.FuenteService;
+import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.ObjectInputFilter;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class ColeccionController {
     private ConfigService configService;
     private final String urlBaseAgregador;
-    private final RestTemplate restTemplate;
+    private final SolicitudesHttp solicitudesHttp;
 
-    public ColeccionController(RestTemplateBuilder builder, ConfigService configService) {
+    public ColeccionController(ConfigService configService) {
         this.configService = configService;
         this.urlBaseAgregador = configService.getUrl();
-        this.restTemplate = builder.build();
+        this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
-    // Operaciones CREATE sobre Colecciones
+    // --- CREATE ---
     @PostMapping("/colecciones")
-    public ResponseEntity<Object> crearColeccion(@RequestBody Coleccion coleccion) {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Object> respuesta = restTemplate.postForEntity(urlBaseAgregador, coleccion, Object.class);
-        return respuesta;
+    public ResponseEntity<Object> crearColeccion(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/colecciones", body, Object.class);
     }
 
-    // Operaciones READ sobre Colecciones
+    // --- READ ---
     @GetMapping("/colecciones")
-    public ResponseEntity<String> mostrarColecciones() {
-        String url = urlBaseAgregador + "/colecciones";
-        String response = restTemplate.getForObject(url, String.class);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Object> mostrarColecciones() {
+        return solicitudesHttp.get(urlBaseAgregador + "/colecciones", Object.class);
     }
 
     @GetMapping("/colecciones/{id}")
-    public ResponseEntity<String> mostrarColeccion(@PathVariable("id") String idColeccion) {
-        String url = urlBaseAgregador + "/colecciones/" + idColeccion;
-        String response = restTemplate.getForObject(url, String.class);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
     }
 
-    // Operaciones UPDATE sobre Colecciones
+    // --- UPDATE ---
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<Void> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody String nuevoAlgoritmo) {
-        coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
-        System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
+    public ResponseEntity<Void> modificarAlgoritmo(@PathVariable String id,
+                                                   @RequestBody String body) {
+        solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/algoritmo", body);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<Void> agregarFuente(@PathVariable("id") String idColeccion,
-                                              @RequestBody Fuente fuente) {
-        fuenteService.guardarFuente(fuente);
-        Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
-        coleccionService.agregarFuenteAColeccion(coleccion, fuente);
-        coleccionService.guardarColeccion(coleccion);
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuente.getId().getIdExterno() + " tipo: " + fuente.getId().getTipo());
+    public ResponseEntity<Void> agregarFuente(@PathVariable String id,
+                                              @RequestBody String body) {
+        solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @RequestBody FuenteId fuenteId) {
-        Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
-        coleccionService.quitarFuenteDeColeccion(coleccion, fuenteId);
-        System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId.getIdExterno() + " tipo: " + fuenteId.getTipo());
+    public ResponseEntity<Void> quitarFuente(@PathVariable String id) {
+        solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes");
         return ResponseEntity.ok().build();
     }
 
-    // Operaciones DELETE sobre Colecciones
+    // --- DELETE ---
     @DeleteMapping("/colecciones/{id}")
-    public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
-        // logica de eliminar una coleccion del repositorio
-        coleccionService.eliminarColeccion(idColeccion);
-        System.out.println("Coleccion: " + idColeccion + " eliminada");
+    public ResponseEntity<Void> eliminarColeccion(@PathVariable String id) {
+        solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id);
         return ResponseEntity.ok().build();
     }
 }
