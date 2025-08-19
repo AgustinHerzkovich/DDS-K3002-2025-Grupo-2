@@ -17,6 +17,7 @@ public class SolicitudesHttp {
         try {
             return ResponseEntity.ok(restTemplate.getForObject(path, responseType));
         }catch (Exception e) {
+            System.out.println("Error en la solicitud: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
         }
     }
@@ -25,6 +26,7 @@ public class SolicitudesHttp {
         try{
             return restTemplate.postForEntity(path, body, responseType);
         }catch (Exception e) {
+            System.out.println("Error en la solicitud: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
         }
     }
@@ -35,6 +37,7 @@ public class SolicitudesHttp {
             return ResponseEntity.ok().build();
         }
         catch (Exception e) {
+            System.out.println("Error en la solicitud: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
         }
     }
@@ -44,6 +47,7 @@ public class SolicitudesHttp {
             restTemplate.patchForObject(path, body, Void.class);
             return ResponseEntity.ok().build();
         }catch (Exception e) {
+            System.out.println("Error en la solicitud: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
         }
     }
