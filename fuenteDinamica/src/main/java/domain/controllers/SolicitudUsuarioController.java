@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")
-public class SolicitudController {
+public class SolicitudUsuarioController {
     private final SolicitudService solicitudService;
 
-    public SolicitudController(SolicitudService solicitudService) {
+    public SolicitudUsuarioController(SolicitudService solicitudService) {
         this.solicitudService = solicitudService;
     }
 
@@ -22,16 +22,6 @@ public class SolicitudController {
         solicitudService.guardarSolicitudDto(solicitudDto);
         System.out.println("Solicitud creada para el hecho: " + solicitudDto.getHechoId());
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/solicitudes")
-    public List<SolicitudEliminacion> obtenerSolicitudes() {
-        return solicitudService.obtenerSolicitudes();
-    }
-
-    @GetMapping("/solicitudes/{id}")
-    public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
-        return solicitudService.obtenerSolicitud(id);
     }
 
     @DeleteMapping("/solicitudes/{id}")
