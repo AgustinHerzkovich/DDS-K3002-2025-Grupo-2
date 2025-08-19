@@ -18,15 +18,6 @@ public class HechoController {
         this.hechoService = hechoService;
     }
 
-    @PostMapping("/{id}/hechos")
-    public ResponseEntity<Void> agregarHecho(
-            @PathVariable("id") Long id,
-            @RequestBody Hecho hecho) {
-        hechoService.guardarHechoEnFuente(id, hecho);
-        System.out.println("Se ha agregado el hecho " + hecho.getId() + " a la fuente con id " + id);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/hechos")
     public List<Hecho> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
