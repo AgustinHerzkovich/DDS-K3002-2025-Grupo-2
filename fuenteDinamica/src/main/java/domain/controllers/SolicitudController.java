@@ -17,13 +17,6 @@ public class SolicitudController {
         this.solicitudService = solicitudService;
     }
 
-    @PostMapping("/solicitudes")
-    public ResponseEntity<Void> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
-        solicitudService.guardarSolicitudDto(solicitudDto);
-        System.out.println("Solicitud creada para el hecho: " + solicitudDto.getHechoId());
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/solicitudes")
     public List<SolicitudEliminacion> obtenerSolicitudes() {
         return solicitudService.obtenerSolicitudes();
@@ -32,12 +25,5 @@ public class SolicitudController {
     @GetMapping("/solicitudes/{id}")
     public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
         return solicitudService.obtenerSolicitud(id);
-    }
-
-    @DeleteMapping("/solicitudes/{id}")
-    public ResponseEntity<Void> eliminarSolicitud(@PathVariable("id") Long id) {
-        solicitudService.eliminarSolicitud(id);
-        System.out.println("Solicitud eliminada: " + id);
-        return ResponseEntity.ok().build();
     }
 }
