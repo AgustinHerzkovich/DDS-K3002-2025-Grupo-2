@@ -11,10 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")
-public class HechoController {
+public class HechoUsuarioController {
     private final HechoService hechoService;
 
-    public HechoController(HechoService hechoService) {
+    public HechoUsuarioController(HechoService hechoService) {
         this.hechoService = hechoService;
     }
 
@@ -25,35 +25,5 @@ public class HechoController {
         hechoService.guardarHechoEnFuente(id, hecho);
         System.out.println("Se ha agregado el hecho " + hecho.getId() + " a la fuente con id " + id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos(
-            @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
-    ) {
-        if (fechaMayorA != null) {
-            return hechoService.obtenerHechosConFechaMayorA(fechaMayorA);
-        }
-
-        return hechoService.obtenerHechos();
-    }
-
-    @GetMapping("/hechos/{id}")
-    public Hecho obtenerHecho(@PathVariable("id") String id) {
-        return hechoService.obtenerHecho(id);
-    }
-
-    @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
-    public List<Hecho> obtenerHechosDeFuente(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
-    ) {
-        if (fechaMayorA != null) {
-            return hechoService.obtenerHechosDeFuenteConFechaMayorA(id, fechaMayorA);
-        }
-
-        return hechoService.obtenerHechosDeFuente(id);
     }
 }
