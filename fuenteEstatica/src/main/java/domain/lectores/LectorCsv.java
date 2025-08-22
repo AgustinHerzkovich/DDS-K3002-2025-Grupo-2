@@ -14,7 +14,6 @@ import domain.hechos.Hecho;
 import domain.hechos.Categoria;
 import domain.hechos.Origen;
 
-
 // LECTOR CSV
 public class LectorCsv implements LectorArchivo {
 
