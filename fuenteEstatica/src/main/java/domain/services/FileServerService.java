@@ -45,6 +45,21 @@ public class FileServerService {
         );
     }
 
+    public void cargarArchivoDesdeInputStream(String bucket,
+                                              InputStream inputStream, String nombreArchivo,
+                                              String contentType) throws Exception {
+        crearBucketSiNoExiste(bucket);
+
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket(bucket)
+                        .object(nombreArchivo)
+                        .stream(inputStream, -1, 10485760) // -1 = tamaño desconocido, 10MB buffer
+                        .contentType(contentType)
+                        .build()
+        );
+    }
+
     // Obtener archivo como InputStream
     public InputStream obtenerArchivo(String bucket, String objectName) throws Exception {
         return minioClient.getObject(

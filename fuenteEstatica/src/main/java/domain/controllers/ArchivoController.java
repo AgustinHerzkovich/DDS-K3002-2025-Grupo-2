@@ -30,6 +30,16 @@ public class ArchivoController {
         return ResponseEntity.ok("Archivo subido correctamente a pendientes");
     }
 
+    @PostMapping("/archivo/por-url")
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestParam("url") String url) {
+        try {
+            archivoService.subirArchivoDesdeUrl(url);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
+        }
+        return ResponseEntity.ok("Archivo subido correctamente desde URL a pendientes");
+    }
+
     @PostMapping("/archivos")
     public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files) {
         try {
