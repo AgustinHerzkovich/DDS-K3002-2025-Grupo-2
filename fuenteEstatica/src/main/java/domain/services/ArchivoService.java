@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,6 +28,20 @@ public class ArchivoService {
     // Subir archivo a pendientes
     public void subirArchivoPendiente(MultipartFile file) throws Exception {
         fileServerService.cargarArchivo(BUCKET_PENDIENTES, file);
+    }
+
+    public void subirArchivoDesdeUrl(String urlString) throws Exception {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setDoInput(true);
+        connection.connect();
+
+        String fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
+
+        try (InputStream is = connection.getInputStream()) {
+            fileServerService.cargarArchivoDesdeInputStream(BUCKET_PENDIENTES, is, fileName, "application/octet-stream");
+        }
     }
 
     // Leer todos los archivos pendientes y generar hechos
