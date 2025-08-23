@@ -1,7 +1,7 @@
 package domain.normalizador;
 
-import domain.NormalizadorDeTerminos.NingunTerminoCumpleUmbralException;
-import domain.NormalizadorDeTerminos.NormalizadorDeTerminos;
+import domain.normalizadorDeTerminos.NingunTerminoCumpleUmbralException;
+import domain.normalizadorDeTerminos.NormalizadorDeTerminos;
 import domain.hechos.Hecho;
 import lombok.Getter;
 import lombok.Setter;
