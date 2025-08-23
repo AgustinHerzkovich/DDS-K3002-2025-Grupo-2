@@ -1,6 +1,8 @@
 package domain.usuarios;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
@@ -35,7 +37,7 @@ public class IdentidadContribuyente {
         this.contribuyente = contribuyente;
         this.hechosContribuidos = new ArrayList<>();
     }
-
+    @JsonIgnore
     public Integer getEdad() {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
