@@ -1,4 +1,4 @@
-package domain.NormalizadorDeTerminos;
+package domain.normalizadorDeTerminos;
 
 public class NingunTerminoCumpleUmbralException extends RuntimeException {
   public NingunTerminoCumpleUmbralException(String message) {

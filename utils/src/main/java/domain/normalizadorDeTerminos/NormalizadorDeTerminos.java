@@ -1,4 +1,4 @@
-package domain.NormalizadorDeTerminos;
+package domain.normalizadorDeTerminos;
 
 import lombok.Getter;
 import lombok.Setter;

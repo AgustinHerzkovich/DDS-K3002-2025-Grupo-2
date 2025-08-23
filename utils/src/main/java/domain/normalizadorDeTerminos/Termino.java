@@ -1,8 +1,7 @@
-package domain.NormalizadorDeTerminos;
+package domain.normalizadorDeTerminos;
 
 import lombok.Getter;
 import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
-import org.apache.commons.text.similarity.LevenshteinDistance;
 
 import java.util.Objects;
 
