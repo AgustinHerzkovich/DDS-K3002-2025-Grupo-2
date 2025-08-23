@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -31,19 +32,24 @@ public class ArchivoService {
     }
 
     public void subirArchivoDesdeUrl(String urlString) throws Exception {
-        URL url = new URL(urlString);
+        URI uri = new URI(urlString);
+        URL url = uri.toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setDoInput(true);
+        connection.setInstanceFollowRedirects(true); // sigue redirecciones
         connection.connect();
 
-        String fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
+        String path = urlString.split("\\?")[0];
 
-        try (InputStream is = connection.getInputStream()) {
+        String fileName = path.substring(path.lastIndexOf('/') + 1);
+
+        try (InputStream is = connection.getURL().openStream()) {
             fileServerService.cargarArchivoDesdeInputStream(BUCKET_PENDIENTES, is, fileName, "application/octet-stream");
+            System.out.println("Archivo subido correctamente a MinIO: " + fileName);
+        }finally {
+            connection.disconnect();
         }
     }
-
     // Leer todos los archivos pendientes y generar hechos
     public List<Hecho> leerHechosPendientesConFechaMayorA(LocalDateTime fecha) {
         List<Hecho> hechos = new ArrayList<>();
