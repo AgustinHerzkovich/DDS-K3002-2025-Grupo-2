@@ -17,7 +17,8 @@ public class NormalizadorDeHechos {
     public NormalizadorDeTerminos normalizadorDeCategorias;
     public NormalizadorDeTerminos normalizadorDeEtiquetas;
 
-    public NormalizadorDeHechos(Integer umbralLevenshtein) {
+    public NormalizadorDeHechos() {
+        Integer umbralLevenshtein = 3;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
     }
