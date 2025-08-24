@@ -1,5 +1,7 @@
 package domain.menu;
 
+import domain.subMenu.SubMenuPostColeccion;
+
 public class MenuAgregador extends Menu{
     @Override
     void mostrarTextoOpciones() {
@@ -18,9 +20,9 @@ public class MenuAgregador extends Menu{
             case 0:
                 return true;
             case 1:
-
                 break;
             case 2:
+                SubMenuPostColeccion.abrirMenu();
                 break;
             case 3:
                 break;
