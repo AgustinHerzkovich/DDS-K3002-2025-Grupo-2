@@ -17,6 +17,7 @@
         <module>utils</module>
         <module>apiPublica</module>
         <module>apiAdministrativa</module>
+        <module>dashboard</module>
     </modules>
 
     <properties>
