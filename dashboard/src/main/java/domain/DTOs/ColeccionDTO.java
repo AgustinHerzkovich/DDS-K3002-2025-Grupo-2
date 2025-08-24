@@ -20,5 +20,12 @@ public class ColeccionDTO {
     private List<CriterioDePertenenciaDTO> criteriosDePertenencia;
     private List<FuenteDTO> fuentes;
     private AlgoritmoConsensoDTO algoritmoConsenso;
-
+    @Override
+    public String toString() {
+        return "\nTítulo: " + titulo +
+                "\nDescripción: " + descripcion +
+                "\nCriterios: " + criteriosDePertenencia +
+                "\nFuentes: " + fuentes +
+                "\nAlgoritmo: " + (algoritmoConsenso != null ? algoritmoConsenso.getTipo() : "null");
+    }
 }

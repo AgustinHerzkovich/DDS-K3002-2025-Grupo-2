@@ -20,15 +20,18 @@ public class ApiClient {
     }
     public static Integer postFuenteDinamica(Conexion conexion){
         try {
-        return conexion.getWebClient().post().uri("/fuente").retrieve().bodyToMono(FuenteDinamicaDTO.class).block().getId();
+        return conexion.getWebClient().post().uri("/apiAdministrativa/fuente").retrieve().bodyToMono(FuenteDinamicaDTO.class).block().getId();
         }catch (Exception e){
         throw new RuntimeException("No se obtuvo la ID de respuesta");
     }
     }
     public static List<HechoDTO> getHechosIrrestrictos(String id, Conexion conexion){
-       return conexion.getWebClient().get().uri("/colecciones/"+id+"/hechosIrrestrictos").retrieve().bodyToMono(new ParameterizedTypeReference<List<HechoDTO>>() {}).block();
+       return conexion.getWebClient().get().uri("/apiPublica/colecciones/"+id+"/hechosIrrestrictos").retrieve().bodyToMono(new ParameterizedTypeReference<List<HechoDTO>>() {}).block();
     }
     public static List<HechoDTO> getHechosCurados(String id, Conexion conexion){
-        return conexion.getWebClient().get().uri("/colecciones/"+id+"/hechosCurados").retrieve().bodyToMono(new ParameterizedTypeReference<List<HechoDTO>>() {}).block();
+        return conexion.getWebClient().get().uri("/apiPublica/colecciones/"+id+"/hechosCurados").retrieve().bodyToMono(new ParameterizedTypeReference<List<HechoDTO>>() {}).block();
+    }
+    public static List<ColeccionDTO> getColecciones(Conexion conexion){
+        return conexion.getWebClient().get().uri("/apiPublica/colecciones").retrieve().bodyToMono(new ParameterizedTypeReference<List<ColeccionDTO>>() {}).block();
     }
 }

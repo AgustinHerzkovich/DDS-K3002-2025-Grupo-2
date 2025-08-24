@@ -35,6 +35,9 @@ public class MenuAgregador extends Menu{
             case 5:
                 new SubMenuGetHechosIrrestrictos().abrirMenu();
                 break;
+            case 6:
+                SubMenuGetColecciones.abrirMenu();
+                break;
         }
         return false;
     }

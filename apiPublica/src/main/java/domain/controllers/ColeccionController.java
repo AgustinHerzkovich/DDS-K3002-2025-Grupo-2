@@ -53,4 +53,9 @@ public class ColeccionController {
         UrlHelper.appendAllQueryParams(url, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud.toString(), longitud.toString());
         return solicitudesHttp.get(url.toString(), Object.class);
     }
+
+    @GetMapping("/colecciones")
+    public ResponseEntity<Object> mostrarColecciones() {
+        return solicitudesHttp.get(urlBaseAgregador + "/colecciones", Object.class);
+    }
 }
