@@ -1,8 +1,6 @@
 package domain.menu;
 
-import domain.subMenu.SubMenuEnviarPostFuente;
-import domain.subMenu.SubMenuPostColeccion;
-import domain.subMenu.SubMenuPostHecho;
+import domain.subMenu.*;
 
 public class MenuAgregador extends Menu{
     @Override
@@ -12,7 +10,7 @@ public class MenuAgregador extends Menu{
         System.out.println("1. Enviar Post Hecho");
         System.out.println("2. Enviar Post Coleccion");
         System.out.println("3. Enviar Post FuenteDinamica");
-        System.out.println("4. Enviar Get Coleccion restricta");
+        System.out.println("4. Enviar Get Coleccion curada");
         System.out.println("5. Enviar Get Coleccion irrestricta");
         System.out.println("6. Enviar Get Colecciones");
     }
@@ -32,8 +30,10 @@ public class MenuAgregador extends Menu{
                 SubMenuEnviarPostFuente.abrirMenu();
                 break;
             case 4:
+                new SubMenuGetHechosCurados().abrirMenu();
                 break;
             case 5:
+                new SubMenuGetHechosIrrestrictos().abrirMenu();
                 break;
         }
         return false;
