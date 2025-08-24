@@ -5,26 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/apiAdministrativa/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/domain/controllers/ColeccionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/domain/controllers/SolicitudController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiPublica/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiPublica/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/src/main/java/domain/Colecciones/Coleccion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dashboard/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/Dashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/src/main/java/domain/Dashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/connectionManager/ConnectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/src/main/java/domain/connectionManager/ConnectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/FuenteEstaticaAplicacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/utils/pom.xml" afterDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
     <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="" />
     <list id="a438059e-4ff7-4c57-864e-ebac2c7c1b04" name="Changes by jzorr" comment="" />
     <list id="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" name="Changes by Lucas" comment="" />
-    <list id="9d6a1219-1d50-49ea-b0cb-3d80bc602f3f" name="Changes by Lucas ☺" comment="">
-      <change beforePath="$PROJECT_DIR$/utils/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/utils/pom.xml" afterDir="false" />
-    </list>
+    <list id="9d6a1219-1d50-49ea-b0cb-3d80bc602f3f" name="Changes by Lucas ☺" comment="" />
     <list id="c6682f44-d744-4d8b-ae36-df65e692fc7f" name="Changes by Martin" comment="" />
-    <list id="9c478027-294f-47ef-9664-898642ed3b60" name="Changes by nicol" comment="" />
     <list id="19a8df37-f901-4e9b-80ce-4ad11eafbc62" name="Changes by sroja" comment="" />
     <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +37,7 @@
         <option value="Enum" />
         <option value="package-info" />
         <option value="Interface" />
+        <option value="Exception" />
         <option value="Class" />
       </list>
     </option>
@@ -60,6 +57,9 @@
     &quot;accountId&quot;: &quot;58ed371a-4b98-46cd-83f0-f5e16058363b&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -74,50 +74,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.TestClase.executor": "Run",
-    "JUnit.TestClase.prueba.executor": "Run",
-    "JUnit.testCargarArchivos.cargarArchivos.executor": "Run",
-    "JUnit.testCargarArchivos.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.verHechosFuente.executor": "Debug",
-    "JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor": "Run",
-    "JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AgregadorAplicacion.executor": "Run",
-    "Spring Boot.FuenteDinamicaAplicacion.executor": "Run",
-    "Spring Boot.FuenteEstaticaAplicacion.executor": "Run",
-    "Spring Boot.FuenteProxyAplicacion.executor": "Run",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/nicol/Documents/tpDiseno/DDS-K3002-2025-Grupo-2/apiAdministrativa/src/main/resources",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/core/src/main/java/org/springframework/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Agregador.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Dashboard.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FuenteEstatica.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestClase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TestClase.prueba.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testCargarArchivos.cargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testCargarArchivos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuente.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AgregadorAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteDinamicaAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteEstaticaAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.FuenteProxyAplicacion.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dashboard&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nicol/Documents/tpDiseno/DDS-K3002-2025-Grupo-2/apiAdministrativa/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/core/src/main/java/org/springframework/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="domain.connectionManager" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\apiAdministrativa\src\main\resources" />
       <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\apiPublica\src\main\resources" />
@@ -163,7 +169,76 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AgregadorAplicacion">
+  <component name="RunManager" selected="Application.Dashboard">
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Dashboard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="ms-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="domain.Dashboard" />
+      <module name="dashboard" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestClase.prueba" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fuenteProxy" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestClase" />
+      <option name="METHOD_NAME" value="prueba" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testCargarArchivos.cargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fuenteEstatica" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
+      <option name="METHOD_NAME" value="cargarArchivos" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testColeccionConsumeHechos.verHechosFuenteDinamica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="otros" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
+      <option name="METHOD_NAME" value="verHechosFuenteDinamica" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="testColeccionConsumeHechos.verHechosFuenteEstatica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="otros" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
+      <option name="METHOD_NAME" value="verHechosFuenteEstatica" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="fuenteDinamica" />
       <option name="ENV_FILES" value="" />
@@ -187,19 +262,40 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="Python.FlaskServer">
+    <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="agregador" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="estadisticas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteDinamicaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteEstatica" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteEstaticaAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fuenteProxy" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteProxyAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="Tox" factoryName="Tox">
       <module name="fuenteDinamica" />
@@ -250,132 +346,24 @@
       <option name="USE_PATTERN" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="TestClase.prueba" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="fuenteProxy" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestClase" />
-      <option name="METHOD_NAME" value="prueba" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testCargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="fuenteEstatica" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testCargarArchivos.cargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="fuenteEstatica" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
-      <option name="METHOD_NAME" value="cargarArchivos" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testColeccionConsumeHechos.verHechosFuenteDinamica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="otros" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
-      <option name="METHOD_NAME" value="verHechosFuenteDinamica" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testColeccionConsumeHechos.verHechosFuenteEstatica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="otros" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
-      <option name="METHOD_NAME" value="verHechosFuenteEstatica" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="fuenteDinamica" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="fuenteDinamica" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-    <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="agregador" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.AgregadorAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="estadisticas" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteDinamica" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteDinamicaAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteEstatica" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteEstaticaAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="fuenteProxy" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.FuenteProxyAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.Agregador" />
       <item itemvalue="Application.FuenteEstatica" />
+      <item itemvalue="Application.Dashboard" />
       <item itemvalue="JUnit.TestClase.prueba" />
-      <item itemvalue="JUnit.testCargarArchivos" />
       <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
       <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica" />
       <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica" />
-      <item itemvalue="Spring Boot.AgregadorAplicacion" />
-      <item itemvalue="Spring Boot.EstadisticasAplicacion" />
-      <item itemvalue="Spring Boot.FuenteDinamicaAplicacion" />
-      <item itemvalue="Spring Boot.FuenteEstaticaAplicacion" />
-      <item itemvalue="Spring Boot.FuenteProxyAplicacion" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Dashboard" />
         <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica" />
         <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica" />
         <item itemvalue="JUnit.TestClase.prueba" />
         <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
-        <item itemvalue="JUnit.testCargarArchivos" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -503,7 +491,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/controllers/FuenteController.java</url>
           <line>41</line>
-          <properties class="domain.controllers.FuenteController" method="crearFuente">
+          <properties class="domain.controllers.FuenteController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -520,7 +508,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/agregador/src/main/java/domain/schedullers/CargarHechosScheduller.java</url>
-          <line>23</line>
+          <line>26</line>
           <properties class="domain.schedullers.CargarHechosScheduller" method="cargarHechos">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -536,6 +524,10 @@
           </properties>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.RuntimeException" package="java.lang" />
+          <option name="timeStamp" value="16" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>

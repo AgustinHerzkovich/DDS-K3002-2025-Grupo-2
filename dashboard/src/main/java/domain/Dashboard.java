@@ -1,12 +1,9 @@
 package domain;
 
 import domain.connectionManager.ConnectionManager;
-import domain.menu.MenuAgregador;
 import domain.menu.MenuPrincipal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.awt.*;
 
 @SpringBootApplication
 public class Dashboard {
