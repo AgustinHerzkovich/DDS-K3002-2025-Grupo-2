@@ -1,6 +1,7 @@
 package domain.menu;
 
 import domain.subMenu.SubMenuPostColeccion;
+import domain.subMenu.SubMenuPostHecho;
 
 public class MenuAgregador extends Menu{
     @Override
@@ -20,6 +21,7 @@ public class MenuAgregador extends Menu{
             case 0:
                 return true;
             case 1:
+                SubMenuPostHecho.abrirMenu();
                 break;
             case 2:
                 SubMenuPostColeccion.abrirMenu();
