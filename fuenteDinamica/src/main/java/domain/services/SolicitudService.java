@@ -3,9 +3,9 @@ package domain.services;
 import domain.dto.SolicitudDTO;
 import domain.hechos.Hecho;
 import domain.mappers.SolicitudMapper;
-import domain.repositorios.RepositorioDeHechos;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.SolicitudEliminacion;
+import domain.usuarios.Contribuyente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +15,12 @@ import java.util.NoSuchElementException;
 public class SolicitudService {
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
     private final HechoService hechoService;
+    private final ContribuyenteService contribuyenteService;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
         this.hechoService = hechoService;
+        this.contribuyenteService = contribuyenteService;
     }
 
     public void guardarSolicitud(SolicitudEliminacion solicitud) {
@@ -27,7 +29,10 @@ public class SolicitudService {
 
     public void guardarSolicitudDto(SolicitudDTO solicitudDto) {
         Hecho hecho = hechoService.obtenerHecho(solicitudDto.getHechoId());
-        SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, hecho);
+        Contribuyente solicitante = contribuyenteService.obtenerContribuyente(solicitudDto.getSolicitanteId());
+        SolicitudEliminacion solicitud = new SolicitudMapper().map(solicitudDto, solicitante, hecho);
+        solicitante.agregarSolicitudEliminacion(solicitud);
+        contribuyenteService.guardarContribuyente(solicitante);
         guardarSolicitud(solicitud);
     }
 

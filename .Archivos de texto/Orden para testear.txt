@@ -9,15 +9,26 @@ y en JDBC URL poner: jdbc:h2:mem:testdb
 Levantar Fuente Estática
 Postear una Fuente Estática
 Request body:
-[
+subir archivos en body form-data con key files y type File
   "desastres_naturales_argentina.csv",
   "desastres_sanitarios_contaminacion_argentina.csv",
   "desastres_tecnologicos_argentina.csv"
-]
 
 Levantar Fuente Dinámica
-Postear una Fuente Dinámica (Request body vacio)
-Postear un hecho en esa fuente creada
+Postear un contribuyente:
+Request body:
+{
+  "esAdministrador": true
+}
+
+Agregarle esta identidad a ese contribuyente:
+{
+    "nombre": "Lucas",
+    "apellido": "Piacentini",
+    "fechaNacimiento": "1990-01-01"
+}
+
+Postear un hecho
 Request body:
 {
   "titulo": "Titulo ejemplo",
@@ -42,15 +53,15 @@ Request body:
     }
   ],
   "anonimato": false,
-  "autor": {
-    "nombre": "Nombre ejemplo",
-    "apellido": "Apellido ejemplo",
-    "fechaNacimiento": "2001-10-10",
-    "contribuyente": {
-      "contribuyenteId": "Id ejemplo",
-      "esAdministrador": false
-    }
-  }
+  "contribuyenteId": 1
+}
+
+Postear una solicitud
+Request body:
+{
+"solicitanteId": 1,
+"hechoId": "COMPLETARESTOCONLASOLICITUD",
+"motivo": "Las lluvias de hielo me parecen ofensivas. Por favor borralo"
 }
 
 Levantar agregador

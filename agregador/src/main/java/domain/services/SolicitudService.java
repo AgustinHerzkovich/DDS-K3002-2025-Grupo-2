@@ -11,8 +11,6 @@ import domain.solicitudes.*;
 import domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import domain.repositorios.RepositorioDeContribuyentes;
-import domain.services.ContribuyenteService;
 
 @Service
 public class SolicitudService {
@@ -45,7 +43,7 @@ public class SolicitudService {
     @Transactional
     public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
-        Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getContribuyenteId());
+        Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getId());
         solicitud.setSolicitante(solicitante);
         solicitante.agregarSolicitudEliminacion(solicitud);
         SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);

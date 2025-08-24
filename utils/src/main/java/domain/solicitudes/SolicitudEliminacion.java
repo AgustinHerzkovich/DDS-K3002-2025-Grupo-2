@@ -1,6 +1,8 @@
 package domain.solicitudes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.Hecho;
 import domain.usuarios.Contribuyente;
@@ -30,17 +32,20 @@ public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
     private Long id;
-    @ManyToOne(cascade = { CascadeType.MERGE })
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JsonIgnore
     private Contribuyente solicitante;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "estado_id")
     private EstadoSolicitud estado;
     @ManyToOne
+    @JsonIgnore
     private Contribuyente administrador;
     @Getter
     private LocalDateTime fechaSubida;
     private LocalDateTime fechaResolucion;
     @ManyToOne
+    @JsonBackReference
     private Hecho hecho;
     private String motivo;
 

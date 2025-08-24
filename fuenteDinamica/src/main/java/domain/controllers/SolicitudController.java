@@ -26,4 +26,11 @@ public class SolicitudController {
     public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
         return solicitudService.obtenerSolicitud(id);
     }
+
+    @PostMapping("/solicitudes")
+    public ResponseEntity<Void> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
+        solicitudService.guardarSolicitudDto(solicitudDto);
+        System.out.println("Solicitud creada para el hecho: " + solicitudDto.getHechoId());
+        return ResponseEntity.ok().build();
+    }
 }

@@ -16,14 +16,14 @@ public class ContribuyenteService {
 
     @Transactional
     public void guardarContribuyente(Contribuyente contribuyente) {
-        if (!repositorioDeContribuyentes.existsById(contribuyente.getContribuyenteId())) {
+        if (!repositorioDeContribuyentes.existsById(contribuyente.getId())) {
             repositorioDeContribuyentes.save(contribuyente);
         }
     }
     @Transactional
     public Contribuyente obtenerContribuyentePorId(Long id){
         Contribuyente c = repositorioDeContribuyentes.getById(Long.valueOf(id));
-        Hibernate.initialize(c.getContribuyenteId());
+        Hibernate.initialize(c.getId());
         Hibernate.initialize(c.getUltimaIdentidad());
         Hibernate.initialize(c.getSolicitudesEliminacion());
         return c;

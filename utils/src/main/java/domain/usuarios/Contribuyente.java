@@ -1,41 +1,37 @@
 package domain.usuarios;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import domain.hechos.Hecho;
 import domain.solicitudes.SolicitudEliminacion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 
 //CONTRIBUYENTE
 @Entity
 @NoArgsConstructor
+@Getter
 public class Contribuyente {
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contribuyenteId;
+    private Long id;
     @Setter
     private Boolean esAdministrador;
-    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IdentidadContribuyente> identidades;
-    @OneToMany(mappedBy = "solicitante")
-    @Getter
+    @OneToMany(mappedBy = "solicitante", fetch = FetchType.EAGER)
     private List<SolicitudEliminacion> solicitudesEliminacion;
 
-    public Contribuyente(Boolean esAdministrador) {
+    @JsonCreator
+    public Contribuyente(@JsonProperty("esAdministrador") Boolean esAdministrador) {
         this.esAdministrador = esAdministrador;
         this.identidades = new ArrayList<>();
         this.solicitudesEliminacion = new ArrayList<>();
-    }
-
-    public void modificarIdentidad(String nombre, String apellido, LocalDate fechaNacimiento) {
-        IdentidadContribuyente nueva_identidad = new IdentidadContribuyente(nombre, apellido, fechaNacimiento, this);
-        this.agregarIdentidad(nueva_identidad);
     }
 
     public IdentidadContribuyente getUltimaIdentidad() {
@@ -46,10 +42,24 @@ public class Contribuyente {
     }
 
     public void agregarIdentidad(IdentidadContribuyente identidad){
-        this.identidades.add(identidad);
+        identidades.add(identidad);
+        identidad.setContribuyente(this); // Establece la relación bidireccional
     }
 
     public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
         this.solicitudesEliminacion.add(solicitud);
+    }
+
+    public String getNombreCompleto() {
+        IdentidadContribuyente identidad = this.getUltimaIdentidad();
+        if (identidad != null) {
+            return identidad.getNombre() + " " + identidad.getApellido();
+        }
+        return "Sin identidad";
+    }
+
+    public void contribuirAlHecho(Hecho hecho) {
+        getUltimaIdentidad().agregarHechoContribuido(hecho);
+        hecho.setAutor(getUltimaIdentidad());
     }
 }
