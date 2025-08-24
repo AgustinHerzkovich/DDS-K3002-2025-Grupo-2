@@ -1,5 +1,6 @@
 package domain.controllers;
 
+import domain.dto.HechoDTO;
 import domain.hechos.Hecho;
 import domain.services.HechoService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,16 +36,10 @@ public class HechoController {
         return hechoService.obtenerHecho(id);
     }
 
-    @GetMapping("/{id}/hechos") //Se ejecuta al hacer GET en este id
-    public List<Hecho> obtenerHechosDeFuente(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
-    ) {
-        if (fechaMayorA != null) {
-            return hechoService.obtenerHechosDeFuenteConFechaMayorA(id, fechaMayorA);
-        }
-
-        return hechoService.obtenerHechosDeFuente(id);
+    @PostMapping("/hechos")
+    public ResponseEntity<Void> agregarHecho(@RequestBody HechoDTO hechoDto) {
+        Hecho hecho = hechoService.guardarHechoDto(hechoDto);
+        System.out.println("Se ha agregado el hecho: " + hecho.getId());
+        return ResponseEntity.ok().build();
     }
 }

@@ -2,6 +2,7 @@ package domain.hechos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.multimedias.Multimedia;
 import domain.solicitudes.SolicitudEliminacion;
@@ -40,7 +41,7 @@ public class Hecho {
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
-    @JsonIgnore // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
+    @JsonManagedReference // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
@@ -56,7 +57,7 @@ public class Hecho {
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
-    @ManyToOne(cascade = CascadeType.PERSIST) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
+    @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
     private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
 
     @JsonCreator

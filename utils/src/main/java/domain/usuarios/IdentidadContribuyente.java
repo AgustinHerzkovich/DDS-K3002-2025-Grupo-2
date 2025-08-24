@@ -3,9 +3,12 @@ package domain.usuarios;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import domain.hechos.Hecho;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -16,6 +19,7 @@ import java.util.List;
 // IDENTIDAD CONTRIBUYENTE
 @Entity
 @NoArgsConstructor
+@Getter
 public class IdentidadContribuyente {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
@@ -25,16 +29,17 @@ public class IdentidadContribuyente {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @Setter
     private Contribuyente contribuyente;
-    @OneToMany(mappedBy = "autor")
+    @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;
 
-    public IdentidadContribuyente(String nombre, String apellido, LocalDate fechaNacimiento, Contribuyente contribuyente){
+    @JsonCreator
+    public IdentidadContribuyente(@JsonProperty("nombre") String nombre, @JsonProperty("apellido") String apellido,@JsonProperty("fechaNacimiento") LocalDate fechaNacimiento){
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
-        this.contribuyente = contribuyente;
         this.hechosContribuidos = new ArrayList<>();
     }
     @JsonIgnore
@@ -42,5 +47,5 @@ public class IdentidadContribuyente {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
 
-    public void agregarHechoContrubuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
+    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

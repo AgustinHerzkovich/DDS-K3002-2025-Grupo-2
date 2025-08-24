@@ -1,11 +1,10 @@
 package domain.services;
 
-import domain.fuentesDinamicas.FuenteDinamica;
-import domain.fuentesDinamicas.HechoXFuente;
+import domain.dto.HechoDTO;
 import domain.hechos.Hecho;
-import domain.repositorios.RepositorioDeFuentes;
+import domain.mappers.HechoMapper;
 import domain.repositorios.RepositorioDeHechos;
-import domain.repositorios.RepositorioDeHechosXFuente;
+import domain.usuarios.Contribuyente;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +14,11 @@ import java.util.List;
 @Service
 public class HechoService {
     private final RepositorioDeHechos repositorioDeHechos;
-    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
-    private final RepositorioDeFuentes repositorioDeFuentes;
+    private final ContribuyenteService contribuyenteService;
     
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeFuentes repositorioDeFuentes) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService) {
         this.repositorioDeHechos = repositorioDeHechos;
-        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
-        this.repositorioDeFuentes = repositorioDeFuentes;
+        this.contribuyenteService = contribuyenteService;
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
@@ -34,28 +31,16 @@ public class HechoService {
         return repositorioDeHechos.findAll().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
     }
 
-    public void guardarHechoEnFuente(Long id, Hecho hecho) {
-        FuenteDinamica fuente = repositorioDeFuentes.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Fuente no encontrada con ID: " + id));
-        HechoXFuente hechoXFuente = new HechoXFuente(hecho, fuente);
-        repositorioDeHechos.save(hecho);
-        repositorioDeHechosXFuente.save(hechoXFuente);
+    public Hecho guardarHecho(Hecho hecho) {
+        return repositorioDeHechos.save(hecho);
     }
 
     @Transactional(readOnly = true)
-    public List<Hecho> obtenerHechosDeFuente(Long id) {
-        FuenteDinamica fuente = repositorioDeFuentes.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Fuente no encontrada con ID: " + id));
-        List<HechoXFuente> hechosPorFuente = repositorioDeHechosXFuente.findByFuente(fuente);
-        return hechosPorFuente.stream()
-                .map(HechoXFuente::getHecho)
-                .toList();
-    }
-
-    @Transactional(readOnly = true)
-    public List<Hecho> obtenerHechosDeFuenteConFechaMayorA(Long id, LocalDateTime fechaMayorA) {
-        return obtenerHechosDeFuente(id).stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA))
-                .toList();
+    public Hecho guardarHechoDto(HechoDTO hechoDto) {
+        Contribuyente autor = contribuyenteService.obtenerContribuyente(hechoDto.getContribuyenteId());
+        Hecho hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad());
+        autor.contribuirAlHecho(hecho);
+        return guardarHecho(hecho);
     }
 
     public Hecho obtenerHecho(String id) {
