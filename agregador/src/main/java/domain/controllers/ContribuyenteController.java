@@ -24,7 +24,7 @@ public class ContribuyenteController {
     }
 
     @PatchMapping("/contribuyentes/{id}")
-    public ResponseEntity<Void> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyente identidad, @PathVariable("id") Long id) {
+    public ResponseEntity<Void> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyente identidad, @PathVariable("id") Long id) { // No habria que pasarle un contribuyente entero en lugar de solo la identidad? Si queres cambiar esAdministrador como lo haces?
         Contribuyente contribuyente = contribuyenteService.agregarIdentidadAContribuyente(id, identidad);
         System.out.println("Se ha agregado la identidad: " + contribuyente.getNombreCompleto() + " al contribuyente: " + contribuyente.getId());
         return ResponseEntity.ok().build();
