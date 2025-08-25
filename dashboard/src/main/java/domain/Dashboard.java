@@ -12,6 +12,11 @@ public class Dashboard {
         ConnectionManager.getInstance().registrarLocalHost(8085, "Publica");
         ConnectionManager.getInstance().registrarLocalHost(8086, "Admin");
         ConnectionManager.getInstance().registrarLocalHost(8082, "Dinamica");
+
+        System.out.println(ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+        System.out.println(ConnectionManager.getInstance().getServidorLocal("Admin"));
+        System.out.println(ConnectionManager.getInstance().getServidorLocal("Publica"));
+
         new MenuPrincipal().abrirMenu();
         System.exit(0);
     }

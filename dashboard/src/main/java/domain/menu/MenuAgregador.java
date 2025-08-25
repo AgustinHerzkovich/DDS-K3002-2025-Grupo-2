@@ -6,9 +6,6 @@ import domain.subMenu.*;
 public class MenuAgregador extends Menu{
     @Override
     void mostrarTextoOpciones() {
-        System.out.println(ConnectionManager.getInstance().getServidorLocal("Dinamica"));
-        System.out.println(ConnectionManager.getInstance().getServidorLocal("Admin"));
-        System.out.println(ConnectionManager.getInstance().getServidorLocal("Publica"));
         System.out.println("Elija la opcion:");
         System.out.println("0. Salir");
         System.out.println("1. Enviar Post Coleccion (api administrativa)");

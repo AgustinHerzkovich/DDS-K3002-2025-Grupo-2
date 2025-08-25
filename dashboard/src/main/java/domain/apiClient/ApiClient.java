@@ -10,8 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 public class ApiClient {
 
-    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-
+    private static final RestTemplate restTemplate;
+    static {
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        restTemplate = new RestTemplate(factory);
+    }
     public static void postColeccion(ColeccionDTO coleccion, Conexion conexion){
         String url = conexion.getUri() + "/apiAdministrativa/colecciones";
         restTemplate.postForLocation(url, coleccion);
