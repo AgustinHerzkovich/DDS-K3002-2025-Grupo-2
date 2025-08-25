@@ -3,13 +3,14 @@ package domain.apiClient;
 
 import domain.DTOs.*;
 import domain.connectionManager.Conexion;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 public class ApiClient {
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 
     public static void postColeccion(ColeccionDTO coleccion, Conexion conexion){
         String url = conexion.getUri() + "/apiAdministrativa/colecciones";
