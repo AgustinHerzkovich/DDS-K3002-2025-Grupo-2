@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdentidadPostDTO {
+public class IdentidadPatchDTO {
     private String nombre;
     private String apellido;
     private LocalDate fechaNacimiento;

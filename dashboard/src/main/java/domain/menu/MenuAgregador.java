@@ -11,12 +11,11 @@ public class MenuAgregador extends Menu{
         System.out.println(ConnectionManager.getInstance().getServidorLocal("Publica"));
         System.out.println("Elija la opcion:");
         System.out.println("0. Salir");
-        System.out.println("1. Enviar Post Hecho");
-        System.out.println("2. Enviar Post Coleccion");
-        System.out.println("3. Enviar Post FuenteDinamica");
-        System.out.println("4. Enviar Get Coleccion curada");
-        System.out.println("5. Enviar Get Coleccion irrestricta");
-        System.out.println("6. Enviar Get Colecciones");
+        System.out.println("1. Enviar Post Coleccion");
+        System.out.println("2. Enviar Post FuenteDinamica");
+        System.out.println("3. Enviar Get Coleccion curada");
+        System.out.println("4. Enviar Get Coleccion irrestricta");
+        System.out.println("5. Enviar Get Colecciones");
     }
 
     @Override
@@ -25,21 +24,18 @@ public class MenuAgregador extends Menu{
             case 0:
                 return true;
             case 1:
-                SubMenuPostHecho.abrirMenu();
-                break;
-            case 2:
                 SubMenuPostColeccion.abrirMenu();
                 break;
-            case 3:
+            case 2:
                 SubMenuEnviarPostFuente.abrirMenu();
                 break;
-            case 4:
+            case 3:
                 new SubMenuGetHechosCurados().abrirMenu();
                 break;
-            case 5:
+            case 4:
                 new SubMenuGetHechosIrrestrictos().abrirMenu();
                 break;
-            case 6:
+            case 5:
                 SubMenuGetColecciones.abrirMenu();
                 break;
         }

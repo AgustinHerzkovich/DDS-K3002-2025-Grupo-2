@@ -5,7 +5,6 @@ import domain.DTOs.*;
 import domain.connectionManager.Conexion;
 import org.springframework.web.client.RestTemplate;
 
-import java.security.cert.CertPath;
 import java.util.Arrays;
 import java.util.List;
 public class ApiClient {
@@ -53,7 +52,7 @@ public class ApiClient {
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes";
         return restTemplate.postForObject(url, contribuyenteDTO, Integer.class);
     }
-    public static void patchIdentidad(IdentidadPostDTO identidadPostDTO, Integer id, Conexion conexion){
+    public static void patchIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id;
         restTemplate.patchForObject(url, identidadPostDTO, void.class);
     }
