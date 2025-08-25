@@ -22,6 +22,8 @@ public class MenuFuenteDinamica extends Menu{
     @Override
     boolean ejecutarOperacionMenuPrincipal(Integer opcion) throws Exception {
         switch (opcion){
+            case 0:
+                return true;
             case 1:
                 SubMenuPostHecho.abrirMenu();
                 break;
