@@ -6,6 +6,7 @@ import domain.hechos.Hecho;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -16,54 +17,64 @@ import java.util.stream.Collectors;
 
 @Service
 public class ArchivoService {
+    private final AwsS3FileServerService fileServerService;
+    private final String CARPETA_PENDIENTES = "pendientes";
+    private final String CARPETA_PROCESADOS = "procesados";
 
-    private final FileServerService fileServerService;
-
-    public ArchivoService(FileServerService fileServerService) {
+    public ArchivoService(AwsS3FileServerService fileServerService) {
         this.fileServerService = fileServerService;
     }
 
-    private final String BUCKET_PENDIENTES = "pendientes";
-    private final String BUCKET_PROCESADOS = "procesados";
-
     // Subir archivo a pendientes
     public void subirArchivoPendiente(MultipartFile file) throws Exception {
-        fileServerService.cargarArchivo(BUCKET_PENDIENTES, file);
+        fileServerService.cargarArchivo(CARPETA_PENDIENTES, file);
     }
 
     public void subirArchivoDesdeUrl(String urlString) throws Exception {
-        URI uri = new URI(urlString);
-        URL url = uri.toURL();
+        urlString = urlString.trim().replaceAll("^\"|\"$", "");
+
+        URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setInstanceFollowRedirects(true); // sigue redirecciones
+        connection.setInstanceFollowRedirects(true);
         connection.connect();
 
-        String path = urlString.split("\\?")[0];
-
+        // Obtener el nombre del archivo desde la URL
+        String path = url.getPath();
         String fileName = path.substring(path.lastIndexOf('/') + 1);
 
-        try (InputStream is = connection.getURL().openStream()) {
-            fileServerService.cargarArchivoDesdeInputStream(BUCKET_PENDIENTES, is, fileName, "application/octet-stream");
-            System.out.println("Archivo subido correctamente a MinIO: " + fileName);
-        }finally {
+        try (InputStream is = connection.getInputStream()) {
+            // Leer en memoria para conocer el tamaño exacto
+            byte[] data = is.readAllBytes();
+
+            // Subir a S3 usando FileServerService
+            fileServerService.cargarArchivoDesdeInputStream(
+                    CARPETA_PENDIENTES,
+                    new ByteArrayInputStream(data),
+                    fileName,
+                    "application/octet-stream"
+            );
+
+            System.out.println("Archivo subido correctamente a S3: " + fileName);
+        } finally {
             connection.disconnect();
         }
     }
+
     // Leer todos los archivos pendientes y generar hechos
     public List<Hecho> leerHechosPendientesConFechaMayorA(LocalDateTime fecha) {
         List<Hecho> hechos = new ArrayList<>();
         try {
-            List<String> archivos = fileServerService.listarArchivos(BUCKET_PENDIENTES);
+            List<String> archivos = fileServerService.listarArchivos(CARPETA_PENDIENTES);
 
             for (String archivo : archivos) {
-                try (InputStream is = fileServerService.obtenerArchivo(BUCKET_PENDIENTES, archivo)) {
+                try (InputStream is = fileServerService.obtenerArchivo(CARPETA_PENDIENTES, archivo)) {
                     String extension = obtenerExtension(archivo);
                     lectorParaExtension(extension)
                             .ifPresent(lector -> hechos.addAll(lector.leerHechos(is)));
                 }
                 // Mover archivo a procesados
-                fileServerService.moverArchivo(BUCKET_PENDIENTES, archivo, BUCKET_PROCESADOS, archivo);
+                fileServerService.moverArchivo(CARPETA_PENDIENTES, archivo, CARPETA_PROCESADOS, archivo);
             }
         } catch (Exception e) {
             throw new RuntimeException("Error leyendo archivos pendientes: " + e.getMessage());
