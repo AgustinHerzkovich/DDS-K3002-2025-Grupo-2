@@ -49,7 +49,13 @@ public class SubMenuPostColeccion {
         coleccion.getFuentes().forEach(f -> System.out.print(" " +f.getId().getIdExterno() + " " + f.getId().getTipo()));
         System.out.println("Algoritmo: " + coleccion.getAlgoritmoConsenso().getTipo());
         System.out.println("Criterios: " + coleccion.getCriteriosDePertenencia().size());
-        ApiClient.postColeccion(coleccion, ConnectionManager.getInstance().getServidorLocal("Admin"));
+        try {
+            ApiClient.postColeccion(coleccion, ConnectionManager.getInstance().getServidorLocal("Admin"));
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("Eso de arriba parece un error, y es un error, pero si dice \"Unsupported transfer encoding: chunked\" fuciona igual y no se como arreglarlo. \nTiene algo que ver con usar un intermediario que no sabe lo que recibe ni lo que manda");
+        }
     }
 
 }
