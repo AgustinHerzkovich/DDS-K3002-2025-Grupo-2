@@ -57,5 +57,9 @@ public class ApiClient {
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id;
         restTemplate.patchForObject(url, identidadPostDTO, void.class);
     }
+    public static void postSolicitud(SolicitudDTO solicitudDTO, Conexion conexion){
+        String url = conexion.getUri() + "/apiPublica/solicitudes";
+        restTemplate.postForObject(url, solicitudDTO, void.class);
+    }
 
 }

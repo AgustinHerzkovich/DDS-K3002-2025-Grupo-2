@@ -6,7 +6,7 @@ public class MenuPrincipal extends Menu{
     void mostrarTextoOpciones() {
         System.out.println("Que menu abrir");
         System.out.println("0. Salir");
-        System.out.println("1. Menu agregador");
+        System.out.println("1. Menu agregador (api publica y administrativa)");
         System.out.println("2. Menu fuente dinámica");
     }
 
