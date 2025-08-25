@@ -1,0 +1,78 @@
+1) Origen
+Discutiendo con Herzkovich, nos dimos cuenta de que el modelo que teniamos actualmente almacenaba los contribuyentes en FuenteDinamica y posteaba las solicitudes allí tambien.
+Segun la consigna, las solicitudes se postea en la api publica que se conecta con Agregador.
+Por lo tanto, hay que mover el endpoint de solicitudes a Agregador.
+
+2) Problema
+Para aceptar una solicitud se requiere conocer el contribuyente (tenerlo en la BD)
+Los contribuyentes solo le llegan a Agregador cuando se recolectan sus hechos de fuenteDinamica cada 1 hora.
+Por lo tanto, hay que hacer que los contribuyentes estén en agregador
+
+Como se pueden pasar a estar en agregador? Hay tres opciones principales:
+    - Se postean desde Fuente Dinamica al agregador
+        - Esto rompe con el modelo que teniamos de que Fuente dinamica solo expone su API
+        - Fuente tiene que acordarse de todos los agregadores con los que trata, en caso que muchos nodos tengan la misma fuente
+        - Fuente debe verificar que no hayan sido eliminados o modificados cada vez que se recibe un nuevo Post de hecho (Identidad puede cambiar)
+    - Se postean desde la API pública al agregador
+        - Esta opcion centraliza la gestion de contribuyentes en el agregador
+        - Cada nodo agregador puede aceptar o rechazar los contribuyentes como crea conveniente
+        - Cada fuente revuelve alrededor un agregador y no se puede usar una misma fuente por multiples agregadores.
+        - El estado de la identidad elegida por el contribuyente se define en el agregador y no puede ser comprobado en tiempo real por FuenteDinamica.
+    - Se generan en agregador automaticamente cuando se hace un GET de hechos a FuenteDinamica (parecido al modelo actual)
+        - Esta opcion dificulta poder crear solicitudes de eliminacion en agregador si un contribuyente no postea un hecho
+        - Ofrece mas independencia entre las Fuentes Dinamicas y el agregador.
+        - No hay problema si una fuente dinamica responde a dos agregadores
+        - Dificulta la gestion de contribuyentes si hay muchas fuentes dinamicas en el mismo agregador
+            - Va a haber un usuario id:1 en cada fuente dinamica. Como se unifica esto?
+
+
+3) Solucion
+Contemplando las alternativas, considero la 3er opcion la mejor.
+
+Porque?
+Primero vamos a analizar los puntos negativos:
+
+1. "Esta opcion dificulta poder crear solicitudes de eliminacion en agregador si un contribuyente no postea un hecho"
+Frente a esto, sostengo que no es necesario almacenar el contribuyente que postea el hecho.
+En la consigna no lo pide, y se va a realizar desde la API publica, por lo que tiene sentido que no sea algo restringido a una cuenta.
+Además, que pasa si nos piden que borremos algo por una cuestion legal? Estamos forzando a los demas a crearse una cuenta solo para solicitar la eliminacion de cierto contenido?
+
+Considerando tod0 esto, creo que se simplificaria mucho la problematica si la unica cosa que se puede postear directamente por un usuario a agregador
+no se vincula a un concepto que esta tan ligado con las fuentes dinamicas como es un contribuyente.
+Se puede eliminar el atribuyo "Contribuyente" de nuestras solicitudes sin causar muchas perdidas
+
+2. "Dificulta la gestion de contribuyentes si hay muchas fuentes dinamicas en el mismo agregador"
+Este es el mayor problema. Como se distingue entre dos usuario distintos entre fuentes dinamicas?
+2.1 UUID
+La respuesta mas obvia seria usar un UUID. Considero que esta opcion es valida, aunque implica que un usuario
+debe recordar la UUID que publico en cada fuente dinámica. Esta opcion permite que se puedan identificar univocamente
+los contribuyentes, y que si un contribuyente posteara a otra fuente dinamica, al juntarlos en el agregador, ambas fuentes
+tuvieran hechos posteados por la misma UUID, correspondiente al mismo usuario
+2.2 username
+Otra alternativa sería la de usar un nombre de usuario. Esto simplifica que un usuario recuerde su nombre, aunque da lugar
+a nombres de usuarios repetidos, donde en un agregador pida hechos de dos fuentes dinamicas y haya dos personas distintas
+que pusieron el mismo nombre de usuario y se consideraran el mismo usuario.
+
+Concluyo que la mejor solucion seria implementar la clase Contribuyente con un UUID configurable por el usuario
+el usuario puede ir a una fuente dinamica y postear un hecho con un uuid aleatorio. Luego, se lleva ese UUID a otra
+fuente dinamica y con el mismo puede postear otro hecho, manteniendo el usuario entre ambas fuentes.
+Luego en el agregador, se juntan los hechos de ambas fuentes y se crea el usuario, unificando ambas UUID iguales en
+ambos hechos.
+
+4) Identidad
+Ahora bien. Esto da lugar a un problema mas. Como se maneja las identidades?
+Dijimos que cada Fuente dinamica tiene sus usuarios con sus UUID. Bien, ahora si en una Fuente Dinamica esta puesta la
+identidad "Jorge" y se va a otra fuenteDinamica sin identidad seteada, como se sabe que identidad ponerle al hecho?
+
+La respuesta es, como no debe sorprender a nadie, eliminar el campo IdentidadActual del contribuyeente.
+Ahora, como se hace para manejar las identidades?
+Cuando el usuario va a una fuente Dinamica, ingresa, ademas de su UUID la identidad que quiere utilizar.
+Esta identidad se distingue por su nombre y apellido, fecha de nacimiento, y si queremos le ponemos tambien otro UUID.
+Si la persona se conecta a otra fuente dinamica, vuelve a mandar los mismos datos de la identidad y listo.
+Luego cuando se unifican los datos en el agregador hago lo siguiente:
+1) Leo la uuid del usuario: Ya existe? Si existe ya se que usuario es. Si no lo creo
+2) Leo la identidad: Ya existe? Si existe ya se que identidad ponerle al usuario para ese hecho. Si no existe la creo.
+3) Guardo el hecho con la identidad y el usuario.
+
+De esta manera, cada nodo FuenteDinamica puede actuar de manera independiente a los nodos agregadores y tod0 el mundo esta contento
+En la siguiente entrega veremos como hacemos eso?
