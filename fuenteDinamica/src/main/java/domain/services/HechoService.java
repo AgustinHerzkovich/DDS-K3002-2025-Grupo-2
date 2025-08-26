@@ -1,6 +1,8 @@
 package domain.services;
 
 import domain.dto.HechoDTO;
+import domain.dto.HechoEdicionDTO;
+import domain.hechos.EstadoRevision;
 import domain.hechos.Hecho;
 import domain.mappers.HechoMapper;
 import domain.repositorios.RepositorioDeHechos;
@@ -27,8 +29,13 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Hecho> obtenerHechosConFechaMayorA(LocalDateTime fechaMayorA) {
-        return repositorioDeHechos.findAll().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
+    public List<Hecho> obtenerHechosAceptados() {
+        return this.obtenerHechos().stream().filter(hecho -> hecho.getEstadoRevision() == EstadoRevision.ACEPTADO).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Hecho> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
+        return this.obtenerHechosAceptados().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
     }
 
     public Hecho guardarHecho(Hecho hecho) {
@@ -46,5 +53,25 @@ public class HechoService {
     public Hecho obtenerHecho(String id) {
         return repositorioDeHechos.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+    }
+
+    public Hecho modificarEstadoRevision(String id, EstadoRevision nuevoEstado) {
+        Hecho hecho = repositorioDeHechos.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+        hecho.setEstadoRevision(nuevoEstado);
+        return repositorioDeHechos.save(hecho);
+    }
+
+    public Hecho editarHecho(String id, HechoEdicionDTO hechoEdicionDto) {
+        Hecho hecho = repositorioDeHechos.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+        hecho.editar(hechoEdicionDto.getTitulo(),
+                hechoEdicionDto.getDescripcion(),
+                hechoEdicionDto.getCategoria(),
+                hechoEdicionDto.getUbicacion(),
+                hechoEdicionDto.getFechaAcontecimiento(),
+                hechoEdicionDto.getContenidoTexto(),
+                hechoEdicionDto.getContenidoMultimedia());
+        return repositorioDeHechos.save(hecho);
     }
 }

@@ -39,6 +39,10 @@ public class SolicitudService {
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
+    public List<SolicitudEliminacion> obtenerSolicitudes() {
+        return repositorioDeSolicitudes.findAll();
+    }
+
     @Transactional
     public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
@@ -50,7 +54,7 @@ public class SolicitudService {
         hechoService.guardarHecho(hecho);
         return solicitudGuardada;
     }
-
+    @Transactional
     public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(Long.valueOf(solicitudDto.getSolicitanteId()));
@@ -94,4 +98,5 @@ public class SolicitudService {
                 throw new IllegalArgumentException("Estado no válido: " + nuevoEstado);
         }
     }
+
 }
