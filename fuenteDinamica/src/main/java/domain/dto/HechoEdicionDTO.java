@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class HechoDTO {
+public class HechoEdicionDTO {
     private String titulo;
     private String descripcion;
     private Categoria categoria;
@@ -17,6 +17,4 @@ public class HechoDTO {
     private LocalDateTime fechaAcontecimiento;
     private String contenidoTexto;
     private List<Multimedia> contenidoMultimedia;
-    private Boolean anonimato;
-    private Long contribuyenteId;
 }

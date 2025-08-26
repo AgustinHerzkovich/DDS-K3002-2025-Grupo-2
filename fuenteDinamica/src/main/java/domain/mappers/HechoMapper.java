@@ -11,7 +11,6 @@ public class HechoMapper {
                 hechoDto.getCategoria(),
                 hechoDto.getUbicacion(),
                 hechoDto.getFechaAcontecimiento(),
-                hechoDto.getOrigen(),
                 hechoDto.getContenidoTexto(),
                 hechoDto.getContenidoMultimedia(),
                 hechoDto.getAnonimato(),

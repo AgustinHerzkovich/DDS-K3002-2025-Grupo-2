@@ -27,8 +27,15 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitud);
     }
 
+    @GetMapping("/solicitudes")
+    public List<SolicitudEliminacion> obtenerSolicitudes() {
+        return solicitudService.obtenerSolicitudes();
+    }
 
-
+    @GetMapping("/solicitudes/{id}")
+    public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
+        return solicitudService.obtenerSolicitud(id);
+    }
 
     @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
