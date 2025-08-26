@@ -1,4 +1,7 @@
 package domain.excepciones;
 
-public class AnonimatoException {
+public class AnonimatoException extends Exception {
+    public AnonimatoException() {
+        super("No se puede editar un hecho que fue subido de forma anónima.");
+    }
 }
