@@ -3,6 +3,7 @@ package domain.controllers;
 import java.util.List;
 
 import domain.dto.SolicitudDTO;
+import domain.excepciones.MotivoSolicitudException;
 import domain.services.HechoService;
 import domain.services.SolicitudService;
 import domain.solicitudes.SolicitudEliminacion;
@@ -22,9 +23,13 @@ public class SolicitudController {
 
     @PostMapping("/solicitudes")
     public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
-        SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
-        System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
-        return ResponseEntity.ok(solicitud);
+        try {
+            SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
+            System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
+            return ResponseEntity.ok(solicitud);
+        } catch (MotivoSolicitudException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/solicitudes")
