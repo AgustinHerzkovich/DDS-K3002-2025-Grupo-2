@@ -6,6 +6,9 @@ import domain.usuarios.IdentidadContribuyente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/fuentesDinamicas")
 public class ContribuyenteController {
@@ -16,11 +19,19 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<Integer> crearContribuyente(@RequestBody Contribuyente contribuyente) {
+    public ResponseEntity<Map<String, Object>> crearContribuyente(@RequestBody Contribuyente contribuyente) {
+        Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("contribuyenteId", contribuyenteGuardado.getId());
+        //System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId()); esto cuando se haga el front lo podemos sacar
+        return ResponseEntity.ok(resp);
+    }
+
+    /*public ResponseEntity<Integer> crearContribuyente(@RequestBody Contribuyente contribuyente) {
         Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
         System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId());
         return ResponseEntity.ok(Math.toIntExact(contribuyenteGuardado.getId()));
-    }
+    } de lucas*/
 
     @PatchMapping("/contribuyentes/{id}")
     public ResponseEntity<Void> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyente identidad, @PathVariable("id") Long id) {
