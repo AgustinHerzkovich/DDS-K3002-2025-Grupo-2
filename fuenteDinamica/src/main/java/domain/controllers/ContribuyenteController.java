@@ -23,7 +23,7 @@ public class ContribuyenteController {
         Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
         Map<String, Object> resp = new HashMap<>();
         resp.put("contribuyenteId", contribuyenteGuardado.getId());
-        //System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId()); esto cuando se haga el front lo podemos sacar
+        System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId()); // esto cuando se haga el front lo podemos sacar
         return ResponseEntity.ok(resp);
     }
 
