@@ -2,9 +2,9 @@ package domain.subMenu;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import domain.dashboardDTOs.HechoPostDTO;
 
 import domain.dashboardDTOs.HechoPostBuilder;
-import domain.dashboardDTOs.HechoPostDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
