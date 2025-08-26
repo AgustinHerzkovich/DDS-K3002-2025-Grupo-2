@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import domain.dto.SolicitudDTO;
+import domain.excepciones.MotivoSolicitudException;
 import domain.hechos.Hecho;
 import domain.repositorios.RepositorioDeSolicitudes;
 import domain.solicitudes.*;
@@ -54,12 +55,20 @@ public class SolicitudService {
         hechoService.guardarHecho(hecho);
         return solicitudGuardada;
     }
+
     @Transactional
-    public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) {
+    public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) throws MotivoSolicitudException {
+        this.validarMotivoSolicitud(solicitudDto.getMotivo());
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(Long.valueOf(solicitudDto.getSolicitanteId()));
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());
         return guardarSolicitud(solicitud);
+    }
+
+    private void validarMotivoSolicitud(String motivo) throws MotivoSolicitudException {
+        if (motivo.length() < 500) {
+            throw new MotivoSolicitudException("EL motivo de la solicitud debe tener al menos 500 caracteres.");
+        }
     }
 
     public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado) {
