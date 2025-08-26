@@ -17,13 +17,14 @@ import java.util.List;
 public class ColeccionController {
     private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
-
+    private List<Observer> observadores;
     public ColeccionController(ColeccionService coleccionService, FuenteService fuenteService) {
         this.coleccionService = coleccionService;
         this.fuenteService = fuenteService;
     }
 
     // Operaciones CREATE sobre Colecciones
+
     @PostMapping("/colecciones")
     public ResponseEntity<Coleccion> crearColeccion(@RequestBody Coleccion coleccion) {
         fuenteService.guardarFuentes(coleccion.getFuentes());
@@ -105,4 +106,9 @@ public class ColeccionController {
         System.out.println("Coleccion: " + idColeccion + " eliminada");
         return ResponseEntity.ok().build();
     }
+
+    private void notificar(){
+        observadores.forEach(Observer::update);
+    }
+
 }

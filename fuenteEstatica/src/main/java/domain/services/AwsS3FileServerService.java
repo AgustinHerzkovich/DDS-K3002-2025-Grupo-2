@@ -1,9 +1,9 @@
 package domain.services;
 
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -15,18 +15,15 @@ import java.util.List;
 
 @Service
 public class AwsS3FileServerService {
+    @Getter
     private final S3Client s3;
     private final String bucketName = "fuentes-estaticas";
 
     public AwsS3FileServerService() {
+        String regionName = System.getenv("AWS_REGION");
         this.s3 = S3Client.builder()
-                .region(Region.US_EAST_2)
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(
-                                "AKIAQVASUIF7RPXNHJ42",
-                                "Mb2AiWH5ruqhwBbA4AE1nYJRL4NexeyRYXBRyKUA"
-                        )
-                ))
+                .region(Region.of(regionName)) // Lee AWS_REGION de variables de entorno
+                .credentialsProvider(EnvironmentVariableCredentialsProvider.create()) // Lee AWS_ACCESS_KEY_ID=REDACTED
                 .build();
     }
 
