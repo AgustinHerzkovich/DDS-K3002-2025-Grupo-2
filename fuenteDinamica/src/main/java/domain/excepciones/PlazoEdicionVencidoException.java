@@ -1,7 +1,5 @@
 package domain.excepciones;
 
-public class PlazoEdicionVencidoExcepcion extends Exception {
-    public PlazoEdicionVencidoExcepcion(String message) {
-        super(message);
-    }
+public class PlazoEdicionVencidoException extends Exception {
+    public PlazoEdicionVencidoException() {super("Se venció el plazo de edición del hecho de 7 días");}
 }

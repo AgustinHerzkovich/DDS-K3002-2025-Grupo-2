@@ -2,11 +2,14 @@ package domain.controllers;
 
 import domain.dto.HechoDTO;
 import domain.dto.HechoEdicionDTO;
+import domain.excepciones.AnonimatoException;
+import domain.excepciones.HechoNoEncontradoException;
+import domain.excepciones.PlazoEdicionVencidoException;
 import domain.hechos.EstadoRevision;
 import domain.hechos.Hecho;
-import domain.hechos.RevisionHecho;
 import domain.services.HechoService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +38,14 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public Hecho obtenerHecho(@PathVariable("id") String id) {
-        return hechoService.obtenerHecho(id);
+    public ResponseEntity<Hecho> obtenerHecho(@PathVariable("id") String id) {
+
+        try{
+            Hecho hecho = hechoService.obtenerHecho(id);
+            return ResponseEntity.ok(hecho);
+        }catch (HechoNoEncontradoException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping("/hechos")
@@ -65,10 +74,12 @@ public class HechoController {
             Hecho hecho = hechoService.editarHecho(id, hechoEdicionDto);
             System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")");
             return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().header("hecho", "Kaputt").build();
+        } catch (HechoNoEncontradoException e) {
+            return ResponseEntity.notFound().build();
+        } catch (PlazoEdicionVencidoException e){
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        } catch (AnonimatoException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
-
 }

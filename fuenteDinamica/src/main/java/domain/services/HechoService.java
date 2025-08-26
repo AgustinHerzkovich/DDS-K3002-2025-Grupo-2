@@ -2,6 +2,9 @@ package domain.services;
 
 import domain.dto.HechoDTO;
 import domain.dto.HechoEdicionDTO;
+import domain.excepciones.AnonimatoException;
+import domain.excepciones.HechoNoEncontradoException;
+import domain.excepciones.PlazoEdicionVencidoException;
 import domain.hechos.EstadoRevision;
 import domain.hechos.Hecho;
 import domain.mappers.HechoMapper;
@@ -45,26 +48,28 @@ public class HechoService {
     @Transactional(readOnly = true)
     public Hecho guardarHechoDto(HechoDTO hechoDto) {
         Contribuyente autor = contribuyenteService.obtenerContribuyente(hechoDto.getContribuyenteId());
-        Hecho hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad());
+        Hecho hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad()); // TODO: Actualmente se fuerza que use la última identidad, pero debería ser la identidad seleccionada en el front
         autor.contribuirAlHecho(hecho);
         return guardarHecho(hecho);
     }
 
-    public Hecho obtenerHecho(String id) {
+    public Hecho obtenerHecho(String id) throws HechoNoEncontradoException {
         return repositorioDeHechos.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
     }
 
-    public Hecho modificarEstadoRevision(String id, EstadoRevision nuevoEstado) {
+    public Hecho modificarEstadoRevision(String id, EstadoRevision nuevoEstado) throws HechoNoEncontradoException {
         Hecho hecho = repositorioDeHechos.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         hecho.setEstadoRevision(nuevoEstado);
         return repositorioDeHechos.save(hecho);
     }
 
-    public Hecho editarHecho(String id, HechoEdicionDTO hechoEdicionDto) {
-        Hecho hecho = repositorioDeHechos.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Hecho no encontrado con ID: " + id));
+    public Hecho editarHecho(String id, HechoEdicionDTO hechoEdicionDto) throws HechoNoEncontradoException
+    , PlazoEdicionVencidoException, AnonimatoException {
+            Hecho hecho = repositorioDeHechos.findById(id)
+                    .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
+        this.validarHechoEditable(hecho);
         hecho.editar(hechoEdicionDto.getTitulo(),
                 hechoEdicionDto.getDescripcion(),
                 hechoEdicionDto.getCategoria(),
@@ -73,5 +78,17 @@ public class HechoService {
                 hechoEdicionDto.getContenidoTexto(),
                 hechoEdicionDto.getContenidoMultimedia());
         return repositorioDeHechos.save(hecho);
+    }
+
+    public void validarHechoEditable(Hecho hecho) throws PlazoEdicionVencidoException, AnonimatoException {
+        LocalDateTime fechaCarga = hecho.getFechaCarga();
+        LocalDateTime fechaActual = LocalDateTime.now();
+        if (!fechaCarga.isAfter(fechaActual.minusWeeks(1))) { // Si pasó más de una semana desde que se subió, se arroja una excepción
+            throw new PlazoEdicionVencidoException();
+        }
+
+        if (hecho.getAnonimato()) {
+            throw new AnonimatoException();
+        }
     }
 }
