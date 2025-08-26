@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú UI</title>
+  <style>
+    .seccion { display: none; margin-top: 20px; }
+    .menu { margin-top: 20px; }
+    button { margin: 5px; padding: 8px 12px; }
+    label { display: block; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Menú Principal</h1>
+  <div class="menu">
+    <button onclick="mostrarSeccion('contribuyente')">1. Crear Contribuyente</button>
+    <button onclick="mostrarSeccion('identidad')">2. Agregar Identidad</button>
+    <button onclick="mostrarSeccion('hecho')">3. Postear Hecho</button>
+  </div>
+
+  <!-- Sección Crear Contribuyente -->
+  <div id="contribuyente" class="seccion">
+    <h2>Crear Contribuyente</h2>
+    <form id="form-contribuyente">
+      <label><input type="checkbox" id="esAdmin"> Es Administrador</label>
+      <button type="submit">Crear</button>
+    </form>
+    <button onclick="volverMenu()">Volver al Menú</button>
+  </div>
+
+  <!-- Sección Agregar Identidad -->
+  <div id="identidad" class="seccion">
+    <h2>Agregar Identidad</h2>
+    <form id="form-identidad">
+      <label>ID Contribuyente: <input id="contribuyenteId"></label>
+      <label>Nombre: <input id="nombre"></label>
+      <label>Apellido: <input id="apellido"></label>
+      <label>Fecha Nacimiento: <input type="date" id="fechaNac"></label>
+      <button type="submit">Agregar</button>
+    </form>
+    <button onclick="volverMenu()">Volver al Menú</button>
+  </div>
+
+  <!-- Sección Postear Hecho -->
+<div id="hecho" class="seccion">
+  <h2>Postear Hecho</h2>
+  <form id="form-hecho">
+    <label>ID Contribuyente: <input id="hecho-contribuyenteId"></label>
+    <label>Título: <input id="titulo"></label>
+    <label>Descripción: <input id="descripcion"></label>
+    <label>Nombre Categoría: <input id="Nombre Categoria"></label>
+    <label>Latitud: <input id="Latitud" type="number" step="any"></label>
+    <label>Longitud: <input id="Longitud" type="number" step="any"></label>
+    <label>Contenido: <textarea id="Contenido"></textarea></label>
+    <label><input type="checkbox" id="anonimato"> Anónimo</label>
+
+      <!-- Campos para Contenido Multimedia -->
+      <div id="multimedia-container">
+        <h3>Contenido Multimedia</h3>
+        <div class="multimedia-item">
+          <label>Tipo: <input type="text" class="tipo" placeholder="Ej: video"></label>
+          <label>Formato: <input type="text" class="formato" placeholder="Ej: mp4"></label>
+          <label>Tamaño (MB): <input type="number" class="tamanio" step="any"></label>
+          <label>Resolución: <input type="text" class="resolucion" placeholder="Ej: 1920x1080"></label>
+          <label>Duración (segundos): <input type="number" class="duracion" step="any"></label>
+        </div>
+      </div>
+      <button type="button" onclick="agregarMultimedia()">Agregar Contenido Multimedia</button>
+      <button type="submit">Postear</button>
+    </form>
+    <button onclick="volverMenu()">Volver al Menú</button>
+  </div>
+
+  <script>
+    function agregarMultimedia() {
+    const container = document.getElementById("multimedia-container");
+    const newItem = document.createElement("div");
+    newItem.classList.add("multimedia-item");
+    newItem.innerHTML = `
+      <label>Tipo: <input type="text" class="tipo" placeholder="Ej: video"></label>
+      <label>Formato: <input type="text" class="formato" placeholder="Ej: mp4"></label>
+      <label>Tamaño (MB): <input type="number" class="tamanio" step="any"></label>
+      <label>Resolución: <input type="text" class="resolucion" placeholder="Ej: 1920x1080"></label>
+      <label>Duración (segundos): <input type="number" class="duracion" step="any"></label>
+    `;
+    container.appendChild(newItem);
+    }
+
+    function mostrarSeccion(id) {
+      document.querySelectorAll('.seccion').forEach(sec => sec.style.display = 'none');
+      document.querySelector('.menu').style.display = 'none';
+      document.getElementById(id).style.display = 'block';
+    }
+    function volverMenu() {
+      document.querySelectorAll('.seccion').forEach(sec => sec.style.display = 'none');
+      document.querySelector('.menu').style.display = 'block';
+    }
+
+    // Crear Contribuyente
+    document.getElementById("form-contribuyente").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const esAdministrador = document.getElementById("esAdmin").checked;
+      const resp = await fetch("http://localhost:8082/fuentesDinamicas/contribuyentes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ esAdministrador })
+      });
+      const data = await resp.json();
+      alert("Contribuyente creado con ID: " + data.contribuyenteId);
+    });
+
+    // Agregar Identidad
+    document.getElementById("form-identidad").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("contribuyenteId").value;
+      const body = {
+        nombre: document.getElementById("nombre").value,
+        apellido: document.getElementById("apellido").value,
+        fechaNacimiento: document.getElementById("fechaNac").value
+      };
+      const resp = await fetch(`http://localhost:8082/fuentesDinamicas/contribuyentes/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      
+      if (resp.ok) {
+        alert("Identidad agregada");
+      } else {
+        alert("Error al agregar identidad");
+      }
+    });
+
+    // Postear Hecho
+    document.getElementById("form-hecho").addEventListener("submit", async (e) => {
+      e.preventDefault();
+       // Obtener los valores de los campos multimedia
+      const multimediaItems = document.querySelectorAll(".multimedia-item");
+      const contenidoMultimedia = Array.from(multimediaItems).map(item => ({
+      tipo: item.querySelector(".tipo").value,
+      formato: item.querySelector(".formato").value,
+      tamanio: parseFloat(item.querySelector(".tamanio").value),
+      resolucion: item.querySelector(".resolucion").value,
+      duracion: parseFloat(item.querySelector(".duracion").value)
+  }));
+      const body = {
+        titulo: document.getElementById("titulo").value,
+        descripcion: document.getElementById("descripcion").value,
+        categoria: { nombre: document.getElementById("Nombre Categoria").value },
+        ubicacion: { latitud: document.getElementById("Latitud").value, longitud: document.getElementById("Longitud").value },
+        fechaAcontecimiento: new Date().toISOString(),
+        origen: "CARGA_MANUAL",
+        contenidoTexto: document.getElementById("Contenido").value,
+        contenidoMultimedia,
+        anonimato: document.getElementById("anonimato").checked,
+        contribuyenteId: document.getElementById("hecho-contribuyenteId").value
+      };
+      await fetch("http://localhost:8082/fuentesDinamicas/hechos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      alert("Hecho publicado");
+    });
+
+    // Postear Solicitud
+    document.getElementById("form-solicitud").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const body = {
+        titulo: document.getElementById("titulo").value,
+        descripcion: document.getElementById("descripcion").value,
+        categoria: { nombre: "Categoria ejemplo" },
+        ubicacion: { latitud: 0, longitud: 0 },
+        fechaAcontecimiento: new Date().toISOString(),
+        origen: "CARGA_MANUAL",
+        contenidoTexto: "Contenido texto ejemplo",
+        contenidoMultimedia: [
+          { tipo: "video", formato: "mp4", tamanio: 100, resolucion: "1920x1080", duracion: 30 }
+        ],
+        anonimato: document.getElementById("anonimato").checked,
+        contribuyenteId: document.getElementById("hecho-contribuyenteId").value
+      };
+      await fetch("http://localhost:8082/fuentesDinamicas/hechos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      alert("Hecho publicado");
+    });
+  </script>
+</body>
+</html>
