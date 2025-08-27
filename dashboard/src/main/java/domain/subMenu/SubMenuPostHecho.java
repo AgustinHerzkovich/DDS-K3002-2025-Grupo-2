@@ -47,14 +47,12 @@ public class SubMenuPostHecho {
                 : LocalDateTime.parse(fechaInput);
         builder.setFechaAcontecimiento(fecha);
 
-        builder.setOrigen();
-
         System.out.print("Contenido de texto (default: 'Los bomberos ya apagaron el fuego'): ");
         String texto = scanner.nextLine();
         if (texto.isEmpty()) texto = "Los bomberos ya apagaron el fuego";
         builder.setContenidoTexto(texto);
 
-        System.out.print("¿Agregar contenido multimedia? (S/N): ");
+        System.out.print("¿Agregar contenido multimedia? (S/N) (Default: S): ");
         String addMultimedia = scanner.nextLine();
         if (addMultimedia.isEmpty() || addMultimedia.equalsIgnoreCase("S")) {
             builder.addContenidoMultimedia("video", "mp4", 100, "1920x1080", 30);
@@ -69,29 +67,23 @@ public class SubMenuPostHecho {
         String idContribuyente = scanner.nextLine();
         if (idContribuyente.isEmpty()) idContribuyente = "1";
 
-        System.out.print("¿Es administrador? (true/false) (default: true): ");
-        String adminInput = scanner.nextLine();
-        boolean esAdmin = adminInput.isEmpty() || Boolean.parseBoolean(adminInput);
-
         builder.setAutor(Integer.valueOf(idContribuyente));
 
         HechoPostDTO hecho = builder.build();
-
-        System.out.println("\n=== Hecho creado ===");
-        System.out.println("Título: " + hecho.getTitulo());
-        System.out.println("Descripción: " + hecho.getDescripcion());
-        System.out.println("Categoría: " + hecho.getCategoria().getNombre());
-        System.out.println("Ubicación: " + hecho.getUbicacion().getLatitud() + ", " + hecho.getUbicacion().getLongitud());
-        System.out.println("Fecha Acontecimiento: " + hecho.getFechaAcontecimiento());
-        System.out.println("Origen: " + hecho.getOrigen());
-        System.out.println("Texto: " + hecho.getContenidoTexto());
-        System.out.println("Multimedia: " + hecho.getContenidoMultimedia().size() + " archivo(s)");
-        System.out.println("Anónimo: " + hecho.isAnonimato());
-        System.out.println("Contribuyente ID: " + hecho.getContribuyenteId());
         try{
-        ApiClient.postHecho(hecho, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+            ApiClient.postHecho(hecho, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+            System.out.println("\n=== Hecho creado ===");
+            System.out.println("Título: " + hecho.getTitulo());
+            System.out.println("Descripción: " + hecho.getDescripcion());
+            System.out.println("Categoría: " + hecho.getCategoria().getNombre());
+            System.out.println("Ubicación: " + hecho.getUbicacion().getLatitud() + ", " + hecho.getUbicacion().getLongitud());
+            System.out.println("Fecha Acontecimiento: " + hecho.getFechaAcontecimiento());
+            System.out.println("Texto: " + hecho.getContenidoTexto());
+            System.out.println("Multimedia: " + hecho.getContenidoMultimedia().size() + " archivo(s)");
+            System.out.println("Anónimo: " + hecho.isAnonimato());
+            System.out.println("Contribuyente ID: " + hecho.getContribuyenteId());
         }catch (Exception e){
-            throw new RuntimeException("No se pudo enviar el post del hecho" + e.getMessage());
+            throw new RuntimeException("No se pudo enviar el post del hecho: \n" + e.getMessage());
         }
     }
 }
