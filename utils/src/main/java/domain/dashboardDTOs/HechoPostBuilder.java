@@ -31,11 +31,6 @@ public class HechoPostBuilder {
         return this;
     }
 
-    public HechoPostBuilder setOrigen() {
-        hechoDTO.setOrigen("CARGA_MANUAL");
-        return this;
-    }
-
     public HechoPostBuilder setContenidoTexto(String texto) {
         hechoDTO.setContenidoTexto(texto);
         return this;

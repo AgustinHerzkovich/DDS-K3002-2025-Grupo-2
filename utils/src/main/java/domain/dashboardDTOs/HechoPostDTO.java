@@ -17,7 +17,6 @@ public class HechoPostDTO {
     private CategoriaDTO categoria;
     private UbicacionDTO ubicacion;
     private LocalDateTime fechaAcontecimiento;
-    private String origen;
     private String contenidoTexto;
     private List<ContenidoMultimediaDTO> contenidoMultimedia = new ArrayList<>();
     private boolean anonimato;
@@ -30,7 +29,6 @@ public class HechoPostDTO {
                 " \n Categoría: " + (categoria != null ? categoria.getNombre() : "null") +
                 " \n Ubicación: " + (ubicacion != null ? ubicacion.getLatitud() + ", " + ubicacion.getLongitud() : "null") +
                 " \n Fecha Acontecimiento: " + fechaAcontecimiento +
-                " \n Origen: " + origen +
                 " \n Texto: " + contenidoTexto +
                 " \n Multimedia: " + (contenidoMultimedia != null ? contenidoMultimedia.size() + " archivo(s)" : "0 archivo(s)") +
                 " \n Anónimo: " + anonimato +
