@@ -3,6 +3,7 @@ package domain.subMenu;
 import domain.dashboardDTOs.IdentidadPatchDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class SubMenuPatchIdentidad {
-    @Setter
+    @Setter @Getter
     public static Integer lastContribuyenteId = 1;
     public static void abrirMenu(){
         Integer id;

@@ -2,9 +2,7 @@ package domain.controllers;
 
 import domain.dto.HechoDTO;
 import domain.dto.HechoEdicionDTO;
-import domain.excepciones.AnonimatoException;
-import domain.excepciones.HechoNoEncontradoException;
-import domain.excepciones.PlazoEdicionVencidoException;
+import domain.excepciones.*;
 import domain.hechos.EstadoRevision;
 import domain.hechos.Hecho;
 import domain.services.HechoService;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")
@@ -49,8 +48,19 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<Void> agregarHecho(@RequestBody HechoDTO hechoDto) {
-        Hecho hecho = hechoService.guardarHechoDto(hechoDto);
+    public ResponseEntity<?> agregarHecho(@RequestBody HechoDTO hechoDto) {
+        Hecho hecho;
+        try {
+            hecho = hechoService.guardarHechoDto(hechoDto);
+        }catch (ContribuyenteNoConfiguradoException e){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of("error", "Contributente no configurado", "message", e.getMessage()));
+        }catch (ContribuyenteAssignmentException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error al asignar post al contribuyente", "message", e.getMessage()));
+        }catch (HechoMappingException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Hecho mal armado", "message", e.getMessage()));
+        }catch (HechoStorageException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "No se pudo almacenar el hecho en la base de datos", "message", e.getMessage()));
+        }
         System.out.println("Se ha agregado el hecho: " + hecho.getId());
         return ResponseEntity.ok().build();
     }
