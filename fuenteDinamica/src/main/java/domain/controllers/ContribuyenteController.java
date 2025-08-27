@@ -19,10 +19,10 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<Map<String, Object>> crearContribuyente(@RequestBody Contribuyente contribuyente) {
+    public ResponseEntity<Map<String, Integer>> crearContribuyente(@RequestBody Contribuyente contribuyente) {
         Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("contribuyenteId", contribuyenteGuardado.getId());
+        Map<String, Integer> resp = new HashMap<>();
+        resp.put("contribuyenteId", Math.toIntExact(contribuyenteGuardado.getId()));
         System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId()); // esto cuando se haga el front lo podemos sacar
         return ResponseEntity.ok(resp);
     }
