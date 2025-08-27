@@ -58,3 +58,6 @@ RESP: El enunciado no lo aclara por el momento. Se debe esclarecer el diagrama d
 
 17. Qué hacemos en el diagrama con las clases Algoritmos? ya que solo las llama el scheduller.
 RESP: Refactorizar y aplicar algún patrón strategy, eliminando tal vez el enum.
+
+18. Las fuentes metamapas se consultan cuando se piden los hechos de agregador? O se guardan los hechos en la carga cada una hora al igual que todas las demás fuentes? Si se consulta en tiempo real cuando se piden los hechos a agregador entonces no se podrían consensuar.
+RESP:
