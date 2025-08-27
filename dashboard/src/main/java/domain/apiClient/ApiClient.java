@@ -7,6 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 public class ApiClient {
 
     private static final RestTemplate restTemplate;
@@ -53,7 +55,9 @@ public class ApiClient {
 
     public static Integer postContribuyente(PostContribuyenteDTO contribuyenteDTO, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes";
-        return restTemplate.postForObject(url, contribuyenteDTO, Integer.class);
+        Map<String, Integer> rta = restTemplate.postForObject(url, contribuyenteDTO, Map.class);
+        assert rta != null;
+        return rta.get("contribuyenteId");
     }
     public static void patchIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id;
