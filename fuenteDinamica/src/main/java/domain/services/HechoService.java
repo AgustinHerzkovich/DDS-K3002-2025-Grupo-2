@@ -2,9 +2,7 @@ package domain.services;
 
 import domain.dto.HechoDTO;
 import domain.dto.HechoEdicionDTO;
-import domain.excepciones.AnonimatoException;
-import domain.excepciones.HechoNoEncontradoException;
-import domain.excepciones.PlazoEdicionVencidoException;
+import domain.excepciones.*;
 import domain.hechos.EstadoRevision;
 import domain.hechos.Hecho;
 import domain.mappers.HechoMapper;
@@ -46,11 +44,30 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
-    public Hecho guardarHechoDto(HechoDTO hechoDto) {
-        Contribuyente autor = contribuyenteService.obtenerContribuyente(hechoDto.getContribuyenteId());
-        Hecho hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad()); // TODO: Actualmente se fuerza que use la última identidad, pero debería ser la identidad seleccionada en el front
-        autor.contribuirAlHecho(hecho);
-        return guardarHecho(hecho);
+    public Hecho guardarHechoDto(HechoDTO hechoDto) throws HechoMappingException, ContribuyenteAssignmentException, HechoStorageException, ContribuyenteNoConfiguradoException {
+        Contribuyente autor;
+        Hecho hecho;
+        try {
+            autor = contribuyenteService.obtenerContribuyente(hechoDto.getContribuyenteId());
+            assert autor.getUltimaIdentidad() != null;
+        }catch (Exception e){
+            throw new ContribuyenteNoConfiguradoException("El contribuyente no existe o no tiene identidad. La identidad es necesaria incluso para hechos anonimos");
+        }
+        try {
+            hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad()); // TODO: Actualmente se fuerza que use la última identidad, pero debería ser la identidad seleccionada en el front
+        }catch (Exception e){
+            throw new HechoMappingException("Se produjo un error al mapear el hecho.");
+        }
+        try {
+            autor.contribuirAlHecho(hecho);
+        }catch (Exception e){
+            throw new ContribuyenteAssignmentException("No se pudo asignar el contribuyente al hecho");
+        }
+        try {
+            return guardarHecho(hecho);
+        }catch (Exception e){
+            throw new HechoStorageException("No se pudo guardar el hecho en la base de datos");
+        }
     }
 
     public Hecho obtenerHecho(String id) throws HechoNoEncontradoException {
