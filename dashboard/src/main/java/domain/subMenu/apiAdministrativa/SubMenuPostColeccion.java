@@ -1,4 +1,4 @@
-package domain.subMenu;
+package domain.subMenu.apiAdministrativa;
 
 import domain.dashboardDTOs.ColeccionBuilder;
 import domain.dashboardDTOs.ColeccionDTO;

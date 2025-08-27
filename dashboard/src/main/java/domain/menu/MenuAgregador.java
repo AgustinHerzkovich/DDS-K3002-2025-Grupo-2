@@ -1,7 +1,11 @@
 package domain.menu;
 
-import domain.connectionManager.ConnectionManager;
-import domain.subMenu.*;
+import domain.subMenu.apiAdministrativa.SubMenuEnviarPostFuente;
+import domain.subMenu.apiAdministrativa.SubMenuPostColeccion;
+import domain.subMenu.apiPublica.SubMenuGetColecciones;
+import domain.subMenu.apiPublica.SubMenuGetHechosCurados;
+import domain.subMenu.apiPublica.SubMenuGetHechosIrrestrictos;
+import domain.subMenu.apiPublica.SubMenuPostSolicitud;
 
 public class MenuAgregador extends Menu{
     @Override
