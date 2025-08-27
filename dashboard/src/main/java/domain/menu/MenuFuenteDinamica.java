@@ -1,10 +1,8 @@
 package domain.menu;
 
-import domain.connectionManager.ConnectionManager;
-import domain.subMenu.SubMenuPatchIdentidad;
-import domain.subMenu.SubMenuPostColeccion;
-import domain.subMenu.SubMenuPostContribuyente;
-import domain.subMenu.SubMenuPostHecho;
+import domain.subMenu.fuenteDinamica.SubMenuPatchIdentidad;
+import domain.subMenu.fuenteDinamica.SubMenuPostContribuyente;
+import domain.subMenu.fuenteDinamica.SubMenuPostHecho;
 
 public class MenuFuenteDinamica extends Menu{
     @Override

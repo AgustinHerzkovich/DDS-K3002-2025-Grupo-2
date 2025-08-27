@@ -1,4 +1,4 @@
-package domain.subMenu;
+package domain.subMenu.fuenteDinamica;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;

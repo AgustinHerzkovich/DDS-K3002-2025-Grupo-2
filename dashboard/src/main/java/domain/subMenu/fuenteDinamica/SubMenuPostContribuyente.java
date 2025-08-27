@@ -1,4 +1,4 @@
-package domain.subMenu;
+package domain.subMenu.fuenteDinamica;
 
 import domain.dashboardDTOs.PostContribuyenteDTO;
 import domain.apiClient.ApiClient;
