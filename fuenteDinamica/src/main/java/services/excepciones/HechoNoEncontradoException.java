@@ -1,7 +1,0 @@
-package services.excepciones;
-
-public class HechoNoEncontradoException extends Exception {
-    public HechoNoEncontradoException(String message) {
-        super(message);
-    }
-}
