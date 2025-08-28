@@ -5,115 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/prometheus/PrometheusStarter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apiPublica/src/main/resources/prometheus.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/config/ConfiguracionRed.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/config/ConfiguracionRed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/ColeccionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/controllers/ContribuyenteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/ContribuyenteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/controllers/HechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/HechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/controllers/Observer.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/Observer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/controllers/SolicitudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/SolicitudController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoConsenso.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsenso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoConsensoAbsoluto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoAbsoluto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoConsensoIrrestricto.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoIrrestricto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoConsensoMayoriaSimple.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoMayoriaSimple.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/algoritmos/AlgoritmoConsensoMultiplesMenciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoMultiplesMenciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/Coleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/Coleccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/HechoXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/HechoXColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/HechoXColeccionId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/HechoXColeccionId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/Fuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/Fuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteXColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/FuenteXColeccionId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteXColeccionId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/HechoXFuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/HechoXFuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/HechoXFuenteId.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/HechoXFuenteId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/colecciones/fuentes/TipoFuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/TipoFuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeDistancia.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDeDistancia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDeFecha.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDeFecha.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/criterios/CriterioDePertenencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDePertenencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/normalizador/NormalizadorDeHechos.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/normalizador/NormalizadorDeHechos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/domain/normalizador/read.me" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/normalizador/read.me" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeColecciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeColecciones.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeContribuyentes.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeContribuyentes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeFuentes.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeFuentes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeFuentesXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeFuentesXColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeHechos.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeHechos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeHechosXColeccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeHechosXColeccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeHechosXFuente.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeHechosXFuente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/repositorios/RepositorioDeSolicitudes.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeSolicitudes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/ColeccionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/ColeccionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/ContribuyenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/ContribuyenteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/FuenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/FuenteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/HechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/HechoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/SolicitudService.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/SolicitudService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/dto/HechoInEstaticaDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/dto/HechoInEstaticaDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/dto/SolicitudDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/dto/SolicitudDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/excepciones/MotivoSolicitudException.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/excepciones/MotivoSolicitudException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/mappers/HechoInEstaticaDTOToHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/mappers/HechoInEstaticaDTOToHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/mappers/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/mappers/Mapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/schedullers/CargarHechosScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedullers/CargarHechosScheduller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/services/schedullers/EjecutarAlgoritmoConsensoScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedullers/EjecutarAlgoritmoConsensoScheduller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/config/AgregadorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/AgregadorConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/config/ConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/ConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/controllers/ColeccionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/controllers/SolicitudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/controllers/SolicitudController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/config/AgregadorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/AgregadorConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/config/ConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/ConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/controllers/ColeccionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/controllers/SolicitudController.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/controllers/SolicitudController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/helpers/UrlHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/helpers/UrlHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estadisticas/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/controllers/ContribuyenteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/controllers/ContribuyenteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/controllers/HechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/controllers/HechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/EstadoRevision.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/EstadoRevision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Etiqueta.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Etiqueta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/RevisionHecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/RevisionHecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Audio.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Audio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Imagen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Imagen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Multimedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Multimedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/hechos/multimedias/Video.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Video.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/usuarios/Contribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/usuarios/Contribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/domain/usuarios/IdentidadContribuyente.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/usuarios/IdentidadContribuyente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/repositorios/RepositorioDeContribuyentes.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/repositorios/RepositorioDeContribuyentes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/repositorios/RepositorioDeHechos.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/repositorios/RepositorioDeHechos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/ContribuyenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/ContribuyenteService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/HechoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/HechoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/dto/HechoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/dto/HechoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/dto/HechoEdicionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/dto/HechoEdicionDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/AnonimatoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/AnonimatoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/ContribuyenteAssignmentException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/ContribuyenteAssignmentException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/ContribuyenteNoConfiguradoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/ContribuyenteNoConfiguradoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/HechoMappingException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/HechoMappingException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/HechoNoEncontradoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/HechoNoEncontradoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/HechoStorageException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/HechoStorageException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/excepciones/PlazoEdicionVencidoException.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/excepciones/PlazoEdicionVencidoException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/services/mappers/HechoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/mappers/HechoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/controllers/ArchivoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/ArchivoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/controllers/HechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/HechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Hecho.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Hecho.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Origen.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Origen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/hechos/Ubicacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Ubicacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/lectores/LectorArchivo.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/lectores/LectorArchivo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/domain/lectores/LectorCsv.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/lectores/LectorCsv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/services/ArchivoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/ArchivoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/services/AwsS3FileServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/AwsS3FileServerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/config/SwaggerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/controllers/FuenteProxyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/controllers/FuenteProxyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/repositorios/RepositorioDeFuentesProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/repositorios/RepositorioDeFuentesProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/services/FuenteProxyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/FuenteProxyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/services/schedullers/PedirHechosScheduller.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/schedullers/PedirHechosScheduller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/wal/00000001" beforeDir="false" afterPath="$PROJECT_DIR$/apiPublica/src/main/resources/data/wal/00000001" afterDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
     <list id="8e6bee28-d7d9-4c79-ad41-db3a02dfd0b8" name="Changes by ezequ" comment="" />
@@ -555,7 +448,7 @@
       <workItem from="1752987290751" duration="10000" />
       <workItem from="1755622810685" duration="7885000" />
       <workItem from="1756230313816" duration="8504000" />
-      <workItem from="1756397858232" duration="8755000" />
+      <workItem from="1756397858232" duration="11787000" />
     </task>
     <servers />
   </component>
@@ -629,15 +522,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedullers/CargarHechosScheduller.java</url>
-          <line>29</line>
-          <properties class="aplicacion.services.schedullers.CargarHechosScheduller">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.RuntimeException" package="java.lang" />
