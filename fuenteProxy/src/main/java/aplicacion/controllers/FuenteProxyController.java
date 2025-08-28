@@ -1,6 +1,6 @@
 package aplicacion.controllers;
 
-import aplicacion.fuentesMetamapa.FuenteMetamapa;
+import aplicacion.domain.fuentesMetamapa.FuenteMetamapa;
 import domain.hechos.Hecho;
 
 import aplicacion.services.FuenteProxyService;

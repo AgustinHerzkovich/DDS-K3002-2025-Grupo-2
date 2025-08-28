@@ -1,4 +1,4 @@
-package aplicacion;
+package aplicacion.domain;
 
 import domain.hechos.Hecho;
 import jakarta.persistence.Entity;

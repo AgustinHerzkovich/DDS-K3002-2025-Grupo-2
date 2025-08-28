@@ -1,4 +1,4 @@
-package aplicacion.services.schedullers;
+package aplicacion.services.schedulers;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import domain.hechos.Hecho;
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class CargarHechosScheduller {
+public class CargarHechosScheduler {
     private final FuenteService fuenteService;
     private final HechoService hechoService;
     private final NormalizadorDeHechos normalizadorDeHechos;
 
-    public CargarHechosScheduller(FuenteService fuenteService, HechoService hechoService, NormalizadorDeHechos normalizadorDeHechos) {
+    public CargarHechosScheduler(FuenteService fuenteService, HechoService hechoService, NormalizadorDeHechos normalizadorDeHechos) {
         this.fuenteService = fuenteService;
         this.hechoService = hechoService;
         this.normalizadorDeHechos = normalizadorDeHechos;

@@ -1,4 +1,4 @@
-package aplicacion.fuentesDemo;
+package aplicacion.domain.fuentesDemo;
 
 import domain.hechos.Categoria;
 import domain.hechos.Hecho;
