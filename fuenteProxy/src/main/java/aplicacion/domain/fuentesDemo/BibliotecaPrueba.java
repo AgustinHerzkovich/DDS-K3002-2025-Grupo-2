@@ -1,4 +1,4 @@
-package aplicacion.fuentesDemo;
+package aplicacion.domain.fuentesDemo;
 
 import java.time.LocalDateTime;
 import java.util.Map;

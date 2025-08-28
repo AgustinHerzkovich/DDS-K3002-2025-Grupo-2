@@ -1,4 +1,4 @@
-package aplicacion.fuentesDemo;
+package aplicacion.domain.fuentesDemo;
 import jakarta.persistence.Embeddable;
 
 import java.time.LocalDateTime;

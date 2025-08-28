@@ -1,6 +1,6 @@
-package aplicacion.fuentesDemo;
+package aplicacion.domain.fuentesDemo;
 
-import aplicacion.FuenteProxy;
+import aplicacion.domain.FuenteProxy;
 import domain.hechos.Hecho;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
