@@ -1,6 +1,6 @@
 package aplicacion.services;
 
-import aplicacion.FuenteProxy;
+import aplicacion.domain.FuenteProxy;
 import aplicacion.repositorios.RepositorioDeFuentesProxy;
 import org.springframework.stereotype.Service;
 import domain.hechos.Hecho;

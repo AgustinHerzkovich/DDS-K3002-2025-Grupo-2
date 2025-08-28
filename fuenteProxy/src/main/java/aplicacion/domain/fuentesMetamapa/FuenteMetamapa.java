@@ -1,4 +1,4 @@
-package aplicacion.fuentesMetamapa;
+package aplicacion.domain.fuentesMetamapa;
 
 import domain.hechos.Hecho;
 import jakarta.persistence.Entity;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import aplicacion.FuenteProxy;
+import aplicacion.domain.FuenteProxy;
 
 @Entity
 @NoArgsConstructor

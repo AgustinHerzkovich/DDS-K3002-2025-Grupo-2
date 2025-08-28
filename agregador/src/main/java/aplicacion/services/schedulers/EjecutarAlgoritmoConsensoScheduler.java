@@ -1,4 +1,4 @@
-package aplicacion.services.schedullers;
+package aplicacion.services.schedulers;
 
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.colecciones.Coleccion;
@@ -22,14 +22,14 @@ import java.util.Map;
 
 @Configuration
 @EnableScheduling
-public class EjecutarAlgoritmoConsensoScheduller implements SchedulingConfigurer {
+public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer {
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     @Setter
     private volatile Integer horaBajaCarga = 3; // Por default es a las 3 AM
 
-    public EjecutarAlgoritmoConsensoScheduller(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion) {
+    public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion) {
         this.hechoService = hechoService;
         this.coleccionService = coleccionService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
