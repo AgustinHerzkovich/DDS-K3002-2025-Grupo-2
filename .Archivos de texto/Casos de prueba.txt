@@ -6,14 +6,83 @@ Postear archivos en diferentes fuentes
 Ver que se guarden correctamente en el file server en distintas carpetas, y dentro de ellas en la subcarpeta pendientes
 Pedir hechos de una fuente y ver que los devuelva bien, y que además en el file server se hayan movido a la subcarpeta procesados
 
+Ejemplo:
+POST http://localhost:8081/fuentesEstaticas/1/archivo -> form-data: file: desastres_naturales_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/2/archivo -> form-data: file: desastres_sanitarios_contaminacion_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/3/archivo -> form-data: file: desastres_tecnologicos_argentina.csv
+
+GET http://localhost:8081/fuentesEstaticas/1/hechos
+GET http://localhost:8081/fuentesEstaticas/2/hechos
+GET http://localhost:8081/fuentesEstaticas/3/hechos
+
 Prueba Fuente Dinámica:
 Crear contribuyente
+Añadirle dos identidades
 Postear hecho anónimo
-Postear hecho no anónimo
+Postear hecho no anónimo con una de esas dos identidades
 Verificar que el hecho no anónimo se pueda editar
 Verificar que el hecho anónimo no se pueda editar
 Aceptar uno de los hechos (con sugerencia) y rechazar el otro
 Pedir los hechos y validar que solo se devuelva aquel que fue aceptado
+
+Ejemplo:
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true }
+PATCH http://localhost:8082/fuentesDinamicas/contribuyentes/1 -> body: { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }
+PATCH http://localhost:8082/fuentesDinamicas/contribuyentes/1 -> body: { "nombre": "Juan", "apellido": "Perez", "fechaNacimiento": "1985-05-05" }
+POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
+                                             "titulo": "Titulo ejemplo",
+                                             "descripcion": "Descripcion ejemplo",
+                                             "categoria": {
+                                               "nombre": "Categoria ejemplo"
+                                             },
+                                             "ubicacion": {
+                                               "latitud": 0,
+                                               "longitud": 0
+                                             },
+                                             "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+                                             "contenidoTexto": "Contenido texto ejemplo",
+                                             "contenidoMultimedia": [
+                                               {
+                                                 "tipo": "video",
+                                                 "formato": "mp4",
+                                                 "tamanio": 100,
+                                                 "resolucion": "1920x1080",
+                                                 "duracion": 30
+                                               }
+                                             ],
+                                             "anonimato": false,
+                                             "IdentidadId": 1
+                                           }
+POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
+                                             "titulo": "Titulo ejemplo 2",
+                                             "descripcion": "Descripcion ejemplo 2",
+                                             "categoria": {
+                                               "nombre": "Categoria ejemplo 2"
+                                             },
+                                             "ubicacion": {
+                                               "latitud": 10,
+                                               "longitud": 10
+                                             },
+                                             "fechaAcontecimiento": "2020-07-10T19:28:54.832Z",
+                                             "contenidoTexto": "Contenido texto ejemplo 2",
+                                             "contenidoMultimedia": [
+                                               {
+                                                 "tipo": "imagen",
+                                                 "formato": "jpg",
+                                                 "tamanio": 200,
+                                                 "resolucion": "1024x768"
+                                               }
+                                             ],
+                                             "anonimato": true
+                                           }
+
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_no_anonimo -> body: { "titulo": "Titulo editado" }
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_anonimo -> body: { "titulo": "Titulo editado" } -> should fail
+
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_no_anonimo/estadoRevision -> body: { "estado": "ACEPTADO", "sugerencia": "Sugerencia ejemplo" }
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_anonimo/estadoRevision -> body: { "estado": "RECHAZADO" }
+
+GET http://localhost:8082/fuentesDinamicas/hechos -> Debería devolver solo el hecho aceptado, es decir el no anónimo
 
 Prueba Fuente Proxy:
 Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
