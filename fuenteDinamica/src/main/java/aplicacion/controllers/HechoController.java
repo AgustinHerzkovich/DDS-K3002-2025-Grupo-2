@@ -1,8 +1,8 @@
 package aplicacion.controllers;
 
+import aplicacion.services.dto.CambioEstadoRevisionDto;
 import aplicacion.services.dto.HechoDTO;
 import aplicacion.services.dto.HechoEdicionDTO;
-import aplicacion.domain.hechos.EstadoRevision;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
 import aplicacion.services.excepciones.*;
@@ -67,10 +67,10 @@ public class HechoController {
 
     @PatchMapping("/hechos/{id}/estadoRevision") // TODO: Cuando tengamos acceso a datos de la sesión del administrador, se debe registrar la revisión en la clase RevisionHecho
     public ResponseEntity<Void> modificarEstadoRevision(@PathVariable("id") String id,
-                                                        @RequestBody EstadoRevision nuevoEstado) {
+                                                        @RequestBody CambioEstadoRevisionDto cambioEstadoRevisionDto) {
         try {
-            Hecho hecho = hechoService.modificarEstadoRevision(id, nuevoEstado);
-            System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + nuevoEstado);
+            Hecho hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionDto);
+            System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionDto.getEstado());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
