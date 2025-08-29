@@ -93,7 +93,6 @@ public class HechoService {
                         Collectors.mapping(HechoXFuente::getHecho, Collectors.toList())
                 ));
     }
-
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
     }

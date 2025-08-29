@@ -29,7 +29,7 @@ public class ColeccionController {
     public ResponseEntity<Coleccion> crearColeccion(@RequestBody Coleccion coleccion) {
         fuenteService.guardarFuentes(coleccion.getFuentes());
         coleccionService.guardarColeccion(coleccion);
-        coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
+       //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccion.getIdentificadorHandle());
         return ResponseEntity.ok(coleccion);
     }

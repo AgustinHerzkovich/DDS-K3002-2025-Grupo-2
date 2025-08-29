@@ -28,7 +28,7 @@ public class Coleccion{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "coleccion_id")
     private List<CriterioDePertenencia> criteriosDePertenencia;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Fuente> fuentes;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
