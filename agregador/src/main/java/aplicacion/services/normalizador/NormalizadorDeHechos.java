@@ -6,10 +6,8 @@ import domain.hechos.Ubicacion;
 import domain.normalizadorDeTerminos.NingunTerminoCumpleUmbralException;
 import domain.normalizadorDeTerminos.NormalizadorDeTerminos;
 import domain.hechos.Hecho;
-import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Component
