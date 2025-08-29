@@ -58,6 +58,7 @@ public class Hecho {
                  @JsonProperty("categoria") Categoria categoria,
                  @JsonProperty("ubicacion") Ubicacion ubicacion,
                  @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
+                 @JsonProperty("origen") Origen origen,
                  @JsonProperty("contenidoTexto") String contenidoTexto,
                  @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
                  @JsonProperty("anonimato") Boolean anonimato,
@@ -67,6 +68,7 @@ public class Hecho {
         this.categoria = categoria;
         this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
+        this.origen = origen;
         this.fechaCarga = LocalDateTime.now();
         this.fechaUltimaModificacion = this.fechaCarga;
         this.contenidoTexto = contenidoTexto;
