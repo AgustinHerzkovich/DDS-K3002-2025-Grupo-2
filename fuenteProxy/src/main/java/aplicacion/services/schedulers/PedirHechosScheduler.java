@@ -1,14 +1,14 @@
-package aplicacion.services.schedullers;
+package aplicacion.services.schedulers;
 
 import aplicacion.services.FuenteProxyService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PedirHechosScheduller {
+public class PedirHechosScheduler {
     private final FuenteProxyService fuenteProxyService;
 
-    public PedirHechosScheduller(FuenteProxyService fuenteProxyService) {
+    public PedirHechosScheduler(FuenteProxyService fuenteProxyService) {
         this.fuenteProxyService = fuenteProxyService;
     }
 
