@@ -17,7 +17,7 @@ public class HechoController {
         this.archivoService = archivoService;
     }
 
-    @GetMapping("/{id}/hechos") // /2/hechos
+    @GetMapping("/{id}/hechos")
     public List<Hecho> obtenerHechos(@PathVariable("id") Long id,
                                      @RequestParam(value = "fechaMayorA", required = false) 
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
