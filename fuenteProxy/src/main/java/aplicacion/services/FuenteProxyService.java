@@ -4,7 +4,7 @@ import aplicacion.domain.FuenteProxy;
 import aplicacion.repositorios.RepositorioDeFuentesProxy;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
 import org.springframework.stereotype.Service;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 
 import java.util.ArrayList;
 import java.util.List;

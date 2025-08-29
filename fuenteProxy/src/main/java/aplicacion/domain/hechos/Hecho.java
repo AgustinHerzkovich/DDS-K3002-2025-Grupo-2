@@ -1,12 +1,8 @@
-package domain.hechos;
+package aplicacion.domain.hechos;
 
+import aplicacion.domain.hechos.multimedias.Multimedia;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.multimedias.Multimedia;
-import domain.solicitudes.SolicitudEliminacion;
-import domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,9 +36,6 @@ public class Hecho {
     @EqualsAndHashCode.Include
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
-    @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
-    @JsonManagedReference // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
-    private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
@@ -55,10 +48,6 @@ public class Hecho {
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Etiqueta> etiquetas;
-    private Boolean visible;
-    private Boolean anonimato;
-    @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
-    private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
 
     @JsonCreator
     public Hecho(@JsonProperty("titulo") String titulo,
@@ -68,86 +57,21 @@ public class Hecho {
                  @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
                  @JsonProperty("origen") Origen origen,
                  @JsonProperty("contenidoTexto") String contenidoTexto,
-                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
-                 @JsonProperty("anonimato") Boolean anonimato,
-                 @JsonProperty("autor") IdentidadContribuyente autor) {
+                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
         this.fechaCarga = LocalDateTime.now();
-        this.solicitudes = new ArrayList<>();
         this.fechaUltimaModificacion = this.fechaCarga;
         this.origen = origen;
         this.contenidoTexto = contenidoTexto;
         this.contenidoMultimedia = contenidoMultimedia;
         this.etiquetas = new ArrayList<>();
-        this.visible = true;
-        this.anonimato = anonimato;
-        this.autor = anonimato ? autor : null;
-    }
-
-    public void ocultar() {
-        visible = false;
-    }
-
-    public Boolean esVisible() {
-        return visible;
-    }
-
-    public void mostrar() { visible = true; }
-
-    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
-        if (titulo != null) {
-            this.titulo = titulo;
-        }
-        if (descripcion != null) {
-            this.descripcion = descripcion;
-        }
-        if (categoria != null) {
-            this.categoria = categoria;
-        }
-        if (ubicacion != null) {
-            this.ubicacion = ubicacion;
-        }
-        if (fecha != null) {
-            this.fechaAcontecimiento = fecha;
-        }
-        if (contenidoTexto != null) {
-            this.contenidoTexto = contenidoTexto;
-        }
-        if (contenidoMultimedia != null) {
-            this.contenidoMultimedia = contenidoMultimedia;
-        }
     }
 
     public Boolean tieneMismoTitulo(String otroTitulo) {
         return titulo.equals(otroTitulo);
-    }
-
-    public void etiquetar(Etiqueta etiqueta) {
-        etiquetas.add(etiqueta);
-    }
-
-    public boolean contieneEtiqueta(Etiqueta etiqueta) {
-        return etiquetas.contains(etiqueta);
-    }
-
-    public void agregarASolicitudes(SolicitudEliminacion solicitud) {
-        solicitudes.add(solicitud);
-    }
-
-    public void prescribirSolicitudes(){
-        // Cuando se acepta una solicitud, todas las demas se prescriben (solo afecta las pendientes)
-        for(SolicitudEliminacion sol : this.solicitudes){
-            sol.prescribir();
-        }
-    }
-    public void anularPrescripcionSolicitudes(){
-        // Cuando se anula una solicitud aceptada, todas las demás se de-prescriben (Solo afecta a las prescriptas)
-        for(SolicitudEliminacion sol : this.solicitudes){
-            sol.anularPrescripcion();
-        }
     }
 }

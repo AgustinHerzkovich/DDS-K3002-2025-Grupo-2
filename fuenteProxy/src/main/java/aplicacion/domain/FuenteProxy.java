@@ -1,6 +1,6 @@
 package aplicacion.domain;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

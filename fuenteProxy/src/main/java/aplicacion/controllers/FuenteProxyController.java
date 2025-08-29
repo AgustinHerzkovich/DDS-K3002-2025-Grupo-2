@@ -2,7 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.domain.FuenteProxy;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 
 import aplicacion.services.FuenteProxyService;
 import org.springframework.http.HttpStatus;

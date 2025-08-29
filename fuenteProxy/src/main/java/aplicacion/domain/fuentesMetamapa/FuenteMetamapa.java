@@ -1,6 +1,6 @@
 package aplicacion.domain.fuentesMetamapa;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import org.springframework.web.client.RestTemplate;

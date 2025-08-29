@@ -1,13 +1,11 @@
 package aplicacion.domain.fuentesDemo;
 
-import domain.hechos.Categoria;
-import domain.hechos.Hecho;
-import domain.hechos.Origen;
-import domain.hechos.Ubicacion;
-import domain.hechos.multimedias.Multimedia;
-import domain.usuarios.IdentidadContribuyente;
+import aplicacion.domain.hechos.Categoria;
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.hechos.Origen;
+import aplicacion.domain.hechos.Ubicacion;
+import aplicacion.domain.hechos.multimedias.Multimedia;
 
-import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +23,6 @@ public class HechoBuilder {
         Origen origen = (Origen) datos.get("origen");
         String contenidoTexto = (String) datos.get("contenido_texto");
         List<Multimedia> contenidoMultimedia = (List<Multimedia>) datos.get("contenido_multimedia");
-        Boolean anonimato = (Boolean) datos.get("anonimato");
-        IdentidadContribuyente autor = (IdentidadContribuyente) datos.get("autor");
 
         return new Hecho(
                 titulo,
@@ -36,9 +32,7 @@ public class HechoBuilder {
                 fechaAcontecimiento,
                 origen,
                 contenidoTexto,
-                contenidoMultimedia,
-                anonimato,
-                autor
+                contenidoMultimedia
         );
     }
 }

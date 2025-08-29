@@ -1,7 +1,7 @@
 package aplicacion.domain.fuentesDemo;
 
 import aplicacion.domain.FuenteProxy;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
