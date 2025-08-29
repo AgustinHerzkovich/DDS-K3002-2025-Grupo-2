@@ -20,7 +20,7 @@ public class PrometheusStarter {
 
         if (os.contains("win")) {
             // Windows: ruta al prometheus.exe
-            prometheusBin = "C:\\Prometheus\\prometheus.exe";
+            prometheusBin = "C:\Program Files\Prometheus\prometeus.exe";
         } else {
             // Linux: ruta típica del binario en /usr/bin
             prometheusBin = "/usr/bin/prometheus";
