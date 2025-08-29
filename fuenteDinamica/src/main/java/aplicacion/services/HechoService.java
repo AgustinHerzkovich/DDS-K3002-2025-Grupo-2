@@ -1,5 +1,7 @@
 package aplicacion.services;
 
+import aplicacion.domain.usuarios.IdentidadContribuyente;
+import aplicacion.services.dto.CambioEstadoRevisionDto;
 import aplicacion.services.dto.HechoDTO;
 import aplicacion.services.dto.HechoEdicionDTO;
 import aplicacion.domain.hechos.EstadoRevision;
@@ -7,7 +9,6 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.excepciones.*;
 import aplicacion.services.mappers.HechoMapper;
 import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.domain.usuarios.Contribuyente;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,21 +46,21 @@ public class HechoService {
 
     @Transactional(readOnly = true)
     public Hecho guardarHechoDto(HechoDTO hechoDto) throws HechoMappingException, ContribuyenteAssignmentException, HechoStorageException, ContribuyenteNoConfiguradoException {
-        Contribuyente autor;
+        IdentidadContribuyente autor;
         Hecho hecho;
         try {
-            autor = contribuyenteService.obtenerContribuyente(hechoDto.getContribuyenteId());
-            assert autor.getUltimaIdentidad() != null;
+            autor = contribuyenteService.obtenerIdentidad(hechoDto.getIdentidadId());
+            assert autor != null;
         }catch (Exception e){
             throw new ContribuyenteNoConfiguradoException("El contribuyente no existe o no tiene identidad. La identidad es necesaria incluso para hechos anonimos");
         }
         try {
-            hecho = new HechoMapper().map(hechoDto, autor.getUltimaIdentidad()); // TODO: Actualmente se fuerza que use la última identidad, pero debería ser la identidad seleccionada en el front
+            hecho = new HechoMapper().map(hechoDto, autor);
         }catch (Exception e){
             throw new HechoMappingException("Se produjo un error al mapear el hecho.");
         }
         try {
-            autor.contribuirAlHecho(hecho);
+            autor.getContribuyente().contribuirAlHecho(hecho);
         }catch (Exception e){
             throw new ContribuyenteAssignmentException("No se pudo asignar el contribuyente al hecho");
         }
@@ -75,10 +76,16 @@ public class HechoService {
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
     }
 
-    public Hecho modificarEstadoRevision(String id, EstadoRevision nuevoEstado) throws HechoNoEncontradoException {
+    public Hecho modificarEstadoRevision(String id, CambioEstadoRevisionDto cambioEstadoRevisionDto) throws HechoNoEncontradoException {
         Hecho hecho = repositorioDeHechos.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
-        hecho.setEstadoRevision(nuevoEstado);
+        EstadoRevision estadoRevision = cambioEstadoRevisionDto.getEstado();
+        String sugerencia = cambioEstadoRevisionDto.getSugerencia();
+        hecho.setEstadoRevision(estadoRevision);
+        if (estadoRevision == EstadoRevision.ACEPTADO && sugerencia != null) {
+            hecho.setSugerencia(sugerencia);
+        }
+
         return repositorioDeHechos.save(hecho);
     }
 
