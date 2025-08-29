@@ -102,5 +102,6 @@ public class Hecho {
             this.contenidoMultimedia = contenidoMultimedia;
         }
         this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
+        this.estadoRevision = EstadoRevision.PENDIENTE; // Cada vez que se edita, vuelve a estar pendiente de revisión
     }
 }
