@@ -32,3 +32,7 @@ un orden, y tal vez no convenga.
 
 Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
+
+
+--- Para la entrega de persistencia:
+Separar las clases Entity que persistimos de las que exponemos como JSON en la API REST, es decir, la clase Hecho marcada como Entity es la que persistimos, y aparte tenemos otra clase HechoOut (por ejemplo), que es la que devolvemos como json en las apis, y así evitamos los JsonIgnore que pusimos y separamos las clases de persistencia de las que presentamos. Esto es una buena práctica de diseño ya que respeta la división de capas.
