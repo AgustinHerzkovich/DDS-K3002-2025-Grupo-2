@@ -97,13 +97,6 @@ public class ColeccionService {
         repositorioDeColecciones.delete(coleccion);
     }
 
-    public void guardarFuentesPorColeccion(Coleccion coleccion, List<Fuente> fuentes) {
-        for (Fuente fuente : fuentes) {
-            FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
-            repositorioDeFuentesXColeccion.save(fuentePorColeccion);
-        }
-    }
-
     public void modificarAlgoritmoDeColeccion(String idColeccion, String nuevoAlgoritmo) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
