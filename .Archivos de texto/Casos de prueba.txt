@@ -1,0 +1,38 @@
+Casos de prueba para tp diseño
+
+Prueba Fuente Estática:
+Levantar fuente estática
+Postear archivos en diferentes fuentes
+Ver que se guarden correctamente en el file server en distintas carpetas, y dentro de ellas en la subcarpeta pendientes
+Pedir hechos de una fuente y ver que los devuelva bien, y que además en el file server se hayan movido a la subcarpeta procesados
+
+Prueba Fuente Dinámica:
+Crear contribuyente
+Postear hecho anónimo
+Postear hecho no anónimo
+Verificar que el hecho no anónimo se pueda editar
+Verificar que el hecho anónimo no se pueda editar
+Aceptar uno de los hechos (con sugerencia) y rechazar el otro
+Pedir los hechos y validar que solo se devuelva aquel que fue aceptado
+
+Prueba Fuente Proxy:
+Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
+Crear una fuente metamapa que apunte a un agregador que tenga una colección con una fuente estática (básico solo para probar)
+Pedir los hechos tanto de la fuente demo como de la fuente proxy y ver que devuelva bien
+
+
+Prueba Agregador:
+Levantar agregador
+Postear dos colecciones, una con una fuente estática y una dinámica, la otra con una fuente demo y una fuente metamapa que apunta a otro agregador levantado previamente
+Verificar que la carga de hechos sea correcta
+Probar que los 3 algoritmos de consenso funcionen bien
+Ver como testear el medidor de tráfico
+
+Prueba Api publica y administrativa:
+Testear todos los endpoints
+
+Prueba UI Fuente Dinámica:
+Testear que funcione junto a Su
+
+Prueba Dashboard Agregador:
+Testear que funcione junto a Lucas
