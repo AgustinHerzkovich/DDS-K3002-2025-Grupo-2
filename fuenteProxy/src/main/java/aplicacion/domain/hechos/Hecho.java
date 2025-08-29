@@ -1,13 +1,17 @@
-package aplicacion.domain.hechos;
+package domain.hechos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import aplicacion.domain.hechos.multimedias.Multimedia;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
+import domain.hechos.multimedias.Multimedia;
+import domain.solicitudes.SolicitudEliminacion;
+import domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 // HECHO
@@ -27,7 +31,7 @@ public class Hecho {
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     @EqualsAndHashCode.Include
     private String descripcion;
-    @Embedded
+    @ManyToOne
     @EqualsAndHashCode.Include
     private Categoria categoria;
     @Embedded
@@ -36,21 +40,25 @@ public class Hecho {
     @EqualsAndHashCode.Include
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
+    @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
+    @JsonManagedReference // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
+    private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
     @EqualsAndHashCode.Include
     private String contenidoTexto;
+    // todo: evaluar si es necesario el fetch type eager, es temporal para que pasen los tests
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     @EqualsAndHashCode.Include
     private List<Multimedia> contenidoMultimedia;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Etiqueta> etiquetas;
+    private Boolean visible;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
     private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
-    @Enumerated(EnumType.STRING)
-    private EstadoRevision estadoRevision;
-    private String sugerencia;
 
     @JsonCreator
     public Hecho(@JsonProperty("titulo") String titulo,
@@ -58,6 +66,7 @@ public class Hecho {
                  @JsonProperty("categoria") Categoria categoria,
                  @JsonProperty("ubicacion") Ubicacion ubicacion,
                  @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
+                 @JsonProperty("origen") Origen origen,
                  @JsonProperty("contenidoTexto") String contenidoTexto,
                  @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
                  @JsonProperty("anonimato") Boolean anonimato,
@@ -68,14 +77,26 @@ public class Hecho {
         this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
         this.fechaCarga = LocalDateTime.now();
+        this.solicitudes = new ArrayList<>();
         this.fechaUltimaModificacion = this.fechaCarga;
+        this.origen = origen;
         this.contenidoTexto = contenidoTexto;
         this.contenidoMultimedia = contenidoMultimedia;
+        this.etiquetas = new ArrayList<>();
+        this.visible = true;
         this.anonimato = anonimato;
         this.autor = anonimato ? autor : null;
-        this.estadoRevision = EstadoRevision.PENDIENTE;
-        this.sugerencia = null;
     }
+
+    public void ocultar() {
+        visible = false;
+    }
+
+    public Boolean esVisible() {
+        return visible;
+    }
+
+    public void mostrar() { visible = true; }
 
     public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
         if (titulo != null) {
@@ -99,6 +120,34 @@ public class Hecho {
         if (contenidoMultimedia != null) {
             this.contenidoMultimedia = contenidoMultimedia;
         }
-        this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
+    }
+
+    public Boolean tieneMismoTitulo(String otroTitulo) {
+        return titulo.equals(otroTitulo);
+    }
+
+    public void etiquetar(Etiqueta etiqueta) {
+        etiquetas.add(etiqueta);
+    }
+
+    public boolean contieneEtiqueta(Etiqueta etiqueta) {
+        return etiquetas.contains(etiqueta);
+    }
+
+    public void agregarASolicitudes(SolicitudEliminacion solicitud) {
+        solicitudes.add(solicitud);
+    }
+
+    public void prescribirSolicitudes(){
+        // Cuando se acepta una solicitud, todas las demas se prescriben (solo afecta las pendientes)
+        for(SolicitudEliminacion sol : this.solicitudes){
+            sol.prescribir();
+        }
+    }
+    public void anularPrescripcionSolicitudes(){
+        // Cuando se anula una solicitud aceptada, todas las demás se de-prescriben (Solo afecta a las prescriptas)
+        for(SolicitudEliminacion sol : this.solicitudes){
+            sol.anularPrescripcion();
+        }
     }
 }
