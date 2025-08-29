@@ -1,4 +1,4 @@
-package domain.normalizadorDeTerminos;
+package aplicacion.normalizadorDeTerminos;
 
 import lombok.Getter;
 import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
