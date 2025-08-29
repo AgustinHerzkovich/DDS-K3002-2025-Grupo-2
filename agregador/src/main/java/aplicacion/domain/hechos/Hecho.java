@@ -31,7 +31,7 @@ public class Hecho {
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     @EqualsAndHashCode.Include
     private String descripcion;
-    @Embedded
+    @ManyToOne
     @EqualsAndHashCode.Include
     private Categoria categoria;
     @Embedded
