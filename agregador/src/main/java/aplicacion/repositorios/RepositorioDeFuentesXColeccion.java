@@ -3,8 +3,8 @@ package aplicacion.repositorios;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
-import org.springframework.data.jpa.repository.JpaRepository;
 import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
+import org.springframework.data.jpa.repository.JpaRepository;
 import aplicacion.domain.colecciones.fuentes.FuenteXColeccionId;
 import org.springframework.stereotype.Repository;
 
