@@ -1,40 +1,11 @@
----- Api:
-- Api publica
-- Api administrativa
-- Cliente basico de interaccion con Apis
-
----- Normalizacion:
-Posible Flujo de trabajo:
-Intentar con Lematización y Diccionario: Lematiza la palabra y búscala en tu diccionario de sinónimos. Si encuentras una coincidencia exacta, ¡listo! Devuelve el resultado.
-
-Si no hay coincidencia, intentar con Similitud Semántica: Si el paso 1 falla, usa el modelo de similitud para ver si hay una categoría similar. Si la encuentras por encima de un umbral, la devuelves.
-
-Fallback: Si ambos pasos fallan, devuelves la palabra original.
-
-Se realizaria en un componente separado, en python utilizando librerias que automaticen ciertos procesos de ontologia y taxonomia.
-
+--- Normalizacion:
 También implementar depuración de datos.
 
-
-
---- Arreglar
-
-Delete fuentes de colecciones en el agregador: Responde 200OK, pero no hace nada
-De paso fijarse que deberia hacer cuando hay dos ID del mismo nombre, habria que mandarle tambien el tipo
-
-
-
---- Posiblemente:
-En lugar de que services interactuen entre si, hacer que los controllers llamen a 2 o mas services, y le pasen el
-resultado de la llamada al otro service. Osea los controllers hacen varias llamadas a distintos services, y los services no interactuan entre si.
-Esa es una posibilidad, la otra es dejarlo como lo tenemos.
-
-Para evitar el pasamanos de las apis mover los controllers de agregador a ellas, pero esto haria que tengamos que mover los services para respetar
-un orden, y tal vez no convenga.
-
-Testear:
+--- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
 
 
 --- Para la entrega de persistencia:
-Separar las clases Entity que persistimos de las que exponemos como JSON en la API REST, es decir, la clase Hecho marcada como Entity es la que persistimos, y aparte tenemos otra clase HechoOut (por ejemplo), que es la que devolvemos como json en las apis, y así evitamos los JsonIgnore que pusimos y separamos las clases de persistencia de las que presentamos. Esto es una buena práctica de diseño ya que respeta la división de capas.
+Separar las clases Entity que persistimos de las que exponemos como JSON en la API REST, es decir, la clase Hecho marcada como Entity es la que persistimos,
+y aparte tenemos otra clase HechoOut (por ejemplo), que es la que devolvemos como json en las apis, y así evitamos los JsonIgnore que pusimos y separamos
+las clases de persistencia de las que presentamos. Esto es una buena práctica de diseño ya que respeta la división de capas.

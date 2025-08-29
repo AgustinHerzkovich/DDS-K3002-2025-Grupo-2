@@ -40,6 +40,7 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                "longitud": 0
                                              },
                                              "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+                                             "origen": "CONTRIBUYENTE",
                                              "contenidoTexto": "Contenido texto ejemplo",
                                              "contenidoMultimedia": [
                                                {
@@ -64,6 +65,7 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                "longitud": 10
                                              },
                                              "fechaAcontecimiento": "2020-07-10T19:28:54.832Z",
+                                             "origen": "CONTRIBUYENTE",
                                              "contenidoTexto": "Contenido texto ejemplo 2",
                                              "contenidoMultimedia": [
                                                {

@@ -41,6 +41,7 @@ Request body:
     "longitud": 0
   },
   "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+  "origen": "CONTRIBUYENTE",
   "contenidoTexto": "Contenido texto ejemplo",
   "contenidoMultimedia": [
     {
