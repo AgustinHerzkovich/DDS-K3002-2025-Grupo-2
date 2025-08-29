@@ -1,6 +1,9 @@
 --- Normalizacion:
 También implementar depuración de datos.
 
+--- Arreglar:
+Quitar FuenteXColeccion, no es necesario ya que se crea automaticamente.
+
 --- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
 
