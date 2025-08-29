@@ -1,4 +1,4 @@
-package aplicacion.normalizadorDeTerminos;
+package aplicacion.services.normalizador;
 
 import lombok.Getter;
 import lombok.Setter;

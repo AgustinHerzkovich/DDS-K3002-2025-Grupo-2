@@ -1,4 +1,4 @@
-package domain.hechos.multimedias;
+package aplicacion.domain.hechos.multimedias;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

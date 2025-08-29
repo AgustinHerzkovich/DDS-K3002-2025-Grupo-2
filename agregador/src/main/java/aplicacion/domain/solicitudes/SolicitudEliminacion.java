@@ -1,11 +1,11 @@
-package domain.solicitudes;
+package aplicacion.domain.solicitudes;
 
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.usuarios.Contribuyente;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.Hecho;
-import domain.usuarios.Contribuyente;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

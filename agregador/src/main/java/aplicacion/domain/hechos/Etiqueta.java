@@ -1,4 +1,4 @@
-package domain.hechos;
+package aplicacion.domain.hechos;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 // ETIQUETA
-@Entity
 @NoArgsConstructor
+@Entity
 public class Etiqueta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

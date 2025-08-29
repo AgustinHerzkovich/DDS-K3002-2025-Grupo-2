@@ -5,10 +5,10 @@ import java.util.List;
 
 import aplicacion.services.dto.SolicitudDTO;
 import aplicacion.services.excepciones.MotivoSolicitudException;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeSolicitudes;
-import domain.solicitudes.*;
-import domain.usuarios.Contribuyente;
+import aplicacion.domain.solicitudes.*;
+import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

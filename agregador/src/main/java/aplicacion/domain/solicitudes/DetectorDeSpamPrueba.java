@@ -1,4 +1,4 @@
-package domain.solicitudes;
+package aplicacion.domain.solicitudes;
 
 public class DetectorDeSpamPrueba implements DetectorDeSpam {
     public Boolean esSpam(String texto) {

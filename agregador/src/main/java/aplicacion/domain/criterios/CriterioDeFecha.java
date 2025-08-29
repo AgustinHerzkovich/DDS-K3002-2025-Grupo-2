@@ -1,6 +1,6 @@
 package aplicacion.domain.criterios;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

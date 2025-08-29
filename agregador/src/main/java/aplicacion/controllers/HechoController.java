@@ -1,6 +1,6 @@
 package aplicacion.controllers;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

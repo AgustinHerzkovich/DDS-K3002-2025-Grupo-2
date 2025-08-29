@@ -1,10 +1,10 @@
-package domain.usuarios;
+package aplicacion.domain.usuarios;
 
+import aplicacion.domain.hechos.Hecho;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 public class IdentidadContribuyente {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String apellido;

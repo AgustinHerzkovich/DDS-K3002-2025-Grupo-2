@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import aplicacion.config.ConfiguracionRed;
 import aplicacion.services.dto.HechoInEstaticaDTO;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.mappers.HechoInEstaticaDTOToHecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import aplicacion.domain.colecciones.fuentes.Fuente;

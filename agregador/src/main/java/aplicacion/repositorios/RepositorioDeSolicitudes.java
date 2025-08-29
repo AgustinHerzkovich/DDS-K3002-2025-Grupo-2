@@ -1,8 +1,8 @@
 package aplicacion.repositorios;
 
 import java.util.List;
-import domain.hechos.Hecho;
-import domain.solicitudes.SolicitudEliminacion;
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -5,7 +5,7 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.HechoXColeccionId;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.HechoService;

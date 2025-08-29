@@ -1,6 +1,6 @@
 package aplicacion.domain.colecciones;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
