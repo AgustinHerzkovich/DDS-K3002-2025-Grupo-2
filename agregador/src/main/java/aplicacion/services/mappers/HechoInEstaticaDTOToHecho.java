@@ -1,7 +1,7 @@
 package aplicacion.services.mappers;
 
 import aplicacion.services.dto.HechoInEstaticaDTO;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 
 import java.util.ArrayList;
 

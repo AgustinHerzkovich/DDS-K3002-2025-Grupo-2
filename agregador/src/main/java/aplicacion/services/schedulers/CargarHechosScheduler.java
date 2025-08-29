@@ -1,8 +1,8 @@
 package aplicacion.services.schedulers;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import domain.hechos.Hecho;
-import aplicacion.domain.normalizador.NormalizadorDeHechos;
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,7 +27,8 @@ public class CargarHechosScheduler {
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
         Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion();
-        hechoService.guardarHechos(hechosPorFuente.values().stream().flatMap(List::stream).map(normalizadorDeHechos::normalizar).toList()); // Carga en la tabla Hechos
+        hechosPorFuente.values().stream().flatMap(List::stream).forEach(normalizadorDeHechos::normalizar); // Normaliza categoria y etiquetas
+        hechoService.guardarHechos(hechosPorFuente.values().stream().flatMap(List::stream).toList()); // Carga en la tabla Hechos
         hechoService.guardarHechosPorFuente(hechosPorFuente); // Carga en la tabla HechosXFuente
         hechoService.guardarHechosPorColeccion(hechosPorFuente); // Carga en la tabla HechosXColeccion
         System.out.println("Carga de hechos finalizada.");

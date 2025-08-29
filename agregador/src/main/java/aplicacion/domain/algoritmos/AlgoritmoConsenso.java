@@ -3,7 +3,7 @@ package aplicacion.domain.algoritmos;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 
 import java.util.List;

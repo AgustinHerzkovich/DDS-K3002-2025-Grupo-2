@@ -6,7 +6,7 @@ import aplicacion.services.dto.SolicitudDTO;
 import aplicacion.services.excepciones.MotivoSolicitudException;
 import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
-import domain.solicitudes.SolicitudEliminacion;
+import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

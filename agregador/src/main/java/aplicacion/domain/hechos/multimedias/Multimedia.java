@@ -1,4 +1,4 @@
-package domain.hechos.multimedias;
+package aplicacion.domain.hechos.multimedias;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

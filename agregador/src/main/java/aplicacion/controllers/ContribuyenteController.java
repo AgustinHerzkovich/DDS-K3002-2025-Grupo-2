@@ -1,8 +1,8 @@
 package aplicacion.controllers;
 
 import aplicacion.services.ContribuyenteService;
-import domain.usuarios.Contribuyente;
-import domain.usuarios.IdentidadContribuyente;
+import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.domain.usuarios.IdentidadContribuyente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

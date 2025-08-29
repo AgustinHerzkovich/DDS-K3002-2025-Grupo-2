@@ -1,10 +1,9 @@
-package aplicacion.services.normalizador;
+package aplicacion.services;
 
 import aplicacion.repositorios.RepositorioDeEtiquetas;
-import domain.hechos.Etiqueta;
+import aplicacion.services.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.domain.hechos.Etiqueta;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EtiquetaService {
@@ -14,15 +13,11 @@ public class EtiquetaService {
         this.repositorioDeEtiquetas = repositorioDeEtiquetas;
     }
 
-    public List<Etiqueta> obtenerEtiquetas(List<String> nombres) {
-        List<Etiqueta> etiquetas;
-        for (String nombre : nombres) {
-            Etiqueta etiqueta = repositorioDeEtiquetas.findByNombre(nombre);
-            if (etiqueta == null) {
-                throw new IllegalArgumentException("Etiqueta no encontrada: " + nombre);
-            }
-            etiquetas.add(etiqueta);
-        }
+    public Etiqueta obtenerEtiquetaPorNombre(String nombre) throws EtiquetaNoEncontradaException {
+        return repositorioDeEtiquetas.findByNombre(nombre).orElseThrow(() -> new EtiquetaNoEncontradaException("Etiqueta no encontrada con nombre: " + nombre));
+    }
 
+    public Etiqueta agregarEtiqueta(String nombre) {
+        return repositorioDeEtiquetas.save(new Etiqueta(nombre));
     }
 }

@@ -1,4 +1,4 @@
-package domain.hechos;
+package aplicacion.domain.hechos;
 
 // ORIGEN
 public enum Origen {

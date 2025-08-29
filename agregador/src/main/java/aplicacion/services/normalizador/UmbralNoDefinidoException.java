@@ -1,4 +1,4 @@
-package aplicacion.normalizadorDeTerminos;
+package aplicacion.services.normalizador;
 
 public class UmbralNoDefinidoException extends RuntimeException {
     public UmbralNoDefinidoException(String message) {

@@ -1,9 +1,9 @@
 package aplicacion.services.dto;
 
-import domain.hechos.Categoria;
-import domain.hechos.Etiqueta;
-import domain.hechos.Origen;
-import domain.hechos.Ubicacion;
+import aplicacion.domain.hechos.Categoria;
+import aplicacion.domain.hechos.Etiqueta;
+import aplicacion.domain.hechos.Origen;
+import aplicacion.domain.hechos.Ubicacion;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

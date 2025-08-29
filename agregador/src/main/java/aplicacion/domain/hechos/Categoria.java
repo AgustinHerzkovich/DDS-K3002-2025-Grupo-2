@@ -1,4 +1,4 @@
-package domain.hechos;
+package aplicacion.domain.hechos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 //CATEGORIA
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

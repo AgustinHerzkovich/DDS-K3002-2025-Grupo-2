@@ -13,6 +13,8 @@ Fallback: Si ambos pasos fallan, devuelves la palabra original.
 
 Se realizaria en un componente separado, en python utilizando librerias que automaticen ciertos procesos de ontologia y taxonomia.
 
+También implementar depuración de datos.
+
 
 
 --- Arreglar

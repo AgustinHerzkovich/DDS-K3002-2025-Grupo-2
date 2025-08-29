@@ -1,6 +1,6 @@
 package aplicacion.repositorios;
 
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

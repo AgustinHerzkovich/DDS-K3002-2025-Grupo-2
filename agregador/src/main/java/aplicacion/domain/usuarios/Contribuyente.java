@@ -1,9 +1,9 @@
-package domain.usuarios;
+package aplicacion.domain.usuarios;
 
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.Hecho;
-import domain.solicitudes.SolicitudEliminacion;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,12 +1,11 @@
-package domain.hechos;
+package aplicacion.domain.hechos;
 
+import aplicacion.domain.hechos.multimedias.Multimedia;
+import aplicacion.domain.solicitudes.SolicitudEliminacion;
+import aplicacion.domain.usuarios.IdentidadContribuyente;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import domain.hechos.multimedias.Multimedia;
-import domain.solicitudes.SolicitudEliminacion;
-import domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -97,30 +96,6 @@ public class Hecho {
     }
 
     public void mostrar() { visible = true; }
-
-    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
-        if (titulo != null) {
-            this.titulo = titulo;
-        }
-        if (descripcion != null) {
-            this.descripcion = descripcion;
-        }
-        if (categoria != null) {
-            this.categoria = categoria;
-        }
-        if (ubicacion != null) {
-            this.ubicacion = ubicacion;
-        }
-        if (fecha != null) {
-            this.fechaAcontecimiento = fecha;
-        }
-        if (contenidoTexto != null) {
-            this.contenidoTexto = contenidoTexto;
-        }
-        if (contenidoMultimedia != null) {
-            this.contenidoMultimedia = contenidoMultimedia;
-        }
-    }
 
     public Boolean tieneMismoTitulo(String otroTitulo) {
         return titulo.equals(otroTitulo);

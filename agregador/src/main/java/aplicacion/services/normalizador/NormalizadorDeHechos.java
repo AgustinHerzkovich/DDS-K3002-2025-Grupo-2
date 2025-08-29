@@ -1,35 +1,62 @@
-package aplicacion.domain.normalizador;
+package aplicacion.services.normalizador;
 
-import domain.hechos.Categoria;
-import domain.hechos.Etiqueta;
-import domain.hechos.Ubicacion;
-import domain.normalizadorDeTerminos.NingunTerminoCumpleUmbralException;
-import domain.normalizadorDeTerminos.NormalizadorDeTerminos;
-import domain.hechos.Hecho;
+import aplicacion.services.CategoriaService;
+import aplicacion.services.EtiquetaService;
+import aplicacion.services.excepciones.CategoriaNoEncontradaException;
+import aplicacion.services.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.domain.hechos.Categoria;
+import aplicacion.domain.hechos.Etiqueta;
+import aplicacion.domain.hechos.Ubicacion;
+import aplicacion.domain.hechos.Hecho;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class NormalizadorDeHechos {
     public NormalizadorDeTerminos normalizadorDeCategorias;
     public NormalizadorDeTerminos normalizadorDeEtiquetas;
+    public CategoriaService categoriaService;
+    public EtiquetaService etiquetaService;
 
-    public NormalizadorDeHechos() {
+    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
         Integer umbralLevenshtein = 3;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
+        this.etiquetaService = etiquetaService;
+        this.categoriaService = categoriaService;
     }
 
-    public Hecho normalizar(Hecho hecho) {
-        hecho.setCategoria(new Categoria(normalizadorDeCategorias.normalizarTermino(hecho.getCategoria().getNombre())));
-        hecho.setEtiquetas(new ArrayList<Etiqueta>(hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->new Etiqueta(normalizadorDeEtiquetas.normalizarTermino(n))).toList()));
-        return hecho;
+    public void normalizar(Hecho hecho)  {
+        Categoria categoriaAInyectar;
+        List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
+        String categoria = normalizadorDeCategorias.normalizarTermino(hecho.getCategoria().getNombre());
+        try{
+            categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
+        }catch (CategoriaNoEncontradaException e){
+            categoriaAInyectar = categoriaService.agregarCategoria(categoria);
+        }
+        hecho.setCategoria(categoriaAInyectar);
+
+        List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->normalizadorDeEtiquetas.normalizarTermino(n)).toList();
+        Etiqueta etiquetaAInyectar;
+        for(String nombre : etiquetas){
+            try{
+                etiquetaAInyectar = etiquetaService.obtenerEtiquetaPorNombre(nombre);
+            } catch (EtiquetaNoEncontradaException e){
+                etiquetaAInyectar = etiquetaService.agregarEtiqueta(nombre);
+            }
+            etiquetasAInyectar.add(etiquetaAInyectar);
+        }
+        hecho.setEtiquetas(etiquetasAInyectar);
+
     }
 
     public String normalizarCategoria(String categoria) {
         return aplicarNormalizador(categoria, normalizadorDeCategorias);
     }
+
     public Ubicacion normalizarUbicacion(Ubicacion ubicacion) {
         return new Ubicacion(); // TODO
     }
@@ -54,7 +81,6 @@ public class NormalizadorDeHechos {
         try {
             return normalizador.normalizarTermino(termino);
         } catch (NingunTerminoCumpleUmbralException e) {
-            // TODO: ver que pasa si no existe la categoria
             normalizador.agregarTermino(termino);
             return termino;
         }

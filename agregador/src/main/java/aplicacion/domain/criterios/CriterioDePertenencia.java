@@ -2,7 +2,7 @@ package aplicacion.domain.criterios;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package domain.solicitudes;
+package aplicacion.domain.solicitudes;
 
 // ESTADO
 /*

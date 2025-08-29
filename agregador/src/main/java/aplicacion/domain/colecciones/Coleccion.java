@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import domain.hechos.Hecho;
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.criterios.CriterioDePertenencia;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
