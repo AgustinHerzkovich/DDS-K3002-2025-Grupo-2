@@ -1,6 +1,7 @@
 package aplicacion.services.dto;
 
 import aplicacion.domain.hechos.Categoria;
+import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,6 +19,7 @@ public class HechoDTO {
     private Categoria categoria;
     private Ubicacion ubicacion;
     private LocalDateTime fechaAcontecimiento;
+    private Origen origen;
     private String contenidoTexto;
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
