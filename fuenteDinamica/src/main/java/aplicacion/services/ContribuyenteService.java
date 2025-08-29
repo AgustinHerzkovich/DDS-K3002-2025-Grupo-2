@@ -22,6 +22,11 @@ public class ContribuyenteService {
                 .orElseThrow(() -> new IllegalArgumentException("Contribuyente no encontrado con ID: " + id));
     }
 
+    public IdentidadContribuyente obtenerIdentidad(Long id) {
+        return repositorioDeContribuyentes.findIdentidadById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Identidad no encontrada para el contribuyente con ID: " + id));
+    }
+
     public Contribuyente agregarIdentidadAContribuyente(Long id, IdentidadContribuyente identidad) {
         Contribuyente contribuyente = obtenerContribuyente(id);
         contribuyente.agregarIdentidad(identidad);
