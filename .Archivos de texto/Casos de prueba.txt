@@ -98,6 +98,9 @@ Postear dos colecciones, una con una fuente estática y una dinámica, la otra c
 Verificar que la carga de hechos sea correcta
 Probar que los 3 algoritmos de consenso funcionen bien
 Ver como testear el medidor de tráfico
+Testear el normalizador mandando dos hechos con categorias/etiquetas similares y ver cómo los guarda
+Testear depurador mandando dos hechos duplicados (ver qué interpretamos por duplicado en las decisiones de diseño) y verificar que en la tabla Hechos
+solo se guarde el primero, pero en HechoXFuente se guarden dos entradas que apuntan al mismo hechi
 
 Prueba Api publica y administrativa:
 Testear todos los endpoints
