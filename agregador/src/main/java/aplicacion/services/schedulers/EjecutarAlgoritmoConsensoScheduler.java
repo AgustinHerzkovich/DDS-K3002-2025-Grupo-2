@@ -8,6 +8,7 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.services.ColeccionService;
+import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import lombok.Setter;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +26,16 @@ import java.util.Map;
 public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer {
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
+    private final FuenteService fuenteService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     @Setter
     private volatile Integer horaBajaCarga = 3; // Por default es a las 3 AM
 
-    public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion) {
+    public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, FuenteService fuenteService) {
         this.hechoService = hechoService;
         this.coleccionService = coleccionService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+        this.fuenteService = fuenteService;
     }
 
     @Override
@@ -73,8 +76,10 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
         for (Coleccion coleccion : colecciones) {
             AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
 
-            Map<Fuente,List<Hecho>> hechos = hechoService.obtenerHechosPorColeccionPorFuente(coleccion.getId());
-            List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(hechos);
+            Map<Hecho, Integer> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
+            Integer totalFuentes = fuenteService.obtenerCantidadFuentes();
+
+            List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(conteoHechos, totalFuentes);
             for (Hecho hecho : hechosCurados) {
                 HechoXColeccion hechoXColeccion = repositorioDeHechosXColeccion.findById(new HechoXColeccionId(hecho.getId(), coleccion.getId()))
                         .orElseThrow(() -> new RuntimeException("No existe la relación"));

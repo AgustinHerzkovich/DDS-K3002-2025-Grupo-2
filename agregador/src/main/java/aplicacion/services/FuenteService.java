@@ -118,4 +118,8 @@ public class FuenteService {
         }
         return hashMap;
     }
+
+    public Integer obtenerCantidadFuentes() {
+        return Math.toIntExact(repositorioDeFuentes.count());
+    }
 }
