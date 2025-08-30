@@ -2,15 +2,18 @@ package aplicacion.domain.algoritmos;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
 // Regla de negocio: Consideramos hecho repetido por fuente a aquellos que contengan los mismos atributos que incluimos en EqualsAndHashCode en el Hecho.
 @Entity
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_algoritmo")
 @JsonTypeInfo(
@@ -28,5 +31,5 @@ public abstract class AlgoritmoConsenso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public abstract List<Hecho> curarHechos(Map<Fuente,List<Hecho>> hechosPorFuente);
+    public abstract List<Hecho> curarHechos(Map<Hecho, Integer> cantidadPorHecho, Integer totalFuentes);
 }

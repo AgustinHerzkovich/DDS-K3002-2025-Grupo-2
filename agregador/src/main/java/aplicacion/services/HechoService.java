@@ -90,4 +90,8 @@ public class HechoService {
                 hecho.getContenidoTexto()
         ).orElseThrow(() -> new HechoNoEncontradoException("No se encontró un hecho duplicado."));
     }
+
+    public Map<Hecho, Integer> contarHechosPorFuente(Coleccion coleccion) {
+        return repositorioDeHechosXFuente.countHechosByFuente(coleccion.getId());
+    }
 }
