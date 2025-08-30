@@ -44,17 +44,17 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/colecciones/{id}/fuentes/agregar")
+    @PostMapping("/colecciones/{id}/fuentes")
     public ResponseEntity<Void> agregarFuente(@PathVariable String id,
                                               @RequestBody String body) {
-        solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body);
+        solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/colecciones/{id}/fuentes/quitar")
+    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<Void> quitarFuente(@PathVariable String id,
-                                             @RequestBody String body) {
-        solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body);
+                                             @PathVariable String fuenteId) {
+        solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId);
         return ResponseEntity.ok().build();
     }
 

@@ -78,7 +78,7 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/colecciones/{id}/fuentes/agregar")
+    @PostMapping("/colecciones/{id}/fuentes")
     public ResponseEntity<Void> agregarFuente(@PathVariable("id") String idColeccion,
                                               @RequestBody Fuente fuente) {
         fuenteService.guardarFuente(fuente);
@@ -89,9 +89,9 @@ public class ColeccionController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/colecciones/{id}/fuentes/quitar")
+    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @RequestBody FuenteId fuenteId) {
+                                             @PathVariable("fuenteId") FuenteId fuenteId) {
         Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
         coleccionService.quitarFuenteDeColeccion(coleccion, fuenteId);
         System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId.getIdExterno() + " tipo: " + fuenteId.getTipo());
