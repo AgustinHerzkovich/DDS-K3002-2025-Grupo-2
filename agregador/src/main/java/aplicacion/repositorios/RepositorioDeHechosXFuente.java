@@ -16,7 +16,7 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
         FROM HechoXFuente hxf
         JOIN Hecho h ON hxf.hecho.id = h.id
         JOIN HechoXColeccion hxc ON h.id = hxc.hecho.id
-        WHERE hxc.coleccion.identificadorHandle = :idColeccion
+        WHERE hxc.coleccion.id = :idColeccion
     """)
     List<HechoXFuente> findByCollectionId(@Param("idColeccion") String idColeccion);
 }

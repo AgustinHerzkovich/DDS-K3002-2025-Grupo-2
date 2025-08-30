@@ -30,7 +30,7 @@ public class ColeccionController {
         fuenteService.guardarFuentes(coleccion.getFuentes());
         coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
-        System.out.println("Colección creada: " + coleccion.getIdentificadorHandle());
+        System.out.println("Colección creada: " + coleccion.getId());
         return ResponseEntity.ok(coleccion);
     }
 

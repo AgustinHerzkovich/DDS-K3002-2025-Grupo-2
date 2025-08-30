@@ -29,6 +29,6 @@ public class FuenteXColeccion {
     public FuenteXColeccion(Fuente fuente, Coleccion coleccion) {
         this.fuente = fuente;
         this.coleccion = coleccion;
-        this.id = new FuenteXColeccionId(fuente.getId(), coleccion.getIdentificadorHandle());
+        this.id = new FuenteXColeccionId(fuente.getId(), coleccion.getId());
     }
 }

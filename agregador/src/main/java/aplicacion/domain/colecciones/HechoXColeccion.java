@@ -31,7 +31,7 @@ public class HechoXColeccion {
     public HechoXColeccion(Hecho hecho, Coleccion coleccion) {
         this.hecho = hecho;
         this.coleccion = coleccion;
-        this.id = new HechoXColeccionId(hecho.getId(), coleccion.getIdentificadorHandle());
+        this.id = new HechoXColeccionId(hecho.getId(), coleccion.getId());
     }
 }
 
