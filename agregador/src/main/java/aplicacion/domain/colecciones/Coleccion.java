@@ -23,6 +23,9 @@ import java.util.List;
 @Getter
 @Setter
 public class Coleccion{
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String titulo;
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -30,9 +33,6 @@ public class Coleccion{
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Fuente> fuentes;
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String identificadorHandle;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "algoritmo_id")
     private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();

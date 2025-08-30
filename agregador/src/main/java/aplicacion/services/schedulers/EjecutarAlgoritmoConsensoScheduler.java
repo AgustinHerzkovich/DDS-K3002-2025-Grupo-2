@@ -37,20 +37,31 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        // trigger dinámico
         taskRegistrar.addTriggerTask(
-                this::curarHechos, // tarea a ejecutar
+                this::curarHechos,
                 triggerContext -> {
                     Calendar nextExecution = Calendar.getInstance();
-                    nextExecution.setTime(new Date());
-                    nextExecution.set(Calendar.HOUR_OF_DAY, horaBajaCarga);
-                    nextExecution.set(Calendar.MINUTE, 0);
-                    nextExecution.set(Calendar.SECOND, 0);
+                    Date lastExecution = triggerContext.lastActualExecutionTime();
 
-                    Date lastActualExecution = triggerContext.lastActualExecutionTime();
-                    if (lastActualExecution != null && nextExecution.getTime().before(lastActualExecution)) {
+                    // Si nunca se ejecutó, arranca desde HOY a la hora configurada
+                    if (lastExecution == null) {
+                        nextExecution.set(Calendar.HOUR_OF_DAY, horaBajaCarga);
+                        nextExecution.set(Calendar.MINUTE, 0);
+                        nextExecution.set(Calendar.SECOND, 0);
+
+                        // Si ya pasó hoy, lo manda al día siguiente
+                        if (nextExecution.getTime().before(new Date())) {
+                            nextExecution.add(Calendar.DAY_OF_MONTH, 1);
+                        }
+                    } else {
+                        // Si ya se ejecutó, calcula la siguiente ocurrencia (día siguiente a la hora fija)
+                        nextExecution.setTime(lastExecution);
                         nextExecution.add(Calendar.DAY_OF_MONTH, 1);
+                        nextExecution.set(Calendar.HOUR_OF_DAY, horaBajaCarga);
+                        nextExecution.set(Calendar.MINUTE, 0);
+                        nextExecution.set(Calendar.SECOND, 0);
                     }
+
                     return nextExecution.getTime().toInstant();
                 }
         );
@@ -62,10 +73,10 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
         for (Coleccion coleccion : colecciones) {
             AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
 
-            Map<Fuente,List<Hecho>> hechos = hechoService.obtenerHechosPorColeccionPorFuente(coleccion.getIdentificadorHandle());
+            Map<Fuente,List<Hecho>> hechos = hechoService.obtenerHechosPorColeccionPorFuente(coleccion.getId());
             List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(hechos);
             for (Hecho hecho : hechosCurados) {
-                HechoXColeccion hechoXColeccion = repositorioDeHechosXColeccion.findById(new HechoXColeccionId(hecho.getId(), coleccion.getIdentificadorHandle()))
+                HechoXColeccion hechoXColeccion = repositorioDeHechosXColeccion.findById(new HechoXColeccionId(hecho.getId(), coleccion.getId()))
                         .orElseThrow(() -> new RuntimeException("No existe la relación"));
                 hechoXColeccion.setConsensuado(true);
                 repositorioDeHechosXColeccion.save(hechoXColeccion);

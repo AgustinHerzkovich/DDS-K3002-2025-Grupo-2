@@ -57,8 +57,7 @@ public class FuenteService {
         }
     }
 
-    public Map<Fuente, List<Hecho>> hechosUltimaPeticion() { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
-        List<Fuente> fuentes = repositorioDeFuentes.findAll();
+    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
         List<Hecho> hechos; // Lista de hechos que se van a retornar
         ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho

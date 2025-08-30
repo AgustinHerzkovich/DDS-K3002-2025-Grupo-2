@@ -3,18 +3,17 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.colecciones.fuentes.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.services.excepciones.HechoNoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,39 +38,19 @@ public class HechoService {
         return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
 
-    public void guardarHechosPorFuente(Map<Fuente, List<Hecho>> hechosPorFuente) {
-        for (Map.Entry<Fuente, List<Hecho>> entry : hechosPorFuente.entrySet()) {
-            Fuente fuente = entry.getKey();
-            List<Hecho> hechos = entry.getValue();
-            for (Hecho hecho : hechos) {
-                HechoXFuente hechoPorFuente = new HechoXFuente(hecho, fuente);
-                repositorioDeHechosXFuente.save(hechoPorFuente);
-            }
-        }
+    public void guardarHechoPorFuente(HechoXFuente hechoPorFuente) {
+        repositorioDeHechosXFuente.save(hechoPorFuente);
     }
 
-    public void guardarHechosPorColeccion(Map<Fuente, List<Hecho>> hechosPorFuente) {
-        for (Map.Entry<Fuente, List<Hecho>> entry : hechosPorFuente.entrySet()) {
-            Fuente fuente = entry.getKey();
-            List<Hecho> hechos = entry.getValue();
-
-            // Buscar la colección asociada a la fuente
-            Optional<FuenteXColeccion> fuenteXcoleccionOpt = repositorioDeFuentesXColeccion.findByFuente(fuente);
-
-            if (fuenteXcoleccionOpt.isEmpty()) {
-                System.out.println("No se encontró colección para la fuente: " + fuente.getId());
-                continue;
-            }
-
-            Coleccion coleccion = fuenteXcoleccionOpt.get().getColeccion();
-
-            // Filtrar los hechos que cumplen con todos los criterios de pertenencia
-            List<HechoXColeccion> hechosFiltrados = hechos.stream()
-                    .filter(coleccion::cumpleCriterios)
-                    .map(hecho -> new HechoXColeccion(hecho, coleccion))
-                    .toList();
-
-            repositorioDeHechosXColeccion.saveAll(hechosFiltrados); // Solo guardar los hechos si cumplen con todos los criterios de pertenencia
+    public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
+        Hecho hecho = hechoPorColeccion.getHecho();
+        Coleccion coleccion = hechoPorColeccion.getColeccion();
+        // Si el hecho cumple los criterios de pertenencia de la colección, entonces se guarda, en caso contrario no
+        if (coleccion.cumpleCriterios(hecho)) {
+            repositorioDeHechosXColeccion.save(hechoPorColeccion);
+        }
+        else {
+            System.out.println("El hecho con ID " + hecho.getId() + " no cumple los criterios de pertenencia de la colección con ID " + coleccion.getId() + " y no se guardará en HechoXColeccion.");
         }
     }
     public Hecho obtenerHechoPorId(String idHecho) {
@@ -99,5 +78,16 @@ public class HechoService {
 
     public void guardarHecho(Hecho hecho) {
         repositorioDeHechos.save(hecho);
+    }
+
+    public Hecho obtenerDuplicado(Hecho hecho) throws HechoNoEncontradoException {
+        return repositorioDeHechos.findDuplicado(
+                hecho.getTitulo(),
+                hecho.getDescripcion(),
+                hecho.getCategoria(),
+                hecho.getUbicacion(),
+                hecho.getFechaAcontecimiento(),
+                hecho.getContenidoTexto()
+        ).orElseThrow(() -> new HechoNoEncontradoException("No se encontró un hecho duplicado."));
     }
 }
