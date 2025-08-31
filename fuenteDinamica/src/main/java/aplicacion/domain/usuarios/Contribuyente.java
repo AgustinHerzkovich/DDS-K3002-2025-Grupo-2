@@ -1,7 +1,5 @@
 package aplicacion.domain.usuarios;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,30 +22,18 @@ public class Contribuyente {
     @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IdentidadContribuyente> identidades;
 
-    @JsonCreator
-    public Contribuyente(@JsonProperty("esAdministrador") Boolean esAdministrador) {
+    public Contribuyente(Boolean esAdministrador) {
         this.esAdministrador = esAdministrador;
         this.identidades = new ArrayList<>();
     }
 
     public IdentidadContribuyente getUltimaIdentidad() {
-        if (identidades == null || identidades.isEmpty()) {
-            return null;
-        }
         return identidades.getLast();
     }
 
     public void agregarIdentidad(IdentidadContribuyente identidad){
         identidades.add(identidad);
         identidad.setContribuyente(this); // Establece la relación bidireccional
-    }
-
-    public String getNombreCompleto() {
-        IdentidadContribuyente identidad = this.getUltimaIdentidad();
-        if (identidad != null) {
-            return identidad.getNombre() + " " + identidad.getApellido();
-        }
-        return "Sin identidad";
     }
 
     public void contribuirAlHecho(Hecho hecho) {

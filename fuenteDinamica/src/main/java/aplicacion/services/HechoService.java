@@ -1,13 +1,17 @@
 package aplicacion.services;
 
 import aplicacion.domain.usuarios.IdentidadContribuyente;
-import aplicacion.services.dto.CambioEstadoRevisionDto;
-import aplicacion.services.dto.HechoDTO;
-import aplicacion.services.dto.HechoEdicionDTO;
+import aplicacion.dto.input.CambioEstadoRevisionInputDto;
+import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.input.HechoEdicionInputDto;
 import aplicacion.domain.hechos.EstadoRevision;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.services.excepciones.*;
-import aplicacion.services.mappers.HechoMapper;
+import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.mappers.HechoRevisadoOutputMapper;
+import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.dto.output.HechoRevisadoOutputDto;
+import aplicacion.excepciones.*;
+import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.repositorios.RepositorioDeHechos;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,10 +23,17 @@ import java.util.List;
 public class HechoService {
     private final RepositorioDeHechos repositorioDeHechos;
     private final ContribuyenteService contribuyenteService;
+    private final HechoInputMapper hechoInputMapper;
+    private final HechoOutputMapper hechoOutputMapper;
+    private final HechoRevisadoOutputMapper hechoRevisadoOutputMapper;
+
     
-    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.contribuyenteService = contribuyenteService;
+        this.hechoInputMapper = hechoInputMapper;
+        this.hechoOutputMapper = hechoOutputMapper;
+        this.hechoRevisadoOutputMapper = hechoRevisadoOutputMapper;
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
@@ -31,80 +42,68 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Hecho> obtenerHechosAceptados() {
-        return this.obtenerHechos().stream().filter(hecho -> hecho.getEstadoRevision() == EstadoRevision.ACEPTADO).toList();
+    public List<HechoOutputDto> obtenerHechosAceptados() {
+        return this.obtenerHechos().stream().filter(Hecho::estaAceptado).map(hechoOutputMapper::map).toList();
     }
 
     @Transactional(readOnly = true)
-    public List<Hecho> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
+    public List<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
         return this.obtenerHechosAceptados().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
     }
 
-    public Hecho guardarHecho(Hecho hecho) {
-        return repositorioDeHechos.save(hecho);
-    }
-
     @Transactional(readOnly = true)
-    public Hecho guardarHechoDto(HechoDTO hechoDto) throws HechoMappingException, ContribuyenteAssignmentException, HechoStorageException, ContribuyenteNoConfiguradoException {
-        IdentidadContribuyente autor;
-        Hecho hecho;
-        try {
-            autor = contribuyenteService.obtenerIdentidad(hechoDto.getIdentidadId());
-            assert autor != null;
-        }catch (Exception e){
-            throw new ContribuyenteNoConfiguradoException("El contribuyente no existe o no tiene identidad. La identidad es necesaria incluso para hechos anonimos");
+    public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
+        Long identidadId = hechoInputDto.getIdentidadId();
+        IdentidadContribuyente autor = null;
+        if (!hechoInputDto.getAnonimato() && identidadId == null) {
+            throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");
         }
-        try {
-            hecho = new HechoMapper().map(hechoDto, autor);
-        }catch (Exception e){
-            throw new HechoMappingException("Se produjo un error al mapear el hecho.");
+        if (!hechoInputDto.getAnonimato()) {
+            autor = contribuyenteService.obtenerIdentidad(hechoInputDto.getIdentidadId());
         }
-        try {
-            autor.getContribuyente().contribuirAlHecho(hecho);
-        }catch (Exception e){
-            throw new ContribuyenteAssignmentException("No se pudo asignar el contribuyente al hecho");
-        }
-        try {
-            return guardarHecho(hecho);
-        }catch (Exception e){
-            throw new HechoStorageException("No se pudo guardar el hecho en la base de datos");
-        }
+        Hecho hecho = hechoInputMapper.map(hechoInputDto, autor);
+        hecho = repositorioDeHechos.save(hecho);
+        return hechoOutputMapper.map(hecho);
     }
 
-    public Hecho obtenerHecho(String id) throws HechoNoEncontradoException {
-        return repositorioDeHechos.findById(id)
-                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
-    }
-
-    public Hecho modificarEstadoRevision(String id, CambioEstadoRevisionDto cambioEstadoRevisionDto) throws HechoNoEncontradoException {
+    public HechoOutputDto obtenerHecho(String id) throws HechoNoEncontradoException {
         Hecho hecho = repositorioDeHechos.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
-        EstadoRevision estadoRevision = cambioEstadoRevisionDto.getEstado();
-        String sugerencia = cambioEstadoRevisionDto.getSugerencia();
+        return hechoOutputMapper.map(hecho);
+    }
+
+    public HechoRevisadoOutputDto modificarEstadoRevision(String id, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HechoNoEncontradoException {
+        Hecho hecho = repositorioDeHechos.findById(id)
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
+        EstadoRevision estadoRevision = cambioEstadoRevisionInputDto.getEstado();
+        String sugerencia = cambioEstadoRevisionInputDto.getSugerencia();
         hecho.setEstadoRevision(estadoRevision);
         if (estadoRevision == EstadoRevision.ACEPTADO && sugerencia != null) {
             hecho.setSugerencia(sugerencia);
         }
 
-        return repositorioDeHechos.save(hecho);
+        hecho = repositorioDeHechos.save(hecho);
+        return hechoRevisadoOutputMapper.map(hecho);
     }
 
-    public Hecho editarHecho(String id, HechoEdicionDTO hechoEdicionDto) throws HechoNoEncontradoException
-    , PlazoEdicionVencidoException, AnonimatoException {
-            Hecho hecho = repositorioDeHechos.findById(id)
+    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException {
+        Hecho hecho = repositorioDeHechos.findById(id)
                     .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         this.validarHechoEditable(hecho);
-        hecho.editar(hechoEdicionDto.getTitulo(),
-                hechoEdicionDto.getDescripcion(),
-                hechoEdicionDto.getCategoria(),
-                hechoEdicionDto.getUbicacion(),
-                hechoEdicionDto.getFechaAcontecimiento(),
-                hechoEdicionDto.getContenidoTexto(),
-                hechoEdicionDto.getContenidoMultimedia());
-        return repositorioDeHechos.save(hecho);
+
+        hecho.editar(hechoEdicionInputDto.getTitulo(),
+                hechoEdicionInputDto.getDescripcion(),
+                hechoEdicionInputDto.getCategoria(),
+                hechoEdicionInputDto.getUbicacion(),
+                hechoEdicionInputDto.getFechaAcontecimiento(),
+                hechoEdicionInputDto.getContenidoTexto(),
+                hechoEdicionInputDto.getContenidoMultimedia());
+
+        hecho = repositorioDeHechos.save(hecho);
+        return hechoOutputMapper.map(hecho);
     }
 
-    public void validarHechoEditable(Hecho hecho) throws PlazoEdicionVencidoException, AnonimatoException {
+    private void validarHechoEditable(Hecho hecho) throws PlazoEdicionVencidoException, AnonimatoException {
         LocalDateTime fechaCarga = hecho.getFechaCarga();
         LocalDateTime fechaActual = LocalDateTime.now();
         if (!fechaCarga.isAfter(fechaActual.minusWeeks(1))) { // Si pasó más de una semana desde que se subió, se arroja una excepción

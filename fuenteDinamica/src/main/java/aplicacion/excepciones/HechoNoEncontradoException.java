@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class HechoNoEncontradoException extends Exception {
     public HechoNoEncontradoException(String message) {

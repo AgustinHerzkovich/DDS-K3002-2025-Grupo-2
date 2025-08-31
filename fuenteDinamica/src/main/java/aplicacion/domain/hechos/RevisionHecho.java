@@ -2,7 +2,7 @@ package aplicacion.domain.hechos;
 
 import aplicacion.domain.usuarios.Contribuyente;
 
-public class RevisionHecho {
+public class RevisionHecho { // TODO: Registrar revisiones de hecho o quitar
     private Contribuyente administrador;
     private Hecho hecho;
 

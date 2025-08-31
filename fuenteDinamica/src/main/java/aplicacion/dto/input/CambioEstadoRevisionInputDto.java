@@ -1,12 +1,12 @@
-package aplicacion.dto;
+package aplicacion.dto.input;
 
 import aplicacion.domain.hechos.EstadoRevision;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class CambioEstadoRevisionDto {
+public class CambioEstadoRevisionInputDto {
     private EstadoRevision estado;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String sugerencia; // Opcional, en caso de que sea aceptado con sugerencia
 }

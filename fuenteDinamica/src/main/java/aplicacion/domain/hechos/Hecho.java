@@ -1,7 +1,5 @@
 package aplicacion.domain.hechos;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
@@ -14,36 +12,27 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @EqualsAndHashCode.Include
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
-    @EqualsAndHashCode.Include
     private String descripcion;
     @Embedded
-    @EqualsAndHashCode.Include
     private Categoria categoria;
     @Embedded
-    @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
-    @EqualsAndHashCode.Include
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
-    @EqualsAndHashCode.Include
     private String contenidoTexto;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
-    @EqualsAndHashCode.Include
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
@@ -52,17 +41,16 @@ public class Hecho {
     private EstadoRevision estadoRevision;
     private String sugerencia;
 
-    @JsonCreator
-    public Hecho(@JsonProperty("titulo") String titulo,
-                 @JsonProperty("descripcion") String descripcion,
-                 @JsonProperty("categoria") Categoria categoria,
-                 @JsonProperty("ubicacion") Ubicacion ubicacion,
-                 @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
-                 @JsonProperty("origen") Origen origen,
-                 @JsonProperty("contenidoTexto") String contenidoTexto,
-                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
-                 @JsonProperty("anonimato") Boolean anonimato,
-                 @JsonProperty("autor") IdentidadContribuyente autor) {
+    public Hecho(String titulo,
+                 String descripcion,
+                 Categoria categoria,
+                 Ubicacion ubicacion,
+                 LocalDateTime fechaAcontecimiento,
+                 Origen origen,
+                 String contenidoTexto,
+                 List<Multimedia> contenidoMultimedia,
+                 Boolean anonimato,
+                 IdentidadContribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -74,7 +62,7 @@ public class Hecho {
         this.contenidoTexto = contenidoTexto;
         this.contenidoMultimedia = contenidoMultimedia;
         this.anonimato = anonimato;
-        this.autor = anonimato ? autor : null;
+        this.autor = anonimato ? null : autor;
         this.estadoRevision = EstadoRevision.PENDIENTE;
         this.sugerencia = null;
     }
@@ -103,5 +91,9 @@ public class Hecho {
         }
         this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
         this.estadoRevision = EstadoRevision.PENDIENTE; // Cada vez que se edita, vuelve a estar pendiente de revisión
+    }
+
+    public boolean estaAceptado() {
+        return this.estadoRevision == EstadoRevision.ACEPTADO;
     }
 }
