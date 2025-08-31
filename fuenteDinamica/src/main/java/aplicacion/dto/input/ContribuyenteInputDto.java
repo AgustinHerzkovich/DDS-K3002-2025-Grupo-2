@@ -1,9 +1,11 @@
-package aplicacion.dto;
+package aplicacion.dto.input;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 @Getter
-public class ContribuyenteDto {
+public class ContribuyenteInputDto {
     private Boolean esAdministrador;
-    private IdentidadContribuyenteDto identidad;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private IdentidadContribuyenteInputDto identidad;
 }

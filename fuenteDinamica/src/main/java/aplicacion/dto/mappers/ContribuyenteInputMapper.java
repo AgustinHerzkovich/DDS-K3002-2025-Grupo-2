@@ -5,16 +5,18 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContribuyenteMapper {
-    private final IdentidadContribuyenteMapper identidadContribuyenteMapper;
+public class ContribuyenteInputMapper {
+    private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
 
-    public ContribuyenteMapper(IdentidadContribuyenteMapper identidadContribuyenteMapper) {
-        this.identidadContribuyenteMapper = identidadContribuyenteMapper;
+    public ContribuyenteInputMapper(IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {
+        this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
     }
 
     public Contribuyente map(ContribuyenteInputDto contribuyenteInputDto) {
         Contribuyente contribuyente = new Contribuyente(contribuyenteInputDto.getEsAdministrador());
-        contribuyente.agregarIdentidad(identidadContribuyenteMapper.map(contribuyenteInputDto.getIdentidad()));
+        if (contribuyenteInputDto.getIdentidad() != null) {
+            contribuyente.agregarIdentidad(identidadContribuyenteInputMapper.map(contribuyenteInputDto.getIdentidad()));
+        }
         return contribuyente;
     }
 }

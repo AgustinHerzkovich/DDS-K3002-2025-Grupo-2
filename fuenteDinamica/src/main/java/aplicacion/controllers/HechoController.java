@@ -1,11 +1,12 @@
 package aplicacion.controllers;
 
-import aplicacion.services.dto.CambioEstadoRevisionDto;
-import aplicacion.services.dto.HechoDTO;
-import aplicacion.services.dto.HechoEdicionDTO;
-import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.CambioEstadoRevisionInputDto;
+import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.input.HechoEdicionInputDto;
+import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.services.HechoService;
-import aplicacion.services.excepciones.*;
+import aplicacion.excepciones.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")
@@ -25,71 +25,65 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos(
+    public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
     ) {
+        List<HechoOutputDto> hechos;
         if (fechaMayorA != null) {
-            return hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
+            hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
+        } else {
+            hechos = hechoService.obtenerHechosAceptados();
         }
 
-        return hechoService.obtenerHechosAceptados();
+        return ResponseEntity.ok(hechos);
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<Hecho> obtenerHecho(@PathVariable("id") String id) {
-
+    public ResponseEntity<?> obtenerHecho(@PathVariable("id") String id) {
         try{
-            Hecho hecho = hechoService.obtenerHecho(id);
+            HechoOutputDto hecho = hechoService.obtenerHecho(id);
             return ResponseEntity.ok(hecho);
         }catch (HechoNoEncontradoException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<?> agregarHecho(@RequestBody HechoDTO hechoDto) {
-        Hecho hecho;
+    public ResponseEntity<?> agregarHecho(@RequestBody HechoInputDto hechoInputDto) {
+        HechoOutputDto hecho;
         try {
-            hecho = hechoService.guardarHechoDto(hechoDto);
+            hecho = hechoService.guardarHecho(hechoInputDto);
+            System.out.println("Se ha agregado el hecho: " + hecho.getId());
+            return ResponseEntity.ok(hecho);
         }catch (ContribuyenteNoConfiguradoException e){
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(Map.of("error", "Contributente no configurado", "message", e.getMessage()));
-        }catch (ContribuyenteAssignmentException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Error al asignar post al contribuyente", "message", e.getMessage()));
-        }catch (HechoMappingException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Hecho mal armado", "message", e.getMessage()));
-        }catch (HechoStorageException e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "No se pudo almacenar el hecho en la base de datos", "message", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        System.out.println("Se ha agregado el hecho: " + hecho.getId());
-        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/hechos/{id}/estadoRevision") // TODO: Cuando tengamos acceso a datos de la sesión del administrador, se debe registrar la revisión en la clase RevisionHecho
-    public ResponseEntity<Void> modificarEstadoRevision(@PathVariable("id") String id,
-                                                        @RequestBody CambioEstadoRevisionDto cambioEstadoRevisionDto) {
+    public ResponseEntity<?> modificarEstadoRevision(@PathVariable("id") String id,
+                                                                  @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) {
         try {
-            Hecho hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionDto);
-            System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionDto.getEstado());
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
+            System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionInputDto.getEstado());
+            return ResponseEntity.ok(hecho);
+        } catch (HechoNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
-    
+
     @PatchMapping("/hechos/{id}")
-    public ResponseEntity<Void> editarHecho(@PathVariable("id") String id,
-                                            @RequestBody HechoEdicionDTO hechoEdicionDto) {
+    public ResponseEntity<?> editarHecho(@PathVariable("id") String id,
+                                         @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
         try {
-            Hecho hecho = hechoService.editarHecho(id, hechoEdicionDto);
+            HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto);
             System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")");
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
-            return ResponseEntity.notFound().build();
-        } catch (PlazoEdicionVencidoException e){
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
-        } catch (AnonimatoException e){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (PlazoEdicionVencidoException | AnonimatoException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
 }

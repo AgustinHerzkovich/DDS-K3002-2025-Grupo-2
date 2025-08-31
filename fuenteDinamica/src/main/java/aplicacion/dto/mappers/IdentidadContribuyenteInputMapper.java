@@ -1,16 +1,16 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.usuarios.IdentidadContribuyente;
-import aplicacion.dto.IdentidadContribuyenteDto;
+import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IdentidadContribuyenteMapper {
-    public IdentidadContribuyente map(IdentidadContribuyenteDto identidadContribuyenteDto) {
+public class IdentidadContribuyenteInputMapper {
+    public IdentidadContribuyente map(IdentidadContribuyenteInputDto identidadContribuyenteInputDto) {
         return new IdentidadContribuyente(
-                identidadContribuyenteDto.getNombre(),
-                identidadContribuyenteDto.getApellido(),
-                identidadContribuyenteDto.getFechaNacimiento()
+                identidadContribuyenteInputDto.getNombre(),
+                identidadContribuyenteInputDto.getApellido(),
+                identidadContribuyenteInputDto.getFechaNacimiento()
         );
     }
 }

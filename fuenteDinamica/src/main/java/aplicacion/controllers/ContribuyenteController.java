@@ -1,13 +1,15 @@
 package aplicacion.controllers;
 
+import aplicacion.dto.input.IdentidadContribuyenteInputDto;
+import aplicacion.dto.input.ContribuyenteInputDto;
+import aplicacion.dto.output.ContribuyenteOutputDto;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.services.ContribuyenteService;
-import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
+import domain.excepciones.IdInvalidoException;
+import domain.peticiones.Validaciones;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/fuentesDinamicas")
@@ -19,24 +21,25 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<Map<String, Integer>> crearContribuyente(@RequestBody Contribuyente contribuyente) {
-        Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
-        Map<String, Integer> resp = new HashMap<>();
-        resp.put("contribuyenteId", Math.toIntExact(contribuyenteGuardado.getId()));
-        System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId()); // esto cuando se haga el front lo podemos sacar
-        return ResponseEntity.ok(resp);
+    public ResponseEntity<ContribuyenteOutputDto> crearContribuyente(@RequestBody ContribuyenteInputDto contribuyenteInputDto) {
+        ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.guardarContribuyente(contribuyenteInputDto);
+        System.out.println("Se ha creado el contribuyente: " + contribuyenteProcesado.getId()); // esto cuando se haga el front lo podemos sacar
+        return ResponseEntity.ok(contribuyenteProcesado);
     }
 
-    /*public ResponseEntity<Integer> crearContribuyente(@RequestBody Contribuyente contribuyente) {
-        Contribuyente contribuyenteGuardado = contribuyenteService.guardarContribuyente(contribuyente);
-        System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId());
-        return ResponseEntity.ok(Math.toIntExact(contribuyenteGuardado.getId()));
-    } de lucas*/
-
-    @PatchMapping("/contribuyentes/{id}")
-    public ResponseEntity<Void> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyente identidad, @PathVariable("id") Long id) {
-        Contribuyente contribuyente = contribuyenteService.agregarIdentidadAContribuyente(id, identidad);
-        System.out.println("Se ha agregado la identidad: " + contribuyente.getNombreCompleto() + " al contribuyente: " + contribuyente.getId());
-        return ResponseEntity.ok().build();
+    @PostMapping("/contribuyentes/{id}/identidades")
+    public ResponseEntity<?> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
+                                                                                 @PathVariable("id") Long id) {
+        try {
+            Validaciones.validarId(id);
+            ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.agregarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
+            System.out.println("Se ha agregado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
+            return ResponseEntity.ok(contribuyenteProcesado);
+        } catch (IdInvalidoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        catch (ContribuyenteNoConfiguradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }

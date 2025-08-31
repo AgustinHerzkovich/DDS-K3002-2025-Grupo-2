@@ -1,9 +1,5 @@
 package aplicacion.domain.usuarios;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,7 +23,6 @@ public class IdentidadContribuyente {
     private String nombre;
     private String apellido;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
     @ManyToOne(cascade = CascadeType.ALL)
     @Setter
@@ -35,17 +30,18 @@ public class IdentidadContribuyente {
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;
 
-    @JsonCreator
-    public IdentidadContribuyente(@JsonProperty("nombre") String nombre, @JsonProperty("apellido") String apellido,@JsonProperty("fechaNacimiento") LocalDate fechaNacimiento){
+    public IdentidadContribuyente(String nombre, String apellido, LocalDate fechaNacimiento){
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
         this.hechosContribuidos = new ArrayList<>();
     }
-    @JsonIgnore
+
     public Integer getEdad() {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
 
     public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
+
+    public String getNombreCompleto() { return nombre + " " + apellido; }
 }

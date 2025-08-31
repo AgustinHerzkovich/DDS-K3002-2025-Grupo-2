@@ -1,22 +1,22 @@
 package aplicacion.dto.mappers;
 
-import aplicacion.dto.HechoDto;
+import aplicacion.dto.input.HechoInputDto;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HechoMapper {
-    public Hecho map(HechoDto hechoDto, IdentidadContribuyente autor) {
-        return new Hecho(hechoDto.getTitulo(),
-                hechoDto.getDescripcion(),
-                hechoDto.getCategoria(),
-                hechoDto.getUbicacion(),
-                hechoDto.getFechaAcontecimiento(),
-                hechoDto.getOrigen(),
-                hechoDto.getContenidoTexto(),
-                hechoDto.getContenidoMultimedia(),
-                hechoDto.getAnonimato(),
+public class HechoInputMapper {
+    public Hecho map(HechoInputDto hechoInputDto, IdentidadContribuyente autor) {
+        return new Hecho(hechoInputDto.getTitulo(),
+                hechoInputDto.getDescripcion(),
+                hechoInputDto.getCategoria(),
+                hechoInputDto.getUbicacion(),
+                hechoInputDto.getFechaAcontecimiento(),
+                hechoInputDto.getOrigen(),
+                hechoInputDto.getContenidoTexto(),
+                hechoInputDto.getContenidoMultimedia(),
+                hechoInputDto.getAnonimato(),
                 autor);
     }
 }

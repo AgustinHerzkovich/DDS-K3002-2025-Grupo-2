@@ -1,18 +1,16 @@
-package aplicacion.dto;
+package aplicacion.dto.input;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL) // Excluir campos nulos en la serialización JSON
-public class HechoDto {
+public class HechoInputDto {
     private String titulo;
     private String descripcion;
     private Categoria categoria;

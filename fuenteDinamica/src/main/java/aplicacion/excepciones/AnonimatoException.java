@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class AnonimatoException extends Exception {
     public AnonimatoException() {
