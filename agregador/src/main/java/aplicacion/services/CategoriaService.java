@@ -1,7 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.repositorios.RepositorioDeCategorias;
-import aplicacion.services.excepciones.CategoriaNoEncontradaException;
+import aplicacion.excepciones.CategoriaNoEncontradaException;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Categoria;
 

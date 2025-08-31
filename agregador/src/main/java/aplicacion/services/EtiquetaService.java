@@ -1,7 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.repositorios.RepositorioDeEtiquetas;
-import aplicacion.services.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Etiqueta;
 import org.springframework.stereotype.Service;
 

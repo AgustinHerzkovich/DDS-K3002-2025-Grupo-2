@@ -2,8 +2,8 @@ package aplicacion.controllers;
 
 import java.util.List;
 
-import aplicacion.services.dto.SolicitudDTO;
-import aplicacion.services.excepciones.MotivoSolicitudException;
+import aplicacion.dto.SolicitudDTO;
+import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;

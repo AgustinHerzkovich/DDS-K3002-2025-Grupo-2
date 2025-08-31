@@ -3,8 +3,8 @@ package aplicacion.services;
 import java.util.List;
 
 
-import aplicacion.services.dto.SolicitudDTO;
-import aplicacion.services.excepciones.MotivoSolicitudException;
+import aplicacion.dto.SolicitudDTO;
+import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeSolicitudes;
 import aplicacion.domain.solicitudes.*;

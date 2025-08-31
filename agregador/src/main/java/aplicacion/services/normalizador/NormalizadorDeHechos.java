@@ -2,8 +2,8 @@ package aplicacion.services.normalizador;
 
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
-import aplicacion.services.excepciones.CategoriaNoEncontradaException;
-import aplicacion.services.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.excepciones.CategoriaNoEncontradaException;
+import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Ubicacion;

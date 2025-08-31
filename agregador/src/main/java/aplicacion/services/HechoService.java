@@ -9,7 +9,7 @@ import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
-import aplicacion.services.excepciones.HechoNoEncontradoException;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
