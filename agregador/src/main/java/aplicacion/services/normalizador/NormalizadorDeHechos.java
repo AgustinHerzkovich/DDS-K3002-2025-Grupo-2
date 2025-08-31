@@ -31,7 +31,7 @@ public class NormalizadorDeHechos {
     public void normalizar(Hecho hecho)  {
         Categoria categoriaAInyectar;
         List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
-        String categoria = normalizadorDeCategorias.normalizarTermino(hecho.getCategoria().getNombre());
+        String categoria = aplicarNormalizador(hecho.getCategoria().getNombre(), normalizadorDeCategorias);
         try{
             categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
         }catch (CategoriaNoEncontradaException e){
@@ -39,7 +39,7 @@ public class NormalizadorDeHechos {
         }
         hecho.setCategoria(categoriaAInyectar);
 
-        List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->normalizadorDeEtiquetas.normalizarTermino(n)).toList();
+        List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->aplicarNormalizador(n, normalizadorDeEtiquetas)).toList();
         Etiqueta etiquetaAInyectar;
         for(String nombre : etiquetas){
             try{
