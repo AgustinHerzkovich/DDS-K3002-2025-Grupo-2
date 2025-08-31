@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class EtiquetaNoEncontradaException extends Exception {
     public EtiquetaNoEncontradaException(String message) {

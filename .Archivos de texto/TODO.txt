@@ -1,5 +1,7 @@
 --- Arreglar:
-Quitar FuenteXColeccion, no es necesario ya que se crea automaticamente.
+Agregador:
+- Quitar FuenteXColeccion, no es necesario ya que se crea automaticamente.
+- Toda la logica de armado de url que esta en FuenteService moverla a la clase Fuente.
 
 --- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico

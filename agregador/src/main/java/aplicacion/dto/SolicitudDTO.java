@@ -1,6 +1,5 @@
-package aplicacion.services.dto;
+package aplicacion.dto;
 
-import aplicacion.domain.usuarios.Contribuyente;
 import lombok.Getter;
 
 @Getter

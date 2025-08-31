@@ -1,6 +1,6 @@
-package aplicacion.services.mappers;
+package aplicacion.dto.mappers;
 
-import aplicacion.services.dto.HechoInEstaticaDTO;
+import aplicacion.dto.HechoInEstaticaDTO;
 import aplicacion.domain.hechos.Hecho;
 
 import java.util.ArrayList;
