@@ -12,6 +12,8 @@ import aplicacion.domain.FuenteProxy;
 @NoArgsConstructor
 public class FuenteMetamapa extends FuenteProxy {
 
+    private String endpointHechos;
+
     public String getEndpointHechos() {
         return endpointHechos;
     }
@@ -20,7 +22,6 @@ public class FuenteMetamapa extends FuenteProxy {
         this.endpointHechos = endpointHechos;
     }
 
-    private String endpointHechos;
     public FuenteMetamapa(String endpointHechos) {
         this.endpointHechos = endpointHechos;
     }
@@ -30,7 +31,6 @@ public class FuenteMetamapa extends FuenteProxy {
     public List<Hecho> importarHechos() {
         RestTemplate restTemplate = new RestTemplate();
         //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
-        //RestTemplate restTemplate = new RestTemplate();
         List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
         return hechos;
     }

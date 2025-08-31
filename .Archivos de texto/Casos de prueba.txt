@@ -90,6 +90,48 @@ Prueba Fuente Proxy:
 Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
 Crear una fuente metamapa que apunte a un agregador que tenga una colección con una fuente estática (básico solo para probar)
 Pedir los hechos tanto de la fuente demo como de la fuente metamapa y ver que devuelva bien
+Crear una coleccion con alguna fuente
+
+1) Levantar un agregador y una fuente estática en la misma computadora.
+
+2) Levantar otro agregador en una computadora diferente.
+
+3) Hacer un POST de un archivo en fuente estática. Ejemplo:
+
+POST http://localhost:8081/fuentesEstaticas/1/archivo -> form-data: file: desastres_naturales_argentina.csv
+
+4) Hacer un POST de una colección al agregador. Ejemplo:
+
+POST  http://localhost:8084/agregador/colecciones
+
+En el body de la request:
+
+{
+  "titulo": "Coleccion 1",
+  "descripcion": "Coleccion de colecciones jijo",
+  "criteriosDePertenencia": [
+    {
+      "tipo": "fecha",
+      "fechaInicial": "2010-01-01T20:44:13.170",
+      "fechaFinal": "2020-12-20T20:44:13.170"
+    }
+  ],
+  "fuentes": [
+    {
+      "id": {
+        "tipo": "ESTATICA",
+        "idExterno": 1
+      }
+    }
+  ],
+  "algoritmoConsenso": {
+    "tipo": "absoluto"
+  }
+}
+
+5) Ejecutar el TestFuenteDemo
+
+
 
 
 Prueba Agregador:

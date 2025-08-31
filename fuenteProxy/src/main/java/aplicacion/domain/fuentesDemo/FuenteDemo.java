@@ -37,21 +37,16 @@ public class FuenteDemo extends FuenteProxy {
         // basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
 
         // delegar peticion de hechos a la biblioteca
-
         HechoBuilder hechoBuilder = new HechoBuilder();
-        Hecho hecho = hechoBuilder.construirHecho(biblioteca.siguienteHecho(url, ultimaConsulta));
-        while (hecho != null){
-            Map<String, Object> datos = new HashMap<String, Object>();
-            datos = biblioteca.siguienteHecho(url, ultimaConsulta);
+        Map<String, Object> datos;
+        Hecho hecho;
+        while((datos = biblioteca.siguienteHecho(url, ultimaConsulta)) != null) {
             hecho = hechoBuilder.construirHecho(datos);
-            // la idea esta en que recibe un map de objetos y strings con lo que son y lo construye.
-            // si el map esta en null, devuelve null y se corta la recursividad del while
-
             hechos.add(hecho);
         }
     }
 
-    //@Override
+    @Override
     public List<Hecho> importarHechos() {
         return hechos;
     }

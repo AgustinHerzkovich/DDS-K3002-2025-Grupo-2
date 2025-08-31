@@ -1,6 +1,7 @@
 package aplicacion.domain.hechos;
 
 import aplicacion.domain.hechos.multimedias.Multimedia;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,18 +13,36 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Hecho {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
     private String titulo;
     private String descripcion;
+
+    @ManyToOne
     private Categoria categoria;
+
+    @ManyToOne
     private Ubicacion ubicacion;
+
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     private LocalDateTime fechaUltimaModificacion;
+
+    @Enumerated(EnumType.STRING)
     private Origen origen;
+
     private String contenidoTexto;
+
+    @ManyToMany
     private List<Multimedia> contenidoMultimedia;
+
+    @ManyToMany
     private List<Etiqueta> etiquetas;
+
 
     public Hecho(String titulo,
                  String descripcion,
