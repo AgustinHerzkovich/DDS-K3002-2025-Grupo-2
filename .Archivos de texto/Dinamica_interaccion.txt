@@ -1,0 +1,6 @@
+Controller recibe inputDto
+Controller convierte inputDto a clase de dominio mediante mapperInputDto
+Controller le pasa a service la clase de dominio
+Service procesa y retorna clase de dominio procesada (opcionalmente)
+Controller convierte clase de dominio procesada a outputDto mediante mapperOutputDto
+Controller retorna outputDto
