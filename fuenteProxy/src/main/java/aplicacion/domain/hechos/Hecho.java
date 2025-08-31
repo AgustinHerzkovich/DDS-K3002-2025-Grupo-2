@@ -1,8 +1,6 @@
 package aplicacion.domain.hechos;
 
 import aplicacion.domain.hechos.multimedias.Multimedia;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -27,15 +25,14 @@ public class Hecho {
     private List<Multimedia> contenidoMultimedia;
     private List<Etiqueta> etiquetas;
 
-    @JsonCreator
-    public Hecho(@JsonProperty("titulo") String titulo,
-                 @JsonProperty("descripcion") String descripcion,
-                 @JsonProperty("categoria") Categoria categoria,
-                 @JsonProperty("ubicacion") Ubicacion ubicacion,
-                 @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
-                 @JsonProperty("origen") Origen origen,
-                 @JsonProperty("contenidoTexto") String contenidoTexto,
-                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia) {
+    public Hecho(String titulo,
+                 String descripcion,
+                 Categoria categoria,
+                 Ubicacion ubicacion,
+                 LocalDateTime fechaAcontecimiento,
+                 Origen origen,
+                 String contenidoTexto,
+                 List<Multimedia> contenidoMultimedia) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;

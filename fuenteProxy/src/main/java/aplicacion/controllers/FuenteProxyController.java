@@ -1,8 +1,9 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.FuenteProxy;
+import aplicacion.dto.input.FuenteProxyInputDto;
+import aplicacion.dto.output.FuenteProxyOutputDto;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
-import aplicacion.domain.hechos.Hecho;
 
 import aplicacion.services.FuenteProxyService;
 import org.springframework.http.HttpStatus;
@@ -21,22 +22,22 @@ public class FuenteProxyController {
     }
 
     @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos(){
+    public List<HechoOutputDto> obtenerHechos(){
         return fuenteProxyService.importarHechos();
     }
 
     @GetMapping("/{id}/hechos")
-    public ResponseEntity<List<Hecho>> obtenerHechosDeFuente(@PathVariable("id") Long id){
+    public ResponseEntity<?> obtenerHechosDeFuente(@PathVariable("id") Long id){
         try {
             return ResponseEntity.ok(fuenteProxyService.importarHechosDeFuente(id));
         } catch (FuenteNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping("/fuente")
-    public ResponseEntity<Void> guardarFuente(@RequestBody FuenteProxy fuente){
-        fuenteProxyService.guardarFuente(fuente);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@RequestBody FuenteProxyInputDto fuenteProxyInputDto){
+        FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
+        return ResponseEntity.ok(fuenteProxy);
     }
 }
