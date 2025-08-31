@@ -82,7 +82,7 @@ public class Hecho {
         this.etiquetas = new ArrayList<>();
         this.visible = true;
         this.anonimato = anonimato;
-        this.autor = anonimato ? autor : null;
+        this.autor = anonimato ? null : autor;
     }
 
     public void ocultar() {
