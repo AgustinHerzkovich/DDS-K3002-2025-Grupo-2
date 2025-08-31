@@ -89,7 +89,7 @@ GET http://localhost:8082/fuentesDinamicas/hechos -> Debería devolver solo el h
 Prueba Fuente Proxy:
 Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
 Crear una fuente metamapa que apunte a un agregador que tenga una colección con una fuente estática (básico solo para probar)
-Pedir los hechos tanto de la fuente demo como de la fuente proxy y ver que devuelva bien
+Pedir los hechos tanto de la fuente demo como de la fuente metamapa y ver que devuelva bien
 
 
 Prueba Agregador:
