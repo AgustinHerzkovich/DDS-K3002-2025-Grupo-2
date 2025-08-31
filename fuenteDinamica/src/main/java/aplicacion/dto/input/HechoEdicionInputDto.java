@@ -1,4 +1,4 @@
-package aplicacion.services.dto;
+package aplicacion.dto;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Ubicacion;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class HechoEdicionDTO {
+public class HechoEdicionDto {
     private String titulo;
     private String descripcion;
     private Categoria categoria;
