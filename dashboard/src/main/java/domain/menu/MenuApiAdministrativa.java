@@ -1,6 +1,5 @@
 package domain.menu;
 
-import domain.subMenu.apiAdministrativa.SubMenuEnviarPostFuenteDinamica;
 import domain.subMenu.apiAdministrativa.SubMenuPostColeccion;
 
 public class MenuApiAdministrativa extends Menu{
@@ -9,7 +8,6 @@ public class MenuApiAdministrativa extends Menu{
         System.out.println("API Administrativa\nElija una opcion:");
         System.out.println("0. Salir");
         System.out.println("1. Enviar Post Coleccion");
-        System.out.println("2. Enviar Post FuenteDinamica");
     }
 
     @Override
@@ -19,9 +17,6 @@ public class MenuApiAdministrativa extends Menu{
                 return true;
             case 1:
                 SubMenuPostColeccion.abrirMenu();
-                break;
-            case 2:
-                SubMenuEnviarPostFuenteDinamica.abrirMenu();
                 break;
         }
         return false;

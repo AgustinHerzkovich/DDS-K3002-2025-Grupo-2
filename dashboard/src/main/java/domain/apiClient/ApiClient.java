@@ -30,7 +30,7 @@ public class ApiClient {
     }
 
     public static Integer postFuenteDinamica(Conexion conexion){
-        String url = conexion.getUri() + "/apiAdministrativa/fuente";
+        String url = conexion.getUri() + "/fuenteDiamica/fuente";
         FuenteDinamicaDTO fuente = restTemplate.postForObject(url, null, FuenteDinamicaDTO.class);
         if(fuente == null) {
             throw new RuntimeException("No se obtuvo la ID de respuesta");

@@ -1,7 +1,5 @@
 package domain.menu;
 
-import domain.subMenu.apiAdministrativa.SubMenuEnviarPostFuenteDinamica;
-import domain.subMenu.apiAdministrativa.SubMenuPostColeccion;
 import domain.subMenu.apiPublica.SubMenuGetColecciones;
 import domain.subMenu.apiPublica.SubMenuGetHechosCurados;
 import domain.subMenu.apiPublica.SubMenuGetHechosIrrestrictos;
