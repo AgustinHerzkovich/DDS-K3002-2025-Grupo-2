@@ -6,7 +6,7 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
-import aplicacion.services.excepciones.HechoNoEncontradoException;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
