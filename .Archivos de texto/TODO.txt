@@ -1,6 +1,3 @@
---- Normalizacion:
-También implementar depuración de datos.
-
 --- Arreglar:
 Quitar FuenteXColeccion, no es necesario ya que se crea automaticamente.
 
