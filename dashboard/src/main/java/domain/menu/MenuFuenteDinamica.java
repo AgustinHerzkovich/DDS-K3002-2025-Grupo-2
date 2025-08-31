@@ -1,5 +1,6 @@
 package domain.menu;
 
+import domain.subMenu.fuenteDinamica.SubMenuEnviarPostFuenteDinamica;
 import domain.subMenu.fuenteDinamica.SubMenuPatchIdentidad;
 import domain.subMenu.fuenteDinamica.SubMenuPostContribuyente;
 import domain.subMenu.fuenteDinamica.SubMenuPostHecho;
@@ -12,6 +13,8 @@ public class MenuFuenteDinamica extends Menu{
         System.out.println("1. Enviar Post Hecho");
         System.out.println("2. Enviar Post Contribuyente");
         System.out.println("3. Enviar Patch Identidad");
+        System.out.println("4. Enviar Post FuenteDinamica");
+
     }
 
     @Override
@@ -27,6 +30,9 @@ public class MenuFuenteDinamica extends Menu{
                 break;
             case 3:
                 SubMenuPatchIdentidad.abrirMenu();
+                break;
+            case 4:
+                SubMenuEnviarPostFuenteDinamica.abrirMenu();
                 break;
         }
         return false;

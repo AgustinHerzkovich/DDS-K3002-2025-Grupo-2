@@ -22,7 +22,7 @@ public class SolicitudController {
     public ResponseEntity<Object> actualizarEstadoSolicitud(
             @PathVariable Long id,
             @RequestBody String nuevoEstado) {
-        solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", nuevoEstado);
+        solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", nuevoEstado, Object.class);
         return ResponseEntity.ok().build();
     }
 }
