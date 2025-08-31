@@ -1,6 +1,6 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.ArchivoService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +18,13 @@ public class HechoController {
     }
 
     @GetMapping("/{id}/hechos")
-    public List<Hecho> obtenerHechos(@PathVariable("id") Long id,
-                                     @RequestParam(value = "fechaMayorA", required = false) 
+    public List<HechoOutputDto> obtenerHechos(@PathVariable("id") Long id,
+                                              @RequestParam(value = "fechaMayorA", required = false)
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
-        return archivoService.leerHechosPendientesConFechaMayorA(id, fechaMayorA);
+        if (fechaMayorA == null) {
+            return archivoService.leerHechosPendientes(id);
+        } else {
+            return archivoService.leerHechosPendientesConFechaMayorA(id, fechaMayorA);
+        }
     }
 }

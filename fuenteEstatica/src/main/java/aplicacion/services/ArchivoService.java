@@ -3,6 +3,8 @@ package aplicacion.services;
 import aplicacion.domain.lectores.LectorArchivo;
 import aplicacion.domain.lectores.LectorCsv;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,11 +19,13 @@ import java.util.stream.Collectors;
 @Service
 public class ArchivoService {
     private final AwsS3FileServerService fileServerService;
+    private final HechoOutputMapper hechoOutputMapper;
     private final String CARPETA_PENDIENTES = "pendientes";
     private final String CARPETA_PROCESADOS = "procesados";
 
-    public ArchivoService(AwsS3FileServerService fileServerService) {
+    public ArchivoService(AwsS3FileServerService fileServerService, HechoOutputMapper hechoOutputMapper) {
         this.fileServerService = fileServerService;
+        this.hechoOutputMapper = hechoOutputMapper;
     }
 
     // Subir archivo a pendientes
@@ -60,8 +64,12 @@ public class ArchivoService {
         }
     }
 
+    public List<HechoOutputDto> leerHechosPendientesConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
+        return this.leerHechosPendientes(fuenteId).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
+    }
+
     // Leer todos los archivos pendientes y generar hechos
-    public List<Hecho> leerHechosPendientesConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
+    public List<HechoOutputDto> leerHechosPendientes(Long fuenteId) {
         List<Hecho> hechos = new ArrayList<>();
         String carpetaPendientes = "fuente" + fuenteId + "/" + CARPETA_PENDIENTES;
         String carpetaProcesados = "fuente" + fuenteId + "/" + CARPETA_PROCESADOS;
@@ -81,13 +89,7 @@ public class ArchivoService {
             throw new RuntimeException("Error leyendo archivos pendientes: " + e.getMessage());
         }
 
-        if (fecha != null) {
-            return hechos.stream()
-                    .filter(hecho -> hecho.seCargoDespuesDe(fecha))
-                    .collect(Collectors.toList());
-        }
-
-        return hechos;
+        return hechos.stream().map(hechoOutputMapper::map).toList();
     }
 
     private Optional<LectorArchivo> lectorParaExtension(String extension) {
