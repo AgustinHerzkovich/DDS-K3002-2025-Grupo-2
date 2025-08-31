@@ -1,4 +1,4 @@
-package aplicacion.services.dto;
+package aplicacion.dto;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
@@ -9,11 +9,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL) // Excluir campos nulos en la serialización JSON
-public class HechoDTO {
+public class HechoDto {
     private String titulo;
     private String descripcion;
     private Categoria categoria;

@@ -1,4 +1,4 @@
-package aplicacion.services.mappers;
+package aplicacion.dto.mappers;
 
 import aplicacion.dto.HechoDto;
 import aplicacion.domain.hechos.Hecho;
