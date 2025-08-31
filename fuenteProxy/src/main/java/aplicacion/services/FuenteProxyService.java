@@ -1,6 +1,12 @@
 package aplicacion.services;
 
 import aplicacion.domain.FuenteProxy;
+import aplicacion.dto.input.FuenteProxyInputDto;
+import aplicacion.dto.mappers.FuenteProxyInputMapper;
+import aplicacion.dto.mappers.FuenteProxyOutputMapper;
+import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.output.FuenteProxyOutputDto;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositorios.RepositorioDeFuentesProxy;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
 import org.springframework.stereotype.Service;
@@ -12,9 +18,15 @@ import java.util.List;
 @Service
 public class FuenteProxyService {
     private final RepositorioDeFuentesProxy repositorioDeFuentesProxy;
+    private final FuenteProxyInputMapper fuenteProxyInputMapper;
+    private final FuenteProxyOutputMapper fuenteProxyOutputMapper;
+    private final HechoOutputMapper hechoOutputMapper;
 
-    public FuenteProxyService(RepositorioDeFuentesProxy repositorioDeFuentesProxy) {
+    public FuenteProxyService(RepositorioDeFuentesProxy repositorioDeFuentesProxy, FuenteProxyInputMapper fuenteProxyInputMapper, FuenteProxyOutputMapper fuenteProxyOutputMapper, HechoOutputMapper hechoOutputMapper) {
         this.repositorioDeFuentesProxy = repositorioDeFuentesProxy;
+        this.fuenteProxyInputMapper = fuenteProxyInputMapper;
+        this.fuenteProxyOutputMapper = fuenteProxyOutputMapper;
+        this.hechoOutputMapper = hechoOutputMapper;
     }
 
     public void pedirHechos() {
@@ -24,22 +36,23 @@ public class FuenteProxyService {
         }
     }
 
-    public List<Hecho> importarHechos() {
+    public List<HechoOutputDto> importarHechos() {
         List<FuenteProxy> fuentesProxy = repositorioDeFuentesProxy.findAll();
         List<Hecho> listaDeHechosADevolver = new ArrayList<>();
 
         for (FuenteProxy fuente : fuentesProxy) {
             listaDeHechosADevolver.addAll(fuente.importarHechos());
         }
-       return listaDeHechosADevolver;
+       return listaDeHechosADevolver.stream().map(hechoOutputMapper::map).toList();
     }
 
-    public List<Hecho> importarHechosDeFuente(Long id) throws FuenteNoEncontradaException {
+    public List<HechoOutputDto> importarHechosDeFuente(Long id) throws FuenteNoEncontradaException {
         FuenteProxy fuente = repositorioDeFuentesProxy.findById(id).orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + id + "no encontrada"));
-        return fuente.importarHechos();
+        return fuente.importarHechos().stream().map(hechoOutputMapper::map).toList();
     }
 
-    public void guardarFuente(FuenteProxy fuenteProxy) {
-        repositorioDeFuentesProxy.save(fuenteProxy);
+    public FuenteProxyOutputDto guardarFuente(FuenteProxyInputDto fuenteProxyInputDto) {
+        FuenteProxy fuenteProxy = repositorioDeFuentesProxy.save(fuenteProxyInputMapper.map(fuenteProxyInputDto));
+        return fuenteProxyOutputMapper.map(fuenteProxy);
     }
 }
