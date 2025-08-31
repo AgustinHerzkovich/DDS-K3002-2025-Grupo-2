@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class MotivoSolicitudException extends Exception {
     public MotivoSolicitudException(String message) {
