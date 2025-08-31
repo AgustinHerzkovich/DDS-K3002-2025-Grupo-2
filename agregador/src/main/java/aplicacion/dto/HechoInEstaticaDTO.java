@@ -1,4 +1,4 @@
-package aplicacion.services.dto;
+package aplicacion.dto;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;

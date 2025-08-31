@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class CategoriaNoEncontradaException extends RuntimeException {
     public CategoriaNoEncontradaException(String message) {
