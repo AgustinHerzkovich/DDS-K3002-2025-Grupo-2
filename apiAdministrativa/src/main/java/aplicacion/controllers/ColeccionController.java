@@ -3,6 +3,7 @@ package aplicacion.controllers;
 import aplicacion.config.ConfigService;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,30 +39,26 @@ public class ColeccionController {
 
     // --- UPDATE ---
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<Void> modificarAlgoritmo(@PathVariable String id,
+    public ResponseEntity<Object> modificarAlgoritmo(@PathVariable String id,
                                                    @RequestBody String body) {
-        solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/algoritmo", body);
-        return ResponseEntity.ok().build();
+        return solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/algoritmo", body, Object.class);
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<Void> agregarFuente(@PathVariable String id,
+    public ResponseEntity<Object> agregarFuente(@PathVariable String id,
                                               @RequestBody String body) {
-        solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
-        return ResponseEntity.ok().build();
+        return solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<Void> quitarFuente(@PathVariable String id,
                                              @PathVariable String fuenteId) {
-        solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId);
-        return ResponseEntity.ok().build();
+        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId, Void.class);
     }
 
     // --- DELETE ---
     @DeleteMapping("/colecciones/{id}")
     public ResponseEntity<Void> eliminarColeccion(@PathVariable String id) {
-        solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id);
-        return ResponseEntity.ok().build();
+        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id, void.class);
     }
 }

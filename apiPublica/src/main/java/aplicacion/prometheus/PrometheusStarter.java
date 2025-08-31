@@ -20,7 +20,7 @@ public class PrometheusStarter {
 
         if (os.contains("win")) {
             // Windows: ruta al prometheus.exe
-            prometheusBin = "C:\Program Files\Prometheus\prometeus.exe";
+            prometheusBin = "C:\\Program Files\\Prometheus\\prometeus.exe"; // La barra de escape se escribe poniéndola dos veces. ¿Como les anduvo cuando lo probaron?
         } else {
             // Linux: ruta típica del binario en /usr/bin
             prometheusBin = "/usr/bin/prometheus";
