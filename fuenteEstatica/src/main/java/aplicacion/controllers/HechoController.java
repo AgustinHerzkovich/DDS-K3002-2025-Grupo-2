@@ -22,9 +22,9 @@ public class HechoController {
                                               @RequestParam(value = "fechaMayorA", required = false)
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
         if (fechaMayorA == null) {
-            return archivoService.leerHechosPendientes(id);
+            return archivoService.leerHechos(id);
         } else {
-            return archivoService.leerHechosPendientesConFechaMayorA(id, fechaMayorA);
+            return archivoService.leerHechosConFechaMayorA(id, fechaMayorA);
         }
     }
 }

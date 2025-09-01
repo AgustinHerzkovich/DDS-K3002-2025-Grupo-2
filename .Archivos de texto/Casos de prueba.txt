@@ -3,8 +3,8 @@ Casos de prueba para tp diseño
 Prueba Fuente Estática:
 Levantar fuente estática
 Postear archivos en diferentes fuentes
-Ver que se guarden correctamente en el file server en distintas carpetas, y dentro de ellas en la subcarpeta pendientes
-Pedir hechos de una fuente y ver que los devuelva bien, y que además en el file server se hayan movido a la subcarpeta procesados
+Ver que se guarden correctamente en el file server en distintas carpetas
+Pedir hechos de una fuente y ver que los devuelva bien
 
 Ejemplo:
 POST http://localhost:8081/fuentesEstaticas/1/archivo -> form-data: file: desastres_naturales_argentina.csv

@@ -20,17 +20,15 @@ import java.util.stream.Collectors;
 public class ArchivoService {
     private final AwsS3FileServerService fileServerService;
     private final HechoOutputMapper hechoOutputMapper;
-    private final String CARPETA_PENDIENTES = "pendientes";
-    private final String CARPETA_PROCESADOS = "procesados";
 
     public ArchivoService(AwsS3FileServerService fileServerService, HechoOutputMapper hechoOutputMapper) {
         this.fileServerService = fileServerService;
         this.hechoOutputMapper = hechoOutputMapper;
     }
 
-    // Subir archivo a pendientes
-    public void subirArchivoPendiente(Long fuenteId, MultipartFile file) throws Exception {
-        fileServerService.cargarArchivo("fuente" + fuenteId + "/" + CARPETA_PENDIENTES, file);
+    // Subir archivo al fileserver
+    public void subirArchivo(Long fuenteId, MultipartFile file) throws Exception {
+        fileServerService.cargarArchivo("fuente" + fuenteId, file);
     }
 
     public void subirArchivoDesdeUrl(Long fuenteId, String urlString) throws Exception {
@@ -52,7 +50,7 @@ public class ArchivoService {
 
             // Subir a S3 usando FileServerService
             fileServerService.cargarArchivoDesdeInputStream(
-                    "fuente" + fuenteId + "/" + CARPETA_PENDIENTES,
+                    "fuente" + fuenteId,
                     new ByteArrayInputStream(data),
                     fileName,
                     "application/octet-stream"
@@ -64,29 +62,26 @@ public class ArchivoService {
         }
     }
 
-    public List<HechoOutputDto> leerHechosPendientesConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
-        return this.leerHechosPendientes(fuenteId).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
+    public List<HechoOutputDto> leerHechosConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
+        return this.leerHechos(fuenteId).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
     }
 
-    // Leer todos los archivos pendientes y generar hechos
-    public List<HechoOutputDto> leerHechosPendientes(Long fuenteId) {
+    // Leer todos los archivos y generar hechos
+    public List<HechoOutputDto> leerHechos(Long fuenteId) {
         List<Hecho> hechos = new ArrayList<>();
-        String carpetaPendientes = "fuente" + fuenteId + "/" + CARPETA_PENDIENTES;
-        String carpetaProcesados = "fuente" + fuenteId + "/" + CARPETA_PROCESADOS;
+        String carpeta = "fuente" + fuenteId;
         try {
-            List<String> archivos = fileServerService.listarArchivos(carpetaPendientes);
+            List<String> archivos = fileServerService.listarArchivos(carpeta);
 
             for (String archivo : archivos) {
-                try (InputStream is = fileServerService.obtenerArchivo(carpetaPendientes, archivo)) {
+                try (InputStream is = fileServerService.obtenerArchivo(carpeta, archivo)) {
                     String extension = obtenerExtension(archivo);
                     lectorParaExtension(extension)
                             .ifPresent(lector -> hechos.addAll(lector.leerHechos(is)));
                 }
-                // Mover archivo a procesados
-                fileServerService.moverArchivo(carpetaPendientes, archivo, carpetaProcesados, archivo);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error leyendo archivos pendientes: " + e.getMessage());
+            throw new RuntimeException("Error leyendo archivos: " + e.getMessage());
         }
 
         return hechos.stream().map(hechoOutputMapper::map).toList();
