@@ -9,7 +9,7 @@ import java.util.*;
 @DiscriminatorValue("absoluto")
 public class AlgoritmoConsensoAbsoluto extends AlgoritmoConsenso {
     @Override
-    public List<Hecho> curarHechos(Map<Hecho, Integer> cantidadPorHecho, Integer totalFuentes) {
+    public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {
         return cantidadPorHecho.entrySet().stream()
                 .filter(e -> Objects.equals(e.getValue(), totalFuentes))
                 .map(Map.Entry::getKey)
