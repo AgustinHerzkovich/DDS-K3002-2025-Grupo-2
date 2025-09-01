@@ -1,4 +1,8 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.colecciones;
+
+import domain.dashboardDTOs.colecciones.criterios.CriterioDeFechaDTO;
+import domain.dashboardDTOs.fuentes.FuenteDTO;
+import domain.dashboardDTOs.fuentes.FuenteIdDTO;
 
 import java.time.LocalDateTime;
 
@@ -8,11 +12,11 @@ public class ColeccionBuilder {
 
     public ColeccionDTO buildColeccion(){
         coleccionDTO.getCriteriosDePertenencia().add(
-                new CriterioDePertenenciaDTO(
-                        "fecha", LocalDateTime.parse("2010-01-01T20:44:13.170"),
+                new CriterioDeFechaDTO(
+                        "fecha",
+                        LocalDateTime.parse("2010-01-01T20:44:13.170"),
                         LocalDateTime.parse("2020-12-20T20:44:13.170")
-                                            )
-                );
+                ));
         return coleccionDTO;
     }
 

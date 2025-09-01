@@ -1,4 +1,4 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.hechos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,4 +8,7 @@ import lombok.Data;
 public class UbicacionDTO {
     private double latitud;
     private double longitud;
+    public String toString(){
+        return "("+latitud+"º, "+longitud+"º)";
+    }
 }

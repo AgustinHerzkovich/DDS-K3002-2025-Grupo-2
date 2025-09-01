@@ -1,5 +1,7 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.colecciones;
 
+import domain.dashboardDTOs.colecciones.criterios.CriterioDePertenenciaDTO;
+import domain.dashboardDTOs.fuentes.FuenteDTO;
 import lombok.Getter;
 import lombok.Setter;
 
