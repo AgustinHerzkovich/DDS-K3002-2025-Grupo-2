@@ -3,6 +3,7 @@ package fuentesDemo;
 import aplicacion.domain.fuentesDemo.Conexion;
 import aplicacion.domain.fuentesDemo.ConexionPrueba;
 import aplicacion.domain.fuentesDemo.FuenteDemo;
+import aplicacion.domain.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.domain.hechos.Hecho;
 
 public class TestFuenteDemo {
@@ -17,22 +18,16 @@ public class TestFuenteDemo {
         for (Hecho h : fuente.importarHechos()) {
             System.out.println(h.getTitulo() + " - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
         }
-/*
+
         FuenteMetamapa fuenteMetamapa= new FuenteMetamapa("http://localhost:8084/agregador/hechos");
-        fuenteMetamapa.pedirHechos();
         System.out.println("Hechos importados:");
-        for (Hecho h : fuente.importarHechos()) {
+        for (Hecho h : fuenteMetamapa.importarHechos()) {
             System.out.println(h.getTitulo() + " - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
-        }*/
+        }
     }
 }
-/*Exception in thread "main" java.lang.ClassCastException: class java.lang.Integer cannot be cast to class aplicacion.domain.hechos.Categoria (java.lang.Integer is in module java.base of loader 'bootstrap'; aplicacion.domain.hechos.Categoria is in unnamed module of loader 'app')
-        at aplicacion.domain.fuentesDemo.HechoBuilder.construirHecho(HechoBuilder.java:19)
-        at aplicacion.domain.fuentesDemo.FuenteDemo.pedirHechos(FuenteDemo.java:44)
-        at fuentesDemo.TestFuenteDemo.main(TestFuenteDemo.java:12)*/
 
-/*
-{
+/*{
         "titulo": "Coleccion 1",
         "descripcion": "Coleccion de colecciones jijo",
         "criteriosDePertenencia": [
