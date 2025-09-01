@@ -1,5 +1,6 @@
 package aplicacion.repositorios;
 
+import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.colecciones.fuentes.HechoXFuente;
 import aplicacion.domain.colecciones.fuentes.HechoXFuenteId;
 import aplicacion.domain.hechos.Hecho;
@@ -30,4 +31,6 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
         GROUP BY hxf.hecho
     """)
     Map<Hecho, Integer> countHechosByFuente(@Param("idColeccion") String idColeccion);
+
+    Boolean existsByFuenteId(FuenteId fuenteId);
 }

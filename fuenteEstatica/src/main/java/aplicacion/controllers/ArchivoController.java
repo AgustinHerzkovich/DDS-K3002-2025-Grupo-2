@@ -19,11 +19,11 @@ public class ArchivoController {
     public ResponseEntity<String> subirArchivo(@RequestParam("file") MultipartFile file,
                                                @PathVariable("id") Long id) {
         try {
-            archivoService.subirArchivoPendiente(id, file);
+            archivoService.subirArchivo(id, file);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivo subido correctamente a pendientes");
+        return ResponseEntity.ok("Archivo subido correctamente al FileServer");
     }
 
     @PostMapping("/{id}/archivo/por-url")
@@ -35,7 +35,7 @@ public class ArchivoController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivo subido correctamente desde URL a pendientes");
+        return ResponseEntity.ok("Archivo subido correctamente desde URL al FileServer");
     }
 
     @PostMapping("/{id}/archivos")
@@ -43,11 +43,11 @@ public class ArchivoController {
                                                 @PathVariable("id") Long id) {
         try {
             for (MultipartFile file : files) {
-                archivoService.subirArchivoPendiente(id, file);
+                archivoService.subirArchivo(id, file);
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivos: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivos subidos correctamente a pendientes");
+        return ResponseEntity.ok("Archivos subidos correctamente al FileServer");
     }
 }

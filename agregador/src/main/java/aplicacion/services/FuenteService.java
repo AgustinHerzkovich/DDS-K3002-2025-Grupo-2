@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -24,10 +25,12 @@ import java.util.*;
 public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final ConfiguracionRed config;
+    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes) {
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.config = cargarConfiguracion();
+        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
     }
 
     @Transactional
@@ -59,7 +62,6 @@ public class FuenteService {
 
     public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
-        List<Hecho> hechos; // Lista de hechos que se van a retornar
         ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -67,6 +69,7 @@ public class FuenteService {
         HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
 
         for (Fuente fuente : fuentes) {
+            List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
             // Armo la url a la cual consultar según la fuente
             String ip = "";
             Integer puerto = 0;
@@ -104,14 +107,20 @@ public class FuenteService {
             fuente.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
 
             try {
-                ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-                String json = response.getBody();
+                ResponseEntity<String> response;
+                String json;
 
                 if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
-                    List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
-                    });
-                    hechos = hechosDto.stream().map(mapperDto::map).toList();
+                    if (!this.seCargaronHechosDeEstaFuente(fuente)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
+                        response = restTemplate.getForEntity(url, String.class);
+                        json = response.getBody();
+                        List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
+                        });
+                        hechos = hechosDto.stream().map(mapperDto::map).toList();
+                    }
                 } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
+                    response = restTemplate.getForEntity(url, String.class);
+                    json = response.getBody();
                     hechos = mapper.readValue(json, new TypeReference<>() {
                     });
                 }
@@ -127,5 +136,9 @@ public class FuenteService {
 
     public Integer obtenerCantidadFuentes() {
         return Math.toIntExact(repositorioDeFuentes.count());
+    }
+
+    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente) {
+        return repositorioDeHechosXFuente.existsByFuenteId(fuente.getId());
     }
 }
