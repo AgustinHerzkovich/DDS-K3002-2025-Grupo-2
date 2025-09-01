@@ -71,6 +71,7 @@ public class FuenteService {
             String ip = "";
             Integer puerto = 0;
             String tipo = "";
+            String url;
             TipoFuente tipoFuente = fuente.getId().getTipo();
             switch (tipoFuente) {
                 case ESTATICA:
@@ -89,7 +90,12 @@ public class FuenteService {
                     tipo = "fuentesProxy";
                     break;
             }
-            String url = "http://" + ip + ":" + puerto + "/" + tipo + "/" + fuente.getId().getIdExterno() + "/hechos";
+            if (tipoFuente == TipoFuente.DINAMICA) { // TODO: Cambiar
+                 url = "http://" + ip + ":" + puerto + "/" + tipo + "/hechos";
+            } else {
+                url = "http://" + ip + ":" + puerto + "/" + tipo + "/" + fuente.getId().getIdExterno() + "/hechos";
+            }
+
 
             LocalDateTime fecha = fuente.getUltimaPeticion();
             if (fecha != null) {
