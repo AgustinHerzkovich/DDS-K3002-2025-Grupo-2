@@ -1,7 +1,7 @@
 package domain.subMenu.apiPublica;
 
-import domain.dashboardDTOs.ContribuyenteSolicitudDTO;
-import domain.dashboardDTOs.SolicitudDTO;
+import domain.dashboardDTOs.usuarios.ContribuyenteSolicitudDTO;
+import domain.dashboardDTOs.solicitudes.SolicitudDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 

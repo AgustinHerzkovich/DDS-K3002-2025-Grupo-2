@@ -1,5 +1,8 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.hechos;
 
+
+import domain.dashboardDTOs.usuarios.ContribuyenteDTO;
+import domain.dashboardDTOs.usuarios.IdentidadDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
