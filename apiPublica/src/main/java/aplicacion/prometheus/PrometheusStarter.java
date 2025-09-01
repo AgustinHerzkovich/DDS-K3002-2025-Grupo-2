@@ -1,5 +1,7 @@
 package aplicacion.prometheus;
 
+import aplicacion.config.AgregadorConfig;
+import aplicacion.config.ConfigService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -11,9 +13,14 @@ import java.io.IOException;
 public class PrometheusStarter {
 
     private Process prometheusProcess;
+    private final ConfigService configService;
+    public PrometheusStarter(ConfigService configService){
+        this.configService = configService;
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void startPrometheus() throws IOException {
+        if(!configService.isPrometheusHabilitado()) return;
         // Detectar sistema operativo
         String os = System.getProperty("os.name").toLowerCase();
         String prometheusBin;
@@ -47,6 +54,7 @@ public class PrometheusStarter {
 
     @EventListener(org.springframework.context.event.ContextClosedEvent.class)
     public void stopPrometheus() {
+        if (!configService.isPrometheusHabilitado()) return;
         if (prometheusProcess != null) {
             prometheusProcess.destroy();
             System.out.println("Prometheus detenido.");
