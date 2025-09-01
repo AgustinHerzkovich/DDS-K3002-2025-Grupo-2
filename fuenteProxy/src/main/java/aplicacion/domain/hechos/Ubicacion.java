@@ -9,7 +9,6 @@ import lombok.Setter;
 
 
 // UBICACION
-@Embeddable
 @NoArgsConstructor
 @Getter
 @Setter
