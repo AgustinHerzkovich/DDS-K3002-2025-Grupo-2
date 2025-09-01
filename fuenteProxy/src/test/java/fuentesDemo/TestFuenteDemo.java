@@ -1,6 +1,8 @@
-package aplicacion.domain.fuentesDemo;
+package fuentesDemo;
 
-import aplicacion.domain.fuentesMetamapa.FuenteMetamapa;
+import aplicacion.domain.fuentesDemo.Conexion;
+import aplicacion.domain.fuentesDemo.ConexionPrueba;
+import aplicacion.domain.fuentesDemo.FuenteDemo;
 import aplicacion.domain.hechos.Hecho;
 
 public class TestFuenteDemo {
@@ -27,7 +29,7 @@ public class TestFuenteDemo {
 /*Exception in thread "main" java.lang.ClassCastException: class java.lang.Integer cannot be cast to class aplicacion.domain.hechos.Categoria (java.lang.Integer is in module java.base of loader 'bootstrap'; aplicacion.domain.hechos.Categoria is in unnamed module of loader 'app')
         at aplicacion.domain.fuentesDemo.HechoBuilder.construirHecho(HechoBuilder.java:19)
         at aplicacion.domain.fuentesDemo.FuenteDemo.pedirHechos(FuenteDemo.java:44)
-        at aplicacion.domain.fuentesDemo.TestFuenteDemo.main(TestFuenteDemo.java:12)*/
+        at fuentesDemo.TestFuenteDemo.main(TestFuenteDemo.java:12)*/
 
 /*
 {
