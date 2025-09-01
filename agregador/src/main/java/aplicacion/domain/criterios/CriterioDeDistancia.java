@@ -5,6 +5,7 @@ import aplicacion.domain.hechos.Ubicacion;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +17,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CriterioDeDistancia extends CriterioDePertenencia {
-    @Column
+    @ManyToOne
     private Ubicacion ubicacionbase;
-    @Column
     private Double distanciaMinima;
 
     public CriterioDeDistancia(Ubicacion ubicacionbase, Double distanciaMinima) {
