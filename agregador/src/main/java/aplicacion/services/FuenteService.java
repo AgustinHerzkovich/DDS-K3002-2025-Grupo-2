@@ -134,8 +134,8 @@ public class FuenteService {
         return hashMap;
     }
 
-    public Integer obtenerCantidadFuentes() {
-        return Math.toIntExact(repositorioDeFuentes.count());
+    public Long obtenerCantidadFuentes() {
+        return repositorioDeFuentes.count();
     }
 
     private Boolean seCargaronHechosDeEstaFuente(Fuente fuente) {

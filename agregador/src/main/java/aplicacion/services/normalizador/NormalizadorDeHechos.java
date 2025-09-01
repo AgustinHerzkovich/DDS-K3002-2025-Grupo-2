@@ -24,7 +24,7 @@ public class NormalizadorDeHechos {
     private final UbicacionService ubicacionService;
 
     public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService, UbicacionService ubicacionService) {
-        Integer umbralLevenshtein = 3;
+        Integer umbralLevenshtein = 1;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
         this.etiquetaService = etiquetaService;
