@@ -49,9 +49,6 @@ public class HechoService {
         if (coleccion.cumpleCriterios(hecho)) {
             repositorioDeHechosXColeccion.save(hechoPorColeccion);
         }
-        else {
-            System.out.println("El hecho con ID " + hecho.getId() + " no cumple los criterios de pertenencia de la colección con ID " + coleccion.getId() + " y no se guardará en HechoXColeccion.");
-        }
     }
     public Hecho obtenerHechoPorId(String idHecho) {
         return repositorioDeHechos.findByHechoId(idHecho);
