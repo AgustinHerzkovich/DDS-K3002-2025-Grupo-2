@@ -22,7 +22,7 @@ public class TestFuenteDemo {
         FuenteMetamapa fuenteMetamapa= new FuenteMetamapa("http://localhost:8084/agregador/hechos");
         System.out.println("Hechos importados:");
         for (Hecho h : fuenteMetamapa.importarHechos()) {
-            System.out.println(h.getTitulo() + " - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
+            System.out.println(h.getTitulo() + " - "+ h.getOrigen() +" - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
         }
     }
 }

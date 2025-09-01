@@ -10,10 +10,8 @@ public enum Origen {
     public static Origen fromString(String value) {
         if (value == null) return null;
         switch (value.toUpperCase()) {
-            case "DATASET":
+            case "DATASET", "CARGA_MANUAL","CONTRIBUYENTE", "EXTERNO":
                 return EXTERNO; // lo mapeás a EXTERNO, si querés
-            case "EXTERNO":
-                return EXTERNO;
             default:
                 throw new IllegalArgumentException("Valor desconocido para Origen: " + value);
         }
