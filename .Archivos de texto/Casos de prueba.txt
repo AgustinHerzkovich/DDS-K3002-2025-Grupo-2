@@ -142,7 +142,64 @@ Probar que los 3 algoritmos de consenso funcionen bien
 Ver como testear el medidor de tráfico
 Testear el normalizador mandando dos hechos con categorias/etiquetas similares y ver cómo los guarda
 Testear depurador mandando dos hechos duplicados (ver qué interpretamos por duplicado en las decisiones de diseño) y verificar que en la tabla Hechos
-solo se guarde el primero, pero en HechoXFuente se guarden dos entradas que apuntan al mismo hechi
+solo se guarde el primero, pero en HechoXFuente se guarden dos entradas que apuntan al mismo hecho
+
+Fuente dinámica para agregador:
+Ejemplo:
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Juan", "apellido": "Perez", "fechaNacimiento": "1985-05-05" }
+POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
+                                             "titulo": "Titulo ejemplo",
+                                             "descripcion": "Descripcion ejemplo",
+                                             "categoria": {
+                                               "nombre": "Categoria ejemplo"
+                                             },
+                                             "ubicacion": {
+                                               "latitud": 0,
+                                               "longitud": 0
+                                             },
+                                             "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+                                             "origen": "CONTRIBUYENTE",
+                                             "contenidoTexto": "Contenido texto ejemplo",
+                                             "contenidoMultimedia": [
+                                               {
+                                                 "tipo": "video",
+                                                 "formato": "mp4",
+                                                 "tamanio": 100,
+                                                 "resolucion": "1920x1080",
+                                                 "duracion": 30
+                                               }
+                                             ],
+                                             "anonimato": false,
+                                             "identidadId": 1
+                                           }
+POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
+                                             "titulo": "Titulo ejemplo",
+                                             "descripcion": "Descripcion ejemplo",
+                                             "categoria": {
+                                               "nombre": "Categoria ejemplo"
+                                             },
+                                             "ubicacion": {
+                                               "latitud": 0,
+                                               "longitud": 0
+                                             },
+                                             "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+                                             "origen": "CONTRIBUYENTE",
+                                             "contenidoTexto": "Contenido texto ejemplo",
+                                             "contenidoMultimedia": [
+                                               {
+                                                 "tipo": "imagen",
+                                                 "formato": "jpg",
+                                                 "tamanio": 200,
+                                                 "resolucion": "1024x768"
+                                               }
+                                             ],
+                                             "anonimato": true
+                                           }
+
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_no_anonimo/estadoRevision -> body: { "estado": "ACEPTADO" }
+PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_anonimo/estadoRevision -> body: { "estado": "ACEPTADO" }
 
 Prueba Api publica y administrativa:
 Testear todos los endpoints

@@ -1,5 +1,6 @@
 package aplicacion.services.normalizador;
 
+import aplicacion.excepciones.UbicacionNoEncontradaException;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
@@ -8,6 +9,7 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,17 +17,19 @@ import java.util.List;
 
 @Component
 public class NormalizadorDeHechos {
-    public NormalizadorDeTerminos normalizadorDeCategorias;
-    public NormalizadorDeTerminos normalizadorDeEtiquetas;
-    public CategoriaService categoriaService;
-    public EtiquetaService etiquetaService;
+    private final NormalizadorDeTerminos normalizadorDeCategorias;
+    private final NormalizadorDeTerminos normalizadorDeEtiquetas;
+    private final CategoriaService categoriaService;
+    private final EtiquetaService etiquetaService;
+    private final UbicacionService ubicacionService;
 
-    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
+    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService, UbicacionService ubicacionService) {
         Integer umbralLevenshtein = 3;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
         this.etiquetaService = etiquetaService;
         this.categoriaService = categoriaService;
+        this.ubicacionService = ubicacionService;
     }
 
     public void normalizar(Hecho hecho)  {
@@ -51,6 +55,8 @@ public class NormalizadorDeHechos {
         }
         hecho.setEtiquetas(etiquetasAInyectar);
 
+        Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
+        hecho.setUbicacion(ubicacionAInyectar);
     }
 
     public String normalizarCategoria(String categoria) {
@@ -58,7 +64,13 @@ public class NormalizadorDeHechos {
     }
 
     public Ubicacion normalizarUbicacion(Ubicacion ubicacion) {
-        return new Ubicacion(); // TODO
+        Ubicacion ubicacionAInyectar;
+        try {
+            ubicacionAInyectar = ubicacionService.obtenerUbicacionPorLatitudYLongitud(ubicacion.getLatitud(), ubicacion.getLongitud());
+        } catch (UbicacionNoEncontradaException e) {
+            ubicacionAInyectar = ubicacionService.agregarUbicacion(ubicacion.getLatitud(), ubicacion.getLongitud());
+        }
+        return ubicacionAInyectar;
     }
 
     public void agregarEtiqueta(String etiqueta) {
