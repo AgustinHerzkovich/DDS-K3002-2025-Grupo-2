@@ -1,5 +1,6 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.solicitudes;
 
+import domain.dashboardDTOs.usuarios.ContribuyenteSolicitudDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.hechos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

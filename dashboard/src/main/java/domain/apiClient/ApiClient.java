@@ -1,8 +1,13 @@
 package domain.apiClient;
 
-import domain.dashboardDTOs.*;
 import domain.connectionManager.Conexion;
-import org.apache.hc.client5.http.classic.HttpClient;
+import domain.dashboardDTOs.colecciones.ColeccionDTO;
+import domain.dashboardDTOs.fuentes.FuenteDinamicaDTO;
+import domain.dashboardDTOs.hechos.HechoDTO;
+import domain.dashboardDTOs.hechos.HechoPostDTO;
+import domain.dashboardDTOs.solicitudes.SolicitudDTO;
+import domain.dashboardDTOs.usuarios.IdentidadPatchDTO;
+import domain.dashboardDTOs.usuarios.PostContribuyenteDTO;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 

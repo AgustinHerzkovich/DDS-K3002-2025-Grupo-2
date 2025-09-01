@@ -1,5 +1,6 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.hechos;
 
+import domain.dashboardDTOs.usuarios.IdentidadDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
