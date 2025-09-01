@@ -11,4 +11,6 @@ public class AgregadorConfig {
     private String ipAgregador;
     @JsonProperty("puerto_agregador")
     private int puertoAgregador;
+    @JsonProperty("prometheus_habilitado")
+    private boolean prometheusHabilitado;
 }
