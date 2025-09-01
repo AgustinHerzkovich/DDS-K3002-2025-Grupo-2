@@ -30,7 +30,7 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
         WHERE hxc.coleccion.id = :idColeccion
         GROUP BY hxf.hecho
     """)
-    Map<Hecho, Integer> countHechosByFuente(@Param("idColeccion") String idColeccion);
+    List<Object[]> countHechosByFuente(@Param("idColeccion") String idColeccion);
 
     Boolean existsByFuenteId(FuenteId fuenteId);
 }

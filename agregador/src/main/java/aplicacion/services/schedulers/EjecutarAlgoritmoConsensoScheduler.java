@@ -75,8 +75,8 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
         for (Coleccion coleccion : colecciones) {
             AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
 
-            Map<Hecho, Integer> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
-            Integer totalFuentes = fuenteService.obtenerCantidadFuentes();
+            Map<Hecho, Long> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
+            Long totalFuentes = fuenteService.obtenerCantidadFuentes();
 
             List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(conteoHechos, totalFuentes);
             for (Hecho hecho : hechosCurados) {

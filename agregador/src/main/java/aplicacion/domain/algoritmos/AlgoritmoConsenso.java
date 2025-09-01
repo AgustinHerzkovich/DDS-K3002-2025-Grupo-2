@@ -31,5 +31,5 @@ public abstract class AlgoritmoConsenso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public abstract List<Hecho> curarHechos(Map<Hecho, Integer> cantidadPorHecho, Integer totalFuentes);
+    public abstract List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes);
 }

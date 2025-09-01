@@ -9,7 +9,7 @@ import java.util.*;
 @DiscriminatorValue("multiplesMenciones")
 public class AlgoritmoConsensoMultiplesMenciones extends AlgoritmoConsenso {
     @Override
-    public List<Hecho> curarHechos(Map<Hecho, Integer> cantidadPorHecho, Integer totalFuentes) {
+    public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {
         return cantidadPorHecho.entrySet().stream()
                 .filter(e -> e.getValue() >= 2) // al menos 2 fuentes
                 .filter(e -> !existeOtroHechoConMismoTituloPeroDiferentesAtributos(e.getKey(), cantidadPorHecho.keySet()))
