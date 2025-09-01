@@ -1,6 +1,6 @@
 package domain.subMenu.fuenteDinamica;
 
-import domain.dashboardDTOs.IdentidadPatchDTO;
+import domain.dashboardDTOs.usuarios.IdentidadPatchDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 import lombok.Getter;

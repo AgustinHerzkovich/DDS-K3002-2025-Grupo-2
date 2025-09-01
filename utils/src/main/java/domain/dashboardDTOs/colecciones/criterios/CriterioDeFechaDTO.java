@@ -1,4 +1,4 @@
-package domain.dashboardDTOs;
+package domain.dashboardDTOs.colecciones.criterios;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CriterioDePertenenciaDTO {
-    private String tipo;
+public class CriterioDeFechaDTO extends CriterioDePertenenciaDTO {
+    private String tipo = "fecha";
     private LocalDateTime fechaInicial;
     private LocalDateTime fechaFinal;
+    public String toString(){
+        return "{Criterio de fecha, "+fechaInicial+", "+fechaFinal+"}";
+    }
 }

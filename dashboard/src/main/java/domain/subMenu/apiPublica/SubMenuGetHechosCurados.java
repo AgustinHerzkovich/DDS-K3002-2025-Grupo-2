@@ -1,6 +1,6 @@
 package domain.subMenu.apiPublica;
 
-import domain.dashboardDTOs.HechoDTO;
+import domain.dashboardDTOs.hechos.HechoDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
