@@ -104,6 +104,7 @@ public class FuenteService {
             if (fecha != null) {
                 url += "?fechaMayorA=" + fecha;
             }
+            // TODO: Al setear la fecha de ultima peticion en la fuente, lo que pasa es que si dos coleccionees comparten fuente, la segunda coleccion que la consulte no va a traer hechos si la primera ya la consultó. Habría que ver de solucionarlo.
             fuente.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
 
             try {

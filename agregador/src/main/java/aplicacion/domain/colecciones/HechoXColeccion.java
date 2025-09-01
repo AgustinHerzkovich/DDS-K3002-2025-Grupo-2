@@ -15,7 +15,7 @@ import lombok.Setter;
 public class HechoXColeccion {
     @Setter
     @EmbeddedId
-    private HechoXColeccionId id = new HechoXColeccionId();
+    private HechoXColeccionId id;
 
     @ManyToOne
     @MapsId("hechoId")

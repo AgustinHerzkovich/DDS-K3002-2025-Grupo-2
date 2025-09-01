@@ -33,6 +33,7 @@ public class IdentidadContribuyente {
     @Setter
     private Contribuyente contribuyente;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Hecho> hechosContribuidos;
 
     @JsonCreator
