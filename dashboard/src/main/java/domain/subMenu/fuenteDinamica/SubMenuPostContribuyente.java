@@ -1,6 +1,6 @@
 package domain.subMenu.fuenteDinamica;
 
-import domain.dashboardDTOs.PostContribuyenteDTO;
+import domain.dashboardDTOs.usuarios.PostContribuyenteDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
