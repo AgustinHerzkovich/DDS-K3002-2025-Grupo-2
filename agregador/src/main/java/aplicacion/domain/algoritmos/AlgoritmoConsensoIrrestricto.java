@@ -11,7 +11,7 @@ import java.util.Map;
 @DiscriminatorValue("irrestricto")
 public class AlgoritmoConsensoIrrestricto extends AlgoritmoConsenso {
     @Override
-    public List<Hecho> curarHechos(Map<Hecho, Integer> cantidadPorHecho, Integer totalFuentes) {
+    public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {
         return new ArrayList<>(cantidadPorHecho.keySet());
     }
 }
