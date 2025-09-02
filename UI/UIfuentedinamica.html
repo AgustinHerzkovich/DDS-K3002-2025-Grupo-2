@@ -49,7 +49,6 @@
 <div id="hecho" class="seccion">
   <h2>Postear Hecho</h2>
   <form id="form-hecho">
-    <label>ID Contribuyente: <input id="hecho-contribuyenteId"></label>
     <label>Título: <input id="titulo"></label>
     <label>Descripción: <input id="descripcion"></label>
     <label>Nombre Categoría: <input id="nombreCategoria"></label>
@@ -57,6 +56,7 @@
     <label>Longitud: <input id="Longitud" type="number" step="any"></label>
     <label>Contenido: <textarea id="Contenido"></textarea></label>
     <label><input type="checkbox" id="anonimato"> Anónimo</label>
+    <label>ID de Identidad: <input id="hecho-contribuyenteId"></label>
 
     <!-- Campos para Contenido Multimedia -->
     <div id="multimedia-container">
@@ -172,8 +172,8 @@
       apellido: document.getElementById('apellido').value,
       fechaNacimiento: document.getElementById('fechaNac').value
     };
-    const resp = await fetch(`http://localhost:8082/fuentesDinamicas/contribuyentes/${id}`, {
-      method: 'PATCH',
+    const resp = await fetch(`http://localhost:8082/fuentesDinamicas/contribuyentes/${id}/identidades`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
@@ -244,8 +244,9 @@
       contenidoTexto: document.getElementById('Contenido').value,
       contenidoMultimedia,
       anonimato: document.getElementById('anonimato').checked,
-      contribuyenteId: document.getElementById('hecho-contribuyenteId').value
+      identidadId: document.getElementById('hecho-contribuyenteId').value
     };
+    console.log('Cuerpo de la solicitud:', body);
 
     try {
       const resp = await fetch('http://localhost:8082/fuentesDinamicas/hechos', {
