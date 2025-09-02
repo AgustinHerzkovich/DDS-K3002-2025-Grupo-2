@@ -49,6 +49,16 @@ Normalizacion: 19s
 Depuracion: 27s
 
 
+Calculo automatico de tiempos:
+
+Ahora obtengo con la configuracion anterior
+
+Tiempo de carga = 4s 209ms
+Tiempo de normalizacion = 17s 794ms
+Tiempo de depuracion = 26s 471ms
+
+
+
 
 
 
