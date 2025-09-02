@@ -3,6 +3,7 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.colecciones.fuentes.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
@@ -95,5 +96,9 @@ public class HechoService {
                         row -> (Hecho) row[0],
                         row -> ((Long) row[1])
                 ));
+    }
+
+    public void guardarFuentePorColeccion(FuenteXColeccion fuentePorColeccion) {
+        repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 }

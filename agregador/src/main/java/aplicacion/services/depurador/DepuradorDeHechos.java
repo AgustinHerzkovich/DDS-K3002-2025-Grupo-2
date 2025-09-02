@@ -3,6 +3,7 @@ package aplicacion.services.depurador;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.colecciones.fuentes.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
@@ -26,6 +27,7 @@ public class DepuradorDeHechos {
             List<Hecho> hechos = entry.getValue();
             HechoXFuente hechoPorFuente;
             HechoXColeccion hechoPorColeccion;
+            FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
 
             for (Hecho hecho : hechos) {
                 try { // Si el hecho está duplicado en BD mediante ciertos atributos, se obtiene el hecho existente, y se asocia a la fuente
@@ -37,9 +39,10 @@ public class DepuradorDeHechos {
                     hechoPorFuente = new HechoXFuente(hecho, fuente);
                     hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                 }
-                // En ambos casos, se guarda hechoPorFuente y hechoPorColeccion
+                // En ambos casos, se guarda hechoPorFuente, hechoPorColeccion y fuentePorColeccion
                 hechoService.guardarHechoPorFuente(hechoPorFuente);
                 hechoService.guardarHechoPorColeccion(hechoPorColeccion);
+                hechoService.guardarFuentePorColeccion(fuentePorColeccion);
             }
         }
     }
