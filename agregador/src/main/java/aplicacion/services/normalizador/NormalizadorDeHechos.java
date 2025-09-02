@@ -1,5 +1,6 @@
 package aplicacion.services.normalizador;
 
+import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.excepciones.UbicacionNoEncontradaException;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
@@ -12,8 +13,10 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,13 +39,13 @@ public class NormalizadorDeHechos {
         this.ubicacionService = ubicacionService;
     }
 
-    public void normalizarListaMultiThread(List<Hecho> hechosANormalizar){
+    public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
         ExecutorService executor = Executors.newFixedThreadPool(3);
         final ConcurrentHashMap<String, Object> locks =  new ConcurrentHashMap<>();
         Object lockEtiqueta = locks.computeIfAbsent("etiqueta", k -> new Object());
         Object lockCategoria = locks.computeIfAbsent("categoria", k -> new Object());
         Object lockUbicacion = locks.computeIfAbsent("ubicacion", k -> new Object());
-        for(Hecho hecho : hechosANormalizar)
+        for(Hecho hecho : mapFuentesYhechosANormalizar.values().stream().flatMap(List::stream).toList())
            executor.submit(() -> normalizarSincornizado(hecho, lockEtiqueta, lockCategoria, lockUbicacion));
         executor.shutdown();
         try {
