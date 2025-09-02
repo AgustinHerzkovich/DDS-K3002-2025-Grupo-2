@@ -67,3 +67,6 @@ RESP:
 
 20. Fuente dinamica puede ser una sola o deberiamos tener varias? Pregunto ya que todas acceden a la misma BD.
 RESP:
+
+21. Qué es lo de "Reportar un hecho" que se menciona en la api pública?
+RESP:
