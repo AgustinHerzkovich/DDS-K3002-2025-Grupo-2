@@ -1,22 +1,25 @@
 package aplicacion.domain.hechos;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 //CATEGORIA
-@Embeddable
+@Entity
 @NoArgsConstructor
+@Getter
 public class Categoria {
-    @Getter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nombre;
 
     public Categoria(String nombre) {
         this.nombre = nombre;
     }
 
-    public Boolean esIdenticaA(String categoria_nombre) {
-        return this.nombre.equals(categoria_nombre);
+    public Boolean esIdenticaA(String otraCategoria) {
+        return this.nombre.equals(otraCategoria);
     }
 }
 
