@@ -87,3 +87,14 @@ Tiempo de depuracion = 26s 398ms
 
 Seguimos en la misma...
 
+Levenshtein de 3:
+Tiempo de carga = 4s 128ms
+Tiempo de normalizacion = 17s 853ms
+Tiempo de depuracion = 27s 790ms
+
+El cuello de botella no parece estar el levenshtein...
+
+Por ahora dejo de buscar. Dejo esto como registro a futuro
+
+
+
