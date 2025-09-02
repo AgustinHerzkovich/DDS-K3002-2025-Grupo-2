@@ -2,6 +2,7 @@ package aplicacion.services.schedulers;
 
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.depurador.DepuradorDeHechos;
@@ -32,8 +33,8 @@ public class CargarHechosScheduler {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
-            List<Fuente> fuentesDeColeccion = coleccion.getFuentes();
-            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesDeColeccion);
+            List<FuenteXColeccion> fuentesPorColeccion = coleccion.getFuentes().stream().map(fuente -> new FuenteXColeccion(fuente, coleccion)).toList();
+            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesPorColeccion);
             hechosPorFuente.values().stream().flatMap(List::stream).forEach(normalizadorDeHechos::normalizar); // Normaliza categoria y etiquetas
             depuradorDeHechos.depurar(coleccion, hechosPorFuente); // Depura hechos repetidos
         }
