@@ -1,9 +1,6 @@
 package aplicacion.services;
 
-import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.*;
-import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +59,7 @@ public class FuenteService {
         }
     }
 
-    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<FuenteXColeccion> fuentesPorColeccion) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
+    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
         mapper.registerModule(new JavaTimeModule());
@@ -70,8 +67,7 @@ public class FuenteService {
         RestTemplate restTemplate = new RestTemplate();
         HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
 
-        for (FuenteXColeccion fuentePorColeccion : fuentesPorColeccion) {
-            Fuente fuente = fuentePorColeccion.getFuente();
+        for (Fuente fuente : fuentes) {
             List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
             // Armo la url a la cual consultar según la fuente
             String ip = "";
@@ -102,13 +98,12 @@ public class FuenteService {
                 url = "http://" + ip + ":" + puerto + "/" + tipo + "/" + fuente.getId().getIdExterno() + "/hechos";
             }
 
-
-            LocalDateTime fecha = fuentePorColeccion.getUltimaPeticion();
+            LocalDateTime fecha = fuente.getUltimaPeticion();
             if (fecha != null) {
                 url += "?fechaMayorA=" + fecha;
             }
 
-            fuentePorColeccion.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
+            fuente.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
 
             try {
                 ResponseEntity<String> response;
@@ -121,8 +116,6 @@ public class FuenteService {
                         List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
                         });
                         hechos = hechosDto.stream().map(mapperDto::map).toList();
-                    } else {
-                        hechos = this.obtenerHechosPorFuente(fuente.getId());
                     }
                 } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
                     response = restTemplate.getForEntity(url, String.class);
@@ -133,7 +126,7 @@ public class FuenteService {
                 hashMap.put(fuente, hechos); // Agrego la lista de hechos y la fuente a la lista de pares
 
             } catch (Exception e) {
-                fuentePorColeccion.setUltimaPeticion(fecha); // Si hubo un error, no actualizo la fecha de la ultima peticion
+                fuente.setUltimaPeticion(fecha); // Si hubo un error, no actualizo la fecha de la ultima peticion
                 System.err.println("Error al consumir la API en " + fuente.getId().getIdExterno() + ": " + e.getMessage());
             }
         }

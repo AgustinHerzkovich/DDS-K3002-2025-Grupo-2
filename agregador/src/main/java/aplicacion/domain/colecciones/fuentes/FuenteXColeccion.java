@@ -27,12 +27,9 @@ public class FuenteXColeccion {
     @MapsId("coleccionId")
     private Coleccion coleccion;
 
-    private LocalDateTime ultimaPeticion;
-
     public FuenteXColeccion(Fuente fuente, Coleccion coleccion) {
         this.fuente = fuente;
         this.coleccion = coleccion;
         this.id = new FuenteXColeccionId(fuente.getId(), coleccion.getId());
-        this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
     }
 }
