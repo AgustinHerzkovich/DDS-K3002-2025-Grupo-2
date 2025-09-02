@@ -51,7 +51,7 @@ public class HechoService {
         return this.obtenerHechosAceptados().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional //(readOnly = true)
     public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
         Long identidadId = hechoInputDto.getIdentidadId();
         IdentidadContribuyente autor = null;
