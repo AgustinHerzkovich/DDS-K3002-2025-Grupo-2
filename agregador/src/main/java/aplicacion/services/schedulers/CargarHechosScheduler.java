@@ -36,7 +36,7 @@ public class CargarHechosScheduler {
         this.hechoService = hechoService;
     }
 
-    @Scheduled(initialDelay = 20000, fixedRate = 90000) // Se ejecuta cada 1 hora
+    @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();

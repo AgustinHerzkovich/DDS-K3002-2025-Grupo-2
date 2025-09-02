@@ -229,18 +229,46 @@ PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_no_anonimo/estado
 PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_anonimo1/estadoRevision -> body: { "estado": "ACEPTADO" }
 PATCH http://localhost:8082/fuentesDinamicas/hechos/uuid_hecho_anonimo2/estadoRevision -> body: { "estado": "ACEPTADO" }
 
-Fuente proxy para agregador:
-POST http://localhost:8083/fuentesProxy -> body: { // Crear fuente demo
+Fuente demo:
+POST http://localhost:8083/fuentesProxy -> body:
+ {
   "biblioteca": {
-        "tipo": "prueba"}
+        "tipo": "prueba"
   }
 }
 
-POST http://localhost:8083/fuentesProxy -> body: { // Crear fuente metamapa
-  "metamapa": {
-        "url": "http://ip_editar:8084/agregador"  // URL del agregador que tiene una colección con una fuente estática
+Agregador para fuente metamapa:
+POST http://localhost:8094/agregador/colecciones
+Body:
+{
+  "titulo": "Coleccion 1",
+  "descripcion": "Coleccion de colecciones jijo",
+  "criteriosDePertenencia": [
+    {
+      "tipo": "fecha",
+      "fechaInicial": "2010-01-01T20:44:13.170",
+      "fechaFinal": "2020-12-20T20:44:13.170"
+    }
+  ],
+  "fuentes": [
+    {
+      "id": {
+        "tipo": "ESTATICA",
+        "idExterno": 1
+      }
+    }
+  ],
+  "algoritmoConsenso": {
+    "tipo": "absoluto"
   }
 }
+
+Fuente metamapa:
+POST http://localhost:8083/fuentesProxy -> body:
+{
+  "url": "http://localhost:8094/agregador"
+}
+
 
 POST http://localhost:8084/agregador/colecciones
 Body:
@@ -308,6 +336,14 @@ Body:
 }
 
 Esperar la carga de hechos
+
+Postear una solicitud
+Request body:
+{
+"solicitanteId": 1,
+"hechoId": "COMPLETARESTOCONLASOLICITUD",
+"motivo": "Las lluvias de hielo me parecen ofensivas. Por favor borralo"
+}
 
 GET http://localhost:8084/agregador/hechos -> Verificar que estén los hechos de ambas colecciones, menos uno de fuente dinámica que se depuró y ver que una de las categorías se haya normalizado
 

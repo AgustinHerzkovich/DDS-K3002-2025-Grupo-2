@@ -64,3 +64,6 @@ RESP:
 
 19. Opciones: Que un controller llame a varios services y les pase el resultado de uno al otro, o que un service llame a otro service.
 RESP:
+
+20. Fuente dinamica puede ser una sola o deberiamos tener varias? Pregunto ya que todas acceden a la misma BD.
+RESP:
