@@ -1,19 +1,19 @@
 package aplicacion.services;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
+import aplicacion.domain.colecciones.HechoXColeccion;
+import aplicacion.domain.colecciones.fuentes.*;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import aplicacion.config.ConfiguracionRed;
 import aplicacion.dto.HechoInEstaticaDTO;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.mappers.HechoInEstaticaDTOToHecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
-import aplicacion.domain.colecciones.fuentes.Fuente;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -72,7 +72,6 @@ public class FuenteService {
 
         for (FuenteXColeccion fuentePorColeccion : fuentesPorColeccion) {
             Fuente fuente = fuentePorColeccion.getFuente();
-            Coleccion coleccion = fuentePorColeccion.getColeccion();
             List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
             // Armo la url a la cual consultar según la fuente
             String ip = "";
@@ -116,12 +115,14 @@ public class FuenteService {
                 String json;
 
                 if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
-                    if (!this.seCargaronHechosDeEstaFuente(fuente, coleccion)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
+                    if (!this.seCargaronHechosDeEstaFuente(fuente)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
                         response = restTemplate.getForEntity(url, String.class);
                         json = response.getBody();
                         List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
                         });
                         hechos = hechosDto.stream().map(mapperDto::map).toList();
+                    } else {
+                        hechos = this.obtenerHechosPorFuente(fuente.getId());
                     }
                 } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
                     response = restTemplate.getForEntity(url, String.class);
@@ -143,7 +144,12 @@ public class FuenteService {
         return repositorioDeFuentes.count();
     }
 
-    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente, Coleccion coleccion) {
-        return repositorioDeHechosXFuente.existsByFuenteIdAndColeccionId(fuente.getId(), coleccion.getId());
+    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente) {
+        return repositorioDeHechosXFuente.existsByFuenteId(fuente.getId());
+    }
+
+    @Transactional
+    public List<Hecho> obtenerHechosPorFuente(FuenteId fuenteId){
+        return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
     }
 }
