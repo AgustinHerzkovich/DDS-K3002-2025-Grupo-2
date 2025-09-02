@@ -26,23 +26,17 @@ public class DepuradorDeHechos {
             Fuente fuente = entry.getKey();
             List<Hecho> hechos = entry.getValue();
             HechoXFuente hechoPorFuente;
-            HechoXColeccion hechoPorColeccion;
-            FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
 
             for (Hecho hecho : hechos) {
                 try { // Si el hecho está duplicado en BD mediante ciertos atributos, se obtiene el hecho existente, y se asocia a la fuente
                     Hecho hechoExistente = hechoService.obtenerDuplicado(hecho);
                     hechoPorFuente = new HechoXFuente(hechoExistente, fuente);
-                    hechoPorColeccion = new HechoXColeccion(hechoExistente, coleccion);
                 } catch (HechoNoEncontradoException e) { // Si el hecho no está duplicado en BD mediante ciertos atributos, se guarda el hecho nuevo y se asocia a la fuente
                     hechoService.guardarHecho(hecho);
                     hechoPorFuente = new HechoXFuente(hecho, fuente);
-                    hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                 }
-                // En ambos casos, se guarda hechoPorFuente, hechoPorColeccion y fuentePorColeccion
+                // En ambos casos, se guarda hechoPorFuente
                 hechoService.guardarHechoPorFuente(hechoPorFuente);
-                hechoService.guardarHechoPorColeccion(hechoPorColeccion);
-                hechoService.guardarFuentePorColeccion(fuentePorColeccion);
             }
         }
     }

@@ -1,10 +1,12 @@
 package aplicacion.services.schedulers;
 
 import aplicacion.domain.colecciones.Coleccion;
+import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.ColeccionService;
+import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
@@ -24,23 +26,25 @@ public class CargarHechosScheduler {
     private final ColeccionService coleccionService;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final DepuradorDeHechos depuradorDeHechos;
+    private final HechoService hechoService;
 
-    public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos) {
+    public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos, HechoService hechoService) {
         this.fuenteService = fuenteService;
         this.coleccionService = coleccionService;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.depuradorDeHechos = depuradorDeHechos;
+        this.hechoService = hechoService;
     }
 
-    @Scheduled(initialDelay = 20000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Scheduled(initialDelay = 20000, fixedRate = 90000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
             System.out.println("Cargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
             LocalDateTime inicioCarga = LocalDateTime.now();
-            List<FuenteXColeccion> fuentesPorColeccion = coleccion.getFuentes().stream().map(fuente -> new FuenteXColeccion(fuente, coleccion)).toList();
-            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesPorColeccion);
+            List<Fuente> fuentes= coleccion.getFuentes();
+            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentes);
             LocalDateTime finCarga = LocalDateTime.now();
             System.out.println("Tiempo de carga = " + Duration.between(inicioCarga, finCarga).toSeconds() + "s "+ Duration.between(inicioCarga, finCarga).toMillisPart() + "ms");
             normalizadorDeHechos.normalizarMultiThread(hechosPorFuente);
@@ -50,6 +54,21 @@ public class CargarHechosScheduler {
             LocalDateTime finDepuracion = LocalDateTime.now();
             System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
         }
+        System.out.println("Se asignaran los hechos a las colecciones");
+        for(Coleccion coleccion : colecciones){
+            for(Fuente fuente : coleccion.getFuentes()){
+                List<Hecho> hechosObtenidos = fuenteService.obtenerHechosPorFuente(fuente.getId());
+                // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
+                for (Hecho hecho : hechosObtenidos) {
+                    HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
+                    hechoService.guardarHechoPorColeccion(hechoPorColeccion);
+                }
+                FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
+                hechoService.guardarFuentePorColeccion(fuentePorColeccion);
+            }
+        }
+        System.out.println("Se asignaron los hechos a las colecciones");
+
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
         // si ya existe no se carga el hecho pero se carga una entrada en HechoXFuente que asocie esta fuente y el hecho que ya existia
