@@ -35,14 +35,19 @@ Fin depuracion: 2025-09-02T12:28:16.835280700
 
 Carga: 5s
 Normalizacion: 18s
-Depuracion: 1.5s?
+Depuracion: 26s
 
-Comentario: Remplazar las excepciones no agilizo la normalizacion, pero redujo drasticamente el tiempo de depuracion. Puede ser que las excepciones generen basura que mantenga ocupado al garbage collector tras la normalizacion?
-Tras repetir el experimento se repite:
-Inicio normalizacion: 2025-09-02T12:35:23.352960900
-Fin normalizacion e inicio depuracion: 2025-09-02T12:35:42.589092500
-Fin depuracion: 2025-09-02T12:36:09.304484300
-Es un efecto secundario inesperado, pero beneficioso, por lo que lo voy a dejar así. 
+Items anteriores + agregar HashMap para busqueda de coincidencias exactas
+
+Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. (2025-09-02T12:51:09.230672800)
+Inicio normalizacion: 2025-09-02T12:51:13.778006300
+Fin normalizacion e inicio depuracion: 2025-09-02T12:51:32.201539100
+Fin depuracion: 2025-09-02T12:51:59.296687600
+
+Carga: 5s
+Normalizacion: 19s
+Depuracion: 27s
+
 
 
 

@@ -3,13 +3,11 @@ package aplicacion.services.normalizador;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 public class NormalizadorDeTerminos {
     List<Termino> terminosConocidos = new ArrayList<>();
+    Map<String, Termino> terminosExactos = new HashMap<>();
     @Getter @Setter
     Integer umbral = null;
 
@@ -26,7 +24,10 @@ public class NormalizadorDeTerminos {
     }
     // Normaliza dado un umbral personalizado
     public String normalizarTermino(String textoANormalizar, Integer umbralDeNormalizacion) {
-        Optional<Termino> mejorMatch = hallarMejorMatch(textoANormalizar, umbralDeNormalizacion);
+        Termino terminoExacto = terminosExactos.get(textoANormalizar); // Si puede usa hashmap que es mas eficiente
+        if(terminoExacto != null) return terminoExacto.normalizar();
+
+        Optional<Termino> mejorMatch = hallarMejorMatch(textoANormalizar, umbralDeNormalizacion); // Si no lo encuentra, usa levenshtein
         // Ninguno cumple con el umbral
         // Devuelve el string del termino, o si es sinonimo, al termino que apunta
         return mejorMatch.map(Termino::normalizar).orElse(null);
@@ -34,12 +35,16 @@ public class NormalizadorDeTerminos {
 
     // Agrega un termino como admitido por el normalizador
     public void agregarTermino(String nombre) {
-        terminosConocidos.add(new Termino(nombre));
+        Termino nuevoTermino = new Termino(nombre);
+        terminosConocidos.add(nuevoTermino);
+        terminosExactos.put(nombre, nuevoTermino);
     }
 
     // Agrega un termino como sinonimo de otro. Si el primero no existe como termino, tira NoSuchElementException
     public void agregarSinonimo(String terminoRaiz, String sinonimo) throws NoSuchElementException {
-        terminosConocidos.add(new Termino(sinonimo, terminosConocidos.stream().filter(t -> t.coincide(terminoRaiz)).findFirst().get()));
+        Termino nuevoSinonimo = new Termino(sinonimo, terminosConocidos.stream().filter(t -> t.coincide(terminoRaiz)).findFirst().get());
+        terminosConocidos.add(nuevoSinonimo);
+        terminosExactos.put(sinonimo, nuevoSinonimo);
     }
 
     // Aplica el algoritmo de hallar el mejor match
