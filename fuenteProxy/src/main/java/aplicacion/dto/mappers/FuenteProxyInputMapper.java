@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FuenteProxyInputMapper {
     public FuenteProxy map(FuenteProxyInputDto fuenteProxyInputDto) {
-        if (fuenteProxyInputDto.getUrl() == null) {
-            return new FuenteMetamapa();
+        if (fuenteProxyInputDto.getBiblioteca() == null) {
+            return new FuenteMetamapa(fuenteProxyInputDto.getUrl());
         } else {
             return new FuenteDemo(fuenteProxyInputDto.getBiblioteca(), fuenteProxyInputDto.getUrl());
         }
