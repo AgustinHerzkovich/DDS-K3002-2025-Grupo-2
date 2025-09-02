@@ -11,8 +11,10 @@ import aplicacion.services.FuenteService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CargarHechosScheduler {
@@ -30,14 +32,16 @@ public class CargarHechosScheduler {
 
     @Scheduled(initialDelay = 20000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
-        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
+        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
             List<FuenteXColeccion> fuentesPorColeccion = coleccion.getFuentes().stream().map(fuente -> new FuenteXColeccion(fuente, coleccion)).toList();
             Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesPorColeccion);
-            hechosPorFuente.values().stream().flatMap(List::stream).forEach(normalizadorDeHechos::normalizar); // Normaliza categoria y etiquetas
+            System.out.println("Inicio normalizacion: " + LocalDateTime.now());
+            normalizadorDeHechos.normalizarMultiThread(hechosPorFuente);
+            System.out.println("Fin normalizacion e inicio depuracion: " + LocalDateTime.now());
             depuradorDeHechos.depurar(coleccion, hechosPorFuente); // Depura hechos repetidos
-        }
+        }   System.out.println("Fin depuracion: " + LocalDateTime.now());
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
         // si ya existe no se carga el hecho pero se carga una entrada en HechoXFuente que asocie esta fuente y el hecho que ya existia
