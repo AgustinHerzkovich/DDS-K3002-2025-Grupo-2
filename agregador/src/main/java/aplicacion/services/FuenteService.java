@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -71,6 +72,7 @@ public class FuenteService {
 
         for (FuenteXColeccion fuentePorColeccion : fuentesPorColeccion) {
             Fuente fuente = fuentePorColeccion.getFuente();
+            Coleccion coleccion = fuentePorColeccion.getColeccion();
             List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
             // Armo la url a la cual consultar según la fuente
             String ip = "";
@@ -106,7 +108,7 @@ public class FuenteService {
             if (fecha != null) {
                 url += "?fechaMayorA=" + fecha;
             }
-            // TODO: Al setear la fecha de ultima peticion en la fuente, lo que pasa es que si dos coleccionees comparten fuente, la segunda coleccion que la consulte no va a traer hechos si la primera ya la consultó. Habría que ver de solucionarlo.
+
             fuentePorColeccion.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
 
             try {
@@ -114,7 +116,7 @@ public class FuenteService {
                 String json;
 
                 if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
-                    if (!this.seCargaronHechosDeEstaFuente(fuente)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
+                    if (!this.seCargaronHechosDeEstaFuente(fuente, coleccion)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
                         response = restTemplate.getForEntity(url, String.class);
                         json = response.getBody();
                         List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
@@ -141,7 +143,7 @@ public class FuenteService {
         return repositorioDeFuentes.count();
     }
 
-    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente) {
-        return repositorioDeHechosXFuente.existsByFuenteId(fuente.getId());
+    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente, Coleccion coleccion) {
+        return repositorioDeHechosXFuente.existsByFuenteIdAndColeccionId(fuente.getId(), coleccion.getId());
     }
 }
