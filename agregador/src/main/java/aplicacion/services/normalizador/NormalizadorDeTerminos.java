@@ -27,12 +27,9 @@ public class NormalizadorDeTerminos {
     // Normaliza dado un umbral personalizado
     public String normalizarTermino(String textoANormalizar, Integer umbralDeNormalizacion) {
         Optional<Termino> mejorMatch = hallarMejorMatch(textoANormalizar, umbralDeNormalizacion);
-
-        if (mejorMatch.isEmpty()) {      // Ninguno cumple con el umbral
-            throw new NingunTerminoCumpleUmbralException("Ningun termino cumple con el umbral de "+umbralDeNormalizacion);
-        } else {
-            return mejorMatch.get().normalizar(); // Devuelve el string del termino, o si es sinonimo, al termino que apunta
-        }
+        // Ninguno cumple con el umbral
+        // Devuelve el string del termino, o si es sinonimo, al termino que apunta
+        return mejorMatch.map(Termino::normalizar).orElse(null);
     }
 
     // Agrega un termino como admitido por el normalizador

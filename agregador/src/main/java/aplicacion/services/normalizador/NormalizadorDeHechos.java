@@ -147,11 +147,9 @@ public class NormalizadorDeHechos {
     }
 
     private String aplicarNormalizador(String termino, NormalizadorDeTerminos normalizador) {
-        try {
-            return normalizador.normalizarTermino(termino);
-        } catch (NingunTerminoCumpleUmbralException e) {
+        String terminoNormalizado = normalizador.normalizarTermino(termino);
+        if(terminoNormalizado == null)
             normalizador.agregarTermino(termino);
-            return termino;
-        }
+        return terminoNormalizado;
     }
 }
