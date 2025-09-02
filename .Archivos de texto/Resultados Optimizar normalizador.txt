@@ -49,20 +49,51 @@ Normalizacion: 19s
 Depuracion: 27s
 
 
-Calculo automatico de tiempos:
-
-Ahora obtengo con la configuracion anterior
+Con Map de coincidencias exactas:
 
 Tiempo de carga = 4s 209ms
 Tiempo de normalizacion = 17s 794ms
 Tiempo de depuracion = 26s 471ms
 
+Al testear sin MAP de coincidencias exactas:
+
+Tiempo de carga = 4s 287ms
+Tiempo de normalizacion = 17s 642ms
+Tiempo de depuracion = 25s 555ms
+
+La diferencia es minima. No vale la pena
+
+Al crear una unica instancia de LevenshteinDistance por cada normalizadorDeTerminos
+
+Tiempo de carga = 6s 990ms
+Tiempo de normalizacion = 0s 79ms
+*Crashea*
 
 
+2025-09-02T13:33:42.754-03:00 ERROR 11396 --- [agregador] [   scheduling-1] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.TransientObjectException: object references an unsaved transient instance - save the transient instance before flushing: aplicacion.domain.hechos.Categoria
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:368) ~[spring-orm-6.1.1.jar:6.1.1]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246) ~[spring-orm-6.1.1.jar:6.1.1]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:550) ~[spring-orm-6.1.1.jar:6.1.1]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-6.1.1.jar:6.1.1]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:335) ~[spring-tx-6.1.1.jar:6.1.1]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152) ~[spring-tx-6.1.1.jar:6.1.1]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.1.jar:6.1.1]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:135) ~[spring-data-jpa-3.2.0.jar:3.2.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.1.jar:6.1.1]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-6.1.1.jar:6.1.1]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.1.1.jar:6.1.1]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:249) ~[spring-aop-6.1.1.jar:6.1.1]
+	at jdk.proxy2/jdk.proxy2.$Proxy150.findDuplicado(Unknown Source) ~[na:na]
+	at aplicacion.services.HechoService.obtenerDuplicado(HechoService.java:82) ~[classes/:na]
+	at aplicacion.services.depurador.DepuradorDeHechos.depurar(DepuradorDeHechos.java:34) ~[classes/:na]
+	at aplicacion.services.schedulers.CargarHechosScheduler.cargarHechos(CargarHechosScheduler.java:54) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
 
 
-
-
+Veré a que se debe
 
 
 

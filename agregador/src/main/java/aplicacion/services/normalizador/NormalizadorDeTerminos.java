@@ -2,19 +2,22 @@ package aplicacion.services.normalizador;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
 
 import java.util.*;
 
 public class NormalizadorDeTerminos {
     List<Termino> terminosConocidos = new ArrayList<>();
     @Getter @Setter
-    Integer umbral = null;
-
+    private Integer umbral = null;
+    LevenshteinDetailedDistance levenshtein;
     public NormalizadorDeTerminos(Integer umbral){
         this.umbral = umbral;
+        LevenshteinDetailedDistance levenshtein = new LevenshteinDetailedDistance(umbral);
     }
 
     // Dado un String, devuelve el mismo si esta admitido, su sinónimo si este toma precedencia, o alguno cercano segun distancia de Levenshtein
+
     public String normalizarTermino(String textoANormalizar){
         if(umbral == null){
             throw new UmbralNoDefinidoException("Umbral es null en NormalizadorDeTerminos");
@@ -46,7 +49,7 @@ public class NormalizadorDeTerminos {
         Termino mejor = null;
         int mejorDistancia = Integer.MAX_VALUE;
         for (Termino t : terminosConocidos) {
-            Integer distancia = t.distanciaLevenshtein(terminoAComparar, umbralDeNormalizacion);
+            Integer distancia = levenshtein.apply(t.getNombre(), terminoAComparar).getDistance();
             if (distancia == null)
                 continue;    // Si no llega al umbral continua (no tira NullPointerException ni nada raro)
             if (distancia < mejorDistancia) {
@@ -57,6 +60,5 @@ public class NormalizadorDeTerminos {
         }
         return Optional.ofNullable(mejor);  // Tira optional que puede ser null si ninguno cumple con el umbral
     }
-
 }
 
