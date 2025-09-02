@@ -26,8 +26,4 @@ public class Hecho {
         this.fechaCarga = LocalDateTime.now();
         this.origen = origen;
     }
-
-    public Boolean seCargoDespuesDe(LocalDateTime fecha) {
-        return fechaCarga.isAfter(fecha);
-    }
 }

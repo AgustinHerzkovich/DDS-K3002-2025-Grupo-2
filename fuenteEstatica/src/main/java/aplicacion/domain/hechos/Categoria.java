@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 //CATEGORIA
 public class Categoria {
     @Getter
@@ -16,8 +14,8 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public Boolean esIdenticaA(String categoria_nombre) {
-        return this.nombre.equals(categoria_nombre);
+    public Boolean esIdenticaA(String otraCategoria) {
+        return this.nombre.equals(otraCategoria);
     }
 }
 
