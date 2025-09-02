@@ -1,7 +1,6 @@
 package aplicacion.services.normalizador;
 
 import lombok.Getter;
-import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
 
 import java.util.Objects;
 
@@ -32,8 +31,4 @@ public class Termino {
         return Objects.equals(nombre, otroTermino.nombre);
     }
 
-    public Integer distanciaLevenshtein(String termino, Integer umbral) {
-        //TODO: threshold configurable
-        return new LevenshteinDetailedDistance(umbral).apply(nombre, termino).getDistance();
-    }
 }

@@ -8,11 +8,15 @@ import aplicacion.services.ColeccionService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
+import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CargarHechosScheduler {
@@ -30,13 +34,21 @@ public class CargarHechosScheduler {
 
     @Scheduled(initialDelay = 20000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void cargarHechos() {
-        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato.");
+        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
+            System.out.println("Cargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
+            LocalDateTime inicioCarga = LocalDateTime.now();
             List<FuenteXColeccion> fuentesPorColeccion = coleccion.getFuentes().stream().map(fuente -> new FuenteXColeccion(fuente, coleccion)).toList();
             Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesPorColeccion);
-            hechosPorFuente.values().stream().flatMap(List::stream).forEach(normalizadorDeHechos::normalizar); // Normaliza categoria y etiquetas
+            LocalDateTime finCarga = LocalDateTime.now();
+            System.out.println("Tiempo de carga = " + Duration.between(inicioCarga, finCarga).toSeconds() + "s "+ Duration.between(inicioCarga, finCarga).toMillisPart() + "ms");
+            normalizadorDeHechos.normalizarMultiThread(hechosPorFuente);
+            LocalDateTime finNormalizacion= LocalDateTime.now();
+            System.out.println("Tiempo de normalizacion = " + Duration.between(finCarga, finNormalizacion).toSeconds() + "s "+ Duration.between(finCarga, finNormalizacion).toMillisPart() + "ms");
             depuradorDeHechos.depurar(coleccion, hechosPorFuente); // Depura hechos repetidos
+            LocalDateTime finDepuracion = LocalDateTime.now();
+            System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
         }
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
