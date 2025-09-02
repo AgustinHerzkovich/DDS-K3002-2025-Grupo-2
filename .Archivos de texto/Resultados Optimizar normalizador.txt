@@ -1,0 +1,100 @@
+Pruebas para optimizar normalizador
+umbral de Levenshtein = 1
+1 coleccion, con fuentes estaticas 1 y 2
+
+---> Sin Multihilos:
+
+Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. (2025-09-02T12:07:43.271570400)
+Inicio normalizacion: 2025-09-02T12:07:47.829638600
+Fin normalizacion e inicio depuracion: 2025-09-02T12:08:05.756823300
+Fin depuracion: 2025-09-02T12:08:32.799424900
+
+Carga: 5s
+Normalizacion: 20s
+Depuracion: 27s
+
+
+---> Con 3 hilos y 3 mutex muy englobantes
+
+Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. (2025-09-02T12:19:10.839832400)
+Inicio normalizacion: 2025-09-02T12:19:15.508260700
+Fin normalizacion e inicio depuracion: 2025-09-02T12:19:33.247349500
+Fin depuracion: 2025-09-02T12:19:59.818509300
+
+Carga: 5s
+Normalizacion: 18s
+Depuracion: 26s
+
+
+---> Con 3 hilos, 3 mutex y remplazo excepciones de creacion por if-else con null
+
+Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. (2025-09-02T12:27:27.415309200)
+Inicio normalizacion: 2025-09-02T12:27:32.296360500
+Fin normalizacion e inicio depuracion: 2025-09-02T12:27:50.129344500
+Fin depuracion: 2025-09-02T12:28:16.835280700
+
+Carga: 5s
+Normalizacion: 18s
+Depuracion: 26s
+
+Items anteriores + agregar HashMap para busqueda de coincidencias exactas
+
+Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. (2025-09-02T12:51:09.230672800)
+Inicio normalizacion: 2025-09-02T12:51:13.778006300
+Fin normalizacion e inicio depuracion: 2025-09-02T12:51:32.201539100
+Fin depuracion: 2025-09-02T12:51:59.296687600
+
+Carga: 5s
+Normalizacion: 19s
+Depuracion: 27s
+
+
+Con Map de coincidencias exactas:
+
+Tiempo de carga = 4s 209ms
+Tiempo de normalizacion = 17s 794ms
+Tiempo de depuracion = 26s 471ms
+
+Al testear sin MAP de coincidencias exactas:
+
+Tiempo de carga = 4s 287ms
+Tiempo de normalizacion = 17s 642ms
+Tiempo de depuracion = 25s 555ms
+
+La diferencia es minima. No vale la pena
+
+Al crear una unica instancia de LevenshteinDistance por cada normalizadorDeTerminos
+
+Tiempo de carga = 6s 990ms
+Tiempo de normalizacion = 0s 79ms
+*Crashea*
+
+
+2025-09-02T13:33:42.754-03:00 ERROR 11396 --- [agregador] [   scheduling-1] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+Veré a que se debe
+
+Arreglo el error (inicializacion en NormalizadorDeHechos)
+Tiempo de carga = 4s 339ms
+Tiempo de normalizacion = 18s 271ms
+Tiempo de depuracion = 27s 379ms
+
+Saco @Transactional que agregue donde no iba
+
+Tiempo de carga = 4s 397ms
+Tiempo de normalizacion = 17s 800ms
+Tiempo de depuracion = 26s 398ms
+
+Seguimos en la misma...
+
+Levenshtein de 3:
+Tiempo de carga = 4s 128ms
+Tiempo de normalizacion = 17s 853ms
+Tiempo de depuracion = 27s 790ms
+
+El cuello de botella no parece estar el levenshtein...
+
+Por ahora dejo de buscar. Dejo esto como registro a futuro
+
+
+

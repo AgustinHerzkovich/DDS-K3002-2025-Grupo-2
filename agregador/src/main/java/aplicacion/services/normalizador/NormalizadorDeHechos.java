@@ -1,5 +1,6 @@
 package aplicacion.services.normalizador;
 
+import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.excepciones.UbicacionNoEncontradaException;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
@@ -12,8 +13,14 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class NormalizadorDeHechos {
@@ -30,6 +37,56 @@ public class NormalizadorDeHechos {
         this.etiquetaService = etiquetaService;
         this.categoriaService = categoriaService;
         this.ubicacionService = ubicacionService;
+    }
+
+    public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        final ConcurrentHashMap<String, Object> locks =  new ConcurrentHashMap<>();
+        Object lockEtiqueta = locks.computeIfAbsent("etiqueta", k -> new Object());
+        Object lockCategoria = locks.computeIfAbsent("categoria", k -> new Object());
+        Object lockUbicacion = locks.computeIfAbsent("ubicacion", k -> new Object());
+        for(Hecho hecho : mapFuentesYhechosANormalizar.values().stream().flatMap(List::stream).toList())
+           executor.submit(() -> normalizarSincornizado(hecho, lockEtiqueta, lockCategoria, lockUbicacion));
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(1, TimeUnit.HOURS)) { // Si no termina en una hora, fuerzo que se detenga
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {  // No debería pasar, pero por las dudas
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void normalizarSincornizado(Hecho hecho, Object lockEtiqueta, Object lockCategoria, Object lockUbicacion){
+        Categoria categoriaAInyectar;
+        List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
+        synchronized (lockCategoria) {
+            String categoria = aplicarNormalizador(hecho.getCategoria().getNombre(), normalizadorDeCategorias);
+            try {
+                categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
+            } catch (CategoriaNoEncontradaException e) {
+                categoriaAInyectar = categoriaService.agregarCategoria(categoria);
+            }
+        }
+        hecho.setCategoria(categoriaAInyectar);
+        Etiqueta etiquetaAInyectar;
+        synchronized (lockEtiqueta){
+            List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->aplicarNormalizador(n, normalizadorDeEtiquetas)).toList();
+            for(String nombre : etiquetas){
+                try{
+                    etiquetaAInyectar = etiquetaService.obtenerEtiquetaPorNombre(nombre);
+                } catch (EtiquetaNoEncontradaException e){
+                    etiquetaAInyectar = etiquetaService.agregarEtiqueta(nombre);
+                }
+                etiquetasAInyectar.add(etiquetaAInyectar);
+            }
+        }
+        hecho.setEtiquetas(etiquetasAInyectar);
+        synchronized (lockUbicacion){
+            Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
+            hecho.setUbicacion(ubicacionAInyectar);
+        }
     }
 
     public void normalizar(Hecho hecho)  {
@@ -90,11 +147,9 @@ public class NormalizadorDeHechos {
     }
 
     private String aplicarNormalizador(String termino, NormalizadorDeTerminos normalizador) {
-        try {
-            return normalizador.normalizarTermino(termino);
-        } catch (NingunTerminoCumpleUmbralException e) {
+        String terminoNormalizado = normalizador.normalizarTermino(termino);
+        if(terminoNormalizado == null)
             normalizador.agregarTermino(termino);
-            return termino;
-        }
+        return terminoNormalizado;
     }
 }
