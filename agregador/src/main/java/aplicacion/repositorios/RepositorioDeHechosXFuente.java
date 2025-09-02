@@ -32,11 +32,12 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
     """)
     List<Object[]> countHechosByFuente(@Param("idColeccion") String idColeccion);
 
+    Boolean existsByFuenteId(FuenteId fuenteId);
+
     @Query("""
-        SELECT CASE WHEN COUNT(hxf) > 0 THEN TRUE ELSE FALSE END
-        FROM HechoXFuente hxf
-        JOIN FuenteXColeccion fxc ON hxf.fuente.id = fxc.fuente.id
-        WHERE hxf.fuente.id = :fuenteId AND fxc.coleccion.id = :coleccionId
+          SELECT hxf.hecho
+          FROM HechoXFuente hxf
+          WHERE hxf.fuente.id = :fuenteId
     """)
-    Boolean existsByFuenteIdAndColeccionId(FuenteId fuenteId, String coleccionId);
+    List<Hecho> findHechosByFuenteId(FuenteId fuenteId);
 }
