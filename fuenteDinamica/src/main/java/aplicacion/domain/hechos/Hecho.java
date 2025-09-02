@@ -21,9 +21,9 @@ public class Hecho {
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     private String descripcion;
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL)
     private Categoria categoria;
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacion;
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
