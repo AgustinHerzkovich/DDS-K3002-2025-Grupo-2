@@ -2,7 +2,9 @@ package aplicacion.controllers;
 
 import java.util.List;
 
-import aplicacion.dto.SolicitudDTO;
+import aplicacion.dto.input.SolicitudInputDTO;
+import aplicacion.dto.output.SolicitudOutputDTO;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
@@ -22,24 +24,26 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<SolicitudEliminacion> crearSolicitud(@RequestBody SolicitudDTO solicitudDto) {
+    public ResponseEntity<SolicitudOutputDTO> crearSolicitud(@RequestBody SolicitudInputDTO solicitudDto) {
         try {
-            SolicitudEliminacion solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
-            System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHecho().getId());
+            SolicitudOutputDTO solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
+            System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHechoId());
             return ResponseEntity.ok(solicitud);
         } catch (MotivoSolicitudException e) {
             return ResponseEntity.badRequest().build();
+        } catch (HechoNoEncontradoException e){
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/solicitudes")
-    public List<SolicitudEliminacion> obtenerSolicitudes() {
-        return solicitudService.obtenerSolicitudes();
+    public ResponseEntity<List<SolicitudOutputDTO>> obtenerSolicitudes() {
+        return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO());
     }
 
     @GetMapping("/solicitudes/{id}")
-    public SolicitudEliminacion obtenerSolicitud(@PathVariable("id") Long id) {
-        return solicitudService.obtenerSolicitud(id);
+    public ResponseEntity<SolicitudOutputDTO> obtenerSolicitud(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(solicitudService.obtenerSolicitudDTO(id));
     }
 
     @Transactional
@@ -59,11 +63,34 @@ public class SolicitudController {
         solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado);
 
         for (SolicitudEliminacion solicitud : solis) {
-            solicitudService.guardarSolicitud(solicitud);
+            solicitudService.save(solicitud);
         }
         hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible)
 
         System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
+
+
+        if(nuevoEstado.equals("APROBADA")){
+            System.out.println(" " +
+                    "                   <((((((\\\\\\\n" +
+                    "                   /      . }\\\n" +
+                    "                   ;--..--._|}\n" +
+                    "(\\                 '--/\\--'  )\n" +
+                    " \\\\                | '-'  :'|\n" +
+                    "  \\\\               . -==- .-|\n" +
+                    "   \\\\               \\.__.'   \\--._\n" +
+                    "   [\\\\          __.--|       //  _/'--.\n" +
+                    "   \\ \\\\       .'-._ ('-----'/ __/      \\\n" +
+                    "    \\ \\\\     /   __>|      | '--.       |\n" +
+                    "     \\ \\\\   |   \\   |     /    /       /\n" +
+                    "      \\ '\\ /     \\  |     |  _/       /\n" +
+                    "       \\  \\       \\ |     | /        /\n" +
+                    "        \\  \\      \\        /\n" +
+                    "\n" +
+                    "                      HECHO \n"+
+                    "              HAS SIDO EXTERMINADO \n" + sol.getHecho().getId());
+        }
+
         return ResponseEntity.ok().build();
     }
 }
