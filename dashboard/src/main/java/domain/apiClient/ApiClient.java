@@ -7,6 +7,7 @@ import domain.dashboardDTOs.hechos.HechoDTO;
 import domain.dashboardDTOs.hechos.HechoPostDTO;
 import domain.dashboardDTOs.solicitudes.SolicitudDTO;
 import domain.dashboardDTOs.usuarios.ContribuyenteDTO;
+import domain.dashboardDTOs.usuarios.IdentidadDTO;
 import domain.dashboardDTOs.usuarios.IdentidadPatchDTO;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -66,9 +67,9 @@ public class ApiClient {
         assert rta != null;
         return rta;
     }
-    public static void postIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
+    public static IdentidadDTO postIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id + "/identidades";
-        restTemplate.postForObject(url, identidadPostDTO, void.class);
+        return restTemplate.postForObject(url, identidadPostDTO, IdentidadDTO.class);
     }
     public static void postSolicitud(SolicitudDTO solicitudDTO, Conexion conexion){
         String url = conexion.getUri() + "/apiPublica/solicitudes";

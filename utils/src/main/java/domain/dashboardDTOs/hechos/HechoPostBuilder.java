@@ -49,7 +49,7 @@ public class HechoPostBuilder {
     }
 
     public HechoPostBuilder setAutor(Integer idAutor) {
-        hechoDTO.setContribuyenteId(idAutor);
+        hechoDTO.setIdentidadId(idAutor);
         return this;
     }
 

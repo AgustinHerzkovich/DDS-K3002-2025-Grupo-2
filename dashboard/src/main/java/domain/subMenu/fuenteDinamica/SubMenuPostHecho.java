@@ -63,10 +63,10 @@ public class SubMenuPostHecho {
         boolean anonimato = !anonInput.isEmpty() && Boolean.parseBoolean(anonInput);
         builder.setAnonimato(anonimato);
 
-        System.out.print("ID contribuyente (default: '"+ SubMenuPostIdentidad.getLastContribuyenteId()+"'): ");
+        System.out.print("ID contribuyente (default: '"+ SubMenuPostIdentidad.getLastIdentidadId()+"'): ");
         String idContribuyente = scanner.nextLine();
         if (idContribuyente.isEmpty())
-            builder.setAutor(SubMenuPostIdentidad.getLastContribuyenteId());
+            builder.setAutor(SubMenuPostIdentidad.getLastIdentidadId());
         else
             builder.setAutor(Integer.valueOf(idContribuyente));
 
@@ -82,7 +82,7 @@ public class SubMenuPostHecho {
             System.out.println("Texto: " + hecho.getContenidoTexto());
             System.out.println("Multimedia: " + hecho.getContenidoMultimedia().size() + " archivo(s)");
             System.out.println("Anónimo: " + hecho.isAnonimato());
-            System.out.println("Contribuyente ID: " + hecho.getContribuyenteId());
+            System.out.println("Contribuyente ID: " + hecho.getIdentidadId());
         }catch (Exception e){
             throw new RuntimeException("No se pudo enviar el post del hecho: \n" + e.getMessage());
         }

@@ -20,7 +20,7 @@ public class HechoPostDTO {
     private String contenidoTexto;
     private List<ContenidoMultimediaDTO> contenidoMultimedia = new ArrayList<>();
     private boolean anonimato;
-    private Integer contribuyenteId;
+    private Integer identidadId;
 
     @Override
     public String toString() {
@@ -32,7 +32,7 @@ public class HechoPostDTO {
                 " \n Texto: " + contenidoTexto +
                 " \n Multimedia: " + (contenidoMultimedia != null ? contenidoMultimedia.size() + " archivo(s)" : "0 archivo(s)") +
                 " \n Anónimo: " + anonimato +
-                " \n Contribuyente ID: " + contribuyenteId;
+                " \n Identidad ID: " + identidadId;
     }
 
 }
