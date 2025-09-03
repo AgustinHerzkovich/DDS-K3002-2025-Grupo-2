@@ -2,9 +2,10 @@ package aplicacion.dto.mappers;
 
 import aplicacion.dto.HechoInEstaticaDTO;
 import aplicacion.domain.hechos.Hecho;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-
+@Component
 // La fecha de carga del hecho en metamapa no conserva la fecha de carga de la fuente, sino que es la fecha de carga del hecho en metamapa.
 public class HechoInEstaticaDTOToHecho implements Mapper<HechoInEstaticaDTO, Hecho> {
     public Hecho map(HechoInEstaticaDTO hechoDto) {
