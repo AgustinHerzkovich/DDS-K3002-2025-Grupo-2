@@ -12,6 +12,7 @@ apiPublica/src/main/resources/data
 .idea/compiler.xml
 .idea/workspace.xml
 .idea/libraries/
+.idea/runConfigurations/
 .idea
 *.iws
 *.iml
