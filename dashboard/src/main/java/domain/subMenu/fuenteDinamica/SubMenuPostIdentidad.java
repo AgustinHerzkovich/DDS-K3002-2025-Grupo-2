@@ -10,14 +10,16 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class SubMenuPatchIdentidad {
+public class SubMenuPostIdentidad {
     @Setter @Getter
     public static Integer lastContribuyenteId = 1;
+    @Getter @Setter
+    public static Integer lastIdentidadId = 1;
     public static void abrirMenu(){
         Integer id;
         LocalDate nacimiento;
-        System.out.println("Se enviara un patch a fuenteDinamica.");
-        System.out.println("Ingrese el ID del contribuyente al que le va a hacer patch");
+        System.out.println("Se enviara un Post de identidad a fuenteDinamica.");
+        System.out.println("Ingrese el ID del contribuyente al que le va a hacer Post");
         System.out.println("Default: "+lastContribuyenteId);
         Scanner scanner = new Scanner(System.in);
         IdentidadPatchDTO identidadPatchDTO;
@@ -42,7 +44,8 @@ public class SubMenuPatchIdentidad {
             nacimiento = LocalDate.parse("1939-11-07");
         }
         identidadPatchDTO = new IdentidadPatchDTO(nombre, apellido, nacimiento);
-        ApiClient.patchIdentidad(identidadPatchDTO, id, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
-        System.out.println("Patch enviado");
+        lastIdentidadId = ApiClient.postIdentidad(identidadPatchDTO, id, ConnectionManager.getInstance().getServidorLocal("Dinamica")).getId();
+        System.out.println("Post enviado");
+        System.out.println("Id de identidad recibido: "+lastIdentidadId);
     }
 }

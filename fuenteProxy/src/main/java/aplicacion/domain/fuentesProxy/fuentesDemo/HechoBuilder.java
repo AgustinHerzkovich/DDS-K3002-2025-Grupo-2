@@ -1,16 +1,18 @@
-package aplicacion.domain.fuentesDemo;
+package aplicacion.domain.fuentesProxy.fuentesDemo;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
+import jakarta.persistence.Embeddable;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 // Es una clase constructora de hechos
+@Embeddable
 public class HechoBuilder {
     public Hecho construirHecho(Map<String, Object> datos) {
         if(datos.isEmpty()){return null;}

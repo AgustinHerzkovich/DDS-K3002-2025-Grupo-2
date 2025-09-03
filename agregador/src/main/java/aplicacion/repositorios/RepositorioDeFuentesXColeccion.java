@@ -3,9 +3,9 @@ package aplicacion.repositorios;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
+import aplicacion.clasesIntermedias.FuenteXColeccion;
 import org.springframework.data.jpa.repository.JpaRepository;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccionId;
+import aplicacion.clasesIntermedias.FuenteXColeccionId;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

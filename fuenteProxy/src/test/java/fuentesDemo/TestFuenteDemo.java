@@ -1,9 +1,9 @@
 package fuentesDemo;
 
-import aplicacion.domain.fuentesDemo.Conexion;
-import aplicacion.domain.fuentesDemo.ConexionPrueba;
-import aplicacion.domain.fuentesDemo.FuenteDemo;
-import aplicacion.domain.fuentesMetamapa.FuenteMetamapa;
+import aplicacion.domain.fuentesProxy.fuentesDemo.Conexion;
+import aplicacion.domain.fuentesProxy.fuentesDemo.ConexionPrueba;
+import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
+import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.domain.hechos.Hecho;
 
 public class TestFuenteDemo {

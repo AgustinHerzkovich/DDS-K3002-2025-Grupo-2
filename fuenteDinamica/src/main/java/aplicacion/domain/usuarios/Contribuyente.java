@@ -35,9 +35,4 @@ public class Contribuyente {
         identidades.add(identidad);
         identidad.setContribuyente(this); // Establece la relación bidireccional
     }
-
-    public void contribuirAlHecho(Hecho hecho) {
-        getUltimaIdentidad().agregarHechoContribuido(hecho);
-        hecho.setAutor(getUltimaIdentidad());
-    }
 }

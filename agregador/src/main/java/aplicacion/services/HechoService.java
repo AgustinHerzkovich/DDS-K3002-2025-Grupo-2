@@ -1,10 +1,10 @@
 package aplicacion.services;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.HechoXColeccion;
+import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
-import aplicacion.domain.colecciones.fuentes.HechoXFuente;
+import aplicacion.clasesIntermedias.FuenteXColeccion;
+import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDTO;
@@ -111,5 +111,9 @@ public class HechoService {
 
     public void guardarFuentePorColeccion(FuenteXColeccion fuentePorColeccion) {
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
+    }
+
+    public Hecho agregarHecho(Hecho hecho) {
+        return repositorioDeHechos.save(hecho);
     }
 }

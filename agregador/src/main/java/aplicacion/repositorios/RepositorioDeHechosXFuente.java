@@ -1,8 +1,8 @@
 package aplicacion.repositorios;
 
 import aplicacion.domain.colecciones.fuentes.FuenteId;
-import aplicacion.domain.colecciones.fuentes.HechoXFuente;
-import aplicacion.domain.colecciones.fuentes.HechoXFuenteId;
+import aplicacion.clasesIntermedias.HechoXFuente;
+import aplicacion.clasesIntermedias.HechoXFuenteId;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, HechoXFuenteId> {

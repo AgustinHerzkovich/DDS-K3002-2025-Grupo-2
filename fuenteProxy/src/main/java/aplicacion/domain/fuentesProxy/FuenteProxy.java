@@ -1,5 +1,6 @@
-package aplicacion.domain.hechos;
+package aplicacion.domain.fuentesProxy;
 
+import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,21 +8,17 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// ETIQUETA
+import java.util.List;
+
+// FUENTE PROXY
+@Getter
 @Entity
 @NoArgsConstructor
-public class Etiqueta {
+public abstract class FuenteProxy{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter
-    private String nombre;
 
-    public Etiqueta(String nombre){
-        this.nombre = nombre;
-    }
-
-    public boolean esIdenticaA(String etiquetaNombre) {
-        return this.nombre.equals(etiquetaNombre);
-    }
+    public abstract void pedirHechos();
+    public abstract List<Hecho> importarHechos();
 }

@@ -3,6 +3,7 @@ package aplicacion.controllers;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
+import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDTO;
 import aplicacion.dto.input.FuenteInputDTO;
@@ -102,14 +103,13 @@ public class ColeccionController {
         return ResponseEntity.ok(fuenteOutputDTO);
     }
 
-
-
-    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
+    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}/{fuenteTipo}")
     public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @PathVariable("fuenteId") FuenteId fuenteId) {
+                                             @PathVariable("fuenteId") Long fuenteId,
+                                             @PathVariable("fuenteTipo") TipoFuente fuenteTipo) {
         Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
-        coleccionService.quitarFuenteDeColeccion(coleccion, fuenteId);
-        System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId.getIdExterno() + " tipo: " + fuenteId.getTipo());
+        coleccionService.quitarFuenteDeColeccion(coleccion, new FuenteId(fuenteTipo, fuenteId));
+        System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId + " tipo: " + fuenteTipo);
         return ResponseEntity.ok().build();
     }
 

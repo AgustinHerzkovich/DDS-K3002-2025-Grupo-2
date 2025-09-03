@@ -10,4 +10,5 @@ public class IdentidadDTO {
     private String apellido;
     private LocalDate fechaNacimiento;
     private ContribuyenteDTO contribuyente;
+    private Integer id;
 }

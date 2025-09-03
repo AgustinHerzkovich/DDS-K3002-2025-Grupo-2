@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
         include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON

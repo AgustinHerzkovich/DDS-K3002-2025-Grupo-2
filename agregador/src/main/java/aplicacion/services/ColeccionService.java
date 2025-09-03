@@ -4,7 +4,7 @@ import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
+import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDTO;
 import aplicacion.dto.mappers.ColeccionInputMapper;

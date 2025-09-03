@@ -49,6 +49,8 @@ public class SolicitudEliminacion {
     private Hecho hecho;
     @Column(length = 2000) // Le asigno VARCHAR(2000)
     private String motivo;
+    @Embedded
+    private DetectorDeSpam detectorDeSpam;
 
     @JsonCreator
     public SolicitudEliminacion
@@ -74,6 +76,7 @@ public class SolicitudEliminacion {
         this.fechaResolucion = null;
         this.hecho = hecho;
         hecho.agregarASolicitudes(this);
+        this.detectorDeSpam = new DetectorDeSpamPrueba();
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
     }
@@ -142,7 +145,7 @@ public class SolicitudEliminacion {
     //////////////////////////////////////
 
     public Boolean esSpam(){
-        return new DetectorDeSpamPrueba().esSpam(this.getMotivo());
+        return this.detectorDeSpam.esSpam(this.getMotivo());
     }
 
 }

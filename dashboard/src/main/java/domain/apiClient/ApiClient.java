@@ -6,8 +6,9 @@ import domain.dashboardDTOs.fuentes.FuenteDinamicaDTO;
 import domain.dashboardDTOs.hechos.HechoDTO;
 import domain.dashboardDTOs.hechos.HechoPostDTO;
 import domain.dashboardDTOs.solicitudes.SolicitudDTO;
+import domain.dashboardDTOs.usuarios.ContribuyenteDTO;
+import domain.dashboardDTOs.usuarios.IdentidadDTO;
 import domain.dashboardDTOs.usuarios.IdentidadPatchDTO;
-import domain.dashboardDTOs.usuarios.PostContribuyenteDTO;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
@@ -15,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ApiClient {
 
@@ -61,15 +61,15 @@ public class ApiClient {
         return Arrays.asList(coleccionesArray);
     }
 
-    public static Integer postContribuyente(PostContribuyenteDTO contribuyenteDTO, Conexion conexion){
+    public static ContribuyenteDTO postContribuyente(ContribuyenteDTO contribuyenteDTO, Conexion conexion){
         String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes";
-        Map<String, Integer> rta = restTemplate.postForObject(url, contribuyenteDTO, Map.class);
+        ContribuyenteDTO rta = restTemplate.postForObject(url, contribuyenteDTO, ContribuyenteDTO.class);
         assert rta != null;
-        return rta.get("contribuyenteId");
+        return rta;
     }
-    public static void patchIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
-        String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id;
-        restTemplate.patchForObject(url, identidadPostDTO, void.class);
+    public static IdentidadDTO postIdentidad(IdentidadPatchDTO identidadPostDTO, Integer id, Conexion conexion){
+        String url = conexion.getUri() + "/fuentesDinamicas/contribuyentes/"+id + "/identidades";
+        return restTemplate.postForObject(url, identidadPostDTO, IdentidadDTO.class);
     }
     public static void postSolicitud(SolicitudDTO solicitudDTO, Conexion conexion){
         String url = conexion.getUri() + "/apiPublica/solicitudes";

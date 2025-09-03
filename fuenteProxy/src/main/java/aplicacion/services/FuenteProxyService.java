@@ -1,6 +1,6 @@
 package aplicacion.services;
 
-import aplicacion.domain.FuenteProxy;
+import aplicacion.domain.fuentesProxy.FuenteProxy;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.mappers.FuenteProxyInputMapper;
 import aplicacion.dto.mappers.FuenteProxyOutputMapper;

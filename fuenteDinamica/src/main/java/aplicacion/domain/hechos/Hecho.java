@@ -18,21 +18,23 @@ public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @Column(length = 200)
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     private String descripcion;
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL)
     private Categoria categoria;
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacion;
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
+    @Column(length = 500)
     private String contenidoTexto;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
-    @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?

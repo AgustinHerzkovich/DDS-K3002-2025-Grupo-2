@@ -26,7 +26,9 @@ public class Coleccion{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @Column(length = 50)
     private String titulo;
+    @Column(length = 150)
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "coleccion_id")

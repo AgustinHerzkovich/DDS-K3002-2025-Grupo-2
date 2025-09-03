@@ -1,5 +1,6 @@
-package aplicacion.domain.colecciones;
+package aplicacion.clasesIntermedias;
 
+import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

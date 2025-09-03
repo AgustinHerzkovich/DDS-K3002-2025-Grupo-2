@@ -1,5 +1,6 @@
 package aplicacion.domain.hechos.multimedias;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Video extends Multimedia {
+    @Column(length = 20)
     private String resolucion;
     private Integer duracion;
 

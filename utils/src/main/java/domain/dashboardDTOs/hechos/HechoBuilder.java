@@ -57,9 +57,9 @@ public class HechoBuilder {
         return this;
     }
 
-    public HechoBuilder setAutor(String nombre, String apellido, LocalDate fechaNacimiento, String contribuyenteId, boolean esAdministrador) {
+    public HechoBuilder setAutor(String nombre, String apellido, LocalDate fechaNacimiento, Integer contribuyenteId, boolean esAdministrador) {
         ContribuyenteDTO contribuyente = new ContribuyenteDTO(contribuyenteId, esAdministrador);
-        IdentidadDTO autor = new IdentidadDTO(nombre, apellido, fechaNacimiento, contribuyente);
+        IdentidadDTO autor = new IdentidadDTO(nombre, apellido, fechaNacimiento, contribuyente, null);
         hechoDTO.setAutor(autor);
         return this;
     }
