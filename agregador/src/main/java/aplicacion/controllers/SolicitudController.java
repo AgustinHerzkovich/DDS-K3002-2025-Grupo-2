@@ -70,7 +70,7 @@ public class SolicitudController {
         System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
 
 
-        if(nuevoEstado.equals("APROBADA")){
+        if(nuevoEstado.equals("ACEPTADA")){
             System.out.println(" " +
                     "                   <((((((\\\\\\\n" +
                     "                   /      . }\\\n" +
