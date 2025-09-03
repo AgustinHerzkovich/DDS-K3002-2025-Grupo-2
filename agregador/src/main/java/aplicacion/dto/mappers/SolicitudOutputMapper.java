@@ -1,0 +1,17 @@
+package aplicacion.dto.mappers;
+
+import aplicacion.domain.solicitudes.SolicitudEliminacion;
+import aplicacion.dto.output.SolicitudOutputDTO;
+
+
+public class SolicitudOutputMapper {
+    public static SolicitudOutputDTO map(SolicitudEliminacion solicitudEliminacion) {
+        return new SolicitudOutputDTO(
+                solicitudEliminacion.getHecho().getId(),
+                solicitudEliminacion.getMotivo(),
+                solicitudEliminacion.getId(),
+                solicitudEliminacion.getEstado(),
+                solicitudEliminacion.getFechaSubida()
+        );
+    }
+}

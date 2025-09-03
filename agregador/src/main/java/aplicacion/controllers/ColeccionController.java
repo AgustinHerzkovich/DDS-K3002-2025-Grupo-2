@@ -5,17 +5,20 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDTO;
+import aplicacion.dto.input.FuenteInputDTO;
 import aplicacion.dto.output.ColeccionOutputDTO;
 import aplicacion.dto.output.FuenteOutputDTO;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/agregador")
 public class ColeccionController {
@@ -39,8 +42,10 @@ public class ColeccionController {
 
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
-    public List<Coleccion> mostrarColecciones() {
-        return coleccionService.obtenerColecciones();
+    public List<ColeccionOutputDTO> mostrarColecciones() {
+        List<ColeccionOutputDTO> coleccion;
+        coleccion = coleccionService.obtenerColeccionesDTO();
+        return coleccion;
     }
 
     @GetMapping("/colecciones/{id}")
@@ -97,6 +102,8 @@ public class ColeccionController {
         return ResponseEntity.ok(fuenteOutputDTO);
     }
 
+
+
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
                                              @PathVariable("fuenteId") FuenteId fuenteId) {
@@ -113,10 +120,6 @@ public class ColeccionController {
         coleccionService.eliminarColeccion(idColeccion);
         System.out.println("Coleccion: " + idColeccion + " eliminada");
         return ResponseEntity.ok().build();
-    }
-
-    private void notificar(){
-        observadores.forEach(Observer::update);
     }
 
 }

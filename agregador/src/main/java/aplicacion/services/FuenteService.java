@@ -1,6 +1,12 @@
 package aplicacion.services;
 
+import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.*;
+import aplicacion.dto.input.FuenteInputDTO;
+import aplicacion.dto.mappers.FuenteInputDTOMapper;
+import aplicacion.dto.mappers.FuenteOutputDTOMapper;
+import aplicacion.dto.output.FuenteOutputDTO;
+import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +31,11 @@ public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final ConfiguracionRed config;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
+    private final ColeccionService coleccionService;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService) {
         this.repositorioDeFuentes = repositorioDeFuentes;
+        this.coleccionService = coleccionService;
         this.config = cargarConfiguracion();
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
     }
@@ -144,5 +152,11 @@ public class FuenteService {
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(FuenteId fuenteId){
         return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
+    }
+    public FuenteOutputDTO agregarFuenteAColeccion(String coleccionId, FuenteInputDTO fuenteInputDTO) throws ColeccionNoEncontradaException {
+        Fuente fuente = FuenteInputDTOMapper.map(fuenteInputDTO);
+        repositorioDeFuentes.save(fuente);
+        coleccionService.agregarFuenteAColeccion(coleccionId, fuente);
+        return FuenteOutputDTOMapper.map(fuente);
     }
 }

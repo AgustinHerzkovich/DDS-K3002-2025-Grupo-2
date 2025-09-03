@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.output.HechoOutputDTO;
 import aplicacion.services.HechoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<Hecho> obtenerHechos() {
-        return hechoService.obtenerHechos();
+    public List<HechoOutputDTO> obtenerHechos() {
+        return hechoService.obtenerHechosAsDTO();
     }
 }

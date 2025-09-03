@@ -34,8 +34,9 @@ public class ColeccionService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
+    private final FuenteService fuenteService;
 
-    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
+    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, FuenteService fuenteService, ColeccionService coleccionService) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
@@ -43,6 +44,8 @@ public class ColeccionService {
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = new ColeccionInputMapper();
         this.coleccionOutputMapper = new ColeccionOutputMapper();
+        this.fuenteService = fuenteService;
+
     }
 
     public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {
@@ -50,8 +53,8 @@ public class ColeccionService {
         return coleccionOutputMapper.map(coleccionLocal);
     }
 
-    public List<Coleccion> obtenerColecciones() {
-        return repositorioDeColecciones.findAll();
+    public List<ColeccionOutputDTO> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
+        return obtenerColecciones().stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
     }
 
     public List<Coleccion> obtenerColecciones() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
@@ -62,11 +65,13 @@ public class ColeccionService {
         return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public Coleccion obtenerColeccion(String idColeccion) {
-        return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+    public ColeccionOutputDTO obtenerColeccionDTO(String idColeccion) {
+         return repositorioDeColecciones.findById(idColeccion)
+                .map(coleccionOutputMapper::map)
+                .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public List<Hecho> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
+    public List<HechoOutputDTO> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
                                                              String categoria_buscada,
                                                              LocalDateTime fechaReporteDesde,
                                                              LocalDateTime fechaReporteHasta,
@@ -92,7 +97,7 @@ public class ColeccionService {
         return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    public List<Hecho> filtrarHechosQueryParam(List<Hecho> hechos,
+    public List<HechoOutputDTO> filtrarHechosQueryParam(List<Hecho> hechos,
                                                String categoria_buscada,
                                                LocalDateTime fechaReporteDesde,
                                                LocalDateTime fechaReporteHasta,
@@ -108,6 +113,7 @@ public class ColeccionService {
                 .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
+                .map(HechoOutputMapper::map)
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
     }
 
@@ -134,9 +140,10 @@ public class ColeccionService {
         };
     }
 
-    public void agregarFuenteAColeccion(Coleccion coleccion, Fuente fuente) {
+    public void agregarFuenteAColeccion(String coleccionId, Fuente fuente) throws ColeccionNoEncontradaException {
+        Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
-
+        repositorioDeColecciones.save(coleccion);
         FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }

@@ -25,7 +25,7 @@ public class ContribuyenteController {
         System.out.println("Se ha creado el contribuyente: " + contribuyenteGuardado.getId());
         return ResponseEntity.ok(contribuyenteGuardado);
     }
-
+    /*
     @PatchMapping("/contribuyentes/{id}")
     public ResponseEntity<IdentidadContribuyenteOutputDTO> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDTO identidad, @PathVariable("id") Long id) { // No habria que pasarle un contribuyente entero en lugar de solo la identidad? Si queres cambiar esAdministrador como lo haces?
         ContribuyenteOutputDTO contribuyente = contribuyenteService.agregarIdentidadAContribuyente(id, identidad);
