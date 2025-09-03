@@ -2,9 +2,8 @@ package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +19,10 @@ public class HechoController {
     @GetMapping("/hechos")
     public List<Hecho> obtenerHechos() {
         return hechoService.obtenerHechos();
+    }
+
+    @PostMapping("/hechos")
+    public ResponseEntity<Hecho> reportarHecho(@RequestBody Hecho hecho) {
+        return ResponseEntity.ok(hechoService.agregarHecho(hecho));
     }
 }

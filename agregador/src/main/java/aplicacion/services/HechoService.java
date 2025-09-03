@@ -101,4 +101,8 @@ public class HechoService {
     public void guardarFuentePorColeccion(FuenteXColeccion fuentePorColeccion) {
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
+
+    public Hecho agregarHecho(Hecho hecho) {
+        return repositorioDeHechos.save(hecho);
+    }
 }
