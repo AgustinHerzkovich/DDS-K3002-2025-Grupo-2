@@ -1,6 +1,7 @@
-package aplicacion.domain.colecciones.fuentes;
+package aplicacion.clasesIntermedias;
 
 import aplicacion.domain.colecciones.Coleccion;
+import aplicacion.domain.colecciones.fuentes.Fuente;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -8,8 +9,6 @@ import jakarta.persistence.MapsId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
