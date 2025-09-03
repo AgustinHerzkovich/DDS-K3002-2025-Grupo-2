@@ -36,7 +36,7 @@ public class HechoDTO {
                 " \n Multimedia: " + (contenidoMultimedia != null ? contenidoMultimedia.size() + " archivo(s)" : "0 archivo(s)") +
                 " \n Anónimo: " + anonimato +
                 " \n Autor: " + (autor != null ? autor.getNombre() + " " + autor.getApellido() : "null") +
-                " \n Contribuyente ID: " + (autor != null && autor.getContribuyente() != null ? autor.getContribuyente().getContribuyenteId() : "null") +
+                " \n Contribuyente ID: " + (autor != null && autor.getContribuyente() != null ? autor.getContribuyente().getId() : "null") +
                 " \n Es administrador: " + (autor != null && autor.getContribuyente() != null ? autor.getContribuyente().isEsAdministrador() : "null");
     }
 

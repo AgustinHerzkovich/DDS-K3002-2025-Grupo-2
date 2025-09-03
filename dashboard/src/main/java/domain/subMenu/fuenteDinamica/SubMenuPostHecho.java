@@ -63,10 +63,10 @@ public class SubMenuPostHecho {
         boolean anonimato = !anonInput.isEmpty() && Boolean.parseBoolean(anonInput);
         builder.setAnonimato(anonimato);
 
-        System.out.print("ID contribuyente (default: '"+SubMenuPatchIdentidad.getLastContribuyenteId()+"'): ");
+        System.out.print("ID contribuyente (default: '"+ SubMenuPostIdentidad.getLastContribuyenteId()+"'): ");
         String idContribuyente = scanner.nextLine();
         if (idContribuyente.isEmpty())
-            builder.setAutor(SubMenuPatchIdentidad.getLastContribuyenteId());
+            builder.setAutor(SubMenuPostIdentidad.getLastContribuyenteId());
         else
             builder.setAutor(Integer.valueOf(idContribuyente));
 

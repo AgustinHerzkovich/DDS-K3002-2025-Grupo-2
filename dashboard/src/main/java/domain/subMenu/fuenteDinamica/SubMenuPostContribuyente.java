@@ -1,6 +1,6 @@
 package domain.subMenu.fuenteDinamica;
 
-import domain.dashboardDTOs.usuarios.PostContribuyenteDTO;
+import domain.dashboardDTOs.usuarios.ContribuyenteDTO;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
@@ -17,9 +17,9 @@ public class SubMenuPostContribuyente {
             System.out.println("No se entendio el valor ingresado. Se establecio el valor por defecto (false)");
             admin = false;
         }
-        PostContribuyenteDTO contribuyenteDTO = new PostContribuyenteDTO();
-        Integer respuesta = ApiClient.postContribuyente(contribuyenteDTO, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
-        SubMenuPatchIdentidad.lastContribuyenteId = respuesta;
-        System.out.println("Se recibio la respuesta: El contribuyente numero " + respuesta + " fue creado.");
+        ContribuyenteDTO contribuyenteDTO = new ContribuyenteDTO(null, admin);
+        ContribuyenteDTO respuesta = ApiClient.postContribuyente(contribuyenteDTO, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+        SubMenuPostIdentidad.lastContribuyenteId = respuesta.getId();
+        System.out.println("Se recibio la respuesta: El contribuyente numero " + respuesta.getId() + " fue creado." + (respuesta.isEsAdministrador() ? "(Es administrador)" : ""));
     }
 }

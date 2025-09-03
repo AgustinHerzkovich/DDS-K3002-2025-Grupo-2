@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class SubMenuPatchIdentidad {
+public class SubMenuPostIdentidad {
     @Setter @Getter
     public static Integer lastContribuyenteId = 1;
     public static void abrirMenu(){
@@ -42,7 +42,7 @@ public class SubMenuPatchIdentidad {
             nacimiento = LocalDate.parse("1939-11-07");
         }
         identidadPatchDTO = new IdentidadPatchDTO(nombre, apellido, nacimiento);
-        ApiClient.patchIdentidad(identidadPatchDTO, id, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
-        System.out.println("Patch enviado");
+        ApiClient.postIdentidad(identidadPatchDTO, id, ConnectionManager.getInstance().getServidorLocal("Dinamica"));
+        System.out.println("Post enviado");
     }
 }
