@@ -149,6 +149,9 @@ Fuente estática para agregador:
 Dejar los archivos ya previamente cargados en la nube y solo levantar la app
 
 Agregador para fuente metamapa:
+Levantar otro agregador en la misma compu con:
+java -jar .\agregador\target\agregador-0.1.0.jar -D --server.port=8094
+
 POST http://localhost:8094/agregador/colecciones
 Body:
 {
