@@ -9,7 +9,10 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDTO;
 import aplicacion.dto.mappers.ColeccionInputMapper;
 import aplicacion.dto.mappers.ColeccionOutputMapper;
+import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.ColeccionOutputDTO;
+import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
@@ -51,6 +54,14 @@ public class ColeccionService {
         return repositorioDeColecciones.findAll();
     }
 
+    public List<Coleccion> obtenerColecciones() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
+        return repositorioDeColecciones.findAll();
+    }
+
+    public Coleccion obtenerColeccion(String idColeccion) {
+        return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+    }
+
     public Coleccion obtenerColeccion(String idColeccion) {
         return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
@@ -68,7 +79,7 @@ public class ColeccionService {
         return filtrarHechosQueryParam(hechosIrrestrictos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion,
+    public List<HechoOutputDTO> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
                                                         String categoria_buscada,
                                                         LocalDateTime fechaReporteDesde,
                                                         LocalDateTime fechaReporteHasta,
