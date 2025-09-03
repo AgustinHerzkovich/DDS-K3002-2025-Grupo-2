@@ -1,4 +1,4 @@
-package aplicacion.domain;
+package aplicacion.domain.fuentesProxy;
 
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;

@@ -1,8 +1,8 @@
 package aplicacion.dto.mappers;
 
-import aplicacion.domain.FuenteProxy;
-import aplicacion.domain.fuentesDemo.FuenteDemo;
-import aplicacion.domain.fuentesMetamapa.FuenteMetamapa;
+import aplicacion.domain.fuentesProxy.FuenteProxy;
+import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
+import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import org.springframework.stereotype.Component;
 

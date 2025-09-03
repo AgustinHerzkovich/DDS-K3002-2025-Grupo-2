@@ -1,26 +1,22 @@
-package aplicacion.domain.fuentesMetamapa;
+package aplicacion.domain.fuentesProxy.fuentesMetamapa;
 
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.Entity;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import aplicacion.domain.FuenteProxy;
+import aplicacion.domain.fuentesProxy.FuenteProxy;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class FuenteMetamapa extends FuenteProxy {
 
     private String endpointHechos;
-
-    public String getEndpointHechos() {
-        return endpointHechos;
-    }
-
-    public void setEndpointHechos(String endpointHechos) {
-        this.endpointHechos = endpointHechos;
-    }
 
     public FuenteMetamapa(String endpointHechos) {
         this.endpointHechos = endpointHechos;

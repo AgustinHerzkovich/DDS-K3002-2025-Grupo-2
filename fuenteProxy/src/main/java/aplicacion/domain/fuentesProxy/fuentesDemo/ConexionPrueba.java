@@ -1,4 +1,4 @@
-package aplicacion.domain.fuentesDemo;
+package aplicacion.domain.fuentesProxy.fuentesDemo;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.multimedias.Multimedia;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Setter
 @DiscriminatorValue(value = "prueba")
 public class ConexionPrueba extends Conexion {
-    private int contador = 0;
+    private Integer contador = 0;
 
     @Override
     public Map<String, Object> siguienteHecho(String url, LocalDateTime ultimaConsulta) {

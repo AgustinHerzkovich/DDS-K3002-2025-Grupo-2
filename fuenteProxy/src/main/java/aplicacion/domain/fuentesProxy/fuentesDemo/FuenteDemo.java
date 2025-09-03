@@ -1,6 +1,6 @@
-package aplicacion.domain.fuentesDemo;
+package aplicacion.domain.fuentesProxy.fuentesDemo;
 
-import aplicacion.domain.FuenteProxy;
+import aplicacion.domain.fuentesProxy.FuenteProxy;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,12 +25,15 @@ public class FuenteDemo extends FuenteProxy {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Hecho> hechos;
     private String url;
+    @Embedded
+    private HechoBuilder hechoBuilder;
 
     public FuenteDemo(Conexion biblioteca, String url) {
         this.ultimaConsulta = LocalDateTime.now();
         this.biblioteca = biblioteca;
         this.url = url;
         this.hechos = new ArrayList<>();
+        this.hechoBuilder = new HechoBuilder();
     }
 
     @Override
@@ -38,7 +41,6 @@ public class FuenteDemo extends FuenteProxy {
         // basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
 
         // delegar peticion de hechos a la biblioteca
-        HechoBuilder hechoBuilder = new HechoBuilder();
         Map<String, Object> datos;
         Hecho hecho;
         while((datos = biblioteca.siguienteHecho(url, ultimaConsulta)) != null) {
