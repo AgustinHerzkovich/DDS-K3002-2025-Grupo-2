@@ -57,8 +57,8 @@ public class SolicitudEliminacion {
             (@JsonProperty("solicitante") Contribuyente solicitante,
              @JsonProperty("hecho") Hecho hecho,
              @JsonProperty("motivo") String motivo) {
+        this.detectorDeSpam = new DetectorDeSpamPrueba();
         this.motivo = motivo;
-
         if (this.esSpam()){
             this.estado = new EstadoSolicitudSpam();
         }else{
@@ -76,7 +76,6 @@ public class SolicitudEliminacion {
         this.fechaResolucion = null;
         this.hecho = hecho;
         hecho.agregarASolicitudes(this);
-        this.detectorDeSpam = new DetectorDeSpamPrueba();
         // Le manda mensaje a su hecho para que lo agregue
         // IMPORTANTE: debe estar cargado el hecho en memoria
     }
