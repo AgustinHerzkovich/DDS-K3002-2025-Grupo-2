@@ -10,12 +10,11 @@ import lombok.NoArgsConstructor;
 // ETIQUETA
 @NoArgsConstructor
 @Entity
+@Getter
 public class Etiqueta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Getter
     private String nombre;
 
     public Etiqueta(String nombre){

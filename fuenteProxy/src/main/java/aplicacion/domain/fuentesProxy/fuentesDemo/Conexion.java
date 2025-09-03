@@ -1,4 +1,5 @@
-package aplicacion.domain.fuentesDemo;
+package aplicacion.domain.fuentesProxy.fuentesDemo;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;

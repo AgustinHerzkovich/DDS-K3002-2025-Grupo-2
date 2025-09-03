@@ -1,6 +1,6 @@
 package aplicacion.dto.input;
 
-import aplicacion.domain.fuentesDemo.Conexion;
+import aplicacion.domain.fuentesProxy.fuentesDemo.Conexion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
