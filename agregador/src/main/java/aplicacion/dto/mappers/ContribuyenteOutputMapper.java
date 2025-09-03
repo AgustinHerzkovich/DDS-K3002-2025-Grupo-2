@@ -14,7 +14,7 @@ public class ContribuyenteOutputMapper {
     private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
 
     public ContribuyenteOutputMapper() {
-        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
+        this.identidadContribuyenteOutputMapper = new IdentidadContribuyenteOutputMapper();
     }
     public ContribuyenteOutputDTO map(Contribuyente contribuyente) {
         List<IdentidadContribuyente> identidades = contribuyente.getIdentidades();

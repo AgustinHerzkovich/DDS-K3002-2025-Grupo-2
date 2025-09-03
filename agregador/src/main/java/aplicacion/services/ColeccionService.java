@@ -34,9 +34,8 @@ public class ColeccionService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
-    private final FuenteService fuenteService;
 
-    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, FuenteService fuenteService, ColeccionService coleccionService) {
+    public ColeccionService(RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
@@ -44,8 +43,6 @@ public class ColeccionService {
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = new ColeccionInputMapper();
         this.coleccionOutputMapper = new ColeccionOutputMapper();
-        this.fuenteService = fuenteService;
-
     }
 
     public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {

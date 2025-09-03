@@ -9,7 +9,7 @@ public class ContribuyenteInputMapper {
     private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
 
     public ContribuyenteInputMapper() {
-        this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
+        this.identidadContribuyenteInputMapper = new IdentidadContribuyenteInputMapper();
     }
 
     public Contribuyente map(ContribuyenteInputDTO contribuyenteInputDto) {

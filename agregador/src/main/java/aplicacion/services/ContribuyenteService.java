@@ -26,14 +26,14 @@ public class ContribuyenteService {
 
     public ContribuyenteService(RepositorioDeContribuyentes repositorioDeContribuyentes) {
         this.repositorioDeContribuyentes = repositorioDeContribuyentes;
-    }
+    }/*
 
     @Transactional
     public ContribuyenteOutputDTO guardarContribuyente(ContribuyenteInputDTO contribuyente) {
         if (!repositorioDeContribuyentes.existsById(contribuyente.getId())) {
             repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyente));
         }
-    }
+    }*/
     @Transactional
     public Contribuyente obtenerContribuyentePorId(Long id) {
         return repositorioDeContribuyentes.findById(id)
