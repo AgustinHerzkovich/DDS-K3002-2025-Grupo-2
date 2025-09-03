@@ -47,6 +47,7 @@ public class ColeccionService {
 
     public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {
         Coleccion coleccionLocal = repositorioDeColecciones.save(coleccionInputMapper.map(coleccion));
+        System.out.println(coleccionLocal.getId());
         return coleccionOutputMapper.map(coleccionLocal);
     }
 

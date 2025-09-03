@@ -3,10 +3,12 @@ package aplicacion.dto.output;
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.criterios.CriterioDePertenencia;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 @Getter
+@AllArgsConstructor
 public class ColeccionOutputDTO {
     private String id;
     private String titulo;
@@ -15,6 +17,5 @@ public class ColeccionOutputDTO {
     private List<Fuente> fuentes;
     private AlgoritmoConsenso algoritmoConsenso;
 
-    public ColeccionOutputDTO(String id, String titulo, String descripcion, List<CriterioDePertenencia> criteriosDePertenencia, List<Fuente> fuentes, AlgoritmoConsenso algoritmoConsenso) {
-    }
+
 }
