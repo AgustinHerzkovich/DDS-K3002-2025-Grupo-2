@@ -1,20 +1,18 @@
 package aplicacion.domain.hechos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 // ETIQUETA
 @NoArgsConstructor
 @Entity
+@Getter
 public class Etiqueta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter
+    @Column(length = 20)
     private String nombre;
 
     public Etiqueta(String nombre){
