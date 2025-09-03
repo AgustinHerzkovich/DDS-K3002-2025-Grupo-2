@@ -5,6 +5,10 @@ Agregador:
 - Intentar quitar la clase FuenteXColeccion ya que se genera automaticamente.
 - Cada vez que se crea algo como algoritmoConsenso se crea con un nuevo id y no tiene sentido que haya dos algoritmos absolutos por ejemplo con distintos ids.
 
+- actualizar ultima peticion de hechos a las fuentes anda mal, queda en null siempre
+- probar que se borren los hechos al borrar fuentes, falta testear
+- Esta mal hecho el delete de colecciones, solucionar integridad referencial
+
 --- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
 
