@@ -6,11 +6,13 @@ import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDTO;
 import aplicacion.dto.output.ColeccionOutputDTO;
+import aplicacion.dto.output.FuenteOutputDTO;
+import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import aplicacion.dto.output.HechoOutputDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +21,6 @@ import java.util.List;
 public class ColeccionController {
     private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
-    private List<Observer> observadores;
     public ColeccionController(ColeccionService coleccionService, FuenteService fuenteService) {
         this.coleccionService = coleccionService;
         this.fuenteService = fuenteService;
@@ -43,12 +44,12 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public Coleccion mostrarColeccion(@PathVariable("id") String idColeccion) {
-        return coleccionService.obtenerColeccion(idColeccion);
+    public ColeccionOutputDTO mostrarColeccion(@PathVariable("id") String idColeccion) {
+        return coleccionService.obtenerColeccionDTO(idColeccion);
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public List<Hecho> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+    public List<HechoOutputDTO> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
                                                  @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
                                                  @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
                                                  @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
@@ -60,7 +61,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<Hecho> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+    public List<HechoOutputDTO> mostrarHechosCurados(@PathVariable("id") String idColeccion,
                                             @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
                                             @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
                                             @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
@@ -68,7 +69,7 @@ public class ColeccionController {
                                             @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                             @RequestParam(name = "latitud", required = false) Double latitud,
                                             @RequestParam(name = "longitud", required = false) Double longitud){
-        return coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     // Operaciones UPDATE sobre Colecciones
@@ -81,14 +82,19 @@ public class ColeccionController {
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<Void> agregarFuente(@PathVariable("id") String idColeccion,
-                                              @RequestBody Fuente fuente) {
-        fuenteService.guardarFuente(fuente);
-        Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
-        coleccionService.agregarFuenteAColeccion(coleccion, fuente);
-        coleccionService.guardarColeccion(coleccion);
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuente.getId().getIdExterno() + " tipo: " + fuente.getId().getTipo());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<FuenteOutputDTO> agregarFuente(@PathVariable("id") String idColeccion,
+                                              @RequestBody FuenteInputDTO fuenteInputDTO) {
+        FuenteOutputDTO fuenteOutputDTO;
+        try {
+            fuenteOutputDTO = fuenteService.agregarFuenteAColeccion(idColeccion, fuenteInputDTO);
+        }catch (ColeccionNoEncontradaException e){
+            return ResponseEntity.notFound().build();
+        }catch (Exception e){
+            log.error("ERROR en endpoint /agregador/colecciones/"+idColeccion+"/fuentes: \n", e);
+            return ResponseEntity.badRequest().build();
+        }
+        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteOutputDTO.getId() + " tipo: " + fuenteOutputDTO.getTipo());
+        return ResponseEntity.ok(fuenteOutputDTO);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
