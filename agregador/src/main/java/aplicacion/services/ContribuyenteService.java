@@ -1,5 +1,13 @@
 package aplicacion.services;
 
+import aplicacion.dto.input.ContribuyenteInputDTO;
+import aplicacion.dto.input.IdentidadContribuyenteInputDTO;
+import aplicacion.dto.mappers.ContribuyenteInputMapper;
+import aplicacion.dto.mappers.ContribuyenteOutputMapper;
+import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
+import aplicacion.dto.mappers.IdentidadContribuyenteOutputMapper;
+import aplicacion.dto.output.ContribuyenteOutputDTO;
+import aplicacion.dto.output.IdentidadContribuyenteOutputDTO;
 import aplicacion.repositorios.RepositorioDeContribuyentes;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
@@ -10,17 +18,26 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ContribuyenteService {
     private final RepositorioDeContribuyentes repositorioDeContribuyentes;
+    private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
+    private final ContribuyenteInputMapper contribuyenteInputMapper;
+    private final ContribuyenteOutputMapper contribuyenteOutputMapper;
+    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
 
-    public ContribuyenteService(RepositorioDeContribuyentes repositorioDeContribuyentes) {
+
+    public ContribuyenteService(RepositorioDeContribuyentes repositorioDeContribuyentes, ContribuyenteOutputMapper contribuyenteOutputMapper,ContribuyenteInputMapper contribuyenteInputMapper,IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper,IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {
         this.repositorioDeContribuyentes = repositorioDeContribuyentes;
-    }
+        this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
+        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
+        this.contribuyenteOutputMapper = contribuyenteOutputMapper;
+        this.contribuyenteInputMapper = contribuyenteInputMapper;
+    }/*
 
     @Transactional
-    public void guardarContribuyente(Contribuyente contribuyente) {
+    public ContribuyenteOutputDTO guardarContribuyente(ContribuyenteInputDTO contribuyente) {
         if (!repositorioDeContribuyentes.existsById(contribuyente.getId())) {
-            repositorioDeContribuyentes.save(contribuyente);
+            repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyente));
         }
-    }
+    }*/
     @Transactional
     public Contribuyente obtenerContribuyentePorId(Long id) {
         return repositorioDeContribuyentes.findById(id)
@@ -38,9 +55,10 @@ public class ContribuyenteService {
                 });
     }
     @Transactional
-    public Contribuyente agregarIdentidadAContribuyente(Long id, IdentidadContribuyente identidad) {
+    public ContribuyenteOutputDTO agregarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDTO identidad) {
         Contribuyente contribuyente = obtenerContribuyentePorId(id);
-        contribuyente.agregarIdentidad(identidad);
-        return repositorioDeContribuyentes.save(contribuyente);
+        contribuyente.agregarIdentidad(identidadContribuyenteInputMapper.map(identidad));
+        repositorioDeContribuyentes.save(contribuyente);
+        return contribuyenteOutputMapper.map(contribuyente);
     }
 }

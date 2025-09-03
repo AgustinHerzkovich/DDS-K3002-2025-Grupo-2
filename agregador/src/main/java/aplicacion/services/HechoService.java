@@ -6,12 +6,15 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.output.HechoOutputDTO;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import org.springframework.stereotype.Service;
+import aplicacion.dto.mappers.HechoOutputMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -23,12 +26,14 @@ public class HechoService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
+    private final HechoOutputMapper hechoOutputMapper;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
+        this.hechoOutputMapper = hechoOutputMapper;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -37,6 +42,9 @@ public class HechoService {
 
     public List<Hecho> obtenerHechos() {
         return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
+    }
+    public List<HechoOutputDTO> obtenerHechosAsDTO() {
+        return obtenerHechos().stream().map(hecho -> hechoOutputMapper.map(hecho)).toList();
     }
 
     public void guardarHechoPorFuente(HechoXFuente hechoPorFuente) {
@@ -51,8 +59,13 @@ public class HechoService {
             repositorioDeHechosXColeccion.save(hechoPorColeccion);
         }
     }
-    public Hecho obtenerHechoPorId(String idHecho) {
-        return repositorioDeHechos.findByHechoId(idHecho);
+    public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
+        try{
+            return repositorioDeHechos.findByHechoId(idHecho);
+        }
+        catch (Exception e){
+            throw new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho);
+        }
     }
 
     public List<Hecho> obtenerHechosPorColeccion(String idColeccion) {

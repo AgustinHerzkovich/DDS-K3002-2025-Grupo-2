@@ -4,6 +4,10 @@ import java.util.List;
 
 
 import aplicacion.dto.SolicitudDTO;
+import aplicacion.dto.input.SolicitudInputDTO;
+import aplicacion.dto.mappers.SolicitudOutputMapper;
+import aplicacion.dto.output.SolicitudOutputDTO;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeSolicitudes;
@@ -12,17 +16,20 @@ import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class SolicitudService {
 
     private final RepositorioDeSolicitudes repositorioDeSolicitudes;
     private final HechoService hechoService;
     private final ContribuyenteService contribuyenteService;
+    private final SolicitudOutputMapper solicitudOutputMapper;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService) {
+    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService, SolicitudOutputMapper solicitudOutputMapper) {
         this.repositorioDeSolicitudes = repositorioDeSolicitudes;
         this.hechoService = hechoService;
         this.contribuyenteService = contribuyenteService;
+        this.solicitudOutputMapper = solicitudOutputMapper;
     }
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
@@ -40,12 +47,21 @@ public class SolicitudService {
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
+    public SolicitudOutputDTO obtenerSolicitudDTO(Long id) {
+        return repositorioDeSolicitudes.findById(id)
+                .map(solicitudOutputMapper::map)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
+    }
+
+    public List<SolicitudOutputDTO> obtenerSolicitudesDTO() {
+        return obtenerSolicitudes().stream().map(solicitudOutputMapper::map).toList();
+    }
     public List<SolicitudEliminacion> obtenerSolicitudes() {
         return repositorioDeSolicitudes.findAll();
     }
 
     @Transactional
-    public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) {
+    public SolicitudEliminacion guardarSolicitud(SolicitudEliminacion solicitud) throws HechoNoEncontradoException {
         Hecho hecho = hechoService.obtenerHechoPorId(solicitud.getHecho().getId());
         //Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getId());
         //solicitud.setSolicitante(solicitante);
@@ -56,14 +72,18 @@ public class SolicitudService {
         return solicitudGuardada;
     }
 
+    public void save(SolicitudEliminacion sol){
+        repositorioDeSolicitudes.save(sol);
+    }
+
     @Transactional
-    public SolicitudEliminacion guardarSolicitudDto(SolicitudDTO solicitudDto) throws MotivoSolicitudException {
+    public SolicitudOutputDTO guardarSolicitudDto(SolicitudInputDTO solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
         this.validarMotivoSolicitud(solicitudDto.getMotivo());
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());
         contribuyente.agregarSolicitudEliminacion(solicitud);
-        return guardarSolicitud(solicitud);
+        return solicitudOutputMapper.map(guardarSolicitud(solicitud));
     }
 
     private void validarMotivoSolicitud(String motivo) throws MotivoSolicitudException {
