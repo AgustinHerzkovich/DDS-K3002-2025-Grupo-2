@@ -42,9 +42,7 @@ public class FuenteService {
 
     @Transactional
     public void guardarFuente(Fuente fuente) {
-        if (!repositorioDeFuentes.existsById(fuente.getId())) {
-            repositorioDeFuentes.save(fuente); // Se guarda la fuente en el repositorio si es que no existía ya
-        }
+        repositorioDeFuentes.save(fuente);
     }
 
     @Transactional
@@ -67,6 +65,7 @@ public class FuenteService {
         }
     }
 
+    @Transactional
     public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
@@ -112,7 +111,6 @@ public class FuenteService {
             }
 
             fuente.setUltimaPeticion(LocalDateTime.now()); // actualizar fuente con la fecha de la ultima peticion
-
             try {
                 ResponseEntity<String> response;
                 String json;
@@ -137,6 +135,7 @@ public class FuenteService {
                 fuente.setUltimaPeticion(fecha); // Si hubo un error, no actualizo la fecha de la ultima peticion
                 System.err.println("Error al consumir la API en " + fuente.getId().getIdExterno() + ": " + e.getMessage());
             }
+            guardarFuente(fuente); // Updateo la fuente
         }
         return hashMap;
     }
