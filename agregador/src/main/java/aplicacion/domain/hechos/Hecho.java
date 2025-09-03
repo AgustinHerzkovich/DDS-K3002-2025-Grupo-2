@@ -27,6 +27,7 @@ public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @Column(length = 200)
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     @EqualsAndHashCode.Include
@@ -47,6 +48,7 @@ public class Hecho {
     @Enumerated(EnumType.STRING)
     private Origen origen;
     @EqualsAndHashCode.Include
+    @Column(length = 500)
     private String contenidoTexto;
     // todo: evaluar si es necesario el fetch type eager, es temporal para que pasen los tests
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas

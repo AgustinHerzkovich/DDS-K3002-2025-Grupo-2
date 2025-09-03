@@ -59,9 +59,4 @@ public class Contribuyente {
         }
         return "Sin identidad";
     }
-
-    public void contribuirAlHecho(Hecho hecho) {
-        getUltimaIdentidad().agregarHechoContribuido(hecho);
-        hecho.setAutor(getUltimaIdentidad());
-    }
 }
