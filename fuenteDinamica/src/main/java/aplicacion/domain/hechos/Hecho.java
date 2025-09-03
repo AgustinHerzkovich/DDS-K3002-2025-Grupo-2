@@ -18,6 +18,7 @@ public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @Column(length = 200)
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
     private String descripcion;
@@ -30,6 +31,7 @@ public class Hecho {
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
     private Origen origen;
+    @Column(length = 500)
     private String contenidoTexto;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     // le dice a Hibernate que la FK va en Multimedia
