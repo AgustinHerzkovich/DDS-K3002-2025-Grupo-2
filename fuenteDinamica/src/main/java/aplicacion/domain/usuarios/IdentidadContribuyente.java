@@ -20,7 +20,9 @@ public class IdentidadContribuyente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 20)
     private String nombre;
+    @Column(length = 20)
     private String apellido;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate fechaNacimiento;
