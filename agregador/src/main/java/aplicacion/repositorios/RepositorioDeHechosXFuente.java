@@ -39,4 +39,7 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
           WHERE hxf.fuente.id = :fuenteId
     """)
     List<Hecho> findHechosByFuenteId(FuenteId fuenteId);
+
+    void deleteAllByFuenteId(FuenteId fuenteId);
+
 }

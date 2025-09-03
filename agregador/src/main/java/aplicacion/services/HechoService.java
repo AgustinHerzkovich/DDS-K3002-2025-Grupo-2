@@ -14,7 +14,6 @@ import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import org.springframework.stereotype.Service;
-import aplicacion.dto.mappers.HechoOutputMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -117,5 +116,10 @@ public class HechoService {
 
     public Hecho agregarHecho(Hecho hecho) {
         return repositorioDeHechos.save(hecho);
+    }
+
+    public void borrarHechosPorColeccion(Coleccion coleccion) {
+        repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
+        return;
     }
 }

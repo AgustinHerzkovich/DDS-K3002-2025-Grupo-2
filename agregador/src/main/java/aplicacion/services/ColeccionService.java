@@ -118,7 +118,10 @@ public class ColeccionService {
     public void eliminarColeccion(String idColeccion) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+        borrarFuentesPorColeccion(coleccion);
+        hechoService.borrarHechosPorColeccion(coleccion);
         repositorioDeColecciones.delete(coleccion);
+        System.out.println("Colección eliminada: " + idColeccion);
     }
 
     public void modificarAlgoritmoDeColeccion(String idColeccion, String nuevoAlgoritmo) {
@@ -147,7 +150,8 @@ public class ColeccionService {
     }
 
     @Transactional
-    public void quitarFuenteDeColeccion(Coleccion coleccion, FuenteId fuenteId) {
+    public void quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) {
+        Coleccion coleccion = obtenerColeccion(idColeccion);
         Optional<FuenteXColeccion> fuenteXColeccionOpt = repositorioDeFuentesXColeccion.findByFuenteIdAndColeccion(fuenteId, coleccion);
 
         fuenteXColeccionOpt.ifPresent(fxc -> {
@@ -157,6 +161,15 @@ public class ColeccionService {
             repositorioDeColecciones.save(coleccion); // Updatea la colección después de quitar la fuente
         });
 
+        // Si en fuente por coleccion no quedan mas registros para esta fuente, entonces se eliminan las entradas de HechoXFuente que tengan este FuenteId
+        if (!repositorioDeFuentesXColeccion.existsByFuenteId(fuenteId)) {
+            repositorioDeHechosXFuente.deleteAllByFuenteId(fuenteId);
+        }
+
+        // Quitamos de HechoXColeccion aquellos hechos que eran de esta fuente
         repositorioDeHechosXColeccion.deleteAllByFuenteId(fuenteId); // Eliminar hechos asociados a la fuente de la colección
+    }
+    public void borrarFuentesPorColeccion(Coleccion coleccion) {
+        repositorioDeFuentesXColeccion.deleteAllByColeccionId(coleccion.getId());
     }
 }

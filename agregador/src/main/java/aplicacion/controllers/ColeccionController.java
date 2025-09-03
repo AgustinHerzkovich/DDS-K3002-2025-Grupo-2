@@ -107,8 +107,7 @@ public class ColeccionController {
     public ResponseEntity<Void> quitarFuente(@PathVariable("id") String idColeccion,
                                              @PathVariable("fuenteId") Long fuenteId,
                                              @PathVariable("fuenteTipo") TipoFuente fuenteTipo) {
-        Coleccion coleccion = coleccionService.obtenerColeccion(idColeccion);
-        coleccionService.quitarFuenteDeColeccion(coleccion, new FuenteId(fuenteTipo, fuenteId));
+        coleccionService.quitarFuenteDeColeccion(idColeccion, new FuenteId(fuenteTipo, fuenteId));
         System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId + " tipo: " + fuenteTipo);
         return ResponseEntity.ok().build();
     }

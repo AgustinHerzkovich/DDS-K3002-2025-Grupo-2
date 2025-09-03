@@ -7,6 +7,7 @@ import aplicacion.dto.mappers.FuenteInputDTOMapper;
 import aplicacion.dto.mappers.FuenteOutputDTOMapper;
 import aplicacion.dto.output.FuenteOutputDTO;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
+import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,12 +33,14 @@ public class FuenteService {
     private final ConfiguracionRed config;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionService coleccionService;
+    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService) {
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.coleccionService = coleccionService;
         this.config = cargarConfiguracion();
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
+        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
     }
 
     @Transactional
@@ -158,4 +161,6 @@ public class FuenteService {
         coleccionService.agregarFuenteAColeccion(coleccionId, fuente);
         return FuenteOutputDTOMapper.map(fuente);
     }
+
+
 }
