@@ -2,8 +2,8 @@ package aplicacion.services.schedulers;
 
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.HechoXColeccion;
-import aplicacion.domain.colecciones.HechoXColeccionId;
+import aplicacion.clasesIntermedias.HechoXColeccion;
+import aplicacion.clasesIntermedias.HechoXColeccionId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.services.ColeccionService;

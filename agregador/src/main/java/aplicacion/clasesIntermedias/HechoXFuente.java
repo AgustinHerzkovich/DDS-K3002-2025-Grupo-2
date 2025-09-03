@@ -1,5 +1,6 @@
-package aplicacion.domain.colecciones.fuentes;
+package aplicacion.clasesIntermedias;
 
+import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

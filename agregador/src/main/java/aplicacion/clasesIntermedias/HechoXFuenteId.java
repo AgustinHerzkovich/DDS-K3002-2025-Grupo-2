@@ -1,5 +1,6 @@
-package aplicacion.domain.colecciones.fuentes;
+package aplicacion.clasesIntermedias;
 
+import aplicacion.domain.colecciones.fuentes.FuenteId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;

@@ -1,10 +1,8 @@
 package aplicacion.services.depurador;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
-import aplicacion.domain.colecciones.fuentes.HechoXFuente;
+import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.HechoService;
 import aplicacion.excepciones.HechoNoEncontradoException;

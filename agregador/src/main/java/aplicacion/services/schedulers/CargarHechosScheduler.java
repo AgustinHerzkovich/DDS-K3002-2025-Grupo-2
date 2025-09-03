@@ -1,16 +1,15 @@
 package aplicacion.services.schedulers;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.HechoXColeccion;
+import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteXColeccion;
+import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
-import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class CargarHechosScheduler {

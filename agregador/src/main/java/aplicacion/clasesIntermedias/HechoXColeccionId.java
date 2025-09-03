@@ -1,4 +1,4 @@
-package aplicacion.domain.colecciones;
+package aplicacion.clasesIntermedias;
 
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
