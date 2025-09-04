@@ -19,7 +19,7 @@ public class DepuradorDeHechos {
         this.hechoService = hechoService;
     }
 
-    public void depurar(Coleccion coleccion, Map<Fuente, List<Hecho>> hechosPorFuente) {
+    public void depurar(Map<Fuente, List<Hecho>> hechosPorFuente) {
         for (Map.Entry<Fuente, List<Hecho>> entry: hechosPorFuente.entrySet()) {
             Fuente fuente = entry.getKey();
             List<Hecho> hechos = entry.getValue();
