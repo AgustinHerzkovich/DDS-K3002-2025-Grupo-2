@@ -4,6 +4,7 @@ import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,5 +14,5 @@ public interface RepositorioDeContribuyentes extends JpaRepository<Contribuyente
     @Query(
             "SELECT i FROM IdentidadContribuyente i WHERE i.id = :id"
     ) // TODO: Revisar esto
-    Optional<IdentidadContribuyente> findIdentidadById(Long id);
+    Optional<IdentidadContribuyente> findIdentidadById(@Param("id") Long id);
 }
