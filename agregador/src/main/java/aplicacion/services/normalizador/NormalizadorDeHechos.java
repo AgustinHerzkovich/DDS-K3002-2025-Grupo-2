@@ -148,8 +148,10 @@ public class NormalizadorDeHechos {
 
     private String aplicarNormalizador(String termino, NormalizadorDeTerminos normalizador) {
         String terminoNormalizado = normalizador.normalizarTermino(termino);
-        if(terminoNormalizado == null)
+        if(terminoNormalizado == null) {
             normalizador.agregarTermino(termino);
+            terminoNormalizado = termino;
+        }
         return terminoNormalizado;
     }
 }

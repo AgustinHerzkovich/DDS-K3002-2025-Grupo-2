@@ -48,7 +48,7 @@ public class CargarHechosScheduler {
             normalizadorDeHechos.normalizarMultiThread(hechosPorFuente);
             LocalDateTime finNormalizacion= LocalDateTime.now();
             System.out.println("Tiempo de normalizacion = " + Duration.between(finCarga, finNormalizacion).toSeconds() + "s "+ Duration.between(finCarga, finNormalizacion).toMillisPart() + "ms");
-            depuradorDeHechos.depurar(coleccion, hechosPorFuente); // Depura hechos repetidos
+            depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
             LocalDateTime finDepuracion = LocalDateTime.now();
             System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
         }

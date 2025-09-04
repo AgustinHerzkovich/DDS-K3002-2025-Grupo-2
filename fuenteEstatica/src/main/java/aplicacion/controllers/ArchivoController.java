@@ -15,18 +15,7 @@ public class ArchivoController {
         this.archivoService = archivoService;
     }
 
-    @PostMapping("/{id}/archivo")
-    public ResponseEntity<String> subirArchivo(@RequestParam("file") MultipartFile file,
-                                               @PathVariable("id") Long id) {
-        try {
-            archivoService.subirArchivo(id, file);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error al subir archivo: " + e.getMessage());
-        }
-        return ResponseEntity.ok("Archivo subido correctamente al FileServer");
-    }
-
-    @PostMapping("/{id}/archivo/por-url")
+    @PostMapping("/{id}/archivos/por-url")
     public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url,
                                                      @PathVariable("id") Long id) {
         try {

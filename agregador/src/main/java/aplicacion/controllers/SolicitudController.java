@@ -69,28 +69,6 @@ public class SolicitudController {
 
         System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
 
-
-        if(nuevoEstado.equals("ACEPTADA")){
-            System.out.println(" " +
-                    "                   <((((((\\\\\\\n" +
-                    "                   /      . }\\\n" +
-                    "                   ;--..--._|}\n" +
-                    "(\\                 '--/\\--'  )\n" +
-                    " \\\\                | '-'  :'|\n" +
-                    "  \\\\               . -==- .-|\n" +
-                    "   \\\\               \\.__.'   \\--._\n" +
-                    "   [\\\\          __.--|       //  _/'--.\n" +
-                    "   \\ \\\\       .'-._ ('-----'/ __/      \\\n" +
-                    "    \\ \\\\     /   __>|      | '--.       |\n" +
-                    "     \\ \\\\   |   \\   |     /    /       /\n" +
-                    "      \\ '\\ /     \\  |     |  _/       /\n" +
-                    "       \\  \\       \\ |     | /        /\n" +
-                    "        \\  \\      \\        /\n" +
-                    "\n" +
-                    "                      HECHO \n"+
-                    "              HAS SIDO EXTERMINADO \n" + sol.getHecho().getId());
-        }
-
         return ResponseEntity.ok().build();
     }
 }

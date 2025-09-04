@@ -7,9 +7,9 @@ Ver que se guarden correctamente en el file server en distintas carpetas
 Pedir hechos de una fuente y ver que los devuelva bien
 
 Ejemplo:
-POST http://localhost:8081/fuentesEstaticas/1/archivo -> form-data: file: desastres_naturales_argentina.csv
-POST http://localhost:8081/fuentesEstaticas/2/archivo -> form-data: file: desastres_sanitarios_contaminacion_argentina.csv
-POST http://localhost:8081/fuentesEstaticas/3/archivo -> form-data: file: desastres_tecnologicos_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/1/archivos -> form-data: file: desastres_naturales_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/2/archivos -> form-data: file: desastres_sanitarios_contaminacion_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/3/archivos -> form-data: file: desastres_tecnologicos_argentina.csv
 
 GET http://localhost:8081/fuentesEstaticas/1/hechos
 GET http://localhost:8081/fuentesEstaticas/2/hechos
@@ -98,7 +98,7 @@ Crear una coleccion con alguna fuente
 
 3) Hacer un POST de un archivo en fuente estática. Ejemplo:
 
-POST http://localhost:8081/fuentesEstaticas/1/archivo -> form-data: file: desastres_naturales_argentina.csv
+POST http://localhost:8081/fuentesEstaticas/1/archivos -> form-data: file: desastres_naturales_argentina.csv
 
 4) Hacer un POST de una colección al agregador. Ejemplo:
 
@@ -149,6 +149,9 @@ Fuente estática para agregador:
 Dejar los archivos ya previamente cargados en la nube y solo levantar la app
 
 Agregador para fuente metamapa:
+Levantar otro agregador en la misma compu con:
+java -jar .\agregador\target\agregador-0.1.0.jar -D --server.port=8094
+
 POST http://localhost:8094/agregador/colecciones
 Body:
 {

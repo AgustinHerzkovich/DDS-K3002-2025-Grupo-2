@@ -13,6 +13,7 @@ import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
+import aplicacion.services.normalizador.NormalizadorDeHechos;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,13 +27,15 @@ public class HechoService {
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoOutputMapper hechoOutputMapper;
+    private final NormalizadorDeHechos normalizadorDeHechos;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
+        this.normalizadorDeHechos = normalizadorDeHechos;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -115,6 +118,7 @@ public class HechoService {
     }
 
     public Hecho agregarHecho(Hecho hecho) {
+        normalizadorDeHechos.normalizar(hecho);
         return repositorioDeHechos.save(hecho);
     }
 

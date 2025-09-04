@@ -31,7 +31,6 @@ public class ColeccionController {
     }
 
     // Operaciones CREATE sobre Colecciones
-
     @PostMapping("/colecciones")
     public ResponseEntity<ColeccionOutputDTO> crearColeccion(@RequestBody ColeccionInputDTO coleccion) {
         fuenteService.guardarFuentes(coleccion.getFuentes());
