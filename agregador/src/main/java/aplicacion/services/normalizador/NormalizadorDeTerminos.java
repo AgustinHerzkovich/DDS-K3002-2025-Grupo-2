@@ -50,9 +50,9 @@ public class NormalizadorDeTerminos {
         int mejorDistancia = Integer.MAX_VALUE;
         for (Termino t : terminosConocidos) { // terminosConocidos -> soyTermino
             Integer distancia = levenshtein.apply(t.getNombre(), terminoAComparar).getDistance(); // 4540945u
-            if (distancia == null)
+            if (distancia == -1)
                 continue;    // Si no llega al umbral continua (no tira NullPointerException ni nada raro)
-            if (distancia < mejorDistancia && distancia >= umbralDeNormalizacion) { // Si es mejor que el mejor y cumple con el umbral
+            if (distancia < mejorDistancia) { // Si es mejor que el mejor y cumple con el umbral
                 mejor = t;
                 mejorDistancia = distancia;
                 if (distancia == 0) break; //Si es exacto, se detiene
