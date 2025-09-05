@@ -9,24 +9,14 @@ import java.util.*;
 public class NormalizadorDeTerminos {
     List<Termino> terminosConocidos = new ArrayList<>();
     @Getter @Setter
-    private Integer umbral = null;
     LevenshteinDetailedDistance levenshtein;
     public NormalizadorDeTerminos(Integer umbral){
-        this.umbral = umbral;
         levenshtein = new LevenshteinDetailedDistance(umbral);
     }
 
-    // Dado un String, devuelve el mismo si esta admitido, su sinónimo si este toma precedencia, o alguno cercano segun distancia de Levenshtein
-
-    public String normalizarTermino(String textoANormalizar){
-        if(umbral == null){
-            throw new UmbralNoDefinidoException("Umbral es null en NormalizadorDeTerminos");
-        }
-        return  normalizarTermino(textoANormalizar, umbral);
-    }
     // Normaliza dado un umbral personalizado
-    public String normalizarTermino(String textoANormalizar, Integer umbralDeNormalizacion) {
-        Optional<Termino> mejorMatch = hallarMejorMatch(textoANormalizar, umbralDeNormalizacion); // Si no lo encuentra, usa levenshtein
+    public String normalizarTermino(String textoANormalizar) {
+        Optional<Termino> mejorMatch = hallarMejorMatch(textoANormalizar); // Si no lo encuentra, usa levenshtein
         // Ninguno cumple con el umbral
         // Devuelve el string del termino, o si es sinonimo, al termino que apunta
         return mejorMatch.map(Termino::normalizar).orElse(null);
@@ -45,7 +35,7 @@ public class NormalizadorDeTerminos {
     }
 
     // Aplica el algoritmo de hallar el mejor match
-    private Optional<Termino> hallarMejorMatch(String terminoAComparar, Integer umbralDeNormalizacion) {
+    private Optional<Termino> hallarMejorMatch(String terminoAComparar) {
         Termino mejor = null;
         int mejorDistancia = Integer.MAX_VALUE;
         for (Termino t : terminosConocidos) { // terminosConocidos -> soyTermino

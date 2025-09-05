@@ -6,6 +6,8 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.HechoInputDTO;
+import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDTO;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
@@ -28,14 +30,16 @@ public class HechoService {
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
+    private final HechoInputMapper hechoInputMapper;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
+        this.hechoInputMapper = hechoInputMapper;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -117,13 +121,14 @@ public class HechoService {
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 
-    public Hecho agregarHecho(Hecho hecho) {
+    public HechoOutputDTO agregarHecho(HechoInputDTO hechoInputDTO) {
+        Hecho hecho = hechoInputMapper.map(hechoInputDTO);
         normalizadorDeHechos.normalizar(hecho);
-        return repositorioDeHechos.save(hecho);
+        hecho = repositorioDeHechos.save(hecho);
+        return hechoOutputMapper.map(hecho);
     }
 
     public void borrarHechosPorColeccion(Coleccion coleccion) {
         repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
-        return;
     }
 }

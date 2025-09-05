@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FuenteOutputDTOMapper {
-    public static FuenteOutputDTO map(Fuente fuente){
+    public FuenteOutputDTO map(Fuente fuente){
         FuenteOutputDTO retVal = new FuenteOutputDTO();
         retVal.setId(Math.toIntExact(fuente.getId().getIdExterno()));
         retVal.setTipo(fuente.getId().getTipo());
