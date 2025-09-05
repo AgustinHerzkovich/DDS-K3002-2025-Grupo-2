@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.HechoInputDTO;
 import aplicacion.dto.output.HechoOutputDTO;
 import aplicacion.services.HechoService;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,9 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<Hecho> reportarHecho(@RequestBody Hecho hecho) {
-        return ResponseEntity.ok(hechoService.agregarHecho(hecho));
+    public ResponseEntity<HechoOutputDTO> reportarHecho(@RequestBody HechoInputDTO hechoInputDto) {
+        HechoOutputDTO hecho = hechoService.agregarHecho(hechoInputDto);
+        System.out.println("Hecho creado: " + hecho.getId());
+        return ResponseEntity.ok(hecho);
     }
 }
