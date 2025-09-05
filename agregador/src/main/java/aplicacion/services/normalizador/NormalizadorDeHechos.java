@@ -13,7 +13,6 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class NormalizadorDeHechos {
         Object lockCategoria = locks.computeIfAbsent("categoria", k -> new Object());
         Object lockUbicacion = locks.computeIfAbsent("ubicacion", k -> new Object());
         for(Hecho hecho : mapFuentesYhechosANormalizar.values().stream().flatMap(List::stream).toList())
-           executor.submit(() -> normalizarSincornizado(hecho, lockEtiqueta, lockCategoria, lockUbicacion));
+           executor.submit(() -> normalizarsincronizado(hecho, lockEtiqueta, lockCategoria, lockUbicacion));
         executor.shutdown();
         try {
             if (!executor.awaitTermination(1, TimeUnit.HOURS)) { // Si no termina en una hora, fuerzo que se detenga
@@ -58,7 +57,7 @@ public class NormalizadorDeHechos {
         }
     }
 
-    private void normalizarSincornizado(Hecho hecho, Object lockEtiqueta, Object lockCategoria, Object lockUbicacion){
+    private void normalizarsincronizado(Hecho hecho, Object lockEtiqueta, Object lockCategoria, Object lockUbicacion){
         Categoria categoriaAInyectar;
         List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
         synchronized (lockCategoria) {

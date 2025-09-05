@@ -1,6 +1,5 @@
 package aplicacion.services;
 
-import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.*;
 import aplicacion.dto.input.FuenteInputDTO;
 import aplicacion.dto.mappers.FuenteInputDTOMapper;
@@ -34,13 +33,17 @@ public class FuenteService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionService coleccionService;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
+    private final FuenteInputDTOMapper fuenteInputDTOMapper;
+    private final FuenteOutputDTOMapper fuenteOutputDTOMapper;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion) {
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, FuenteInputDTOMapper fuenteInputDTOMapper, FuenteOutputDTOMapper fuenteOutputDTOMapper) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.coleccionService = coleccionService;
         this.config = cargarConfiguracion();
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
+        this.fuenteInputDTOMapper = fuenteInputDTOMapper;
+        this.fuenteOutputDTOMapper = fuenteOutputDTOMapper;
     }
 
     @Transactional
@@ -156,10 +159,10 @@ public class FuenteService {
         return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
     }
     public FuenteOutputDTO agregarFuenteAColeccion(String coleccionId, FuenteInputDTO fuenteInputDTO) throws ColeccionNoEncontradaException {
-        Fuente fuente = FuenteInputDTOMapper.map(fuenteInputDTO);
+        Fuente fuente = fuenteInputDTOMapper.map(fuenteInputDTO);
         repositorioDeFuentes.save(fuente);
         coleccionService.agregarFuenteAColeccion(coleccionId, fuente);
-        return FuenteOutputDTOMapper.map(fuente);
+        return fuenteOutputDTOMapper.map(fuente);
     }
 
 

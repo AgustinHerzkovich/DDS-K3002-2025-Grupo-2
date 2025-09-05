@@ -34,8 +34,9 @@ public class ColeccionService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
+    private final HechoOutputMapper hechoOutputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
@@ -43,6 +44,7 @@ public class ColeccionService {
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = coleccionInputMapper;
         this.coleccionOutputMapper = coleccionOutputMapper;
+        this.hechoOutputMapper = hechoOutputMapper;
     }
 
     public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {
@@ -110,7 +112,7 @@ public class ColeccionService {
                 .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
-                .map(HechoOutputMapper::map)
+                .map(hechoOutputMapper::map)
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
     }
 

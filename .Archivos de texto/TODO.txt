@@ -4,10 +4,6 @@ Agregador:
 - Reestructuración de dtos input y output, con mappers.
 - Intentar quitar la clase FuenteXColeccion ya que se genera automaticamente.
 - Cada vez que se crea algo como algoritmoConsenso se crea con un nuevo id y no tiene sentido que haya dos algoritmos absolutos por ejemplo con distintos ids.
-- Error: Si en el test integral se sube primero la colección 2 y luego la colección 1 tira violación de restricción de integridad referencial. Posibles causas (a mi criterio):
-    - Falla algo en la normalización.
-    - Se da el error porque tratamos a los hechos de fuente dinámica y proxy como si fueran los mismos de agregador (cuando usamos mapper.readValue en hechosUltimaPeticion).
- Si es la segunda opción se va a solucionar cuando hagamos bien los dtos.
 
 - actualizar ultima peticion de hechos a las fuentes anda mal, queda en null siempre
 - probar que se borren los hechos al borrar fuentes, falta testear

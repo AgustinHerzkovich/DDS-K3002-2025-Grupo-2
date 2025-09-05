@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FuenteInputDTOMapper{
-    public static Fuente map(FuenteInputDTO fuenteInputDTO){
+    public Fuente map(FuenteInputDTO fuenteInputDTO){
         Fuente retVal = new Fuente();
         retVal.setId(new FuenteId(fuenteInputDTO.getTipo(), fuenteInputDTO.getId().longValue()));
         retVal.setUltimaPeticion(null);
