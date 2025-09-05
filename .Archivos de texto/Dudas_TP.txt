@@ -59,14 +59,15 @@ RESP: El enunciado no lo aclara por el momento. Se debe esclarecer el diagrama d
 17. Qué hacemos en el diagrama con las clases Algoritmos? ya que solo las llama el scheduller.
 RESP: Refactorizar y aplicar algún patrón strategy, eliminando tal vez el enum.
 
-18. Las fuentes metamapas se consultan cuando se piden los hechos de agregador? O se guardan los hechos en la carga cada una hora al igual que todas las demás fuentes? Si se consulta en tiempo real cuando se piden los hechos a agregador entonces no se podrían consensuar.
-RESP:
+18. Las fuentes metamapas se consultan cuando se piden los hechos de agregador? O se guardan los hechos en la carga cada una hora al igual que
+todas las demás fuentes? Si se consulta en tiempo real cuando se piden los hechos a agregador entonces no se podrían consensuar.
+RESP: Se consultan en tiempo real en la carga, pero cuando se piden los hechos a agregador, este devuelve los que tiene guardados en BD.
 
 19. Opciones: Que un controller llame a varios services y les pase el resultado de uno al otro, o que un service llame a otro service.
-RESP:
+RESP: Como queramos nosotros, optamos por la opcion de que varios services se comuniquen entre si.
 
 20. Fuente dinamica puede ser una sola o deberiamos tener varias? Pregunto ya que todas acceden a la misma BD.
-RESP:
+RESP: En la vida real podria ser una BD por pais o algo asi, pero en tp limitamos el alcance a una sola BD, lo que implica una unica fuente dinamica.
 
 21. Qué es lo de "Reportar un hecho" que se menciona en la api pública?
-RESP:
+RESP: Aun no se sabe, a priori lo dejamos como lo tenemos.

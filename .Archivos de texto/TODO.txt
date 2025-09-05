@@ -17,3 +17,13 @@ Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
 Separar las clases Entity que persistimos de las que exponemos como JSON en la API REST, es decir, la clase Hecho marcada como Entity es la que persistimos,
 y aparte tenemos otra clase HechoOut (por ejemplo), que es la que devolvemos como json en las apis, y así evitamos los JsonIgnore que pusimos y separamos
 las clases de persistencia de las que presentamos. Esto es una buena práctica de diseño ya que respeta la división de capas.
+
+llegar a segunda forma normal -> revisar los embedded
+
+
+
+balanceador de carga o varios componentes en paralelo (titular y suplente) por si se cae alguno.
+
+ui de agregador -> no debe ser servidor
+
+patron de integracion agregador -> que agregador no exponga datos, solo que  argue la base
