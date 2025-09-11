@@ -1,16 +1,15 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HechoRevisadoOutputMapper {
-    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
+    private final ContribuyenteOutputMapper contribuyenteOutputMapper;
 
-    public HechoRevisadoOutputMapper(IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper) {
-        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
+    public HechoRevisadoOutputMapper(ContribuyenteOutputMapper contribuyenteOutputMapper) {
+        this.contribuyenteOutputMapper = contribuyenteOutputMapper;
     }
 
     public HechoRevisadoOutputDto map(Hecho hecho) {
@@ -26,7 +25,7 @@ public class HechoRevisadoOutputMapper {
                 hecho.getContenidoTexto(),
                 hecho.getContenidoMultimedia(),
                 hecho.getAnonimato(),
-                identidadContribuyenteOutputMapper.map(hecho.getAutor()),
+                hecho.getAutor() != null ? contribuyenteOutputMapper.map(hecho.getAutor()) : null,
                 hecho.getEstadoRevision(),
                 hecho.getSugerencia()
         );

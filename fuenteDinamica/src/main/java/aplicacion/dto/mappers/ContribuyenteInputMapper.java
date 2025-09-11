@@ -1,6 +1,7 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.domain.usuarios.IdentidadContribuyente;
 import aplicacion.dto.input.ContribuyenteInputDto;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,8 @@ public class ContribuyenteInputMapper {
     }
 
     public Contribuyente map(ContribuyenteInputDto contribuyenteInputDto) {
-        Contribuyente contribuyente = new Contribuyente(contribuyenteInputDto.getEsAdministrador());
-        if (contribuyenteInputDto.getIdentidad() != null) {
-            contribuyente.agregarIdentidad(identidadContribuyenteInputMapper.map(contribuyenteInputDto.getIdentidad()));
-        }
-        return contribuyente;
+        IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(contribuyenteInputDto.getIdentidad());
+
+        return new Contribuyente(contribuyenteInputDto.getEsAdministrador(), identidad);
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HechoOutputMapper {
-    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
+    private final ContribuyenteOutputMapper contribuyenteOutputMapper;
 
-    public HechoOutputMapper(IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper) {
-        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
+    public HechoOutputMapper(ContribuyenteOutputMapper contribuyenteOutputMapper) {
+        this.contribuyenteOutputMapper = contribuyenteOutputMapper;
     }
 
     public HechoOutputDto map(Hecho hecho) {
@@ -25,7 +25,7 @@ public class HechoOutputMapper {
                 hecho.getContenidoTexto(),
                 hecho.getContenidoMultimedia(),
                 hecho.getAnonimato(),
-                identidadContribuyenteOutputMapper.map(hecho.getAutor())
+                hecho.getAutor() != null ? contribuyenteOutputMapper.map(hecho.getAutor()) : null
                 );
     }
 }

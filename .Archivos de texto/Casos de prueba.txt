@@ -17,18 +17,15 @@ GET http://localhost:8081/fuentesEstaticas/3/hechos
 
 Prueba Fuente Dinámica:
 Crear contribuyente
-Añadirle dos identidades
 Postear hecho anónimo
-Postear hecho no anónimo con una de esas dos identidades
+Postear hecho no anónimo
 Verificar que el hecho no anónimo se pueda editar
 Verificar que el hecho anónimo no se pueda editar
 Aceptar uno de los hechos (con sugerencia) y rechazar el otro
 Pedir los hechos y validar que solo se devuelva aquel que fue aceptado
 
 Ejemplo:
-POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true }
-POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }
-POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Juan", "apellido": "Perez", "fechaNacimiento": "1985-05-05" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" } }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
                                              "descripcion": "Descripcion ejemplo",
@@ -52,7 +49,7 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                }
                                              ],
                                              "anonimato": false,
-                                             "identidadId": 1
+                                             "contribuyenteId": 1
                                            }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo 2",

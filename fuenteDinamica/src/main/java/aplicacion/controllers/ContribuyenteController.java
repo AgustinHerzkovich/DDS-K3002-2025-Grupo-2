@@ -27,13 +27,13 @@ public class ContribuyenteController {
         return ResponseEntity.ok(contribuyenteProcesado);
     }
 
-    @PostMapping("/contribuyentes/{id}/identidades")
-    public ResponseEntity<?> agregarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
+    @PatchMapping("/contribuyentes/{id}/identidad")
+    public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
                                                                                  @PathVariable("id") Long id) {
         try {
             Validaciones.validarId(id);
-            ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.agregarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
-            System.out.println("Se ha agregado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
+            ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
+            System.out.println("Se ha modificado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
             return ResponseEntity.ok(contribuyenteProcesado);
         } catch (IdInvalidoException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
