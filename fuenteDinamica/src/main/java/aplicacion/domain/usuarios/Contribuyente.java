@@ -19,20 +19,17 @@ public class Contribuyente {
     private Long id;
     @Setter
     private Boolean esAdministrador;
-    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IdentidadContribuyente> identidades;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Setter
+    private IdentidadContribuyente identidad;
+    @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
+    private List<Hecho> hechosContribuidos;
 
-    public Contribuyente(Boolean esAdministrador) {
+    public Contribuyente(Boolean esAdministrador, IdentidadContribuyente identidad) {
         this.esAdministrador = esAdministrador;
-        this.identidades = new ArrayList<>();
+        this.identidad = identidad;
+        this.hechosContribuidos = new ArrayList<>();
     }
 
-    public IdentidadContribuyente getUltimaIdentidad() {
-        return identidades.getLast();
-    }
-
-    public void agregarIdentidad(IdentidadContribuyente identidad){
-        identidades.add(identidad);
-        identidad.setContribuyente(this); // Establece la relación bidireccional
-    }
+    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

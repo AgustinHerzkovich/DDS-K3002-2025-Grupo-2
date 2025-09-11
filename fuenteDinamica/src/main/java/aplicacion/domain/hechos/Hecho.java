@@ -1,6 +1,7 @@
 package aplicacion.domain.hechos;
 
 import aplicacion.domain.hechos.multimedias.Multimedia;
+import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,7 +39,7 @@ public class Hecho {
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
-    private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
+    private Contribuyente autor; // TODO: Revisar como se persiste el autor
     @Enumerated(EnumType.STRING)
     private EstadoRevision estadoRevision;
     private String sugerencia;
@@ -52,7 +53,7 @@ public class Hecho {
                  String contenidoTexto,
                  List<Multimedia> contenidoMultimedia,
                  Boolean anonimato,
-                 IdentidadContribuyente autor) {
+                 Contribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;

@@ -1,6 +1,6 @@
 package aplicacion.services;
 
-import aplicacion.domain.usuarios.IdentidadContribuyente;
+import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.input.HechoEdicionInputDto;
@@ -53,13 +53,13 @@ public class HechoService {
 
     @Transactional //(readOnly = true)
     public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
-        Long identidadId = hechoInputDto.getIdentidadId();
-        IdentidadContribuyente autor = null;
+        Long identidadId = hechoInputDto.getContribuyenteId();
+        Contribuyente autor = null;
         if (!hechoInputDto.getAnonimato() && identidadId == null) {
             throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");
         }
         if (!hechoInputDto.getAnonimato()) {
-            autor = contribuyenteService.obtenerIdentidad(hechoInputDto.getIdentidadId());
+            autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getContribuyenteId());
         }
         Hecho hecho = hechoInputMapper.map(hechoInputDto, autor);
         hecho = repositorioDeHechos.save(hecho);

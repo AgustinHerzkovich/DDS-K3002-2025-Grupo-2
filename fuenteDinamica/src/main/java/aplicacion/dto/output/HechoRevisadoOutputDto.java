@@ -26,7 +26,7 @@ public class HechoRevisadoOutputDto {
     private String contenidoTexto;
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
-    private IdentidadContribuyenteOutputDto autor;
+    private ContribuyenteOutputDto autor;
     private EstadoRevision estadoRevision;
     private String sugerencia;
 }

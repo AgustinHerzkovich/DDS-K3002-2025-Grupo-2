@@ -36,15 +36,10 @@ public class ContribuyenteService {
                 .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con ID: " + id));
     }
 
-    public IdentidadContribuyente obtenerIdentidad(Long id) throws ContribuyenteNoConfiguradoException {
-        return repositorioDeContribuyentes.findIdentidadById(id)
-                .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Identidad no encontrada para el contribuyente con ID: " + id));
-    }
-
-    public ContribuyenteOutputDto agregarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
+    public ContribuyenteOutputDto modificarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
         IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(identidadContribuyenteInputDto);
         Contribuyente contribuyente = obtenerContribuyente(id);
-        contribuyente.agregarIdentidad(identidad);
+        contribuyente.setIdentidad(identidad);
         contribuyente = repositorioDeContribuyentes.save(contribuyente);
         return contribuyenteOutputMapper.map(contribuyente);
     }
