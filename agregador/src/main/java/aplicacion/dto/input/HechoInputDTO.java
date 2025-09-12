@@ -4,15 +4,15 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
-import domain.dashboardDTOs.hechos.CategoriaDTO;
+import aplicacion.domain.usuarios.Contribuyente;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class HechoInputDTO {
     private String titulo;
     private String descripcion;
@@ -23,8 +23,5 @@ public class HechoInputDTO {
     private String contenidoTexto;
     private Boolean anonimato;
     private List<Multimedia> contenidoMultimedia;
-    private IdentidadContribuyente autor;
-    public HechoInputDTO() {
-    }
-
+    private Contribuyente autor;
 }

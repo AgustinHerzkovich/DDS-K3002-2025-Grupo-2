@@ -2,6 +2,7 @@ package aplicacion.domain.hechos;
 
 import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
+import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -59,7 +60,7 @@ public class Hecho {
     private Boolean visible;
     private Boolean anonimato;
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
-    private IdentidadContribuyente autor; // TODO: Revisar como se persiste el autor
+    private Contribuyente autor; // TODO: Revisar como se persiste el autor
 
     @JsonCreator
     public Hecho(@JsonProperty("titulo") String titulo,
@@ -71,7 +72,7 @@ public class Hecho {
                  @JsonProperty("contenidoTexto") String contenidoTexto,
                  @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
                  @JsonProperty("anonimato") Boolean anonimato,
-                 @JsonProperty("autor") IdentidadContribuyente autor) {
+                 @JsonProperty("autor") Contribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;

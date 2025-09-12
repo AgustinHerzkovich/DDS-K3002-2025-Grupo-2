@@ -10,5 +10,5 @@ import java.util.List;
 public class ContribuyenteOutputDTO {
     private Long id;
     private Boolean esAdministrador;
-    private List<IdentidadContribuyenteOutputDTO> identidades;
+    private IdentidadContribuyenteOutputDTO identidad;
 }

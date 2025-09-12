@@ -5,7 +5,7 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
+import aplicacion.domain.usuarios.Contribuyente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -27,5 +27,5 @@ public class HechoOutputDTO {
     private String contenidoTexto;
     private List<Multimedia> contenidoMultimedia;
     private Boolean anonimato;
-    private IdentidadContribuyente autor;
+    private Contribuyente autor;
 }

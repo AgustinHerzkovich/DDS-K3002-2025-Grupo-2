@@ -23,40 +23,26 @@ public class Contribuyente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean esAdministrador;
-    @OneToMany(mappedBy = "contribuyente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<IdentidadContribuyente> identidades;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private IdentidadContribuyente identidad;
     @OneToMany(mappedBy = "solicitante", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<SolicitudEliminacion> solicitudesEliminacion;
+    @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Hecho> hechosContribuidos;
 
     @JsonCreator
-    public Contribuyente(@JsonProperty("esAdministrador") Boolean esAdministrador) {
+    public Contribuyente(@JsonProperty("esAdministrador") Boolean esAdministrador, @JsonProperty("identidad") IdentidadContribuyente identidad) {
         this.esAdministrador = esAdministrador;
-        this.identidades = new ArrayList<>();
+        this.identidad = identidad;
         this.solicitudesEliminacion = new ArrayList<>();
-    }
-
-    public IdentidadContribuyente getUltimaIdentidad() {
-        if (identidades == null || identidades.isEmpty()) {
-            return null;
-        }
-        return identidades.getLast();
-    }
-
-    public void agregarIdentidad(IdentidadContribuyente identidad){
-        identidades.add(identidad);
-        identidad.setContribuyente(this); // Establece la relación bidireccional
+        this.hechosContribuidos = new ArrayList<>();
     }
 
     public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
         solicitudesEliminacion.add(solicitud);
     }
 
-    public String getNombreCompleto() {
-        IdentidadContribuyente identidad = this.getUltimaIdentidad();
-        if (identidad != null) {
-            return identidad.getNombre() + " " + identidad.getApellido();
-        }
-        return "Sin identidad";
-    }
+    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

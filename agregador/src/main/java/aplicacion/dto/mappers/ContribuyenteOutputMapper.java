@@ -17,11 +17,8 @@ public class ContribuyenteOutputMapper {
         this.identidadContribuyenteOutputMapper = new IdentidadContribuyenteOutputMapper();
     }
     public ContribuyenteOutputDTO map(Contribuyente contribuyente) {
-        List<IdentidadContribuyente> identidades = contribuyente.getIdentidades();
-        List<IdentidadContribuyenteOutputDTO> identidadesOutput = new ArrayList<>();
-        for (IdentidadContribuyente identidad : identidades) {
-            identidadesOutput.add(identidadContribuyenteOutputMapper.map(identidad));
-        }
-        return new ContribuyenteOutputDTO(contribuyente.getId(), contribuyente.getEsAdministrador(), identidadesOutput);
+        IdentidadContribuyente identidad = contribuyente.getIdentidad();
+        IdentidadContribuyenteOutputDTO identidadOutput = identidadContribuyenteOutputMapper.map(identidad);
+        return new ContribuyenteOutputDTO(contribuyente.getId(), contribuyente.getEsAdministrador(), identidadOutput);
     }
 }

@@ -177,9 +177,7 @@ Body:
 
 Fuente dinámica para agregador:
 Ejemplo:
-POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true }
-POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }
-POST http://localhost:8082/fuentesDinamicas/contribuyentes/1/identidades -> body: { "nombre": "Juan", "apellido": "Perez", "fechaNacimiento": "1985-05-05" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" } }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
                                              "descripcion": "Descripcion ejemplo",
@@ -203,7 +201,7 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                }
                                              ],
                                              "anonimato": false,
-                                             "identidadId": 1
+                                             "contribuyenteId": 1
                                            }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
