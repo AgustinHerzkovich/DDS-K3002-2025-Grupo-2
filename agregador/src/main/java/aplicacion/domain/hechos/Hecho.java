@@ -3,11 +3,6 @@ package aplicacion.domain.hechos;
 import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +18,6 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL) // Para que no aparezcan los atributos nulos en el JSON
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,7 +37,6 @@ public class Hecho {
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     @OneToMany(mappedBy = "hecho", fetch = FetchType.EAGER) // Indica que SolicitudEliminacion es el dueño de la relación bidireccional
-    @JsonManagedReference // Evita que se serialice la lista de solicitudes al convertir a JSON, para evitar ciclos infinitos
     private List<SolicitudEliminacion> solicitudes;
     private LocalDateTime fechaUltimaModificacion;
     @Enumerated(EnumType.STRING)
@@ -62,17 +55,16 @@ public class Hecho {
     @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
     private Contribuyente autor; // TODO: Revisar como se persiste el autor
 
-    @JsonCreator
-    public Hecho(@JsonProperty("titulo") String titulo,
-                 @JsonProperty("descripcion") String descripcion,
-                 @JsonProperty("categoria") Categoria categoria,
-                 @JsonProperty("ubicacion") Ubicacion ubicacion,
-                 @JsonProperty("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
-                 @JsonProperty("origen") Origen origen,
-                 @JsonProperty("contenidoTexto") String contenidoTexto,
-                 @JsonProperty("contenidoMultimedia") List<Multimedia> contenidoMultimedia,
-                 @JsonProperty("anonimato") Boolean anonimato,
-                 @JsonProperty("autor") Contribuyente autor) {
+    public Hecho(String titulo,
+                 String descripcion,
+                 Categoria categoria,
+                 Ubicacion ubicacion,
+                 LocalDateTime fechaAcontecimiento,
+                 Origen origen,
+                 String contenidoTexto,
+                 List<Multimedia> contenidoMultimedia,
+                 Boolean anonimato,
+                 Contribuyente autor) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;

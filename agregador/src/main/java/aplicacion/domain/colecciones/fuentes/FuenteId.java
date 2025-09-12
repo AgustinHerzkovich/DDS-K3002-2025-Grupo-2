@@ -16,8 +16,7 @@ public class FuenteId implements Serializable {
     private TipoFuente tipo;
     private Long idExterno;
 
-    @JsonCreator
-    public FuenteId(@JsonProperty("tipo") TipoFuente tipo, @JsonProperty("idExterno") Long idExterno) {
+    public FuenteId(TipoFuente tipo, Long idExterno) {
         this.tipo = tipo;
         this.idExterno = idExterno;
     }
