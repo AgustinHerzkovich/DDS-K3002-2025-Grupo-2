@@ -1,13 +1,9 @@
 package aplicacion.services;
 
-import aplicacion.dto.input.ContribuyenteInputDTO;
-import aplicacion.dto.input.IdentidadContribuyenteInputDTO;
 import aplicacion.dto.mappers.ContribuyenteInputMapper;
 import aplicacion.dto.mappers.ContribuyenteOutputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteOutputMapper;
-import aplicacion.dto.output.ContribuyenteOutputDTO;
-import aplicacion.dto.output.IdentidadContribuyenteOutputDTO;
 import aplicacion.repositorios.RepositorioDeContribuyentes;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;

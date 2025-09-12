@@ -6,10 +6,10 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.input.HechoInputDTO;
+import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
-import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
@@ -49,7 +49,7 @@ public class HechoService {
     public List<Hecho> obtenerHechos() {
         return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
-    public List<HechoOutputDTO> obtenerHechosAsDTO() {
+    public List<HechoOutputDto> obtenerHechosAsDTO() {
         return obtenerHechos().stream().map(hecho -> hechoOutputMapper.map(hecho)).toList();
     }
 
@@ -121,7 +121,7 @@ public class HechoService {
         repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 
-    public HechoOutputDTO agregarHecho(HechoInputDTO hechoInputDTO) {
+    public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
         normalizadorDeHechos.normalizar(hecho);
         hecho = repositorioDeHechos.save(hecho);

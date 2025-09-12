@@ -3,12 +3,10 @@ package aplicacion.dto.output;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
-public class ContribuyenteOutputDTO {
+public class ContribuyenteOutputDto {
     private Long id;
     private Boolean esAdministrador;
-    private IdentidadContribuyenteOutputDTO identidad;
+    private IdentidadContribuyenteOutputDto identidad;
 }

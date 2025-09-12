@@ -2,8 +2,8 @@ package aplicacion.controllers;
 
 import java.util.List;
 
-import aplicacion.dto.input.SolicitudInputDTO;
-import aplicacion.dto.output.SolicitudOutputDTO;
+import aplicacion.dto.input.SolicitudInputDto;
+import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.services.HechoService;
@@ -24,9 +24,9 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<SolicitudOutputDTO> crearSolicitud(@RequestBody SolicitudInputDTO solicitudDto) {
+    public ResponseEntity<SolicitudOutputDto> crearSolicitud(@RequestBody SolicitudInputDto solicitudDto) {
         try {
-            SolicitudOutputDTO solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
+            SolicitudOutputDto solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
             System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHechoId());
             return ResponseEntity.ok(solicitud);
         } catch (MotivoSolicitudException e) {
@@ -37,12 +37,12 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<List<SolicitudOutputDTO>> obtenerSolicitudes() {
+    public ResponseEntity<List<SolicitudOutputDto>> obtenerSolicitudes() {
         return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO());
     }
 
     @GetMapping("/solicitudes/{id}")
-    public ResponseEntity<SolicitudOutputDTO> obtenerSolicitud(@PathVariable("id") Long id) {
+    public ResponseEntity<SolicitudOutputDto> obtenerSolicitud(@PathVariable("id") Long id) {
         return ResponseEntity.ok(solicitudService.obtenerSolicitudDTO(id));
     }
 

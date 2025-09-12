@@ -1,12 +1,12 @@
-package aplicacion.dto.output;
+package aplicacion.dto.input;
 
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-public class FuenteOutputDTO {
+@Data
+public class FuenteInputDto {
     private Integer id;
     private TipoFuente tipo;
 }

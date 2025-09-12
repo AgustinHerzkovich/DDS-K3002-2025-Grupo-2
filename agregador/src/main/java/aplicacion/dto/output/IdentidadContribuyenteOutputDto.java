@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+
 @Getter
 @AllArgsConstructor
-public class IdentidadContribuyenteOutputDTO {
+public class IdentidadContribuyenteOutputDto {
     private Long id;
     private String nombre;
     private String apellido;

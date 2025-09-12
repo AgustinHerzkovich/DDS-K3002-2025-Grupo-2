@@ -1,15 +1,15 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.dto.output.ColeccionOutputDTO;
+import aplicacion.dto.output.ColeccionOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ColeccionOutputMapper {
     public ColeccionOutputMapper() {}
     // Completar
-    public ColeccionOutputDTO map(Coleccion coleccion) {
-        return new ColeccionOutputDTO(
+    public ColeccionOutputDto map(Coleccion coleccion) {
+        return new ColeccionOutputDto(
                 coleccion.getId(),
                 coleccion.getTitulo(),
                 coleccion.getDescripcion(),

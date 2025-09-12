@@ -1,8 +1,7 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.input.HechoInputDTO;
-import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +21,13 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDTO> obtenerHechos() {
+    public List<HechoOutputDto> obtenerHechos() {
         return hechoService.obtenerHechosAsDTO();
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<HechoOutputDTO> reportarHecho(@RequestBody HechoInputDTO hechoInputDto) {
-        HechoOutputDTO hecho = hechoService.agregarHecho(hechoInputDto);
+    public ResponseEntity<HechoOutputDto> reportarHecho(@RequestBody HechoInputDto hechoInputDto) {
+        HechoOutputDto hecho = hechoService.agregarHecho(hechoInputDto);
         System.out.println("Hecho creado: " + hecho.getId());
         return ResponseEntity.ok(hecho);
     }

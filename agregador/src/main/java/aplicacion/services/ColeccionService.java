@@ -6,12 +6,12 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.input.ColeccionInputDTO;
+import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.mappers.ColeccionInputMapper;
 import aplicacion.dto.mappers.ColeccionOutputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
-import aplicacion.dto.output.ColeccionOutputDTO;
-import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.dto.output.ColeccionOutputDto;
+import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
@@ -47,12 +47,12 @@ public class ColeccionService {
         this.hechoOutputMapper = hechoOutputMapper;
     }
 
-    public ColeccionOutputDTO guardarColeccion(ColeccionInputDTO coleccion) {
+    public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
         Coleccion coleccionLocal = repositorioDeColecciones.save(coleccionInputMapper.map(coleccion));
         return coleccionOutputMapper.map(coleccionLocal);
     }
 
-    public List<ColeccionOutputDTO> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
+    public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
         return obtenerColecciones().stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
     }
 
@@ -64,26 +64,39 @@ public class ColeccionService {
         return repositorioDeColecciones.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public ColeccionOutputDTO obtenerColeccionDTO(String idColeccion) {
+    public ColeccionOutputDto obtenerColeccionDTO(String idColeccion) {
          return repositorioDeColecciones.findById(idColeccion)
                 .map(coleccionOutputMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public List<HechoOutputDTO> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
-                                                             String categoria_buscada,
-                                                             LocalDateTime fechaReporteDesde,
-                                                             LocalDateTime fechaReporteHasta,
-                                                             LocalDateTime fechaAcontecimientoDesde,
-                                                             LocalDateTime fechaAcontecimientoHasta,
-                                                             Double latitud,
-                                                             Double longitud) {
+    public List<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
+                                                                      String categoria_buscada,
+                                                                      LocalDateTime fechaReporteDesde,
+                                                                      LocalDateTime fechaReporteHasta,
+                                                                      LocalDateTime fechaAcontecimientoDesde,
+                                                                      LocalDateTime fechaAcontecimientoHasta,
+                                                                      Double latitud,
+                                                                      Double longitud) {
         List<Hecho> hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
 
         return filtrarHechosQueryParam(hechosIrrestrictos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    public List<HechoOutputDTO> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
+    public List<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
+                                                                    String categoria_buscada,
+                                                                    LocalDateTime fechaReporteDesde,
+                                                                    LocalDateTime fechaReporteHasta,
+                                                                    LocalDateTime fechaAcontecimientoDesde,
+                                                                    LocalDateTime fechaAcontecimientoHasta,
+                                                                    Double latitud,
+                                                                    Double longitud) {
+        List<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
+
+        return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+    }
+
+    public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
                                                         String categoria_buscada,
                                                         LocalDateTime fechaReporteDesde,
                                                         LocalDateTime fechaReporteHasta,
@@ -91,19 +104,6 @@ public class ColeccionService {
                                                         LocalDateTime fechaAcontecimientoHasta,
                                                         Double latitud,
                                                         Double longitud) {
-        List<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
-
-        return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
-    }
-
-    public List<HechoOutputDTO> filtrarHechosQueryParam(List<Hecho> hechos,
-                                               String categoria_buscada,
-                                               LocalDateTime fechaReporteDesde,
-                                               LocalDateTime fechaReporteHasta,
-                                               LocalDateTime fechaAcontecimientoDesde,
-                                               LocalDateTime fechaAcontecimientoHasta,
-                                               Double latitud,
-                                               Double longitud) {
         return hechos.stream()
                 .filter(h -> categoria_buscada == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria_buscada))
                 .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
