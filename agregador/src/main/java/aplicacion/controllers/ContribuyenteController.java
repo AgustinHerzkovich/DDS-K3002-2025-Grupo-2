@@ -1,12 +1,6 @@
 package aplicacion.controllers;
 
-import aplicacion.dto.input.ContribuyenteInputDTO;
-import aplicacion.dto.output.ContribuyenteOutputDTO;
 import aplicacion.services.ContribuyenteService;
-import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.dto.input.IdentidadContribuyenteInputDTO;
-import aplicacion.dto.output.IdentidadContribuyenteOutputDTO;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

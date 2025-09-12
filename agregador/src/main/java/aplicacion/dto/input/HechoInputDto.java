@@ -5,6 +5,7 @@ import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.usuarios.Contribuyente;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class HechoInputDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class HechoInputDto {
     private String titulo;
     private String descripcion;
     private Categoria categoria;

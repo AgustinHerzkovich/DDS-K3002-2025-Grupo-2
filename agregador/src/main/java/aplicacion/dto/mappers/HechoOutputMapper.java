@@ -1,13 +1,13 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HechoOutputMapper {
-    public HechoOutputDTO map(Hecho hecho) {
-        return new HechoOutputDTO(
+    public HechoOutputDto map(Hecho hecho) {
+        return new HechoOutputDto(
                 hecho.getId(),
                 hecho.getTitulo(),
                 hecho.getDescripcion(),

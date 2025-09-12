@@ -2,11 +2,9 @@ package aplicacion.services;
 
 import java.util.List;
 
-
-import aplicacion.dto.SolicitudDTO;
-import aplicacion.dto.input.SolicitudInputDTO;
+import aplicacion.dto.input.SolicitudInputDto;
 import aplicacion.dto.mappers.SolicitudOutputMapper;
-import aplicacion.dto.output.SolicitudOutputDTO;
+import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.domain.hechos.Hecho;
@@ -47,13 +45,13 @@ public class SolicitudService {
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
-    public SolicitudOutputDTO obtenerSolicitudDTO(Long id) {
+    public SolicitudOutputDto obtenerSolicitudDTO(Long id) {
         return repositorioDeSolicitudes.findById(id)
                 .map(solicitudOutputMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
-    public List<SolicitudOutputDTO> obtenerSolicitudesDTO() {
+    public List<SolicitudOutputDto> obtenerSolicitudesDTO() {
         return obtenerSolicitudes().stream().map(solicitudOutputMapper::map).toList();
     }
     public List<SolicitudEliminacion> obtenerSolicitudes() {
@@ -77,7 +75,7 @@ public class SolicitudService {
     }
 
     @Transactional
-    public SolicitudOutputDTO guardarSolicitudDto(SolicitudInputDTO solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
+    public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
         this.validarMotivoSolicitud(solicitudDto.getMotivo());
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());

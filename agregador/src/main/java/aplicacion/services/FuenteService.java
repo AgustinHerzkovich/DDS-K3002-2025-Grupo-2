@@ -1,10 +1,12 @@
 package aplicacion.services;
 
 import aplicacion.domain.colecciones.fuentes.*;
-import aplicacion.dto.input.FuenteInputDTO;
-import aplicacion.dto.mappers.FuenteInputDTOMapper;
-import aplicacion.dto.mappers.FuenteOutputDTOMapper;
-import aplicacion.dto.output.FuenteOutputDTO;
+import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.mappers.FuenteInputMapper;
+import aplicacion.dto.mappers.FuenteOutputMapper;
+import aplicacion.dto.mappers.HechoInputMapper;
+import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
@@ -13,9 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import aplicacion.config.ConfiguracionRed;
-import aplicacion.dto.HechoInEstaticaDTO;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.mappers.HechoInEstaticaDTOToHecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -33,17 +33,25 @@ public class FuenteService {
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionService coleccionService;
     private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
-    private final FuenteInputDTOMapper fuenteInputDTOMapper;
-    private final FuenteOutputDTOMapper fuenteOutputDTOMapper;
+    private final FuenteInputMapper fuenteInputMapper;
+    private final FuenteOutputMapper fuenteOutputMapper;
+    private final HechoInputMapper hechoInputMapper;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes, RepositorioDeHechosXFuente repositorioDeHechosXFuente, ColeccionService coleccionService, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, FuenteInputDTOMapper fuenteInputDTOMapper, FuenteOutputDTOMapper fuenteOutputDTOMapper) {
+    public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
+                         RepositorioDeHechosXFuente repositorioDeHechosXFuente,
+                         ColeccionService coleccionService,
+                         RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion,
+                         FuenteInputMapper fuenteInputMapper,
+                         FuenteOutputMapper fuenteOutputMapper,
+                         HechoInputMapper hechoInputMapper) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.coleccionService = coleccionService;
         this.config = cargarConfiguracion();
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
-        this.fuenteInputDTOMapper = fuenteInputDTOMapper;
-        this.fuenteOutputDTOMapper = fuenteOutputDTOMapper;
+        this.fuenteInputMapper = fuenteInputMapper;
+        this.fuenteOutputMapper = fuenteOutputMapper;
+        this.hechoInputMapper = hechoInputMapper;
     }
 
     @Transactional
@@ -78,7 +86,6 @@ public class FuenteService {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         RestTemplate restTemplate = new RestTemplate();
-        HechoInEstaticaDTOToHecho mapperDto = new HechoInEstaticaDTOToHecho(); // Mapper para mapear de HechoInEstaticaDTO a Hecho
 
         for (Fuente fuente : fuentes) {
             List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
@@ -121,19 +128,12 @@ public class FuenteService {
                 ResponseEntity<String> response;
                 String json;
 
-                if (Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA) { // Si la fuente es estatica, mapeo a HechoInEstaticaDTO
-                    if (!this.seCargaronHechosDeEstaFuente(fuente)) { // Esta es la validación que evita reprocesar hechos de fuentes estáticas
-                        response = restTemplate.getForEntity(url, String.class);
-                        json = response.getBody();
-                        List<HechoInEstaticaDTO> hechosDto = mapper.readValue(json, new TypeReference<>() {
-                        });
-                        hechos = hechosDto.stream().map(mapperDto::map).toList();
-                    }
-                } else { // Si la fuente es dinamica o proxy, mapeo a Hecho
+                if ((Objects.requireNonNull(fuente.getId().getTipo()) == TipoFuente.ESTATICA && !this.seCargaronHechosDeEstaFuente(fuente)) || Objects.requireNonNull(fuente.getId().getTipo()) != TipoFuente.ESTATICA) { // // Esta es la validación que evita reprocesar hechos de fuentes estáticas
                     response = restTemplate.getForEntity(url, String.class);
                     json = response.getBody();
-                    hechos = mapper.readValue(json, new TypeReference<>() {
+                    List<HechoInputDto> hechosDto = mapper.readValue(json, new TypeReference<>() {
                     });
+                    hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
                 }
                 hashMap.put(fuente, hechos); // Agrego la lista de hechos y la fuente a la lista de pares
 
@@ -158,11 +158,11 @@ public class FuenteService {
     public List<Hecho> obtenerHechosPorFuente(FuenteId fuenteId){
         return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
     }
-    public FuenteOutputDTO agregarFuenteAColeccion(String coleccionId, FuenteInputDTO fuenteInputDTO) throws ColeccionNoEncontradaException {
-        Fuente fuente = fuenteInputDTOMapper.map(fuenteInputDTO);
+    public FuenteOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDTO) throws ColeccionNoEncontradaException {
+        Fuente fuente = fuenteInputMapper.map(fuenteInputDTO);
         repositorioDeFuentes.save(fuente);
         coleccionService.agregarFuenteAColeccion(coleccionId, fuente);
-        return fuenteOutputDTOMapper.map(fuente);
+        return fuenteOutputMapper.map(fuente);
     }
 
 

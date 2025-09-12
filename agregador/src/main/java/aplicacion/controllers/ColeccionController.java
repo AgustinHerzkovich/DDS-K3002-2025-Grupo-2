@@ -1,21 +1,18 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
-import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.input.ColeccionInputDTO;
-import aplicacion.dto.input.FuenteInputDTO;
-import aplicacion.dto.output.ColeccionOutputDTO;
-import aplicacion.dto.output.FuenteOutputDTO;
+import aplicacion.dto.input.ColeccionInputDto;
+import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.output.ColeccionOutputDto;
+import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import aplicacion.dto.output.HechoOutputDTO;
+import aplicacion.dto.output.HechoOutputDto;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,9 +29,9 @@ public class ColeccionController {
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
-    public ResponseEntity<ColeccionOutputDTO> crearColeccion(@RequestBody ColeccionInputDTO coleccion) {
+    public ResponseEntity<ColeccionOutputDto> crearColeccion(@RequestBody ColeccionInputDto coleccion) {
         fuenteService.guardarFuentes(coleccion.getFuentes());
-        ColeccionOutputDTO coleccionOutput = coleccionService.guardarColeccion(coleccion);
+        ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccionOutput.getId());
         return ResponseEntity.ok(coleccionOutput);
@@ -42,38 +39,38 @@ public class ColeccionController {
 
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
-    public List<ColeccionOutputDTO> mostrarColecciones() {
-        List<ColeccionOutputDTO> coleccion;
+    public List<ColeccionOutputDto> mostrarColecciones() {
+        List<ColeccionOutputDto> coleccion;
         coleccion = coleccionService.obtenerColeccionesDTO();
         return coleccion;
     }
 
     @GetMapping("/colecciones/{id}")
-    public ColeccionOutputDTO mostrarColeccion(@PathVariable("id") String idColeccion) {
+    public ColeccionOutputDto mostrarColeccion(@PathVariable("id") String idColeccion) {
         return coleccionService.obtenerColeccionDTO(idColeccion);
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public List<HechoOutputDTO> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
-                                                 @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
-                                                 @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
-                                                 @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
-                                                 @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
-                                                 @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
-                                                 @RequestParam(name = "latitud", required = false) Double latitud,
-                                                 @RequestParam(name = "longitud", required = false) Double longitud) {
+    public List<HechoOutputDto> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+                                                          @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+                                                          @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
+                                                          @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
+                                                          @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
+                                                          @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
+                                                          @RequestParam(name = "latitud", required = false) Double latitud,
+                                                          @RequestParam(name = "longitud", required = false) Double longitud) {
         return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<HechoOutputDTO> mostrarHechosCurados(@PathVariable("id") String idColeccion,
-                                            @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
-                                            @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
-                                            @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
-                                            @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
-                                            @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
-                                            @RequestParam(name = "latitud", required = false) Double latitud,
-                                            @RequestParam(name = "longitud", required = false) Double longitud){
+    public List<HechoOutputDto> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+                                                     @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+                                                     @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
+                                                     @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
+                                                     @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
+                                                     @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
+                                                     @RequestParam(name = "latitud", required = false) Double latitud,
+                                                     @RequestParam(name = "longitud", required = false) Double longitud){
         return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
@@ -87,9 +84,9 @@ public class ColeccionController {
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<FuenteOutputDTO> agregarFuente(@PathVariable("id") String idColeccion,
-                                              @RequestBody FuenteInputDTO fuenteInputDTO) {
-        FuenteOutputDTO fuenteOutputDTO;
+    public ResponseEntity<FuenteOutputDto> agregarFuente(@PathVariable("id") String idColeccion,
+                                                         @RequestBody FuenteInputDto fuenteInputDTO) {
+        FuenteOutputDto fuenteOutputDTO;
         try {
             fuenteOutputDTO = fuenteService.agregarFuenteAColeccion(idColeccion, fuenteInputDTO);
         }catch (ColeccionNoEncontradaException e){

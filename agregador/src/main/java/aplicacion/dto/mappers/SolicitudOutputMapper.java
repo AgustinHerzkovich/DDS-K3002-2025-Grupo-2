@@ -1,13 +1,13 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
-import aplicacion.dto.output.SolicitudOutputDTO;
+import aplicacion.dto.output.SolicitudOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SolicitudOutputMapper {
-    public SolicitudOutputDTO map(SolicitudEliminacion solicitudEliminacion) {
-        return new SolicitudOutputDTO(
+    public SolicitudOutputDto map(SolicitudEliminacion solicitudEliminacion) {
+        return new SolicitudOutputDto(
                 solicitudEliminacion.getHecho().getId(),
                 solicitudEliminacion.getMotivo(),
                 solicitudEliminacion.getId(),
