@@ -1,7 +1,5 @@
 package aplicacion.domain.colecciones;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import aplicacion.domain.colecciones.fuentes.Fuente;
@@ -39,13 +37,12 @@ public class Coleccion{
     @JoinColumn(name = "algoritmo_id")
     private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
 
-    @JsonCreator
     public Coleccion(
-            @JsonProperty("titulo") String titulo,
-            @JsonProperty("descripcion") String descripcion,
-            @JsonProperty("criteriosDePertenencia") List<CriterioDePertenencia> criteriosDePertenencia,
-            @JsonProperty("fuentes") List<Fuente> fuentes,
-            @JsonProperty("algoritmoConsenso") AlgoritmoConsenso algoritmo) {
+            String titulo,
+            String descripcion,
+            List<CriterioDePertenencia> criteriosDePertenencia,
+            List<Fuente> fuentes,
+            AlgoritmoConsenso algoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criteriosDePertenencia = criteriosDePertenencia;

@@ -1,9 +1,5 @@
 package aplicacion.domain.usuarios;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,16 +21,14 @@ public class IdentidadContribuyente {
     @Column(length = 20)
     private String apellido;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
 
-    @JsonCreator
-    public IdentidadContribuyente(@JsonProperty("nombre") String nombre, @JsonProperty("apellido") String apellido,@JsonProperty("fechaNacimiento") LocalDate fechaNacimiento){
+    public IdentidadContribuyente(String nombre, String apellido, LocalDate fechaNacimiento){
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
     }
-    @JsonIgnore
+
     public Integer getEdad() {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }

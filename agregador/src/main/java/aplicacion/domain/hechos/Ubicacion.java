@@ -1,7 +1,5 @@
 package aplicacion.domain.hechos;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +17,7 @@ public class Ubicacion {
     private Double latitud;
     private Double longitud;
 
-    @JsonCreator
-    public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {
+    public Ubicacion(Double latitud, Double longitud) {
         this.latitud = latitud;
         this.longitud = longitud;
     }

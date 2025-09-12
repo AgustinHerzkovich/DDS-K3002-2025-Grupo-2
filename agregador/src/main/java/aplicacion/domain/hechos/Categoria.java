@@ -1,13 +1,9 @@
 package aplicacion.domain.hechos;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 //CATEGORIA
 @Getter
@@ -21,8 +17,7 @@ public class Categoria {
     @Column(length = 50)
     private String nombre;
 
-    @JsonCreator
-    public Categoria(@JsonProperty("nombre") String nombre) {
+    public Categoria(String nombre) {
         this.nombre = nombre;
     }
 

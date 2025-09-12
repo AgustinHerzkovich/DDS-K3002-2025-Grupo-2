@@ -27,7 +27,8 @@ import java.time.LocalDateTime;
 // SOLICITUD DE ELIMINACION
 @Entity
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class SolicitudEliminacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Genera un ID autoincremental
@@ -39,24 +40,21 @@ public class SolicitudEliminacion {
     @JoinColumn(name = "estado_id")
     private EstadoSolicitud estado;
     @ManyToOne
-    @JsonIgnore
     private Contribuyente administrador;
     @Getter
     private LocalDateTime fechaSubida;
     private LocalDateTime fechaResolucion;
     @ManyToOne
-    @JsonBackReference
     private Hecho hecho;
     @Column(length = 2000) // Le asigno VARCHAR(2000)
     private String motivo;
     @Embedded
     private DetectorDeSpam detectorDeSpam;
 
-    @JsonCreator
     public SolicitudEliminacion
-            (@JsonProperty("solicitante") Contribuyente solicitante,
-             @JsonProperty("hecho") Hecho hecho,
-             @JsonProperty("motivo") String motivo) {
+            (Contribuyente solicitante,
+             Hecho hecho,
+             String motivo) {
         this.detectorDeSpam = new DetectorDeSpamPrueba();
         this.motivo = motivo;
         if (this.esSpam()){
