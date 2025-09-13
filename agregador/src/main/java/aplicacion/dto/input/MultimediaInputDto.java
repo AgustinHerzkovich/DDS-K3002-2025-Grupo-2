@@ -6,8 +6,11 @@ import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ContribuyenteInputDto {
-    private Boolean esAdministrador;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private IdentidadContribuyenteInputDto identidad;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class MultimediaInputDto {
+    private String tipo;
+    private String formato;
+    private Integer tamanio;
+    private String resolucion;
+    private Integer duracion;
 }
