@@ -45,14 +45,14 @@ public class Hecho {
     @Column(length = 500)
     private String contenidoTexto;
     // todo: evaluar si es necesario el fetch type eager, es temporal para que pasen los tests
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
-    @ManyToOne(cascade = CascadeType.ALL) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}) // TODO: Cambiar en un futuro, habría que persistir antes el usuario?
     private Contribuyente autor; // TODO: Revisar como se persiste el autor
 
     public Hecho(String titulo,

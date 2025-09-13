@@ -1,8 +1,8 @@
 package aplicacion.repositorios;
 
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.clasesIntermedias.HechoXFuenteId;
+import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,13 +1,10 @@
 --- Arreglar:
 Agregador:
-- Toda la logica de armado de url que esta en FuenteService moverla a la clase Fuente.
 - Reestructuración de dtos input y output, con mappers.
 - Intentar quitar la clase FuenteXColeccion ya que se genera automaticamente.
 - Cada vez que se crea algo como algoritmoConsenso se crea con un nuevo id y no tiene sentido que haya dos algoritmos absolutos por ejemplo con distintos ids.
 
-- actualizar ultima peticion de hechos a las fuentes anda mal, queda en null siempre
 - probar que se borren los hechos al borrar fuentes, falta testear
-- Esta mal hecho el delete de colecciones, solucionar integridad referencial
 
 --- Testear:
 Todo lo que hicimos para ver si funciona, sobre todo el medidor de trafico
@@ -23,7 +20,5 @@ llegar a segunda forma normal -> revisar los embedded
 
 
 balanceador de carga o varios componentes en paralelo (titular y suplente) por si se cae alguno.
-
-ui de agregador -> no debe ser servidor
 
 patron de integracion agregador -> que agregador no exponga datos, solo que  argue la base

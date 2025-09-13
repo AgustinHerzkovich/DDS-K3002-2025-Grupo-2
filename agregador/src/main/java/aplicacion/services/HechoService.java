@@ -17,6 +17,7 @@ import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,7 @@ public class HechoService {
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
     }
+
 
     public void guardarHecho(Hecho hecho) {
         repositorioDeHechos.save(hecho);

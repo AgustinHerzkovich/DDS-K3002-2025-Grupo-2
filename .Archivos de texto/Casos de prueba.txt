@@ -118,7 +118,9 @@ En el body de la request:
       "id": {
         "tipo": "ESTATICA",
         "idExterno": 1
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8081
     }
   ],
   "algoritmoConsenso": {
@@ -167,7 +169,9 @@ Body:
       "id": {
         "tipo": "ESTATICA",
         "idExterno": 1
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8081
     }
   ],
   "algoritmoConsenso": {
@@ -286,13 +290,17 @@ Body:
       "id": {
         "tipo": "ESTATICA",
         "idExterno": 1
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8081
     },
     {
       "id": {
         "tipo": "DINAMICA",
         "idExterno": 1
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8082
     }
   ],
   "algoritmoConsenso": {
@@ -320,13 +328,17 @@ Body:
       "id": {
         "tipo": "PROXY",
         "idExterno": 1
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8083
     },
     {
       "id": {
         "tipo": "PROXY",
         "idExterno": 2
-      }
+      },
+      "ip": "localhost",
+      "puerto": 8083
     }
   ],
   "algoritmoConsenso": {
