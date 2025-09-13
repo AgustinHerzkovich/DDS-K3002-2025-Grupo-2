@@ -1,8 +1,0 @@
-{
-  "ip_estatica": "localhost",
-  "puerto_estatica": 8081,
-  "ip_dinamica": "localhost",
-  "puerto_dinamica": 8082,
-  "ip_proxy": "localhost",
-  "puerto_proxy": 8083
-}

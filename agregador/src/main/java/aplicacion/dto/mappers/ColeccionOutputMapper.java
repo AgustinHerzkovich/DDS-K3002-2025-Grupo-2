@@ -6,7 +6,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ColeccionOutputMapper {
-    public ColeccionOutputMapper() {}
+    private final FuenteOutputMapper fuenteOutputMapper;
+
+    public ColeccionOutputMapper(FuenteOutputMapper fuenteOutputMapper) {
+        this.fuenteOutputMapper = fuenteOutputMapper;
+    }
     // Completar
     public ColeccionOutputDto map(Coleccion coleccion) {
         return new ColeccionOutputDto(
@@ -14,7 +18,7 @@ public class ColeccionOutputMapper {
                 coleccion.getTitulo(),
                 coleccion.getDescripcion(),
                 coleccion.getCriteriosDePertenencia(),
-                coleccion.getFuentes(),
+                coleccion.getFuentes().stream().map(fuenteOutputMapper::map).toList(),
                 coleccion.getAlgoritmoConsenso()
         );
     }

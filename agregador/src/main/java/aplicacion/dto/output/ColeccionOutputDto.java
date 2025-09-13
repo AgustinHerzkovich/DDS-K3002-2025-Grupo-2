@@ -1,7 +1,6 @@
 package aplicacion.dto.output;
 
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
-import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.criterios.CriterioDePertenencia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,7 @@ public class ColeccionOutputDto {
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenencia> criteriosDePertenencia;
-    private List<Fuente> fuentes;
+    private List<FuenteOutputDto> fuentes;
     private AlgoritmoConsenso algoritmoConsenso;
 
 
