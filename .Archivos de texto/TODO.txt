@@ -21,3 +21,5 @@ llegar a segunda forma normal -> revisar los embedded
 balanceador de carga o varios componentes en paralelo (titular y suplente) por si se cae alguno.
 
 patron de integracion agregador -> que agregador no exponga datos, solo que  argue la base
+
+llenar de try catch en todo el codigo, crear excepciones personalizadas y responder al cliente con mensajes de error mas entendibles
