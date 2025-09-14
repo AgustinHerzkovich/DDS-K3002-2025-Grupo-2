@@ -3,7 +3,6 @@ package aplicacion.services.schedulers;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.HechoService;
@@ -61,8 +60,6 @@ public class CargarHechosScheduler {
                     HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                     hechoService.guardarHechoPorColeccion(hechoPorColeccion);
                 }
-                FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
-                hechoService.guardarFuentePorColeccion(fuentePorColeccion);
             }
         }
         System.out.println("Se asignaron los hechos a las colecciones");

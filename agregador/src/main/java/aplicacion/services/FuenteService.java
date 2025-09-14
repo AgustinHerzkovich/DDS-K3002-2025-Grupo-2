@@ -6,9 +6,7 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.FuenteOutputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
-import aplicacion.dto.output.FuenteOutputDto;
-import aplicacion.excepciones.ColeccionNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
+import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
@@ -21,25 +19,16 @@ import java.util.*;
 public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
-    private final ColeccionService coleccionService;
-    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final FuenteInputMapper fuenteInputMapper;
-    private final FuenteOutputMapper fuenteOutputMapper;
     private final HechoInputMapper hechoInputMapper;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
                          RepositorioDeHechosXFuente repositorioDeHechosXFuente,
-                         ColeccionService coleccionService,
-                         RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion,
                          FuenteInputMapper fuenteInputMapper,
-                         FuenteOutputMapper fuenteOutputMapper,
                          HechoInputMapper hechoInputMapper) {
         this.repositorioDeFuentes = repositorioDeFuentes;
-        this.coleccionService = coleccionService;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
-        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.fuenteInputMapper = fuenteInputMapper;
-        this.fuenteOutputMapper = fuenteOutputMapper;
         this.hechoInputMapper = hechoInputMapper;
     }
 
@@ -75,20 +64,13 @@ public class FuenteService {
         return repositorioDeFuentes.count();
     }
 
-    private Boolean seCargaronHechosDeEstaFuente(Fuente fuente) {
-        return repositorioDeHechosXFuente.existsByFuenteId(fuente.getId());
-    }
 
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(FuenteId fuenteId){
         return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
     }
-    public FuenteOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDTO) throws ColeccionNoEncontradaException {
-        Fuente fuente = fuenteInputMapper.map(fuenteInputDTO);
-        repositorioDeFuentes.save(fuente);
-        coleccionService.agregarFuenteAColeccion(coleccionId, fuente);
-        return fuenteOutputMapper.map(fuente);
+
+    public Fuente obtenerFuentePorId(FuenteId fuenteId) throws FuenteNoEncontradaException {
+        return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
     }
-
-
 }
