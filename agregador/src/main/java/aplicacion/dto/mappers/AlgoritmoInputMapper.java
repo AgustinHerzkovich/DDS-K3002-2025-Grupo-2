@@ -4,11 +4,12 @@ import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.dto.input.AlgoritmoInputDto;
 import org.springframework.stereotype.Component;
 import aplicacion.domain.algoritmos.*;
+
 @Component
 public class AlgoritmoInputMapper {
     public AlgoritmoInputMapper() {}
     public AlgoritmoConsenso map(AlgoritmoInputDto algoritmoConsenso) {
-        switch (algoritmoConsenso.getNombre()) {
+        switch (algoritmoConsenso.getTipo()) {
             case "irrestricto" -> {
                 return new AlgoritmoConsensoIrrestricto();
             }
@@ -21,7 +22,7 @@ public class AlgoritmoInputMapper {
             case "multiplesMenciones" -> {
                 return new AlgoritmoConsensoMultiplesMenciones();
             }
-            default -> throw new IllegalArgumentException("Tipo de algoritmo no reconocido: " + algoritmoConsenso.getNombre());
+            default -> throw new IllegalArgumentException("Tipo de algoritmo no reconocido: " + algoritmoConsenso.getTipo());
         }
     }
 }
