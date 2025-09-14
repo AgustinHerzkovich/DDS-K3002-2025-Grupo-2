@@ -1,21 +1,16 @@
-package aplicacion.domain.algoritmos;
+package aplicacion.dto.input;
 
+import aplicacion.domain.algoritmos.AlgoritmoConsensoAbsoluto;
+import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
+import aplicacion.domain.algoritmos.AlgoritmoConsensoMayoriaSimple;
+import aplicacion.domain.algoritmos.AlgoritmoConsensoMultiplesMenciones;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import aplicacion.domain.hechos.Hecho;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Map;
-
-// Regla de negocio: Consideramos hecho repetido por fuente a aquellos que contengan los mismos atributos que incluimos en `EqualsAndHashCode` en el Hecho.
-@Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_algoritmo")
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -26,10 +21,10 @@ import java.util.Map;
         @JsonSubTypes.Type(value = AlgoritmoConsensoMayoriaSimple.class, name = "mayoriaSimple"),
         @JsonSubTypes.Type(value = AlgoritmoConsensoMultiplesMenciones.class, name = "multiplesMenciones")
 })
-public abstract class AlgoritmoConsenso {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AlgoritmoInputDto {
+    private final String nombre;
 
-    public abstract List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes);
+    public AlgoritmoInputDto(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -14,5 +14,5 @@ public class ColeccionInputDto {
     private String descripcion;
     private List<CriterioDePertenencia> criteriosDePertenencia;
     private List<FuenteInputDto> fuentes;
-    private AlgoritmoConsenso algoritmoConsenso;
+    private AlgoritmoInputDto algoritmoConsenso;
 }

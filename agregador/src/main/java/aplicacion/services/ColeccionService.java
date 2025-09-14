@@ -5,12 +5,10 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.dto.input.AlgoritmoInputDto;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
-import aplicacion.dto.mappers.ColeccionInputMapper;
-import aplicacion.dto.mappers.ColeccionOutputMapper;
-import aplicacion.dto.mappers.FuenteInputMapper;
-import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
@@ -36,8 +34,9 @@ public class ColeccionService {
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
+    private final AlgoritmoInputMapper algoritmoInputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, AlgoritmoInputMapper algoritmoInputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
@@ -47,6 +46,7 @@ public class ColeccionService {
         this.hechoOutputMapper = hechoOutputMapper;
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
+        this.algoritmoInputMapper = algoritmoInputMapper;
     }
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
@@ -126,14 +126,15 @@ public class ColeccionService {
         System.out.println("Colección eliminada: " + idColeccion);
     }
 
-    public void modificarAlgoritmoDeColeccion(String idColeccion, String nuevoAlgoritmo) {
+    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, AlgoritmoInputDto nuevoAlgoritmo) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
-        coleccion.setAlgoritmoConsenso(crearAlgoritmoDesdeNombre(nuevoAlgoritmo));
-        repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
+        coleccion.setAlgoritmoConsenso(algoritmoInputMapper.map(nuevoAlgoritmo));
+        Coleccion coleccionPersistida = repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
+        return coleccionOutputMapper.map(coleccionPersistida);
     }
 
-    private AlgoritmoConsenso crearAlgoritmoDesdeNombre(String nombre) {
+    /*private AlgoritmoConsenso crearAlgoritmoDesdeNombre(String nombre) {
         return switch (nombre) {
             case "irrestricto" -> new AlgoritmoConsensoIrrestricto();
             case "absoluto" -> new AlgoritmoConsensoAbsoluto();
@@ -141,7 +142,7 @@ public class ColeccionService {
             case "multiplesMenciones" -> new AlgoritmoConsensoMultiplesMenciones();
             default -> throw new IllegalArgumentException("Algoritmo desconocido: " + nombre);
         };
-    }
+    }*/
 
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
         Fuente fuente = fuenteInputMapper.map(fuenteInputDto);

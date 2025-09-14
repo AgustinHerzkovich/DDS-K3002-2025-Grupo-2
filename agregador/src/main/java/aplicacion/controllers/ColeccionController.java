@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.colecciones.fuentes.TipoFuente;
+import aplicacion.dto.input.AlgoritmoInputDto;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.output.ColeccionOutputDto;
@@ -77,11 +78,11 @@ public class ColeccionController {
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<Void> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody String nuevoAlgoritmo) {
-        coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
+    public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable("id") String idColeccion,
+                                                   @RequestBody AlgoritmoInputDto nuevoAlgoritmo) {
+        ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(coleccion);
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
