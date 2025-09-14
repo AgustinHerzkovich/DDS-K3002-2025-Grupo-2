@@ -1,7 +1,6 @@
 --- Arreglar:
 Agregador:
 - Reestructuración de dtos input y output, con mappers.
-- Intentar quitar la clase FuenteXColeccion ya que se genera automaticamente.
 - Cada vez que se crea algo como algoritmoConsenso se crea con un nuevo id y no tiene sentido que haya dos algoritmos absolutos por ejemplo con distintos ids.
 
 - probar que se borren los hechos al borrar fuentes, falta testear

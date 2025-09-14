@@ -3,18 +3,19 @@ package aplicacion.services;
 import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
+import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.mappers.ColeccionInputMapper;
 import aplicacion.dto.mappers.ColeccionOutputMapper;
+import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
+import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
-import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import org.springframework.stereotype.Service;
@@ -22,29 +23,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
-    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoService hechoService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
     private final HechoOutputMapper hechoOutputMapper;
+    private final FuenteService fuenteService;
+    private final FuenteInputMapper fuenteInputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
-        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = coleccionInputMapper;
         this.coleccionOutputMapper = coleccionOutputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
+        this.fuenteService = fuenteService;
+        this.fuenteInputMapper = fuenteInputMapper;
     }
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
@@ -119,7 +121,6 @@ public class ColeccionService {
     public void eliminarColeccion(String idColeccion) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
-        borrarFuentesPorColeccion(coleccion);
         hechoService.borrarHechosPorColeccion(coleccion);
         repositorioDeColecciones.delete(coleccion);
         System.out.println("Colección eliminada: " + idColeccion);
@@ -142,35 +143,33 @@ public class ColeccionService {
         };
     }
 
-    public void agregarFuenteAColeccion(String coleccionId, Fuente fuente) throws ColeccionNoEncontradaException {
+    public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
+        Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
+        fuenteService.guardarFuente(fuente);
         Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
-        repositorioDeColecciones.save(coleccion);
-        FuenteXColeccion fuentePorColeccion = new FuenteXColeccion(fuente, coleccion);
-        repositorioDeFuentesXColeccion.save(fuentePorColeccion);
+        coleccion = repositorioDeColecciones.save(coleccion);
+        return coleccionOutputMapper.map(coleccion);
     }
 
     @Transactional
-    public void quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) {
+    public ColeccionOutputDto quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) throws FuenteNoEncontradaException {
         Coleccion coleccion = obtenerColeccion(idColeccion);
-        Optional<FuenteXColeccion> fuenteXColeccionOpt = repositorioDeFuentesXColeccion.findByFuenteIdAndColeccion(fuenteId, coleccion);
+        Fuente fuente = fuenteService.obtenerFuentePorId(fuenteId);
 
-        fuenteXColeccionOpt.ifPresent(fxc -> {
-            Fuente fuente = fxc.getFuente();
-            coleccion.quitarFuente(fuente);
-            repositorioDeFuentesXColeccion.delete(fxc);
-            repositorioDeColecciones.save(coleccion); // Updatea la colección después de quitar la fuente
-        });
+        coleccion.quitarFuente(fuente);
+        coleccion = repositorioDeColecciones.save(coleccion); // Updatea la colección después de quitar la fuente
+
+        ColeccionOutputDto coleccionOutputDto = coleccionOutputMapper.map(coleccion);
 
         // Si en fuente por coleccion no quedan mas registros para esta fuente, entonces se eliminan las entradas de HechoXFuente que tengan este FuenteId
-        if (!repositorioDeFuentesXColeccion.existsByFuenteId(fuenteId)) {
+        if (!repositorioDeColecciones.existsByFuenteId(fuenteId)) {
             repositorioDeHechosXFuente.deleteAllByFuenteId(fuenteId);
         }
 
         // Quitamos de HechoXColeccion aquellos hechos que eran de esta fuente
         repositorioDeHechosXColeccion.deleteAllByFuenteId(fuenteId); // Eliminar hechos asociados a la fuente de la colección
-    }
-    public void borrarFuentesPorColeccion(Coleccion coleccion) {
-        repositorioDeFuentesXColeccion.deleteAllByColeccionId(coleccion.getId());
+
+        return coleccionOutputDto;
     }
 }

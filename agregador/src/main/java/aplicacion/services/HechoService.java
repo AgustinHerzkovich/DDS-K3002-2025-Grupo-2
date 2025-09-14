@@ -3,22 +3,18 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.clasesIntermedias.FuenteXColeccion;
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.repositorios.RepositorioDeFuentesXColeccion;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,16 +24,14 @@ public class HechoService {
     private final RepositorioDeHechos repositorioDeHechos;
     private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
-    private final RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion;
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeFuentesXColeccion repositorioDeFuentesXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
-        this.repositorioDeFuentesXColeccion = repositorioDeFuentesXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.hechoInputMapper = hechoInputMapper;
@@ -51,7 +45,7 @@ public class HechoService {
         return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
     }
     public List<HechoOutputDto> obtenerHechosAsDTO() {
-        return obtenerHechos().stream().map(hecho -> hechoOutputMapper.map(hecho)).toList();
+        return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
     }
 
     public void guardarHechoPorFuente(HechoXFuente hechoPorFuente) {
@@ -117,10 +111,6 @@ public class HechoService {
                         row -> (Hecho) row[0],
                         row -> ((Long) row[1])
                 ));
-    }
-
-    public void guardarFuentePorColeccion(FuenteXColeccion fuentePorColeccion) {
-        repositorioDeFuentesXColeccion.save(fuentePorColeccion);
     }
 
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
