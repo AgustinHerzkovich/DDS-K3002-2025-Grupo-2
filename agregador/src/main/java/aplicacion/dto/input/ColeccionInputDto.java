@@ -15,5 +15,4 @@ public class ColeccionInputDto {
     private List<CriterioDePertenencia> criteriosDePertenencia;
     private List<FuenteInputDto> fuentes;
     private AlgoritmoConsenso algoritmoConsenso;
-
 }
