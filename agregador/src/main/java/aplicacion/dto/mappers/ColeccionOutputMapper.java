@@ -21,7 +21,8 @@ public class ColeccionOutputMapper {
                 coleccion.getDescripcion(),
                 coleccion.getCriteriosDePertenencia(),
                 coleccion.getFuentes().stream().map(fuenteOutputMapper::map).toList(),
-                algoritmoOutputMapper.map(coleccion.getAlgoritmoConsenso())
+                algoritmoOutputMapper.map(coleccion.getAlgoritmoConsenso()),
+                coleccion.getTipoAlgoritmoConsenso()
         );
     }
 

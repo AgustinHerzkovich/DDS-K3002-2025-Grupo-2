@@ -22,4 +22,5 @@ balanceador de carga o varios componentes en paralelo (titular y suplente) por s
 
 patron de integracion agregador -> que agregador no exponga datos, solo que  argue la base
 
-llenar de try catch en todo el codigo, crear excepciones personalizadas y responder al cliente con mensajes de error mas entendibles
+- llenar de try catch en todo el codigo, crear excepciones personalizadas y responder al cliente con mensajes de error mas entendibles
+- hacer component a los algoritmos de consenso y que se inyecten en el scheduller
