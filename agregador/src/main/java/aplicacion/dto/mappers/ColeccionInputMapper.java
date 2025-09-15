@@ -20,7 +20,8 @@ public class ColeccionInputMapper {
                 coleccionInputDTO.getDescripcion(),
                 coleccionInputDTO.getCriteriosDePertenencia(),
                 coleccionInputDTO.getFuentes().stream().map(fuenteInputMapper::map).toList(),
-                algoritmoInputMapper.map(coleccionInputDTO.getAlgoritmoConsenso())
+                algoritmoInputMapper.map(coleccionInputDTO.getAlgoritmoConsenso()),
+                coleccionInputDTO.getTipoAlgoritmoConsenso()
         );
     }
 }

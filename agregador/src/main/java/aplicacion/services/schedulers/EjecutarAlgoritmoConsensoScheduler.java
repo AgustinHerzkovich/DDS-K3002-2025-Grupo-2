@@ -1,6 +1,6 @@
 package aplicacion.services.schedulers;
 
-import aplicacion.domain.algoritmos.AlgoritmoConsenso;
+import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.clasesIntermedias.HechoXColeccionId;
@@ -73,7 +73,16 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
         System.out.println("Se ha iniciado la curación de hechos. Esto puede tardar un rato.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
-            AlgoritmoConsenso algoritmoConsenso = coleccion.getAlgoritmoConsenso();
+            TipoAlgoritmoConsenso tipoAlgoritmoConsenso = coleccion.getTipoAlgoritmoConsenso();
+            AlgoritmoConsenso algoritmoConsenso = null;
+
+            switch(tipoAlgoritmoConsenso) {
+                case IRRESTRICTO -> algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
+                case MAYORIA_SIMPLE -> algoritmoConsenso = new AlgoritmoConsensoMayoriaSimple();
+                case MULTIPLES_MENCIONES -> algoritmoConsenso = new AlgoritmoConsensoMultiplesMenciones();
+                case ABSOLUTO ->  algoritmoConsenso = new AlgoritmoConsensoAbsoluto();
+                default -> throw new IllegalArgumentException("Tipo de algoritmo no reconocido: " + tipoAlgoritmoConsenso);
+            }
 
             Map<Hecho, Long> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
             Long totalFuentes = fuenteService.obtenerCantidadFuentes();

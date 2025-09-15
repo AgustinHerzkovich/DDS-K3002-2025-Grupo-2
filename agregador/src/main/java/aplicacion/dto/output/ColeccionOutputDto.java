@@ -1,6 +1,6 @@
 package aplicacion.dto.output;
 
-import aplicacion.domain.algoritmos.AlgoritmoConsenso;
+import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.criterios.CriterioDePertenencia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +15,5 @@ public class ColeccionOutputDto {
     private List<CriterioDePertenencia> criteriosDePertenencia;
     private List<FuenteOutputDto> fuentes;
     private AlgoritmoOutputDto algoritmoConsenso;
+    private TipoAlgoritmoConsenso tipoAlgoritmoConsenso;
 }

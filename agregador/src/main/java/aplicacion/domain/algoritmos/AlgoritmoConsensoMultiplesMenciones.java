@@ -1,12 +1,9 @@
 package aplicacion.domain.algoritmos;
 
 import aplicacion.domain.hechos.Hecho;
-import jakarta.persistence.*;
 
 import java.util.*;
 
-@Entity
-@DiscriminatorValue("multiplesMenciones")
 public class AlgoritmoConsensoMultiplesMenciones extends AlgoritmoConsenso {
     @Override
     public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {

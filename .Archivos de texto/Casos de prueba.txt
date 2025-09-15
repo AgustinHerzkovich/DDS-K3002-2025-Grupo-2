@@ -123,9 +123,7 @@ En el body de la request:
       "puerto": 8081
     }
   ],
-  "algoritmoConsenso": {
-    "tipo": "absoluto"
-  }
+  "tipoAlgoritmoConsenso": "ABSOLUTO"
 }
 
 5) Ejecutar el TestFuenteDemo
@@ -174,9 +172,7 @@ Body:
       "puerto": 8081
     }
   ],
-  "algoritmoConsenso": {
-    "tipo": "absoluto"
-  }
+  "tipoAlgoritmoConsenso": "ABSOLUTO"
 }
 
 Fuente dinámica para agregador:
@@ -303,9 +299,7 @@ Body:
       "puerto": 8082
     }
   ],
-  "algoritmoConsenso": {
-    "tipo": "absoluto"
-  }
+  "tipoAlgoritmoConsenso": "ABSOLUTO"
 }
 
 POST http://localhost:8084/agregador/colecciones
@@ -341,9 +335,7 @@ Body:
       "puerto": 8083
     }
   ],
-  "algoritmoConsenso": {
-    "tipo": "multiplesMenciones"
-  }
+  "tipoAlgoritmoConsenso": "MULTIPLES_MENCIONES"
 }
 
 Esperar la carga de hechos

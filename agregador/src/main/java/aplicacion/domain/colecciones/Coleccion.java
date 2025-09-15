@@ -2,6 +2,7 @@ package aplicacion.domain.colecciones;
 
 import aplicacion.domain.algoritmos.AlgoritmoConsenso;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
+import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.criterios.CriterioDePertenencia;
@@ -30,21 +31,24 @@ public class Coleccion{
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Fuente> fuentes;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "algoritmo_id")
+    @Transient
     private AlgoritmoConsenso algoritmoConsenso = new AlgoritmoConsensoIrrestricto();
+    @Enumerated(EnumType.STRING)
+    private TipoAlgoritmoConsenso tipoAlgoritmoConsenso = TipoAlgoritmoConsenso.IRRESTRICTO;
 
     public Coleccion(
             String titulo,
             String descripcion,
             List<CriterioDePertenencia> criteriosDePertenencia,
             List<Fuente> fuentes,
-            AlgoritmoConsenso algoritmo) {
+            AlgoritmoConsenso algoritmo,
+            TipoAlgoritmoConsenso tipoAlgoritmo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.criteriosDePertenencia = criteriosDePertenencia;
         this.fuentes = fuentes;
         this.algoritmoConsenso = algoritmo;
+        this.tipoAlgoritmoConsenso = tipoAlgoritmo;
     }
 
     public Boolean cumpleCriterios(Hecho hecho){

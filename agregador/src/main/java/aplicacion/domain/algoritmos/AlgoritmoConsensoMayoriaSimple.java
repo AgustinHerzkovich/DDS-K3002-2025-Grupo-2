@@ -1,12 +1,9 @@
 package aplicacion.domain.algoritmos;
 
 import aplicacion.domain.hechos.Hecho;
-import jakarta.persistence.*;
 
 import java.util.*;
 
-@Entity
-@DiscriminatorValue("mayoriaSimple")
 public class AlgoritmoConsensoMayoriaSimple extends AlgoritmoConsenso {
     @Override
     public List<Hecho> curarHechos(Map<Hecho, Long> cantidadPorHecho, Long totalFuentes) {
