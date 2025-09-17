@@ -1,7 +1,6 @@
 package aplicacion.domain.hechos.multimedias;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Setter;
 
 // VIDEO
 @Entity
-@DiscriminatorValue("video")
 @NoArgsConstructor
 @Getter
 @Setter

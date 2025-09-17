@@ -17,14 +17,14 @@ public class HechoRevisadoOutputDto {
     private String id;
     private String titulo;
     private String descripcion;
-    private Categoria categoria;
-    private Ubicacion ubicacion;
+    private CategoriaOutputDto categoria;
+    private UbicacionOutputDto ubicacion;
     private LocalDateTime fechaAcontecimiento;
     private LocalDateTime fechaCarga;
     private LocalDateTime fechaUltimaModificacion;
     private Origen origen;
     private String contenidoTexto;
-    private List<Multimedia> contenidoMultimedia;
+    private List<MultimediaOutputDto> contenidoMultimedia;
     private Boolean anonimato;
     private ContribuyenteOutputDto autor;
     private EstadoRevision estadoRevision;

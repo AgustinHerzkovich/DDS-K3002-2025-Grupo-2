@@ -12,8 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_multimedia")
+@Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
         include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON
