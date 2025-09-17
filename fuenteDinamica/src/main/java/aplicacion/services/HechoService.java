@@ -6,12 +6,10 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.input.HechoEdicionInputDto;
 import aplicacion.domain.hechos.EstadoRevision;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.dto.mappers.HechoOutputMapper;
-import aplicacion.dto.mappers.HechoRevisadoOutputMapper;
+import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
-import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.repositorios.RepositorioDeHechos;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +24,20 @@ public class HechoService {
     private final HechoInputMapper hechoInputMapper;
     private final HechoOutputMapper hechoOutputMapper;
     private final HechoRevisadoOutputMapper hechoRevisadoOutputMapper;
+    private final CategoriaInputMapper categoriaInputMapper;
+    private final UbicacionInputMapper ubicacionInputMapper;
+    private final MultimediaInputMapper multimediaInputMapper;
 
-    
-    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper) {
+
+    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.contribuyenteService = contribuyenteService;
         this.hechoInputMapper = hechoInputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
         this.hechoRevisadoOutputMapper = hechoRevisadoOutputMapper;
+        this.categoriaInputMapper = categoriaInputMapper;
+        this.ubicacionInputMapper = ubicacionInputMapper;
+        this.multimediaInputMapper = multimediaInputMapper;
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
@@ -93,11 +97,11 @@ public class HechoService {
 
         hecho.editar(hechoEdicionInputDto.getTitulo(),
                 hechoEdicionInputDto.getDescripcion(),
-                hechoEdicionInputDto.getCategoria(),
-                hechoEdicionInputDto.getUbicacion(),
+                categoriaInputMapper.map(hechoEdicionInputDto.getCategoria()),
+                ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()),
                 hechoEdicionInputDto.getFechaAcontecimiento(),
                 hechoEdicionInputDto.getContenidoTexto(),
-                hechoEdicionInputDto.getContenidoMultimedia());
+                hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList());
 
         hecho = repositorioDeHechos.save(hecho);
         return hechoOutputMapper.map(hecho);

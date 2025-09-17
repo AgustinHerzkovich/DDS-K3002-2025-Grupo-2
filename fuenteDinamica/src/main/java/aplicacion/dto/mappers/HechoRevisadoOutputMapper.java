@@ -5,10 +5,16 @@ import aplicacion.dto.output.HechoRevisadoOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HechoRevisadoOutputMapper {
+public class HechoRevisadoOutputMapper implements Mapper<Hecho, HechoRevisadoOutputDto> {
+    private final CategoriaOutputMapper categoriaOutputMapper;
+    private final UbicacionOutputMapper ubicacionOutputMapper;
+    private final MultimediaOutputMapper multimediaOutputMapper;
     private final ContribuyenteOutputMapper contribuyenteOutputMapper;
 
-    public HechoRevisadoOutputMapper(ContribuyenteOutputMapper contribuyenteOutputMapper) {
+    public HechoRevisadoOutputMapper(CategoriaOutputMapper categoriaOutputMapper, UbicacionOutputMapper ubicacionOutputMapper, MultimediaOutputMapper multimediaOutputMapper, ContribuyenteOutputMapper contribuyenteOutputMapper) {
+        this.categoriaOutputMapper = categoriaOutputMapper;
+        this.ubicacionOutputMapper = ubicacionOutputMapper;
+        this.multimediaOutputMapper = multimediaOutputMapper;
         this.contribuyenteOutputMapper = contribuyenteOutputMapper;
     }
 
@@ -16,14 +22,14 @@ public class HechoRevisadoOutputMapper {
         return new HechoRevisadoOutputDto(hecho.getId(),
                 hecho.getTitulo(),
                 hecho.getDescripcion(),
-                hecho.getCategoria(),
-                hecho.getUbicacion(),
+                categoriaOutputMapper.map(hecho.getCategoria()),
+                ubicacionOutputMapper.map(hecho.getUbicacion()),
                 hecho.getFechaAcontecimiento(),
                 hecho.getFechaCarga(),
                 hecho.getFechaUltimaModificacion(),
                 hecho.getOrigen(),
                 hecho.getContenidoTexto(),
-                hecho.getContenidoMultimedia(),
+                hecho.getContenidoMultimedia() != null ? hecho.getContenidoMultimedia().stream().map(multimediaOutputMapper::map).toList() : null,
                 hecho.getAnonimato(),
                 hecho.getAutor() != null ? contribuyenteOutputMapper.map(hecho.getAutor()) : null,
                 hecho.getEstadoRevision(),
