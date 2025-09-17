@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ContribuyenteOutputMapper {
+public class ContribuyenteOutputMapper implements Mapper<Contribuyente, ContribuyenteOutputDto>{
     private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
 
     public ContribuyenteOutputMapper(IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper) {

@@ -6,7 +6,7 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContribuyenteInputMapper {
+public class ContribuyenteInputMapper implements Mapper<ContribuyenteInputDto, Contribuyente> {
     private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
 
     public ContribuyenteInputMapper(IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {

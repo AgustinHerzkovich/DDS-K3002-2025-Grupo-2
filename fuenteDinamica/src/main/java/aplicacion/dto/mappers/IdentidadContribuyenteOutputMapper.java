@@ -5,7 +5,7 @@ import aplicacion.dto.output.IdentidadContribuyenteOutputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IdentidadContribuyenteOutputMapper {
+public class IdentidadContribuyenteOutputMapper implements Mapper<IdentidadContribuyente, IdentidadContribuyenteOutputDto>{
     public IdentidadContribuyenteOutputDto map(IdentidadContribuyente identidadContribuyente) {
         return identidadContribuyente == null ? null : new IdentidadContribuyenteOutputDto(
                 identidadContribuyente.getId(),
