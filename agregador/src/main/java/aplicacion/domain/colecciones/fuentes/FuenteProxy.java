@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class FuenteProxy extends Fuente{
-    public FuenteProxy(FuenteId id, String ip, Integer puerto) {
+    public FuenteProxy(String id, String ip, Integer puerto) {
         super(id, ip, puerto);
     }
 
     @Override
     public String pathIntermedio() {
-        return "fuentesProxy/" + this.getId().getIdExterno();
+        return "fuentesProxy/" + this.getId();
     }
 }

@@ -1,8 +1,6 @@
 package aplicacion.controllers;
 
 import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
-import aplicacion.domain.colecciones.fuentes.FuenteId;
-import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.output.ColeccionOutputDto;
@@ -84,24 +82,23 @@ public class ColeccionController {
 
     @PostMapping("/colecciones/{id}/fuentes")
     public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable("id") String idColeccion,
-                                                         @RequestBody FuenteInputDto fuenteInputDTO) {
+                                                         @RequestBody FuenteInputDto fuenteInputDto) {
         ColeccionOutputDto coleccionOutputDto;
         try {
-            coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDTO);
+            coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
         }catch (ColeccionNoEncontradaException e){
             return ResponseEntity.notFound().build();
         }
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDTO.getId().getIdExterno() + " tipo: " + fuenteInputDTO.getId().getTipo());
+        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
         return ResponseEntity.ok(coleccionOutputDto);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}/{fuenteTipo}")
     public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @PathVariable("fuenteId") Long fuenteId,
-                                             @PathVariable("fuenteTipo") TipoFuente fuenteTipo) {
+                                             @PathVariable("fuenteId") String fuenteId) {
         try {
-            ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, new FuenteId(fuenteTipo, fuenteId));
-            System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId + " tipo: " + fuenteTipo);
+            ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
+            System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId);
             return ResponseEntity.ok(coleccion);
         } catch (ColeccionNoEncontradaException | FuenteNoEncontradaException e) {
             return ResponseEntity.notFound().build();

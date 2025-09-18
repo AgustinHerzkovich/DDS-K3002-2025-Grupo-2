@@ -16,7 +16,7 @@ import java.util.List;
 public class FuenteEstatica extends Fuente {
     private Boolean fueConsultada;
 
-    public FuenteEstatica(FuenteId id, String ip, Integer puerto) {
+    public FuenteEstatica(String id, String ip, Integer puerto) {
         super(id, ip, puerto);
         this.fueConsultada = false;
     }
@@ -32,6 +32,6 @@ public class FuenteEstatica extends Fuente {
 
     @Override
     public String pathIntermedio() {
-        return "fuentesEstaticas/" + this.getId().getIdExterno();
+        return "fuentesEstaticas/" + this.getId();
     }
 }

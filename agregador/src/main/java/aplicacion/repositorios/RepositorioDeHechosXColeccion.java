@@ -2,7 +2,6 @@ package aplicacion.repositorios;
 
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.clasesIntermedias.HechoXColeccionId;
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +19,7 @@ public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColec
         SELECT hxf.hecho FROM HechoXFuente hxf WHERE hxf.fuente.id = :fuenteId
     )
 """)
-    void deleteAllByFuenteId(@Param("fuenteId") FuenteId fuenteId);
+    void deleteAllByFuenteId(@Param("fuenteId") String fuenteId);
     @Transactional
     @Modifying
     @Query("""

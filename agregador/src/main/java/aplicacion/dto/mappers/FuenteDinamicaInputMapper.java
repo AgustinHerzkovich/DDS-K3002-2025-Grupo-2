@@ -1,12 +1,12 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.colecciones.fuentes.FuenteDinamica;
-import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.FuenteDinamicaInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuenteDinamicaInputMapper implements Mapper<FuenteInputDto, FuenteDinamica>{
-    public FuenteDinamica map(FuenteInputDto fuenteInputDto) {
+public class FuenteDinamicaInputMapper implements Mapper<FuenteDinamicaInputDto, FuenteDinamica>{
+    public FuenteDinamica map(FuenteDinamicaInputDto fuenteInputDto) {
         return new FuenteDinamica(
                 fuenteInputDto.getId(),
                 fuenteInputDto.getIp(),
