@@ -9,13 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/estadisticas")
 public class EstadisticasController {
-    DimensionCategoriaRepository categoriaRepository;
 
     public EstadisticasController(DimensionCategoriaRepository categoriaRepository){
-        this.categoriaRepository = categoriaRepository;
-    }
-    @PostConstruct
-    public void algo(){
-        categoriaRepository.save(new DimensionCategoria(2L, "Cate"));
     }
 }
