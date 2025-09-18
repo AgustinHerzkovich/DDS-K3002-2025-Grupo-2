@@ -115,10 +115,8 @@ En el body de la request:
   ],
   "fuentes": [
     {
-      "id": {
-        "tipo": "ESTATICA",
-        "idExterno": 522c567c-8825-4a4c-bcfc-bffa390fcba0
-      },
+      "tipo": "estatica",
+      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
       "ip": "localhost",
       "puerto": 8081
     }
@@ -148,7 +146,6 @@ Dejar los archivos ya previamente cargados en la nube y solo levantar la app
 Agregador para fuente metamapa:
 Levantar otro agregador en la misma compu con:
 java -jar .\agregador\target\agregador-0.1.0.jar -D --server.port=8094
-java -jar ./agregador/target/agregador-0.1.0.jar -D --server.port=8094
 
 POST http://localhost:8094/agregador/colecciones
 Body:
@@ -164,10 +161,8 @@ Body:
   ],
   "fuentes": [
     {
-      "id": {
-        "tipo": "ESTATICA",
-        "idExterno": 522c567c-8825-4a4c-bcfc-bffa390fcba0
-      },
+      "tipo": "estatica",
+      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
       "ip": "localhost",
       "puerto": 8081
     }
@@ -285,18 +280,14 @@ Body:
   ],
   "fuentes": [
     {
-      "id": {
-        "tipo": "ESTATICA",
-        "idExterno": 522c567c-8825-4a4c-bcfc-bffa390fcba0
-      },
+      "tipo": "estatica",
+      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
       "ip": "localhost",
       "puerto": 8081
     },
     {
-      "id": {
-        "tipo": "DINAMICA",
-        "idExterno": e359660d-9459-4312-9db6-59e4f9c935d4
-      },
+      "tipo": "dinamica",
+      "id": "e359660d-9459-4312-9db6-59e4f9c935d4",
       "ip": "localhost",
       "puerto": 8082
     }
@@ -321,18 +312,14 @@ Body:
   ],
   "fuentes": [
     {
-      "id": {
-        "tipo": "PROXY",
-        "idExterno": uuid_fuente_demo
-      },
+      "tipo": "proxy",
+      "id": uuid_fuente_demo,
       "ip": "localhost",
       "puerto": 8083
     },
     {
-      "id": {
-        "tipo": "PROXY",
-        "idExterno": uuid_fuente_metamapa
-      },
+      "tipo": "proxy",
+      "id": uuid_fuente_metamapa,
       "ip": "localhost",
       "puerto": 8083
     }

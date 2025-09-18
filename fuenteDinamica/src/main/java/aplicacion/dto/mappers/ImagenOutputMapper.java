@@ -11,6 +11,7 @@ public class ImagenOutputMapper implements Mapper<Imagen, ImagenOutputDto> {
                 imagen.getId(),
                 imagen.getFormato(),
                 imagen.getTamanio(),
+                "imagen",
                 imagen.getResolucion()
         );
     }

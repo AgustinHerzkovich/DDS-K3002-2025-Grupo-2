@@ -3,7 +3,6 @@ package aplicacion.services;
 import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
@@ -151,7 +150,7 @@ public class ColeccionService {
     }
 
     @Transactional
-    public ColeccionOutputDto quitarFuenteDeColeccion(String idColeccion, FuenteId fuenteId) throws FuenteNoEncontradaException {
+    public ColeccionOutputDto quitarFuenteDeColeccion(String idColeccion, String fuenteId) throws FuenteNoEncontradaException {
         Coleccion coleccion = obtenerColeccion(idColeccion);
         Fuente fuente = fuenteService.obtenerFuentePorId(fuenteId);
 

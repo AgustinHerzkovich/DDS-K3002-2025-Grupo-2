@@ -2,7 +2,6 @@ package aplicacion.repositorios;
 
 import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.clasesIntermedias.HechoXFuenteId;
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,15 +30,15 @@ public interface RepositorioDeHechosXFuente extends JpaRepository<HechoXFuente, 
     """)
     List<Object[]> countHechosByFuente(@Param("idColeccion") String idColeccion);
 
-    Boolean existsByFuenteId(FuenteId fuenteId);
+    Boolean existsByFuenteId(String fuenteId);
 
     @Query("""
           SELECT hxf.hecho
           FROM HechoXFuente hxf
           WHERE hxf.fuente.id = :fuenteId
     """)
-    List<Hecho> findHechosByFuenteId(FuenteId fuenteId);
+    List<Hecho> findHechosByFuenteId(String fuenteId);
 
-    void deleteAllByFuenteId(FuenteId fuenteId);
+    void deleteAllByFuenteId(String fuenteId);
 
 }

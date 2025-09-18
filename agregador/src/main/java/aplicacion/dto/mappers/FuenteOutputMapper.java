@@ -8,8 +8,9 @@ import org.springframework.stereotype.Component;
 public class FuenteOutputMapper implements Mapper<Fuente, FuenteOutputDto>{
     public FuenteOutputDto map(Fuente fuente){
         FuenteOutputDto retVal = new FuenteOutputDto();
-        retVal.setId(Math.toIntExact(fuente.getId().getIdExterno()));
-        retVal.setTipo(fuente.getId().getTipo());
+        retVal.setId(fuente.getId());
+        retVal.setIp(fuente.getIp());
+        retVal.setPuerto(fuente.getPuerto());
         return retVal;
     }
 }

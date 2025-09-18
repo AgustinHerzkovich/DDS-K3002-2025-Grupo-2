@@ -1,14 +1,17 @@
 package aplicacion.dto.output;
 
-import aplicacion.domain.colecciones.fuentes.TipoFuente;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Setter
+@Getter
 @Data
 @NoArgsConstructor
 public class FuenteOutputDto {
-    private Integer id;
-    private TipoFuente tipo;
+    private String id;
+    private String ip;
+    private Integer puerto;
 }

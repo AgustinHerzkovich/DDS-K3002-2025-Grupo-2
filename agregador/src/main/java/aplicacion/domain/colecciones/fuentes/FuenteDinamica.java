@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class FuenteDinamica extends Fuente {
-    public FuenteDinamica(FuenteId id, String ip, Integer puerto) {
+    public FuenteDinamica(String id, String ip, Integer puerto) {
         super(id, ip, puerto);
     }
 

@@ -1,7 +1,6 @@
 package aplicacion.repositorios;
 
 import aplicacion.domain.colecciones.Coleccion;
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,5 +14,5 @@ public interface RepositorioDeColecciones extends JpaRepository<Coleccion, Strin
     JOIN c.fuentes f
     WHERE f.id = :fuenteId
     """)
-    Boolean existsByFuenteId(FuenteId fuenteId);
+    Boolean existsByFuenteId(String fuenteId);
 }
