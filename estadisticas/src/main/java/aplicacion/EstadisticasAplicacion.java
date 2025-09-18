@@ -1,5 +1,6 @@
 package aplicacion;
 
+import aplicacion.utils.IdentificadorDeUbicacion;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EstadisticasAplicacion {
   public static void main(String[] args) {
     SpringApplication.run(EstadisticasAplicacion.class, args);
-
+    System.out.println(IdentificadorDeUbicacion.getInstance().identificar(-34.599703, -58.512600));
   }
 }

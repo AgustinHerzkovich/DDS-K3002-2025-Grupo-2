@@ -13,10 +13,17 @@
     <artifactId>estadisticas</artifactId>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.locationtech.jts/jts-core -->
         <dependency>
-            <groupId>de.westnordost</groupId>
-            <artifactId>countryboundaries</artifactId>
-            <version>2.1</version>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.grundid.opendatalab/geojson-jackson -->
+        <dependency>
+            <groupId>de.grundid.opendatalab</groupId>
+            <artifactId>geojson-jackson</artifactId>
+            <version>1.14</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
