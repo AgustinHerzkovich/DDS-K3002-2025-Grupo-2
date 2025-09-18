@@ -261,12 +261,14 @@ POST http://localhost:8083/fuentesProxy -> body:
         "tipo": "prueba"
   }
 }
+-> ver el uuid que genera
 
 Fuente metamapa:
 POST http://localhost:8083/fuentesProxy -> body:
 {
   "url": "http://localhost:8094/agregador/hechos"
 }
+-> ver el uuid que genera
 
 
 POST http://localhost:8084/agregador/colecciones
@@ -293,7 +295,7 @@ Body:
     {
       "id": {
         "tipo": "DINAMICA",
-        "idExterno": 1
+        "idExterno": e359660d-9459-4312-9db6-59e4f9c935d4
       },
       "ip": "localhost",
       "puerto": 8082
@@ -321,7 +323,7 @@ Body:
     {
       "id": {
         "tipo": "PROXY",
-        "idExterno": 1
+        "idExterno": uuid_fuente_demo
       },
       "ip": "localhost",
       "puerto": 8083
@@ -329,7 +331,7 @@ Body:
     {
       "id": {
         "tipo": "PROXY",
-        "idExterno": 2
+        "idExterno": uuid_fuente_metamapa
       },
       "ip": "localhost",
       "puerto": 8083

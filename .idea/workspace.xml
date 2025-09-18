@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="empiezo con inputoutput dto en agregador">
-      <change beforePath="$PROJECT_DIR$/.Archivos de texto/Casos de prueba.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.Archivos de texto/Casos de prueba.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
@@ -18,9 +17,12 @@
     <list id="19a8df37-f901-4e9b-80ce-4ad11eafbc62" name="Changes by sroja" comment="" />
     <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="">
       <change beforePath="$PROJECT_DIR$/.Archivos de texto/Casos de prueba.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.Archivos de texto/Casos de prueba.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/ArchivoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/ArchivoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/HechoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/HechoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/ArchivoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/ArchivoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/controllers/FuenteProxyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/controllers/FuenteProxyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/FuenteProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/FuenteProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/output/FuenteProxyOutputDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/output/FuenteProxyOutputDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/repositorios/RepositorioDeFuentesProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/repositorios/RepositorioDeFuentesProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/FuenteProxyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/FuenteProxyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/schedulers/PedirHechosScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/schedulers/PedirHechosScheduler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,17 +74,6 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/.Archivos de texto/Casos de prueba.txt">
-      <ranges>
-        <range start1="9" end1="12" start2="9" end2="12" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
-        <range start1="13" end1="16" start2="13" end2="16" changelist="b8d8b220-ee77-4621-9d51-3d68fccab3fe" />
-        <range start1="119" end1="120" start2="119" end2="120" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
-        <range start1="168" end1="169" start2="168" end2="169" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
-        <range start1="287" end1="288" start2="287" end2="288" changelist="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" />
-      </ranges>
-    </file>
-  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -494,7 +485,7 @@
       <workItem from="1757025451840" duration="1303000" />
       <workItem from="1757027050942" duration="120000" />
       <workItem from="1757036059538" duration="622000" />
-      <workItem from="1758216229889" duration="4518000" />
+      <workItem from="1758216229889" duration="6156000" />
     </task>
     <task id="LOCAL-00001" summary="empiezo con inputoutput dto en agregador">
       <option name="closed" value="true" />

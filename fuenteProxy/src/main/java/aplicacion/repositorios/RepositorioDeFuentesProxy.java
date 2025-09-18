@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import aplicacion.domain.fuentesProxy.FuenteProxy;
 
 @Repository
-public interface RepositorioDeFuentesProxy extends JpaRepository<FuenteProxy, Long>{
+public interface RepositorioDeFuentesProxy extends JpaRepository<FuenteProxy, String>{
     // Este repositorio se usa para manejar los hechos que son fuentes proxy.
     // No se necesita implementar métodos adicionales por ahora, ya que JpaRepository
     // proporciona las operaciones CRUD básicas.
