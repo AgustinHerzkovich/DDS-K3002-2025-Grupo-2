@@ -18,7 +18,7 @@ public class HechoController {
     }
 
     @GetMapping("/{id}/hechos")
-    public List<HechoOutputDto> obtenerHechos(@PathVariable("id") Long id,
+    public List<HechoOutputDto> obtenerHechos(@PathVariable("id") String id,
                                               @RequestParam(value = "fechaMayorA", required = false)
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
         if (fechaMayorA == null) {

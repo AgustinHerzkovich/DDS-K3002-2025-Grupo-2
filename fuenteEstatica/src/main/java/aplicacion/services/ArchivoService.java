@@ -27,11 +27,11 @@ public class ArchivoService {
     }
 
     // Subir archivo al fileserver
-    public void subirArchivo(Long fuenteId, MultipartFile file) throws Exception {
+    public void subirArchivo(String fuenteId, MultipartFile file) throws Exception {
         fileServerService.cargarArchivo("fuente" + fuenteId, file);
     }
 
-    public void subirArchivoDesdeUrl(Long fuenteId, String urlString) throws Exception {
+    public void subirArchivoDesdeUrl(String fuenteId, String urlString) throws Exception {
         urlString = urlString.trim().replaceAll("^\"|\"$", "");
 
         URL url = new URL(urlString);
@@ -62,12 +62,12 @@ public class ArchivoService {
         }
     }
 
-    public List<HechoOutputDto> leerHechosConFechaMayorA(Long fuenteId, LocalDateTime fecha) {
+    public List<HechoOutputDto> leerHechosConFechaMayorA(String fuenteId, LocalDateTime fecha) {
         return this.leerHechos(fuenteId).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
     }
 
     // Leer todos los archivos y generar hechos
-    public List<HechoOutputDto> leerHechos(Long fuenteId) {
+    public List<HechoOutputDto> leerHechos(String fuenteId) {
         List<Hecho> hechos = new ArrayList<>();
         String carpeta = "fuente" + fuenteId;
         try {
