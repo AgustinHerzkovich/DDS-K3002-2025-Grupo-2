@@ -1,7 +1,7 @@
 package aplicacion.services;
 
 
-import aplicacion.repositorios.*;
+import aplicacion.repositorios.olap.*;
 import org.springframework.stereotype.Service;
 
 @Service
