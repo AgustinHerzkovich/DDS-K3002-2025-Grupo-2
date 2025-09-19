@@ -37,4 +37,13 @@ public class Hecho {
         this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
     }
+
+    public String toString() {
+        return "Hecho{" +
+                "id='" + id + '\'' +
+                ", categoria=" + categoria.getNombre() +
+                ", ubicacion=(" + ubicacion.getLatitud() + ", " + ubicacion.getLongitud() + ")" +
+                ", fechaAcontecimiento=" + fechaAcontecimiento +
+                '}';
+    }
 }
