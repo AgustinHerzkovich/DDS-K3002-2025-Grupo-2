@@ -53,7 +53,7 @@ public class IdentificadorDeUbicacion {
     }
 
     private IdentificadorDeUbicacion() {
-        String geoJsonContent = readGeoJsonFromResources("gadm41_ARG_1.json");
+        String geoJsonContent = readGeoJsonFromResources("provincias.geojson");
         // Lee el geoJson
         GeoJSON gj = GeoJSONFactory.create(geoJsonContent);
         // Crea un geoJson
@@ -63,10 +63,18 @@ public class IdentificadorDeUbicacion {
         //Verifica que sea un "FeatureCollection"
         FeatureCollection fc = (FeatureCollection) gj;
         GeoJSONReader reader = new GeoJSONReader();
+        int idx = 0;
         for (Feature feature : fc.getFeatures()) {
             // Por cada "feature" (provincia)
+            Geometry geomJts;
+
             org.wololo.geojson.Geometry ggeom = feature.getGeometry();
-            Geometry geomJts = reader.read(ggeom);
+            if (ggeom == null) {
+                System.err.println("Feature index " + idx + " tiene geometría nula. Se ignora.");
+                idx++;
+                continue;
+            }
+            geomJts = reader.read(ggeom);
             // La transforma a geometria de JTS, para poder usar contains()
             String provincia = (String) feature.getProperties().get("NAME_1");
             String pais = (String) feature.getProperties().get("COUNTRY");
