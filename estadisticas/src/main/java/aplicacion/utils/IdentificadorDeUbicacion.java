@@ -12,19 +12,36 @@ import org.wololo.jts2geojson.GeoJSONReader;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+
+
+
+/*
+*
+* https://gadm.org/data.html
+*
+* Archivos geoJson de varios paises
+*
+* https://mapshaper.org/
+*
+* Sitio para reducir tamaño de los mapas
+*
+*/
+
+
+
+
 
 public class IdentificadorDeUbicacion {
 
     private static IdentificadorDeUbicacion instance;
-
-    private FeatureCollection fc;
-    // El "Mapa" con las provincias
-
-    private final GeoJSONReader reader = new GeoJSONReader();
-    //
-
+    private List<Provincia> provinciasCache = new ArrayList<>();
+    // Lista de provincias en memoria
     private final GeometryFactory gf = new GeometryFactory();
+    // Factory necesario para crear puntos y evaluarlos
 
     public static IdentificadorDeUbicacion getInstance() {
         if (instance == null) {
@@ -42,8 +59,22 @@ public class IdentificadorDeUbicacion {
             throw new IllegalArgumentException("Esperaba un FeatureCollection de provincias");
         }
         //Verifica que sea un "FeatureCollection"
-        this.fc = (FeatureCollection) gj;
-        //Guarda la FeatureCollection
+        FeatureCollection fc = (FeatureCollection) gj;
+        GeoJSONReader reader = new GeoJSONReader();
+        for (Feature feature : fc.getFeatures()) {
+            // Por cada "feature" (provincia)
+            org.wololo.geojson.Geometry ggeom = feature.getGeometry();
+            Geometry geomJts = reader.read(ggeom);
+            // La transforma a geometria de JTS, para poder usar contains()
+            String provincia = (String) feature.getProperties().get("NAME_1");
+            String pais = (String) feature.getProperties().get("COUNTRY");
+            String iso = (String) feature.getProperties().get("ISO_1");
+            // Busca el nombre de la provincia
+            provinciasCache.add(new Provincia(geomJts, provincia, pais, iso));
+            // Guarda la provincia, sus nombres y geometria convertida a memoria
+        }
+
+
     }
 
     private static String readGeoJsonFromResources(String fileName) {
@@ -58,24 +89,16 @@ public class IdentificadorDeUbicacion {
         // Convierte el geoJson a un string
     }
 
-    public String identificar(double latitud, double longitud) {
+    public Provincia identificar(double latitud, double longitud) {
         Point punto = gf.createPoint(new Coordinate(longitud, latitud));
         // Crea un punto en la ubicacion para ver si esta en una provincia
-        for (Feature feature : fc.getFeatures()) {
-            // Por cada provincia (feature) del mapa
-            org.wololo.geojson.Geometry ggeom = feature.getGeometry();
-            // Obtiene la geometria de la feature
-            Geometry geomJts = reader.read(ggeom);
-            // Convierte la provincia en un objeto de JTS para poder usar metodos de analisis de la geometria
-            if (geomJts.contains(punto)) {
-                // Si el punto esta en la geometria
-                Object nombre = feature.getProperties().get("NAME_1");
-                // Obtengo el nombre
-                return nombre != null ? nombre.toString() : "Provincia desconocida";
-                // Si no lo encuentro, devuelvo nombre desconocido
+        for (Provincia provincia : provinciasCache) {
+            if (provincia.getGeom().contains(punto)) {
+                return provincia;
+                // Si esta devuelve la provincia
             }
         }
-        return "No se encontró ninguna provincia para esa ubicación.";
+        return null;
         // Si llegue aca, es que no esta en el mapa
     }
 }
