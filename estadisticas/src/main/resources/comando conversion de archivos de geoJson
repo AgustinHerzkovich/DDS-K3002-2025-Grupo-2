@@ -1,0 +1,13 @@
+set OGR_GEOJSON_MAX_OBJ_SIZE=0
+
+ogr2ogr -f GeoJSON output.geojson <source> -lco COORDINATE_PRECISION=4 -sql "SELECT COUNTRY, ISO_1, NAME_1 FROM ADM_1 WHERE OGR_GEOMETRY IS NOT NULL" -simplify 0.01 -makevalid
+
+
+
+
+MEJORADO:
+
+ogr2ogr -f GeoJSON provincias.geojson provinciasOG.geojson -lco COORDINATE_PRECISION=2 -dialect SQLite -sql "SELECT COUNTRY, ISO_1, NAME_1 FROM ADM_1 WHERE OGR_GEOMETRY IS NOT NULL AND NOT IsEmpty(geometry)" -simplify 0.02 -makevalid
+
+Luego borrar a mano geometrias vacias
+
