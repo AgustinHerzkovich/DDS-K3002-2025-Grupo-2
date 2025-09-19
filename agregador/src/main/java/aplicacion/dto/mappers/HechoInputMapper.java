@@ -27,7 +27,7 @@ public class HechoInputMapper implements Mapper<HechoInputDto, Hecho>{
                 ubicacionInputMapper.map(hechoInputDto.getUbicacion()),
                 hechoInputDto.getFechaAcontecimiento(),
                 hechoInputDto.getOrigen(),
-                hechoInputDto.getContenidoTexto(),
+                hechoInputDto.getContenidoTexto() != null ? hechoInputDto.getContenidoTexto() : "",
                 hechoInputDto.getContenidoMultimedia() != null ? hechoInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null,
                 hechoInputDto.getAnonimato(),
                 hechoInputDto.getAutor() != null ? this.contribuyenteInputMapper.map(hechoInputDto.getAutor()) : null
