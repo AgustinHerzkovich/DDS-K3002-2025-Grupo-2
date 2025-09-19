@@ -29,6 +29,8 @@ import java.util.Scanner;
 *
 * Sitio para reducir tamaño de los mapas
 *
+* Actualmente, con solo las provincias argentinas guardadas a la resolución por defecto, puede identificar 1.000.000 de provincias en menos de 200 ms
+* No deberia dar problemas de rendimiento, siempre y cuando no le demos demasiados datasets de provincias
 */
 
 
