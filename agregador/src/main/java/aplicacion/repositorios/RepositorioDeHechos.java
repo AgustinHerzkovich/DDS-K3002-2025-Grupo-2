@@ -52,5 +52,5 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
                                   @Param("categoria") Categoria categoria,
                                   @Param("ubicacion") Ubicacion ubicacion,
                                   @Param("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
-                                  @Param("contenidoTexto") String contenidoTexto); // TODO: Ubicacion tira unsaved transient instance exception
+                                  @Param("contenidoTexto") String contenidoTexto);
 }
