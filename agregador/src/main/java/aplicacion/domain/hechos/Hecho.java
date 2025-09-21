@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // HECHO
 @Getter
@@ -45,7 +46,7 @@ public class Hecho {
     @Column(length = 500)
     private String contenidoTexto;
     // todo: evaluar si es necesario el fetch type eager, es temporal para que pasen los tests
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER) // CascadeType.ALL permite que las operaciones de persistencia se propaguen a las entidades relacionadas
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -119,5 +120,16 @@ public class Hecho {
         for(SolicitudEliminacion sol : this.solicitudes){
             sol.anularPrescripcion();
         }
+    }
+
+    public String getClaveUnica() {
+        return String.join("|",
+                titulo,
+                descripcion,
+                categoria.getId().toString(),
+                ubicacion.getId().toString(),
+                fechaAcontecimiento.toString(),
+                Objects.toString(contenidoTexto, "")
+        );
     }
 }
