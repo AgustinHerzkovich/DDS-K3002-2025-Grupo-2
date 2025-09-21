@@ -18,10 +18,13 @@ public abstract class Multimedia {
     @Column(length = 50)
     private String formato;
     private Integer tamanio;
+    @Column(length = 500)
+    private String url;
 
-    public Multimedia(String formato, Integer tamanio){
+    public Multimedia(String formato, Integer tamanio, String url){
         this.formato = formato;
         this.tamanio = tamanio;
+        this.url = url;
     }
 
     public abstract void reproducir();

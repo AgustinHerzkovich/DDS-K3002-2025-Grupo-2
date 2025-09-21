@@ -10,6 +10,7 @@ public class ImagenInputMapper implements Mapper<ImagenInputDto, Imagen>{
         return new Imagen(
                 imagenInputDto.getFormato(),
                 imagenInputDto.getTamanio(),
+                imagenInputDto.getUrl(),
                 imagenInputDto.getResolucion()
         );
     }
