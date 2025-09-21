@@ -45,7 +45,8 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                  "formato": "mp4",
                                                  "tamanio": 100,
                                                  "resolucion": "1920x1080",
-                                                 "duracion": 30
+                                                 "duracion": 30,
+                                                 "url": "urlVideo"
                                                }
                                              ],
                                              "anonimato": false,
@@ -69,7 +70,8 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                  "tipo": "imagen",
                                                  "formato": "jpg",
                                                  "tamanio": 200,
-                                                 "resolucion": "1024x768"
+                                                 "resolucion": "1024x768",
+                                                 "url": "urlImagen"
                                                }
                                              ],
                                              "anonimato": true
@@ -192,7 +194,8 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                  "formato": "mp4",
                                                  "tamanio": 100,
                                                  "resolucion": "1920x1080",
-                                                 "duracion": 30
+                                                 "duracion": 30,
+                                                 "url": "urlVideo"
                                                }
                                              ],
                                              "anonimato": false,
@@ -216,7 +219,8 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                  "tipo": "imagen",
                                                  "formato": "jpg",
                                                  "tamanio": 200,
-                                                 "resolucion": "1024x768"
+                                                 "resolucion": "1024x768",
+                                                 "url": "urlImagen"
                                                }
                                              ],
                                              "anonimato": true
@@ -239,7 +243,8 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                  "tipo": "imagen",
                                                  "formato": "jpg",
                                                  "tamanio": 200,
-                                                 "resolucion": "1024x768"
+                                                 "resolucion": "1024x768",
+                                                 "url": "urlImagen"
                                                }
                                              ],
                                              "anonimato": true
