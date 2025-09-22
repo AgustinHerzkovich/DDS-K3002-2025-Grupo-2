@@ -6,7 +6,6 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +16,13 @@ import java.util.*;
 @Service
 public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
-    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
-                         RepositorioDeHechosXFuente repositorioDeHechosXFuente,
                          FuenteInputMapper fuenteInputMapper,
                          HechoInputMapper hechoInputMapper) {
         this.repositorioDeFuentes = repositorioDeFuentes;
-        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
     }
@@ -66,7 +62,7 @@ public class FuenteService {
 
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(String fuenteId){
-        return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
+        return repositorioDeFuentes.findById(fuenteId).get().getHechos();
     }
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {

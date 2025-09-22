@@ -11,6 +11,7 @@ import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class CargarHechosScheduler {
     }
 
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Transactional
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
@@ -54,7 +56,7 @@ public class CargarHechosScheduler {
         System.out.println("Se asignaran los hechos a las colecciones");
         for(Coleccion coleccion : colecciones){
             for(Fuente fuente : coleccion.getFuentes()){
-                List<Hecho> hechosObtenidos = fuenteService.obtenerHechosPorFuente(fuente.getId());
+                List<Hecho> hechosObtenidos = fuente.getHechos();
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
                     HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);

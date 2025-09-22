@@ -3,14 +3,12 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.clasesIntermedias.HechoXFuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
@@ -19,19 +17,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class HechoService {
     private final RepositorioDeHechos repositorioDeHechos;
-    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXFuente repositorioDeHechosXFuente, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
         this.repositorioDeHechos = repositorioDeHechos;
-        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
@@ -49,9 +46,6 @@ public class HechoService {
         return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
     }
 
-    public void guardarHechoPorFuente(HechoXFuente hechoPorFuente) {
-        repositorioDeHechosXFuente.save(hechoPorFuente);
-    }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
         Hecho hecho = hechoPorColeccion.getHecho();
@@ -74,17 +68,6 @@ public class HechoService {
         return repositorioDeHechos.findByCollectionId(idColeccion);
     }
 
-    public Map<Fuente, List<Hecho>> obtenerHechosPorColeccionPorFuente(String idColeccion) {
-        // Obtiene todos los hechos hechos por fuente asociados a la colección
-        List<HechoXFuente> hechosXFuente = repositorioDeHechosXFuente.findByCollectionId(idColeccion);
-
-        // Transforma la lista de HechoXFuente a un map agrupado por Fuente
-        return hechosXFuente.stream()
-                .collect(Collectors.groupingBy(
-                        HechoXFuente::getFuente,
-                        Collectors.mapping(HechoXFuente::getHecho, Collectors.toList())
-                ));
-    }
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
     }
@@ -105,14 +88,6 @@ public class HechoService {
         ).orElseThrow(() -> new HechoNoEncontradoException("No se encontró un hecho duplicado."));
     }
 
-    public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
-        return repositorioDeHechosXFuente.countHechosByFuente(coleccion.getId())
-                .stream()
-                .collect(Collectors.toMap(
-                        row -> (Hecho) row[0],
-                        row -> ((Long) row[1])
-                ));
-    }
 
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
@@ -150,7 +125,19 @@ public class HechoService {
         return hechosDuplicados;
     }
 
-    public void guardarHechosPorFuente(List<HechoXFuente> hechosXFuenteAInsertar) {
-        repositorioDeHechosXFuente.saveAll(hechosXFuenteAInsertar);
+    public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
+        List<Fuente> fuentes = coleccion.getFuentes();
+        List<Hecho> hechos = fuentes.stream().flatMap(fuente -> fuente.getHechos().stream()).toList();
+        Set<Hecho> hechosUnicos = new HashSet<>(hechos);
+        Map<Hecho, Long> returnMap = new HashMap<>();
+        for(Hecho hechoUnico : hechosUnicos){
+            Long ocurrencias = 0L;
+            for(Fuente fuente : fuentes){
+                if(fuente.getHechos().contains(hechoUnico))
+                    ocurrencias++;
+            }
+            returnMap.put(hechoUnico, ocurrencias);
+        }
+        return returnMap;
     }
 }

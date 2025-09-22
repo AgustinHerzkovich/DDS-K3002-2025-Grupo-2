@@ -1,5 +1,6 @@
 package aplicacion.domain.colecciones.fuentes;
 
+import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.HechoInputDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +31,13 @@ public abstract class Fuente{
     @Column(length = 25)
     private String ip;
     private Integer puerto;
-
+    @ManyToMany
+    @JoinTable(
+            name = "hecho_x_fuente",
+            joinColumns = @JoinColumn(name = "fuente_id"),
+            inverseJoinColumns = @JoinColumn(name = "hecho_id")
+    )
+    private List<Hecho> hechos;
     public Fuente(String id, String ip, Integer puerto) {
         this.id = id;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
@@ -77,4 +84,17 @@ public abstract class Fuente{
     }
 
     public abstract String pathIntermedio();
+
+    public void agregarHecho(Hecho hecho){
+        hechos.add(hecho);
+    }
+    public void quitar(Hecho hecho){
+        hechos.remove(hecho);
+    }
+    public void agregarHechos(List<Hecho> hechosAAgregar){
+        hechos.addAll(hechosAAgregar);
+    }
+    public void eliminarTodosLosHechos(){
+        hechos.clear();
+    }
 }
