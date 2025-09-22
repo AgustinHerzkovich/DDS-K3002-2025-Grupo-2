@@ -9,8 +9,8 @@ public class VideoOutputDto extends MultimediaOutputDto{
     private String resolucion;
     private Integer duracion;
 
-    public VideoOutputDto(Long id, String formato, Integer tamanio, String tipo, String resolucion, Integer duracion) {
-        super(id, formato, tamanio, tipo);
+    public VideoOutputDto(Long id, String formato, Integer tamanio, String url, String tipo, String resolucion, Integer duracion) {
+        super(id, formato, tamanio, url, tipo);
         this.resolucion = resolucion;
         this.duracion = duracion;
     }

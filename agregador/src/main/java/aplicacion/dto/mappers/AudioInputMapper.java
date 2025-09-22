@@ -10,6 +10,7 @@ public class AudioInputMapper implements Mapper<AudioInputDto, Audio>{
         return new Audio(
                 audioInputDto.getFormato(),
                 audioInputDto.getTamanio(),
+                audioInputDto.getUrl(),
                 audioInputDto.getDuracion()
         );
     }

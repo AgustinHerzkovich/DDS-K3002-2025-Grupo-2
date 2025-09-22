@@ -10,6 +10,7 @@ public class VideoInputMapper implements Mapper<VideoInputDto, Video>{
         return new Video(
                 videoInputDto.getFormato(),
                 videoInputDto.getTamanio(),
+                videoInputDto.getUrl(),
                 videoInputDto.getResolucion(),
                 videoInputDto.getDuracion()
         );

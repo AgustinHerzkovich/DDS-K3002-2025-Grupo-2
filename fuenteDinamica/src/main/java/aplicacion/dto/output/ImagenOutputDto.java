@@ -8,8 +8,8 @@ import lombok.Setter;
 public class ImagenOutputDto extends MultimediaOutputDto{
     private String resolucion;
 
-    public ImagenOutputDto(Long id, String formato, Integer tamanio, String tipo, String resolucion) {
-        super(id, formato, tamanio, tipo);
+    public ImagenOutputDto(Long id, String formato, Integer tamanio, String url, String tipo, String resolucion) {
+        super(id, formato, tamanio, url, tipo);
         this.resolucion = resolucion;
     }
 }

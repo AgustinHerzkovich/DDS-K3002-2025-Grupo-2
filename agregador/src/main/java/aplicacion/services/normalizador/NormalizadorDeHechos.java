@@ -38,6 +38,35 @@ public class NormalizadorDeHechos {
         this.ubicacionService = ubicacionService;
     }
 
+    public void normalizarTodos(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
+        List<Long> tiempoPorPaso = new ArrayList<>();
+        tiempoPorPaso.add(0L); // Categorias
+        tiempoPorPaso.add(0L); // Etiquetas
+        tiempoPorPaso.add(0L); // Ubicaciones
+        List<Hecho> hechos = mapFuentesYhechosANormalizar.values().stream()
+                .flatMap(List::stream)
+                .toList();
+        System.out.println("Hechos a normalizar: " + mapFuentesYhechosANormalizar.values().stream().mapToInt(List::size).sum());
+        System.out.println("Normalizando...");
+        int largoBarra = 50;
+        int totalHechos = hechos.size();
+        int hechosNormalizados = 0;
+        for(Hecho hecho : hechos){
+            normalizarCronometrado(hecho, tiempoPorPaso);
+            hechosNormalizados++;
+
+            int porcentaje = (hechosNormalizados * 100) / totalHechos;
+            int llenos = (porcentaje * largoBarra) / 100;
+            int vacios = largoBarra - llenos;
+
+            String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " + porcentaje + "%" + " (" + hechosNormalizados + "/" + totalHechos + ")";
+            System.out.print("\r" + barra);
+        }
+        System.out.println("Normalización finalizada.");
+        System.out.println(tiempoPorPaso.get(0) /1_000_000 + " ms en normalizar Categorias");
+        System.out.println(tiempoPorPaso.get(1) /1_000_000 + " ms en normalizar Etiquetas");
+        System.out.println(tiempoPorPaso.get(2) /1_000_000 + " ms en normalizar Ubicaciones");
+    }
     public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
         ExecutorService executor = Executors.newFixedThreadPool(3);
         final ConcurrentHashMap<String, Object> locks =  new ConcurrentHashMap<>();
@@ -115,6 +144,39 @@ public class NormalizadorDeHechos {
         hecho.setUbicacion(ubicacionAInyectar);
     }
 
+    public void normalizarCronometrado(Hecho hecho, List<Long> segundosPorPaso)  {
+        Categoria categoriaAInyectar;
+        List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
+        long inicioCat = System.nanoTime();
+        String categoria = aplicarNormalizador(hecho.getCategoria().getNombre(), normalizadorDeCategorias);
+        try{
+            categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
+        }catch (CategoriaNoEncontradaException e){
+            categoriaAInyectar = categoriaService.agregarCategoria(categoria);
+        }
+        hecho.setCategoria(categoriaAInyectar);
+        long finCat = System.nanoTime();
+
+        List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->aplicarNormalizador(n, normalizadorDeEtiquetas)).toList();
+        Etiqueta etiquetaAInyectar;
+        for(String nombre : etiquetas){
+            try{
+                etiquetaAInyectar = etiquetaService.obtenerEtiquetaPorNombre(nombre);
+            } catch (EtiquetaNoEncontradaException e){
+                etiquetaAInyectar = etiquetaService.agregarEtiqueta(nombre);
+            }
+            etiquetasAInyectar.add(etiquetaAInyectar);
+        }
+        hecho.setEtiquetas(etiquetasAInyectar);
+        long finEt = System.nanoTime();
+
+        Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
+        hecho.setUbicacion(ubicacionAInyectar);
+        long finUbi = System.nanoTime();
+        segundosPorPaso.set(0, segundosPorPaso.get(0) + finCat - inicioCat);
+        segundosPorPaso.set(1, segundosPorPaso.get(1) + finEt - finCat);
+        segundosPorPaso.set(2, segundosPorPaso.get(2) + finUbi - finEt);
+    }
     public String normalizarCategoria(String categoria) {
         return aplicarNormalizador(categoria, normalizadorDeCategorias);
     }
