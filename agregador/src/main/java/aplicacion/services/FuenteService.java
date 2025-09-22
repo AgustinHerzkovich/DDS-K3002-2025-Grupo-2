@@ -4,7 +4,6 @@ import aplicacion.domain.colecciones.fuentes.*;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
-import aplicacion.dto.mappers.FuenteOutputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeHechosXFuente;
@@ -66,11 +65,11 @@ public class FuenteService {
 
 
     @Transactional
-    public List<Hecho> obtenerHechosPorFuente(FuenteId fuenteId){
+    public List<Hecho> obtenerHechosPorFuente(String fuenteId){
         return repositorioDeHechosXFuente.findHechosByFuenteId(fuenteId);
     }
 
-    public Fuente obtenerFuentePorId(FuenteId fuenteId) throws FuenteNoEncontradaException {
+    public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
         return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
     }
 }

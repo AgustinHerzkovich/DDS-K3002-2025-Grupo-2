@@ -17,7 +17,7 @@ public class ArchivoController {
 
     @PostMapping("/{id}/archivos/por-url")
     public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url,
-                                                     @PathVariable("id") Long id) {
+                                                     @PathVariable("id") String id) {
         try {
             url = url.replaceAll("^\"|\"$", "");
             archivoService.subirArchivoDesdeUrl(id, url);
@@ -29,7 +29,7 @@ public class ArchivoController {
 
     @PostMapping("/{id}/archivos")
     public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files,
-                                                @PathVariable("id") Long id) {
+                                                @PathVariable("id") String id) {
         try {
             for (MultipartFile file : files) {
                 archivoService.subirArchivo(id, file);

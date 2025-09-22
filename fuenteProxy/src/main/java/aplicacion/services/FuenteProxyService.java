@@ -49,7 +49,7 @@ public class FuenteProxyService {
     }
 
     @Transactional
-    public List<HechoOutputDto> importarHechosDeFuente(Long id) throws FuenteNoEncontradaException {
+    public List<HechoOutputDto> importarHechosDeFuente(String id) throws FuenteNoEncontradaException {
         FuenteProxy fuente = repositorioDeFuentesProxy.findById(id).orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + id + "no encontrada"));
         return fuente.importarHechos().stream().map(hechoOutputMapper::map).toList();
     }

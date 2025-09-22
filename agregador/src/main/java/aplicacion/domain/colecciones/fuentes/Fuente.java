@@ -1,8 +1,6 @@
 package aplicacion.domain.colecciones.fuentes;
 
 import aplicacion.dto.input.HechoInputDto;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -26,14 +24,14 @@ import java.util.List;
 @Getter
 @Setter
 public abstract class Fuente{
-    @EmbeddedId
-    private FuenteId id;
+    @Id
+    private String id;
     private LocalDateTime ultimaPeticion;
     @Column(length = 25)
     private String ip;
     private Integer puerto;
 
-    public Fuente(FuenteId id, String ip, Integer puerto) {
+    public Fuente(String id, String ip, Integer puerto) {
         this.id = id;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
         this.ip = ip;

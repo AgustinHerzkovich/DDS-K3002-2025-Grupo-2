@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositorios.olap;
 
 import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.id.FactHechoId;

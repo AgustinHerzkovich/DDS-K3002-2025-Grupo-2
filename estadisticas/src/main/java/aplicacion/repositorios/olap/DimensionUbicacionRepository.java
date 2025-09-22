@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositorios.olap;
 
 import aplicacion.domain.dimensiones.DimensionUbicacion;
 import org.springframework.data.jpa.repository.JpaRepository;

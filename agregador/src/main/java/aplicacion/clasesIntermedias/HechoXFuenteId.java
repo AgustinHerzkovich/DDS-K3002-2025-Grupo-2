@@ -1,6 +1,5 @@
 package aplicacion.clasesIntermedias;
 
-import aplicacion.domain.colecciones.fuentes.FuenteId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
@@ -17,9 +16,9 @@ public class HechoXFuenteId implements Serializable {
     private String hechoId;
 
     @Column(name = "fuente_id")
-    private FuenteId fuenteId;
+    private String fuenteId;
 
-    public HechoXFuenteId(String hechoId, FuenteId fuenteId) {
+    public HechoXFuenteId(String hechoId, String fuenteId) {
         this.hechoId = hechoId;
         this.fuenteId = fuenteId;
     }

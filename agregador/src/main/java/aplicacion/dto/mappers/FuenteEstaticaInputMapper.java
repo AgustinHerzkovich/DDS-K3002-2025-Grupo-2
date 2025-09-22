@@ -1,12 +1,12 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
-import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.FuenteEstaticaInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FuenteEstaticaInputMapper implements Mapper<FuenteInputDto, FuenteEstatica> {
-    public FuenteEstatica map(FuenteInputDto fuenteInputDto){
+public class FuenteEstaticaInputMapper implements Mapper<FuenteEstaticaInputDto, FuenteEstatica> {
+    public FuenteEstatica map(FuenteEstaticaInputDto fuenteInputDto){
         return new FuenteEstatica(
                 fuenteInputDto.getId(),
                 fuenteInputDto.getIp(),

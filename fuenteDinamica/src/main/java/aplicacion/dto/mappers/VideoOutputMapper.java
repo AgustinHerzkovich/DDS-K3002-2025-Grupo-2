@@ -11,6 +11,7 @@ public class VideoOutputMapper implements Mapper<Video, VideoOutputDto> {
                 video.getId(),
                 video.getFormato(),
                 video.getTamanio(),
+                "video",
                 video.getResolucion(),
                 video.getDuracion()
         );

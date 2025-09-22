@@ -16,8 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public abstract class FuenteProxy{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     public abstract void pedirHechos();
     public abstract List<Hecho> importarHechos();

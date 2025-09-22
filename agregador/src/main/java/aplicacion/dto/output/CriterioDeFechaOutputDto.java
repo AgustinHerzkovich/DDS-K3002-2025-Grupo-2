@@ -1,10 +1,12 @@
 package aplicacion.dto.output;
 
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Setter
+@Getter
 public class CriterioDeFechaOutputDto extends CriterioDePertenenciaOutputDto{
     private LocalDateTime fechaInicial;
     private LocalDateTime fechaFinal;
