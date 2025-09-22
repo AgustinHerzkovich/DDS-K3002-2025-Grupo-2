@@ -31,7 +31,7 @@ public class Hecho {
     @ManyToOne
     @EqualsAndHashCode.Include
     private Categoria categoria;
-    @ManyToOne
+    @Embedded
     @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
     @EqualsAndHashCode.Include
@@ -127,7 +127,8 @@ public class Hecho {
                 titulo,
                 descripcion,
                 categoria.getId().toString(),
-                ubicacion.getId().toString(),
+                ubicacion.getLatitud().toString(),
+                ubicacion.getLongitud().toString(),
                 fechaAcontecimiento.toString(),
                 Objects.toString(contenidoTexto, "")
         );
