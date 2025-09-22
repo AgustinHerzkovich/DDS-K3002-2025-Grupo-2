@@ -132,4 +132,5 @@ public class Hecho {
                 Objects.toString(contenidoTexto, "")
         );
     }
+
 }
