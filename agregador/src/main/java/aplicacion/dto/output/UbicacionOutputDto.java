@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class UbicacionOutputDto {
-    private Long id;
     private Double latitud;
     private Double longitud;
 }

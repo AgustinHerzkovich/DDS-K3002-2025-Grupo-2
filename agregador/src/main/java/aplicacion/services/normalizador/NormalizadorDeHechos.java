@@ -10,7 +10,6 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,15 +26,13 @@ public class NormalizadorDeHechos {
     private final NormalizadorDeTerminos normalizadorDeEtiquetas;
     private final CategoriaService categoriaService;
     private final EtiquetaService etiquetaService;
-    private final UbicacionService ubicacionService;
 
-    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService, UbicacionService ubicacionService) {
+    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
         Integer umbralLevenshtein = 1;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
         this.etiquetaService = etiquetaService;
         this.categoriaService = categoriaService;
-        this.ubicacionService = ubicacionService;
     }
 
     public void normalizarTodos(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
@@ -188,13 +185,7 @@ public class NormalizadorDeHechos {
     }
 
     public Ubicacion normalizarUbicacion(Ubicacion ubicacion) {
-        Ubicacion ubicacionAInyectar;
-        try {
-            ubicacionAInyectar = ubicacionService.obtenerUbicacionPorLatitudYLongitud(ubicacion.getLatitud(), ubicacion.getLongitud());
-        } catch (UbicacionNoEncontradaException e) {
-            ubicacionAInyectar = ubicacionService.agregarUbicacion(ubicacion.getLatitud(), ubicacion.getLongitud());
-        }
-        return ubicacionAInyectar;
+        return ubicacion;
     }
 
     public void agregarEtiqueta(String etiqueta) {
