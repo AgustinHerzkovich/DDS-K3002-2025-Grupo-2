@@ -1,7 +1,5 @@
 package aplicacion.domain.hechos.multimedias;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,16 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,      // usamos el nombre para diferenciar subclases
-        include = JsonTypeInfo.As.PROPERTY, // el tipo estará como propiedad en el JSON
-        property = "tipo"                // nombre del campo que indica el tipo concreto
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Audio.class, name = "audio"),
-        @JsonSubTypes.Type(value = Imagen.class, name = "imagen"),
-        @JsonSubTypes.Type(value = Video.class, name = "video")
-})
 public abstract class Multimedia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +18,13 @@ public abstract class Multimedia {
     @Column(length = 50)
     private String formato;
     private Integer tamanio;
+    @Column(length = 500)
+    private String url;
 
-    public Multimedia(String formato, Integer tamanio){
+    public Multimedia(String formato, Integer tamanio, String url){
         this.formato = formato;
         this.tamanio = tamanio;
+        this.url = url;
     }
 
     public abstract void reproducir();

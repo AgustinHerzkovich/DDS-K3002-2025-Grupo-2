@@ -20,4 +20,5 @@ import lombok.Getter;
 public class MultimediaInputDto {
     private String formato;
     private Integer tamanio;
+    private String url;
 }

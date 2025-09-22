@@ -1,7 +1,6 @@
 package aplicacion.domain.hechos.multimedias;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,8 @@ public class Video extends Multimedia {
     private String resolucion;
     private Integer duracion;
 
-    public Video(String formato, Integer tamanio, String resolucion, Integer duracion) {
-        super(formato, tamanio);
+    public Video(String formato, Integer tamanio, String url, String resolucion, Integer duracion) {
+        super(formato, tamanio, url);
         this.resolucion = resolucion;
         this.duracion = duracion;
     }

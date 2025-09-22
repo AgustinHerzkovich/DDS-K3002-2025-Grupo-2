@@ -11,6 +11,8 @@ public class AudioOutputMapper implements Mapper<Audio, AudioOutputDto> {
                 audio.getId(),
                 audio.getFormato(),
                 audio.getTamanio(),
+                audio.getUrl(),
+                "audio",
                 audio.getDuracion()
         );
     }

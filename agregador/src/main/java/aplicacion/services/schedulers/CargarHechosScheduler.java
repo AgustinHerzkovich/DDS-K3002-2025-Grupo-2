@@ -44,7 +44,7 @@ public class CargarHechosScheduler {
             Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentes);
             LocalDateTime finCarga = LocalDateTime.now();
             System.out.println("Tiempo de carga = " + Duration.between(inicioCarga, finCarga).toSeconds() + "s "+ Duration.between(inicioCarga, finCarga).toMillisPart() + "ms");
-            normalizadorDeHechos.normalizarMultiThread(hechosPorFuente);
+            normalizadorDeHechos.normalizarTodos(hechosPorFuente);
             LocalDateTime finNormalizacion= LocalDateTime.now();
             System.out.println("Tiempo de normalizacion = " + Duration.between(finCarga, finNormalizacion).toSeconds() + "s "+ Duration.between(finCarga, finNormalizacion).toMillisPart() + "ms");
             depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
