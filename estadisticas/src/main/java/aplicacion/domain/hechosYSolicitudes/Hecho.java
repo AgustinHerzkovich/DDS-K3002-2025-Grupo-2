@@ -16,6 +16,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "hecho")
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,6 +28,7 @@ public class Hecho {
     @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
     @EqualsAndHashCode.Include
+    @Column(name = "fecha_acontecimiento")
     private LocalDateTime fechaAcontecimiento;
 
 

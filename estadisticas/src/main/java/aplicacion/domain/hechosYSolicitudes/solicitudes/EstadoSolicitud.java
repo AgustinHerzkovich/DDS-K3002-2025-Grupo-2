@@ -33,6 +33,8 @@ import lombok.Setter;
         @JsonSubTypes.Type(value = EstadoSolicitudRechazada.class, name = "rechazada"),
         @JsonSubTypes.Type(value = EstadoSolicitudSpam.class, name = "spam")
 })
+@Table(name = "estado_solicitud")
+
 public abstract class EstadoSolicitud {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

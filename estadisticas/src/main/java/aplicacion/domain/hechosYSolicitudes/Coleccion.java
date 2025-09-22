@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "coleccion")
 public class Coleccion{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
