@@ -48,7 +48,9 @@ public class DepuradorDeHechos {
             }
             long finFuente = System.nanoTime();
             System.out.println("Fin depuración de la fuente: " + fuente.getId() + ". Tiempo: " + (finFuente - inicioFuente)/1_000_000 + " ms.");
-            System.out.println("    Tasa de depuración: " + (hechos.size() / ((finFuente - inicioFuente)/1_000_000_000.0)) + " hechos/segundo.");
+            try {
+                System.out.println("    Tasa de depuración: " + (hechos.size() / ((finFuente - inicioFuente)/1_000_000_000.0)) + " hechos/segundo.");
+            }catch (Exception ignored){}
         }
     }
 }

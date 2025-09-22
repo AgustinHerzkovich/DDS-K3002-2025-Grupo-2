@@ -62,10 +62,16 @@ public class NormalizadorDeHechos {
             String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " + porcentaje + "%" + " (" + hechosNormalizados + "/" + totalHechos + ")";
             System.out.print("\r" + barra);
         }
+        Long tiempoCategorias = tiempoPorPaso.get(0);
+        Long tiempoEtiquetas = tiempoPorPaso.get(1);
+        Long tiempoUbicaciones = tiempoPorPaso.get(2);
+        Long tiempoTotal = tiempoUbicaciones + tiempoCategorias + tiempoEtiquetas;
         System.out.println("Normalización finalizada.");
-        System.out.println(tiempoPorPaso.get(0) /1_000_000 + " ms en normalizar Categorias");
-        System.out.println(tiempoPorPaso.get(1) /1_000_000 + " ms en normalizar Etiquetas");
-        System.out.println(tiempoPorPaso.get(2) /1_000_000 + " ms en normalizar Ubicaciones");
+        if(tiempoTotal != 0) {
+            System.out.println(tiempoPorPaso.get(0) / 1_000_000 + " ms en normalizar Categorias" + "(" + tiempoCategorias / tiempoTotal * 100 + " %)");
+            System.out.println(tiempoPorPaso.get(1) / 1_000_000 + " ms en normalizar Etiquetas" + "(" + tiempoEtiquetas / tiempoTotal * 100 + " %)");
+            System.out.println(tiempoPorPaso.get(2) / 1_000_000 + " ms en normalizar Ubicaciones" + "(" + tiempoUbicaciones / tiempoTotal * 100 + " %)");
+        }
     }
     public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
         ExecutorService executor = Executors.newFixedThreadPool(3);
