@@ -14,9 +14,10 @@ import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
+import aplicacion.utils.Md5Hasher;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,5 +123,34 @@ public class HechoService {
 
     public void borrarHechosPorColeccion(Coleccion coleccion) {
         repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
+    }
+
+    public List<Hecho> hallarHechosDuplicadosDeLista(List<Hecho> hechosAEvaluar){
+        List<Hecho> hechosDuplicados = new ArrayList<>();
+        Set<Hecho> vistos = new HashSet<>();
+
+        for (Hecho hecho : hechosAEvaluar) {
+            if (!vistos.add(hecho)) {
+                hechosDuplicados.add(hecho);
+            }
+        }
+        return hechosDuplicados;
+    }
+
+    public void quitarHechosSegunCodigoUnico(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
+        Md5Hasher hasher = Md5Hasher.getInstance();
+        List<String> hechosAQuitarHashcode =hechosAQuitar.stream().map(Hecho::getClaveUnica).map(c -> hasher.hash(c)).toList();
+        hechosAQuitar.removeIf(he -> hechosAQuitarHashcode.contains(hasher.hash(he.getClaveUnica())));
+    }
+
+    public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
+        Md5Hasher hasher = Md5Hasher.getInstance();
+        List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(c -> hasher.hash(c)).toList();
+        List<Hecho> hechosDuplicados = repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
+        return hechosDuplicados;
+    }
+
+    public void guardarHechosPorFuente(List<HechoXFuente> hechosXFuenteAInsertar) {
+        repositorioDeHechosXFuente.saveAll(hechosXFuenteAInsertar);
     }
 }
