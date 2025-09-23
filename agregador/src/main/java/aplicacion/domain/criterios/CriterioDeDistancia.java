@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CriterioDeDistancia extends CriterioDePertenencia {
-    @ManyToOne(cascade = CascadeType.ALL)
+    @Embedded
     private Ubicacion ubicacionBase;
     private Double distanciaMinima;
 

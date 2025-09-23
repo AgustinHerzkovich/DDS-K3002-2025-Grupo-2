@@ -1,16 +1,13 @@
 package aplicacion.services.normalizador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.excepciones.UbicacionNoEncontradaException;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
-import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.services.UbicacionService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,22 +24,19 @@ public class NormalizadorDeHechos {
     private final NormalizadorDeTerminos normalizadorDeEtiquetas;
     private final CategoriaService categoriaService;
     private final EtiquetaService etiquetaService;
-    private final UbicacionService ubicacionService;
 
-    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService, UbicacionService ubicacionService) {
+    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
         Integer umbralLevenshtein = 1;
         normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
         normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
         this.etiquetaService = etiquetaService;
         this.categoriaService = categoriaService;
-        this.ubicacionService = ubicacionService;
     }
 
     public void normalizarTodos(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
         List<Long> tiempoPorPaso = new ArrayList<>();
         tiempoPorPaso.add(0L); // Categorias
         tiempoPorPaso.add(0L); // Etiquetas
-        tiempoPorPaso.add(0L); // Ubicaciones
         List<Hecho> hechos = mapFuentesYhechosANormalizar.values().stream()
                 .flatMap(List::stream)
                 .toList();
@@ -64,13 +58,11 @@ public class NormalizadorDeHechos {
         }
         Long tiempoCategorias = tiempoPorPaso.get(0);
         Long tiempoEtiquetas = tiempoPorPaso.get(1);
-        Long tiempoUbicaciones = tiempoPorPaso.get(2);
-        Long tiempoTotal = tiempoUbicaciones + tiempoCategorias + tiempoEtiquetas;
+        Long tiempoTotal = tiempoCategorias + tiempoEtiquetas;
         System.out.println("Normalización finalizada.");
         if(tiempoTotal != 0) {
             System.out.println(tiempoPorPaso.get(0) / 1_000_000 + " ms en normalizar Categorias" + "(" + tiempoCategorias / tiempoTotal * 100 + " %)");
             System.out.println(tiempoPorPaso.get(1) / 1_000_000 + " ms en normalizar Etiquetas" + "(" + tiempoEtiquetas / tiempoTotal * 100 + " %)");
-            System.out.println(tiempoPorPaso.get(2) / 1_000_000 + " ms en normalizar Ubicaciones" + "(" + tiempoUbicaciones / tiempoTotal * 100 + " %)");
         }
     }
     public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){
@@ -78,9 +70,8 @@ public class NormalizadorDeHechos {
         final ConcurrentHashMap<String, Object> locks =  new ConcurrentHashMap<>();
         Object lockEtiqueta = locks.computeIfAbsent("etiqueta", k -> new Object());
         Object lockCategoria = locks.computeIfAbsent("categoria", k -> new Object());
-        Object lockUbicacion = locks.computeIfAbsent("ubicacion", k -> new Object());
         for(Hecho hecho : mapFuentesYhechosANormalizar.values().stream().flatMap(List::stream).toList())
-           executor.submit(() -> normalizarsincronizado(hecho, lockEtiqueta, lockCategoria, lockUbicacion));
+           executor.submit(() -> normalizarsincronizado(hecho, lockEtiqueta, lockCategoria));
         executor.shutdown();
         try {
             if (!executor.awaitTermination(1, TimeUnit.HOURS)) { // Si no termina en una hora, fuerzo que se detenga
@@ -92,7 +83,7 @@ public class NormalizadorDeHechos {
         }
     }
 
-    private void normalizarsincronizado(Hecho hecho, Object lockEtiqueta, Object lockCategoria, Object lockUbicacion){
+    private void normalizarsincronizado(Hecho hecho, Object lockEtiqueta, Object lockCategoria){
         Categoria categoriaAInyectar;
         List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
         synchronized (lockCategoria) {
@@ -117,10 +108,6 @@ public class NormalizadorDeHechos {
             }
         }
         hecho.setEtiquetas(etiquetasAInyectar);
-        synchronized (lockUbicacion){
-            Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
-            hecho.setUbicacion(ubicacionAInyectar);
-        }
     }
 
     public void normalizar(Hecho hecho)  {
@@ -145,9 +132,6 @@ public class NormalizadorDeHechos {
             etiquetasAInyectar.add(etiquetaAInyectar);
         }
         hecho.setEtiquetas(etiquetasAInyectar);
-
-        Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
-        hecho.setUbicacion(ubicacionAInyectar);
     }
 
     public void normalizarCronometrado(Hecho hecho, List<Long> segundosPorPaso)  {
@@ -175,26 +159,11 @@ public class NormalizadorDeHechos {
         }
         hecho.setEtiquetas(etiquetasAInyectar);
         long finEt = System.nanoTime();
-
-        Ubicacion ubicacionAInyectar = normalizarUbicacion(hecho.getUbicacion());
-        hecho.setUbicacion(ubicacionAInyectar);
-        long finUbi = System.nanoTime();
         segundosPorPaso.set(0, segundosPorPaso.get(0) + finCat - inicioCat);
         segundosPorPaso.set(1, segundosPorPaso.get(1) + finEt - finCat);
-        segundosPorPaso.set(2, segundosPorPaso.get(2) + finUbi - finEt);
     }
     public String normalizarCategoria(String categoria) {
         return aplicarNormalizador(categoria, normalizadorDeCategorias);
-    }
-
-    public Ubicacion normalizarUbicacion(Ubicacion ubicacion) {
-        Ubicacion ubicacionAInyectar;
-        try {
-            ubicacionAInyectar = ubicacionService.obtenerUbicacionPorLatitudYLongitud(ubicacion.getLatitud(), ubicacion.getLongitud());
-        } catch (UbicacionNoEncontradaException e) {
-            ubicacionAInyectar = ubicacionService.agregarUbicacion(ubicacion.getLatitud(), ubicacion.getLongitud());
-        }
-        return ubicacionAInyectar;
     }
 
     public void agregarEtiqueta(String etiqueta) {
