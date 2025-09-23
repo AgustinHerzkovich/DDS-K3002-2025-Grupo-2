@@ -31,18 +31,15 @@ public abstract class Fuente{
     @Column(length = 25)
     private String ip;
     private Integer puerto;
-    @ManyToMany
-    @JoinTable(
-            name = "hecho_x_fuente",
-            joinColumns = @JoinColumn(name = "fuente_id"),
-            inverseJoinColumns = @JoinColumn(name = "hecho_id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Hecho> hechos;
+
     public Fuente(String id, String ip, Integer puerto) {
         this.id = id;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
         this.ip = ip;
         this.puerto = puerto;
+        this.hechos = new ArrayList<>();
     }
 
     public List<HechoInputDto> getHechosUltimaPeticion() {

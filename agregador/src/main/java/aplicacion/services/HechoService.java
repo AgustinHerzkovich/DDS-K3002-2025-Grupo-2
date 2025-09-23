@@ -77,18 +77,6 @@ public class HechoService {
         repositorioDeHechos.save(hecho);
     }
 
-    public Hecho obtenerDuplicado(Hecho hecho) throws HechoNoEncontradoException {
-        return repositorioDeHechos.findDuplicado(
-                hecho.getTitulo(),
-                hecho.getDescripcion(),
-                hecho.getCategoria(),
-                hecho.getUbicacion(),
-                hecho.getFechaAcontecimiento(),
-                hecho.getContenidoTexto()
-        ).orElseThrow(() -> new HechoNoEncontradoException("No se encontró un hecho duplicado."));
-    }
-
-
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
         normalizadorDeHechos.normalizar(hecho);
@@ -100,29 +88,16 @@ public class HechoService {
         repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
     }
 
-    public List<Hecho> hallarHechosDuplicadosDeLista(List<Hecho> hechosAEvaluar){
-        List<Hecho> hechosDuplicados = new ArrayList<>();
-        Set<Hecho> vistos = new HashSet<>();
-
-        for (Hecho hecho : hechosAEvaluar) {
-            if (!vistos.add(hecho)) {
-                hechosDuplicados.add(hecho);
-            }
-        }
-        return hechosDuplicados;
-    }
-
     public void quitarHechosSegunCodigoUnico(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
         Md5Hasher hasher = Md5Hasher.getInstance();
-        List<String> hechosAQuitarHashcode =hechosAQuitar.stream().map(Hecho::getClaveUnica).map(c -> hasher.hash(c)).toList();
-        hechosAQuitar.removeIf(he -> hechosAQuitarHashcode.contains(hasher.hash(he.getClaveUnica())));
+        List<String> hechosAQuitarHashcode =hechosAQuitar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
+        listaOriginal.removeIf(he -> hechosAQuitarHashcode.contains(hasher.hash(he.getClaveUnica())));
     }
 
     public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
         Md5Hasher hasher = Md5Hasher.getInstance();
-        List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(c -> hasher.hash(c)).toList();
-        List<Hecho> hechosDuplicados = repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
-        return hechosDuplicados;
+        List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
+        return repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
     }
 
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
