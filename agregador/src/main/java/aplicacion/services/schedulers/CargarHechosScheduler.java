@@ -72,7 +72,7 @@ public class CargarHechosScheduler {
 
             for(Fuente fuente : coleccion.getFuentes()){
                 indiceFuente++;
-                List<Hecho> hechosObtenidos = fuente.getHechos();
+                List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
                 ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
@@ -84,7 +84,7 @@ public class CargarHechosScheduler {
             indiceFuente = 0;
         }
         Long finAsignacion = System.nanoTime();
-        System.out.printf("Se asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
+        System.out.printf("\nSe asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
 
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
@@ -94,9 +94,11 @@ public class CargarHechosScheduler {
         // en ambos casos se carga la entrada en hechoxfuente, lo que varia es a que hecho apunta.
         // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
         System.out.println("""
+                
                 ============================
                  Carga de hechos finalizada
                 ============================
+                
                 """);
     }
 
