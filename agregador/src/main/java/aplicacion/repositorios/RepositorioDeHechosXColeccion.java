@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColeccion, HechoXColeccionId> {
-    @Transactional
     @Modifying
-    @Query("""
-    DELETE FROM HechoXColeccion hxc
-    WHERE hxc.hecho IN (
-        SELECT hxf.hecho FROM HechoXFuente hxf WHERE hxf.fuente.id = :fuenteId
+    @Transactional
+    @Query(value = """
+    DELETE FROM hecho_x_coleccion 
+    WHERE hecho_id IN (
+        SELECT hecho_id FROM hecho_x_fuente WHERE fuente_id = :fuenteId
     )
-""")
+""", nativeQuery = true)
     void deleteAllByFuenteId(@Param("fuenteId") String fuenteId);
     @Transactional
     @Modifying

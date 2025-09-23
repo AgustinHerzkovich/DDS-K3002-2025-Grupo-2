@@ -1,56 +1,81 @@
 package aplicacion.services.depurador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.clasesIntermedias.HechoXFuente;
+import aplicacion.domain.colecciones.fuentes.FuenteDinamica;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import aplicacion.excepciones.HechoNoEncontradoException;
+import aplicacion.utils.ProgressBar;
 import org.springframework.stereotype.Service;
 
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class DepuradorDeHechos {
     private final HechoService hechoService;
-
-    public DepuradorDeHechos(HechoService hechoService) {
+    private final FuenteService fuenteService;
+    public DepuradorDeHechos(HechoService hechoService, FuenteService fuenteService) {
         this.hechoService = hechoService;
+        this.fuenteService = fuenteService;
     }
 
     public void depurar(Map<Fuente, List<Hecho>> hechosPorFuente) {
         for (Map.Entry<Fuente, List<Hecho>> entry: hechosPorFuente.entrySet()) {
             Fuente fuente = entry.getKey();
             System.out.println("Depurando hechos de la fuente: " + fuente.getId() + " con " + entry.getValue().size() + " hechos.");
-            List<Hecho> hechos = entry.getValue();
-            HechoXFuente hechoPorFuente;
-            long inicioFuente = System.nanoTime();
-            int totalHechos = hechos.size();
-            int hechosProcesados = 0;
-            int largoBarra = 50;
-            for (Hecho hecho : hechos) {
-                try { // Si el hecho está duplicado en BD mediante ciertos atributos, se obtiene el hecho existente, y se asocia a la fuente
-                    Hecho hechoExistente = hechoService.obtenerDuplicado(hecho);
-                    hechoPorFuente = new HechoXFuente(hechoExistente, fuente);
-                } catch (HechoNoEncontradoException e) { // Si el hecho no está duplicado en BD mediante ciertos atributos, se guarda el hecho nuevo y se asocia a la fuente
-                    hechoService.guardarHecho(hecho);
-                    hechoPorFuente = new HechoXFuente(hecho, fuente);
-                }
-                hechosProcesados++;
-                int porcentaje = (hechosProcesados * 100) / totalHechos;
-                int llenos = (porcentaje * largoBarra) / 100;
-                int vacios = largoBarra - llenos;
+            List<Hecho> hechos = new ArrayList<>(entry.getValue());
 
-                String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " + porcentaje + "%" + " (" + hechosProcesados + "/" + totalHechos + ")";
-                System.out.print("\r" + barra);
-                // En ambos casos, se guarda hechoPorFuente
-                hechoService.guardarHechoPorFuente(hechoPorFuente);
+            if(fuente.getClass() == FuenteDinamica.class){
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
+                for(Hecho hecho : fuente.getHechos())
+                    System.out.println(hecho.getId() + "  --  " + hecho.getCategoria());
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
             }
+
+            ProgressBar progressBar = new ProgressBar(8, " " + hechos.size() + " hechos");
+            long inicioFuente = System.nanoTime();
+            progressBar.avanzar();
+            List<Hecho> hechosDuplicadosDeBD = hechoService.hallarHechosDuplicadosDeBD(hechos);
+            progressBar.avanzar();
+            List<Hecho> hechosDuplicadosDeLista = hechoService.hallarHechosDuplicadosDeLista(hechos);
+            progressBar.avanzar();
+
+
+
+            // Saca los que ya estan en la BD de lista "hechos"
+            hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeBD);
+            hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeLista);
+            progressBar.avanzar();
+
+            // No guarda los repetidos
+            hechoService.guardarHechos(hechos);
+            progressBar.avanzar();
+
+            // Usa los que se van a crear
+            fuente.agregarHechos(hechos);
+            progressBar.avanzar();
+
+            // Usa los de la BD
+            fuente.agregarHechos(hechosDuplicadosDeBD);
+            progressBar.avanzar();
+
+
+            fuenteService.guardarFuente(fuente);
+            progressBar.avanzar();
+
             long finFuente = System.nanoTime();
-            System.out.println("Fin depuración de la fuente: " + fuente.getId() + ". Tiempo: " + (finFuente - inicioFuente)/1_000_000 + " ms.");
+            // Cálculo de tiempos
+            long tiempoTotal = finFuente - inicioFuente;
+
             try {
-                System.out.println("    Tasa de depuración: " + (hechos.size() / ((finFuente - inicioFuente)/1_000_000_000.0)) + " hechos/segundo.");
-            }catch (Exception ignored){}
-        }
+            System.out.println("Fin depuración de la fuente: " + fuente.getId() + ". Tiempo: " + tiempoTotal /1_000_000 + " ms.  " + + (hechos.size() / (tiempoTotal/1_000_000_000.0)) + " hechos/segundo." );
+            }catch (Exception ignored){
+                System.out.println("Fin depuracion");
+            }
+            }
     }
 }
