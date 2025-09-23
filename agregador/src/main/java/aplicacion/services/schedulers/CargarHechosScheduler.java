@@ -95,9 +95,9 @@ public class CargarHechosScheduler {
         // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
         System.out.println("""
                 
-                ============================
-                 Carga de hechos finalizada
-                ============================
+                =================================
+                 Asignación de hechos finalizada
+                =================================
                 
                 """);
     }
