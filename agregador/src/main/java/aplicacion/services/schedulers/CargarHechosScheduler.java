@@ -41,20 +41,23 @@ public class CargarHechosScheduler {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
-            System.out.println("Cargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
-            LocalDateTime inicioCarga = LocalDateTime.now();
+            System.out.println("\nCargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
             List<Fuente> fuentes= coleccion.getFuentes();
             Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentes);
-            LocalDateTime finCarga = LocalDateTime.now();
-            System.out.println("Tiempo de carga = " + Duration.between(inicioCarga, finCarga).toSeconds() + "s "+ Duration.between(inicioCarga, finCarga).toMillisPart() + "ms");
             normalizadorDeHechos.normalizarTodos(hechosPorFuente);
-            LocalDateTime finNormalizacion= LocalDateTime.now();
-            System.out.println("Tiempo de normalizacion = " + Duration.between(finCarga, finNormalizacion).toSeconds() + "s "+ Duration.between(finCarga, finNormalizacion).toMillisPart() + "ms");
             depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
-            LocalDateTime finDepuracion = LocalDateTime.now();
-            System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
         }
-        System.out.println("Se asignaran los hechos a las colecciones...");
+        System.out.println("""
+        
+        
+        ============================
+         Carga de hechos finalizada
+        ============================
+        
+        
+        Se asignaran los hechos a las colecciones...
+        
+        """);
         Long inicioAsignacion = System.nanoTime();
         int indiceColeccion = 0;
         int indiceFuente = 0;
@@ -85,7 +88,11 @@ public class CargarHechosScheduler {
         // si se duplica un hecho dentro de la misma fuente -> Se sobreescribe? Presuponemos que no hay hechos duplicados dentro de una misma fuente
         // en ambos casos se carga la entrada en hechoxfuente, lo que varia es a que hecho apunta.
         // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
-        System.out.println("Carga de hechos finalizada.");
+        System.out.println("""
+                ============================
+                 Carga de hechos finalizada
+                ============================
+                """);
     }
 
 }
