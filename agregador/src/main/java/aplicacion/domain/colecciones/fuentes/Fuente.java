@@ -81,13 +81,7 @@ public abstract class Fuente{
     }
 
     public abstract String pathIntermedio();
-
-    public void agregarHecho(Hecho hecho){
-        hechos.add(hecho);
-    }
-    public void quitar(Hecho hecho){
-        hechos.remove(hecho);
-    }
+    
     public void agregarHechos(List<Hecho> hechosAAgregar){
         hechos.addAll(hechosAAgregar);
     }
