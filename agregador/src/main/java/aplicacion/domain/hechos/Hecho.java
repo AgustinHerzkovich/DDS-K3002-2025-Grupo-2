@@ -23,6 +23,7 @@ public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @EqualsAndHashCode.Include
     @Column(length = 200)
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)

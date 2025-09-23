@@ -229,7 +229,7 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo 2",
                                              "descripcion": "Descripcion ejemplo 2",
                                              "categoria": {
-                                               "nombre": "Categoria ejemplar 2"
+                                               "nombre": "Categoria ejempla 2"
                                              },
                                              "ubicacion": {
                                                "latitud": 10,

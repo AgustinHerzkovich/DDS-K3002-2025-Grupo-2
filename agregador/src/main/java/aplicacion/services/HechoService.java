@@ -88,10 +88,8 @@ public class HechoService {
         repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
     }
 
-    public void quitarHechosSegunCodigoUnico(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
-        Md5Hasher hasher = Md5Hasher.getInstance();
-        List<String> hechosAQuitarHashcode =hechosAQuitar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
-        listaOriginal.removeIf(he -> hechosAQuitarHashcode.contains(hasher.hash(he.getClaveUnica())));
+    public void quitarHechosDeSublista(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
+        listaOriginal.removeIf(hechoA -> hechosAQuitar.stream().anyMatch(hechoB -> hechoA == hechoB));
     }
 
     public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
@@ -114,5 +112,17 @@ public class HechoService {
             returnMap.put(hechoUnico, ocurrencias);
         }
         return returnMap;
+    }
+
+    public List<Hecho> hallarHechosDuplicadosDeLista(List<Hecho> hechosAEvaluar){
+        List<Hecho> hechosDuplicados = new ArrayList<>();
+        Set<String> vistos = new HashSet<>();
+
+        for (Hecho hecho : hechosAEvaluar) {
+            if (!vistos.add(hecho.getClaveUnica())) {
+                hechosDuplicados.add(hecho);
+            }
+        }
+        return hechosDuplicados;
     }
 }
