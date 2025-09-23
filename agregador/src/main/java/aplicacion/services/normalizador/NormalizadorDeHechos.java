@@ -8,6 +8,7 @@ import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.utils.ProgressBar;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -42,27 +43,18 @@ public class NormalizadorDeHechos {
                 .toList();
         System.out.println("Hechos a normalizar: " + mapFuentesYhechosANormalizar.values().stream().mapToInt(List::size).sum());
         System.out.println("Normalizando...");
-        int largoBarra = 50;
-        int totalHechos = hechos.size();
-        int hechosNormalizados = 0;
+        ProgressBar progressBar = new ProgressBar(hechos.size());
         for(Hecho hecho : hechos){
             normalizarCronometrado(hecho, tiempoPorPaso);
-            hechosNormalizados++;
-
-            int porcentaje = (hechosNormalizados * 100) / totalHechos;
-            int llenos = (porcentaje * largoBarra) / 100;
-            int vacios = largoBarra - llenos;
-
-            String barra = "[" + "#".repeat(llenos) + "-".repeat(vacios) + "] " + porcentaje + "%" + " (" + hechosNormalizados + "/" + totalHechos + ")";
-            System.out.print("\r" + barra);
+            progressBar.avanzar();
         }
         Long tiempoCategorias = tiempoPorPaso.get(0);
         Long tiempoEtiquetas = tiempoPorPaso.get(1);
         Long tiempoTotal = tiempoCategorias + tiempoEtiquetas;
-        System.out.println("Normalización finalizada.");
+        System.out.println("\n Normalización finalizada.");
         if(tiempoTotal != 0) {
-            System.out.println(tiempoPorPaso.get(0) / 1_000_000 + " ms en normalizar Categorias" + "(" + tiempoCategorias / tiempoTotal * 100 + " %)");
-            System.out.println(tiempoPorPaso.get(1) / 1_000_000 + " ms en normalizar Etiquetas" + "(" + tiempoEtiquetas / tiempoTotal * 100 + " %)");
+            System.out.println(tiempoPorPaso.get(0) / 1_000_000 + " ms en normalizar Categorias" + "(" + (double) tiempoCategorias / tiempoTotal * 100 + " %)");
+            System.out.println(tiempoPorPaso.get(1) / 1_000_000 + " ms en normalizar Etiquetas" + "(" + (double) tiempoEtiquetas / tiempoTotal * 100 + " %)");
         }
     }
     public void normalizarMultiThread(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){

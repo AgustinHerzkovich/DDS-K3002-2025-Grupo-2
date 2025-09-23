@@ -9,6 +9,7 @@ import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
+import aplicacion.utils.ProgressBar;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,18 +54,29 @@ public class CargarHechosScheduler {
             LocalDateTime finDepuracion = LocalDateTime.now();
             System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
         }
-        System.out.println("Se asignaran los hechos a las colecciones");
+        System.out.println("Se asignaran los hechos a las colecciones...");
+        Long inicioAsignacion = System.nanoTime();
+        int indiceColeccion = 0;
+        int indiceFuente = 0;
         for(Coleccion coleccion : colecciones){
+            indiceColeccion++;
+            System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
+
             for(Fuente fuente : coleccion.getFuentes()){
+                indiceFuente++;
                 List<Hecho> hechosObtenidos = fuente.getHechos();
+                ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
                     HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                     hechoService.guardarHechoPorColeccion(hechoPorColeccion);
+                    progressBar.avanzar();
                 }
             }
+            indiceFuente = 0;
         }
-        System.out.println("Se asignaron los hechos a las colecciones");
+        Long finAsignacion = System.nanoTime();
+        System.out.printf("Se asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
 
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
