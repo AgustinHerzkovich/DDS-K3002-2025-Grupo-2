@@ -13,7 +13,6 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
-import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,18 +25,16 @@ public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
     private final HechoService hechoService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
-    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
-        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = coleccionInputMapper;
         this.coleccionOutputMapper = coleccionOutputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -161,7 +158,8 @@ public class ColeccionService {
 
         // Si en fuente por coleccion no quedan mas registros para esta fuente, entonces se eliminan las entradas de HechoXFuente que tengan este FuenteId
         if (!repositorioDeColecciones.existsByFuenteId(fuenteId)) {
-            repositorioDeHechosXFuente.deleteAllByFuenteId(fuenteId);
+            fuente.eliminarTodosLosHechos();
+            fuenteService.guardarFuente(fuente);
         }
 
         // Quitamos de HechoXColeccion aquellos hechos que eran de esta fuente

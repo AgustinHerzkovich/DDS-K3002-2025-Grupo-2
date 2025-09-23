@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class UbicacionOutputMapper implements Mapper<Ubicacion, UbicacionOutputDto> {
     public UbicacionOutputDto map(Ubicacion ubicacion) {
         return new UbicacionOutputDto(
-                ubicacion.getId(),
                 ubicacion.getLatitud(),
                 ubicacion.getLongitud()
         );
