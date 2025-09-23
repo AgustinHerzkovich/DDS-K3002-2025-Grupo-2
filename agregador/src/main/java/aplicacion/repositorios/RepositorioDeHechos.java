@@ -55,7 +55,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
                                   @Param("contenidoTexto") String contenidoTexto);
     @Query(
             value = "SELECT * FROM hecho h WHERE MD5(CONCAT_WS('|', " +
-                    "titulo, descripcion, categoria_id, ubicacion_id, fecha_acontecimiento, IFNULL(contenido_texto, ''))) IN (:codigos)",
+                    "titulo, descripcion, categoria_id, latitud, longitud, fecha_acontecimiento, IFNULL(contenido_texto, ''))) IN (:codigos)",
             nativeQuery = true
     )
     List<Hecho> findByCodigoHasheadoIn(List<String> codigos);
