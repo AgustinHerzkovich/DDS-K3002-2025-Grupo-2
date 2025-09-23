@@ -16,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class CargarHechosScheduler {
@@ -40,13 +42,16 @@ public class CargarHechosScheduler {
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
-        for (Coleccion coleccion : colecciones) {
-            System.out.println("\nCargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
-            List<Fuente> fuentes= coleccion.getFuentes();
-            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentes);
-            normalizadorDeHechos.normalizarTodos(hechosPorFuente);
-            depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
+        Set<Fuente> fuenteSet = new HashSet<>();
+        for (Coleccion coleccion : colecciones){
+            fuenteSet.addAll(coleccion.getFuentes());
         }
+        System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
+
+        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet.stream().toList());
+        normalizadorDeHechos.normalizarTodos(hechosPorFuente);
+        depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
+
         System.out.println("""
         
         
