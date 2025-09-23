@@ -8,6 +8,8 @@ import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositorios.RepositorioDeFuentes;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
                          FuenteInputMapper fuenteInputMapper,
@@ -50,6 +54,8 @@ public class FuenteService {
 
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
+            entityManager.flush(); // En teoria fuerza la actualizacion
+            System.out.println("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
             hashMap.put(fuente, hechos);
         }
         return hashMap;
