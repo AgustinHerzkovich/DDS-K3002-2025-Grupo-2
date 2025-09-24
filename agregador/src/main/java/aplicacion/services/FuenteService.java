@@ -20,8 +20,8 @@ public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
-    @PersistenceContext
-    private EntityManager entityManager;
+    //@PersistenceContext
+    //private EntityManager entityManager;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
                          FuenteInputMapper fuenteInputMapper,
@@ -54,7 +54,7 @@ public class FuenteService {
 
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
-            entityManager.flush(); // En teoria fuerza la actualizacion
+            //entityManager.flush(); // En teoria fuerza la actualizacion
             System.out.println("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
             hashMap.put(fuente, hechos);
         }
@@ -67,8 +67,8 @@ public class FuenteService {
 
 
     @Transactional
-    public List<Hecho> obtenerHechosPorFuente(String fuenteId){
-        return repositorioDeFuentes.findById(fuenteId).get().getHechos();
+    public List<Hecho> obtenerHechosPorFuente(String idFuente) {
+        return repositorioDeFuentes.findHechosByFuenteId(idFuente);
     }
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
