@@ -32,8 +32,15 @@ public class FuenteService {
     }
 
     @Transactional
-    public void guardarFuente(Fuente fuente) {
-        repositorioDeFuentes.save(fuente);
+    public Fuente guardarFuente(Fuente fuente) {
+        return repositorioDeFuentes.save(fuente);
+    }
+
+    // Busca si una fuente ya existe segun su id. Si no existe la guarda y la devuelve, si ya existe la devuelve.
+    @Transactional
+    public Fuente guardarFuenteSiNoExiste(Fuente fuente) {
+        Optional<Fuente> existente = repositorioDeFuentes.findById(fuente.getId());
+        return existente.orElseGet(() -> repositorioDeFuentes.save(fuente));
     }
 
     @Transactional
@@ -41,6 +48,14 @@ public class FuenteService {
         List<Fuente> fuentes = fuentesDto.stream().map(fuenteInputMapper::map).toList();
         for (Fuente fuente: fuentes) {
             guardarFuente(fuente); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
+        }
+    }
+
+    @Transactional
+    public void guardarFuentesSiNoExisten(List<FuenteInputDto> fuentesDto) {
+        List<Fuente> fuentes = fuentesDto.stream().map(fuenteInputMapper::map).toList();
+        for (Fuente fuente: fuentes) {
+            guardarFuenteSiNoExiste(fuente); // Las fuentes que ya existen no se guardan
         }
     }
 
