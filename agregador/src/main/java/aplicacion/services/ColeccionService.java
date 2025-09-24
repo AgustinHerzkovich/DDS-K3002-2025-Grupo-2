@@ -51,7 +51,7 @@ public class ColeccionService {
     }
     @Transactional
     public void asociarHechosPreexistentes(Coleccion coleccion) {
-        System.out.println("Asociando hechos preexistentes de " + coleccion.getFuentes().size() + " fuentes");
+        System.out.println("Asociando hechos preexistentes de "+coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
         List<Fuente> fuentes = coleccion.getFuentes();
         for (Fuente fuente : fuentes) {
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
@@ -61,7 +61,6 @@ public class ColeccionService {
     public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
 
         List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
-        System.out.println(hechosDeFuente.size() + " hechos de fuente " + fuente.getId());
         List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
                 .filter(coleccion::cumpleCriterios)
                 .toList();
@@ -69,7 +68,6 @@ public class ColeccionService {
                 .map(hecho -> new HechoXColeccion(hecho, coleccion))
                 .collect(Collectors.toList());
         repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
-        System.out.println(hechosXColeccion.size() + " hechos x coleccion almacenados en la BD");
     }
 
     public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
