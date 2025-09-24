@@ -40,12 +40,12 @@ public class HechoService {
     }
 
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll(); // TODO: Cambiar esto por traer los hechos de HechoXColeccion joineado con Hecho y que solo traiga los distinct
+        return repositorioDeHechos.findAll();
     }
+
     public List<HechoOutputDto> obtenerHechosAsDTO() {
         return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
     }
-
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
         Hecho hecho = hechoPorColeccion.getHecho();

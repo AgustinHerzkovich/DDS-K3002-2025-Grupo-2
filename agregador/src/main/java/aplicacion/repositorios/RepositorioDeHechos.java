@@ -59,6 +59,4 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             nativeQuery = true
     )
     List<Hecho> findByCodigoHasheadoIn(List<String> codigos);
-
-
 }

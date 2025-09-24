@@ -51,6 +51,11 @@ public class Hecho {
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "hecho_etiqueta",
+            joinColumns = @JoinColumn(name = "hecho_id"),
+            inverseJoinColumns = @JoinColumn(name = "etiqueta_id")
+    )
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
