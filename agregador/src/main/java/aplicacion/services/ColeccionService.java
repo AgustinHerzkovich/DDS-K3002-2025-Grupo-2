@@ -49,19 +49,27 @@ public class ColeccionService {
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
         return coleccionOutputMapper.map(coleccionGuardada);
     }
-
+    @Transactional
     public void asociarHechosPreexistentes(Coleccion coleccion) {
+        System.out.println("Asociando hechos preexistentes de " + coleccion.getFuentes().size() + " fuentes");
         List<Fuente> fuentes = coleccion.getFuentes();
         for (Fuente fuente : fuentes) {
-            List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
-            List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
-                    .filter(coleccion::cumpleCriterios)
-                    .toList();
-            List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
-                    .map(hecho -> new HechoXColeccion(hecho, coleccion))
-                    .collect(Collectors.toList());
-            repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
+            asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
         }
+    }
+    @Transactional
+    public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
+
+        List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
+        System.out.println(hechosDeFuente.size() + " hechos de fuente " + fuente.getId());
+        List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
+                .filter(coleccion::cumpleCriterios)
+                .toList();
+        List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
+                .map(hecho -> new HechoXColeccion(hecho, coleccion))
+                .collect(Collectors.toList());
+        repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
+        System.out.println(hechosXColeccion.size() + " hechos x coleccion almacenados en la BD");
     }
 
     public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
@@ -156,10 +164,11 @@ public class ColeccionService {
 
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
         Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
-        fuenteService.guardarFuente(fuente);
+        fuente = fuenteService.guardarFuenteSiNoExiste(fuente);
         Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
         coleccion = repositorioDeColecciones.save(coleccion);
+        asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);        //Agrega hechos viejos a la coleccion, si es fuente nueva no se agrega nada
         return coleccionOutputMapper.map(coleccion);
     }
 
