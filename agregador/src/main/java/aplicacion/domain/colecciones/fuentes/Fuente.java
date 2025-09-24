@@ -32,6 +32,7 @@ public abstract class Fuente{
     private String ip;
     private Integer puerto;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "hecho_fuente", joinColumns = @JoinColumn(name = "fuente_id"), inverseJoinColumns = @JoinColumn(name = "hecho_id"))
     private List<Hecho> hechos;
 
     public Fuente(String id, String ip, Integer puerto) {
@@ -81,7 +82,7 @@ public abstract class Fuente{
     }
 
     public abstract String pathIntermedio();
-    
+
     public void agregarHechos(List<Hecho> hechosAAgregar){
         hechos.addAll(hechosAAgregar);
     }

@@ -30,6 +30,7 @@ public class Coleccion{
     @JoinColumn(name = "coleccion_id")
     private List<CriterioDePertenencia> criteriosDePertenencia;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "fuente_coleccion", joinColumns = @JoinColumn(name = "coleccion_id"), inverseJoinColumns = @JoinColumn(name = "fuente_id"))
     private List<Fuente> fuentes;
     @Enumerated(EnumType.STRING)
     private TipoAlgoritmoConsenso tipoAlgoritmoConsenso = TipoAlgoritmoConsenso.IRRESTRICTO;

@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
@@ -43,8 +44,24 @@ public class ColeccionService {
     }
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
-        Coleccion coleccionLocal = repositorioDeColecciones.save(coleccionInputMapper.map(coleccion));
-        return coleccionOutputMapper.map(coleccionLocal);
+        Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
+        this.asociarHechosPreexistentes(coleccionLocal);
+        Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
+        return coleccionOutputMapper.map(coleccionGuardada);
+    }
+
+    public void asociarHechosPreexistentes(Coleccion coleccion) {
+        List<Fuente> fuentes = coleccion.getFuentes();
+        for (Fuente fuente : fuentes) {
+            List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
+            List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
+                    .filter(coleccion::cumpleCriterios)
+                    .toList();
+            List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
+                    .map(hecho -> new HechoXColeccion(hecho, coleccion))
+                    .collect(Collectors.toList());
+            repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
+        }
     }
 
     public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
