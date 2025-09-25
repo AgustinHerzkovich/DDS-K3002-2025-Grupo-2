@@ -1,9 +1,13 @@
 package aplicacion.domain.id;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Objects;
-
+@Getter
+@Setter
 @Embeddable
 public class FactHechoId implements Serializable {
     private Long ubicacionId;
@@ -15,6 +19,10 @@ public class FactHechoId implements Serializable {
         this.ubicacionId = ubicacionId;
         this.tiempoId = tiempoId;
         this.categoriaId = categoriaId;
+    }
+
+    public FactHechoId() {
+
     }
 
     @Override
