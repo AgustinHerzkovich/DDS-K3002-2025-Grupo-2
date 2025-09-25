@@ -55,7 +55,7 @@ public class CargaDeHechosService {
         ConfiguracionGlobal fechaConfiguracion = configuracionGlobalRepository.findById("ultima_actualizacion_hechos").orElse(null);
         int c = 0;
         do {
-            Pageable pageable = PageRequest.of(c, 100);
+            Pageable pageable = PageRequest.of(c, 1000);
             if(fechaConfiguracion != null) {
                 hechosAImportar = hechoRepository.findByFechaAfter(LocalDateTime.parse(fechaConfiguracion.getValor()), pageable).getContent();
             } else {
@@ -65,7 +65,7 @@ public class CargaDeHechosService {
             sumarHechos(hechosAImportar);
             System.out.println("Tanda de hechos importada");
             c++;
-        } while (hechosAImportar.size() == 100);
+        } while (hechosAImportar.size() == 1000);
     }
 
 
@@ -73,13 +73,10 @@ public class CargaDeHechosService {
         Set<FactHecho> factHechoSet = new HashSet<>();
         for (Hecho h : hechos) {
             FactHecho analizado = FactHecho.fromHecho(h);
-            if (factHechoSet.add(analizado)) {
+            if (!factHechoSet.add(analizado))
                 factHechoSet.stream().filter(factHecho -> factHecho.equals(analizado)).findFirst().ifPresent(factHecho -> {
                     factHecho.sumarOcurrencia();
                 });
-            } else {
-                factHechoSet.add(analizado);
-            }
         }
 
         System.out.println("Registros de hechos agrupados: " + hechos.size());
@@ -88,16 +85,47 @@ public class CargaDeHechosService {
         List<DimensionTiempo> dimensionTiempoList = dimensionTiempoRepository.findByTiempo(factHechoSet.stream().map(factHecho -> factHecho.getDimensionTiempo().getCodigo()).toList());
         List<DimensionUbicacion> dimensionUbicacionList = dimensionUbicacionRepository.findByUbicaciones(factHechoSet.stream().map(factHecho -> factHecho.getDimensionUbicacion().getCodigo()).toList());
 
+        System.out.println("Dimensiones previas encontradas: " + dimensionCategoriaList.size() + " - " + dimensionTiempoList.size() + " - " + dimensionUbicacionList.size() + "         (Categoria - Tiempo - Ubicacion)");
 
         for (FactHecho factHecho : factHechoSet) {
-            factHecho.setId(new FactHechoId(
-                    dimensionUbicacionList.stream().filter(dimUbi -> dimUbi.getCodigo().equals(factHecho.getDimensionUbicacion().getCodigo())).findFirst().orElse(dimensionUbicacionRepository.save(factHecho.getDimensionUbicacion())).getId_ubicacion(),
-                    dimensionTiempoList.stream().filter(dimTie -> dimTie.getCodigo().equals(factHecho.getDimensionTiempo().getCodigo())).findFirst().orElse(dimensionTiempoRepository.save(factHecho.getDimensionTiempo())).getIdTiempo(),
-                    dimensionCategoriaList.stream().filter(dimCat -> dimCat.getNombre().equals(factHecho.getDimensionCategoria().getNombre())).findFirst().orElse(dimensionCategoriaRepository.save(factHecho.getDimensionCategoria())).getIdCategoria()
-                    )
-            );
-        }
+            DimensionUbicacion dimensionUbicacion;
+            DimensionTiempo dimensionTiempo;
+            DimensionCategoria dimensionCategoria;
 
+
+            Optional<DimensionUbicacion> dimensionUbicacionOpt = dimensionUbicacionList.stream().filter(dimUbi -> dimUbi.getCodigo().equals(factHecho.getDimensionUbicacion().getCodigo())).findFirst();
+            if(dimensionUbicacionOpt.isEmpty()){
+                dimensionUbicacion = dimensionUbicacionRepository.save(factHecho.getDimensionUbicacion());
+                dimensionUbicacionList.add(dimensionUbicacion);
+            }else
+                dimensionUbicacion = dimensionUbicacionOpt.get();
+
+            Optional<DimensionTiempo> dimensionTiempoOpt = dimensionTiempoList.stream().filter(dimTie -> dimTie.getCodigo().equals(factHecho.getDimensionTiempo().getCodigo())).findFirst();
+            if(dimensionTiempoOpt.isEmpty()){
+                dimensionTiempo = dimensionTiempoRepository.save(factHecho.getDimensionTiempo());
+                dimensionTiempoList.add(dimensionTiempo);
+            }else
+                dimensionTiempo = dimensionTiempoOpt.get();
+
+
+            Optional<DimensionCategoria> dimensionCategoriaOpt = dimensionCategoriaList.stream().filter(dimCat -> dimCat.getNombre().equals(factHecho.getDimensionCategoria().getNombre())).findFirst();
+            if(dimensionCategoriaOpt.isEmpty()){
+                dimensionCategoria = dimensionCategoriaRepository.save(factHecho.getDimensionCategoria());
+                dimensionCategoriaList.add(dimensionCategoria);
+            }else
+                dimensionCategoria = dimensionCategoriaOpt.get();
+
+
+            factHecho.setDimensionUbicacion(dimensionUbicacion);
+            factHecho.setDimensionTiempo(dimensionTiempo);
+            factHecho.setDimensionCategoria(dimensionCategoria);
+            factHecho.setId(new FactHechoId(
+                    dimensionUbicacion.getId_ubicacion(),
+                    dimensionTiempo.getIdTiempo(),
+                    dimensionCategoria.getIdCategoria()
+            ));
+        }
+        System.out.println("Guardando " + factHechoSet.size() + " hechos");
         for (FactHecho factHecho : factHechoSet) {
             FactHecho existingFactHecho = factHechoRepository.findById(factHecho.getId()).orElse(null); //
             if (existingFactHecho != null) {
@@ -110,4 +138,7 @@ public class CargaDeHechosService {
 
         System.out.println("Registros de hechos persistidos: " + factHechoSet.size());
     }
+
+
+
 }

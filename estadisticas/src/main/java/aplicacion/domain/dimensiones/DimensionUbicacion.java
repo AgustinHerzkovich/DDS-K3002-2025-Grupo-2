@@ -2,8 +2,10 @@ package aplicacion.domain.dimensiones;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.HashCodeExclude;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -12,6 +14,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @AllArgsConstructor
 public class DimensionUbicacion {
+    @HashCodeExclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ubicacion_id")
@@ -28,6 +31,6 @@ public class DimensionUbicacion {
     }
 
     public String getCodigo() {
-        return String.join("-", this.pais, this.provincia);
+        return String.join("|", this.pais, this.provincia);
     }
 }

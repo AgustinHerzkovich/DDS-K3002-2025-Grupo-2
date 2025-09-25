@@ -12,6 +12,6 @@ import java.util.List;
 
 public interface HechoRepository extends JpaRepository<Hecho, String> {
 
-    @Query(value = "SELECT h FROM Hecho h WHERE h.fechaCarga > :fecha")
+    @Query(value = "SELECT h FROM Hecho h WHERE h.fechaCarga > :fecha ORDER BY h.fechaCarga")
     Page<Hecho> findByFechaAfter(@Param("fecha")LocalDateTime fecha, Pageable pageable);
 }

@@ -26,17 +26,17 @@ public class FactHecho {
     @EqualsAndHashCode.Include
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("ubicacionId") // vincula con FactHechoId.ubicacionId
-    @JoinColumn(name = "ubicacionId")
+    @JoinColumn(name = "ubicacionId", insertable = false, updatable = false)
     private DimensionUbicacion dimensionUbicacion;
     @EqualsAndHashCode.Include
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("tiempoId") // vincula con FactHechoId.tiempoId
-    @JoinColumn(name = "tiempoId")
+    @JoinColumn(name = "tiempoId", insertable = false, updatable = false)
     private DimensionTiempo dimensionTiempo;
     @EqualsAndHashCode.Include
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("categoriaId") // vincula con FactHechoId.categoriaId
-    @JoinColumn(name = "categoriaId")
+    @JoinColumn(name = "categoriaId", insertable = false, updatable = false)
     private DimensionCategoria dimensionCategoria;
 
     private Long cantidadDeHechos = 0L;

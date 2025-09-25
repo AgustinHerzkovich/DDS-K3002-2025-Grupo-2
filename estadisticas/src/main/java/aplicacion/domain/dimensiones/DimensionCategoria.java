@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.HashCodeExclude;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -17,6 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 public class DimensionCategoria {
+    @HashCodeExclude
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "categoria_id")
