@@ -23,6 +23,7 @@ public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @EqualsAndHashCode.Include
     @Column(length = 200)
     private String titulo;
     @Column(length = 1000) // Le asigno VARCHAR(1000)
@@ -31,7 +32,7 @@ public class Hecho {
     @ManyToOne
     @EqualsAndHashCode.Include
     private Categoria categoria;
-    @ManyToOne
+    @Embedded
     @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
     @EqualsAndHashCode.Include
@@ -50,6 +51,11 @@ public class Hecho {
     @JoinColumn(name = "hecho_id") // le dice a Hibernate que la FK va en Multimedia
     private List<Multimedia> contenidoMultimedia;
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "hecho_etiqueta",
+            joinColumns = @JoinColumn(name = "hecho_id"),
+            inverseJoinColumns = @JoinColumn(name = "etiqueta_id")
+    )
     private List<Etiqueta> etiquetas;
     private Boolean visible;
     private Boolean anonimato;
@@ -127,9 +133,11 @@ public class Hecho {
                 titulo,
                 descripcion,
                 categoria.getId().toString(),
-                ubicacion.getId().toString(),
+                ubicacion.getLatitud().toString(),
+                ubicacion.getLongitud().toString(),
                 fechaAcontecimiento.toString(),
                 Objects.toString(contenidoTexto, "")
         );
     }
+
 }
