@@ -1,7 +1,11 @@
 package aplicacion.services;
 
+import aplicacion.domain.dimensiones.DimensionCategoria;
+import aplicacion.domain.dimensiones.DimensionTiempo;
+import aplicacion.domain.dimensiones.DimensionUbicacion;
 import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.hechosYSolicitudes.Hecho;
+import aplicacion.domain.id.FactHechoId;
 import aplicacion.repositorios.agregador.HechoRepository;
 import aplicacion.repositorios.olap.*;
 import aplicacion.repositorios.olap.ConfiguracionGlobalRepository;
@@ -79,6 +83,20 @@ public class CargaDeHechosService {
         }
 
         System.out.println("Registros de hechos agrupados: " + hechos.size());
+
+        List<DimensionCategoria> dimensionCategoriaList = dimensionCategoriaRepository.findByNombreCategoria(factHechoSet.stream().map(factHecho -> factHecho.getDimensionCategoria().getNombre()).toList());
+        List<DimensionTiempo> dimensionTiempoList = dimensionTiempoRepository.findByTiempo(factHechoSet.stream().map(factHecho -> factHecho.getDimensionTiempo().getCodigo()).toList());
+        List<DimensionUbicacion> dimensionUbicacionList = dimensionUbicacionRepository.findByUbicaciones(factHechoSet.stream().map(factHecho -> factHecho.getDimensionUbicacion().getCodigo()).toList());
+
+
+        for (FactHecho factHecho : factHechoSet) {
+            factHecho.setId(new FactHechoId(
+                    dimensionUbicacionList.stream().filter(dimUbi -> dimUbi.getCodigo().equals(factHecho.getDimensionUbicacion().getCodigo())).findFirst().orElse(dimensionUbicacionRepository.save(factHecho.getDimensionUbicacion())).getId_ubicacion(),
+                    dimensionTiempoList.stream().filter(dimTie -> dimTie.getCodigo().equals(factHecho.getDimensionTiempo().getCodigo())).findFirst().orElse(dimensionTiempoRepository.save(factHecho.getDimensionTiempo())).getIdTiempo(),
+                    dimensionCategoriaList.stream().filter(dimCat -> dimCat.getNombre().equals(factHecho.getDimensionCategoria().getNombre())).findFirst().orElse(dimensionCategoriaRepository.save(factHecho.getDimensionCategoria())).getIdCategoria()
+                    )
+            );
+        }
 
         for (FactHecho factHecho : factHechoSet) {
             FactHecho existingFactHecho = factHechoRepository.findById(factHecho.getId()).orElse(null); //

@@ -31,4 +31,9 @@ public class DimensionTiempo {
     public DimensionTiempo() {
 
     }
+
+
+    public String getCodigo() {
+        return String.join("|", anio.toString(), mes.toString(), dia.toString(), hora.toString());
+    }
 }
