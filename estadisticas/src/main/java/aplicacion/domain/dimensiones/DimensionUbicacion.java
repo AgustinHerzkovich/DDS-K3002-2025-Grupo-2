@@ -28,6 +28,6 @@ public class DimensionUbicacion {
     }
 
     public String getCodigo() {
-        return String.join("-", this.pais, this.provincia);
+        return String.join("|", this.pais, this.provincia);
     }
 }
