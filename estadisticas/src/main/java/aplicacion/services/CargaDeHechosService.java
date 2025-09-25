@@ -57,9 +57,9 @@ public class CargaDeHechosService {
         do {
             Pageable pageable = PageRequest.of(c, 100);
             if(fechaConfiguracion != null) {
-                hechosAImportar = hechoRepository.findByFechaAfter(LocalDateTime.parse(fechaConfiguracion.getValor()), pageable );
+                hechosAImportar = hechoRepository.findByFechaAfter(LocalDateTime.parse(fechaConfiguracion.getValor()), pageable).getContent();
             } else {
-                hechosAImportar = hechoRepository.findAll();
+                hechosAImportar = hechoRepository.findAll(pageable).getContent();
             }
             System.out.println("Analizando " + hechosAImportar.size() + " hechos. Página: " + c);
             sumarHechos(hechosAImportar);
