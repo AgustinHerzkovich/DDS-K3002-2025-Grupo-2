@@ -29,12 +29,6 @@ public class DepuradorDeHechos {
             System.out.println("Depurando hechos de la fuente: " + fuente.getId() + " con " + entry.getValue().size() + " hechos.");
             List<Hecho> hechos = new ArrayList<>(entry.getValue());
 
-            if(fuente.getClass() == FuenteDinamica.class){
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
-                for(Hecho hecho : fuente.getHechos())
-                    System.out.println(hecho.getId() + "  --  " + hecho.getCategoria());
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
-            }
 
             ProgressBar progressBar = new ProgressBar(8, " " + hechos.size() + " hechos");
             long inicioFuente = System.nanoTime();

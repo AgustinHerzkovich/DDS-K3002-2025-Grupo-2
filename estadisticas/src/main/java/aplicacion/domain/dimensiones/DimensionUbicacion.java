@@ -28,4 +28,8 @@ public class DimensionUbicacion {
     public DimensionUbicacion() {
 
     }
+
+    public String getCodigo() {
+        return String.join("-", this.pais, this.provincia);
+    }
 }

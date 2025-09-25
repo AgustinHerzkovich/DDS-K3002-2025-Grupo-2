@@ -10,7 +10,6 @@ public class FactHechoId implements Serializable {
     private Long tiempoId;
     private Long categoriaId;
 
-    public FactHechoId() {}
 
     public FactHechoId(Long ubicacionId, Long tiempoId, Long categoriaId) {
         this.ubicacionId = ubicacionId;

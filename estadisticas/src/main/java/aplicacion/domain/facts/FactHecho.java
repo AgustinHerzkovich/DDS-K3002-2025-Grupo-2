@@ -42,7 +42,7 @@ public class FactHecho {
     private Long cantidadDeHechos = 0L;
 
 
-    public static FactHecho fromHecho(Hecho hecho){
+    public static FactHecho fromHecho(Hecho hecho) {
         FactHecho factHecho = new FactHecho();
         Provincia prov = IdentificadorDeUbicacion.getInstance().identificar(hecho.getUbicacion().getLatitud(), hecho.getUbicacion().getLongitud());
         factHecho.setDimensionUbicacion(new DimensionUbicacion(prov.getProvincia(), prov.getPais()));
