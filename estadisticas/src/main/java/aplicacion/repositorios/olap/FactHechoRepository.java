@@ -15,5 +15,4 @@ import java.util.Optional;
 @Repository
 public interface FactHechoRepository extends JpaRepository<FactHecho, FactHechoId> {
 
-
 }

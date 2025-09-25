@@ -1,9 +1,16 @@
 package aplicacion.controllers;
 
+import aplicacion.domain.dimensiones.DimensionCategoria;
+import aplicacion.domain.dimensiones.DimensionTiempo;
+import aplicacion.domain.dimensiones.DimensionUbicacion;
+import aplicacion.domain.facts.FactHecho;
+import aplicacion.domain.id.FactHechoId;
 import aplicacion.repositorios.agregador.HechoRepository;
 import aplicacion.repositorios.olap.DimensionCategoriaRepository;
+import aplicacion.repositorios.olap.FactHechoRepository;
 import aplicacion.services.scheduler.ActualizacionEstadisticasScheduler;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +20,12 @@ import aplicacion.domain.hechosYSolicitudes.Hecho;
 
 import java.util.List;
 import java.util.Optional;
+@Slf4j
 @RestController
 @RequestMapping("/estadisticas")
 public class EstadisticasController {
     ActualizacionEstadisticasScheduler actualizacionEstadisticasScheduler;
-
-    public EstadisticasController(ActualizacionEstadisticasScheduler actualizacionEstadisticasScheduler) {
+    public EstadisticasController(ActualizacionEstadisticasScheduler actualizacionEstadisticasScheduler, FactHechoRepository factHechoRepository) {
         this.actualizacionEstadisticasScheduler = actualizacionEstadisticasScheduler;
     }
 
@@ -31,4 +38,5 @@ public class EstadisticasController {
         System.out.println("-----------------------------------");
         return ResponseEntity.noContent().build();
     }
+
 }

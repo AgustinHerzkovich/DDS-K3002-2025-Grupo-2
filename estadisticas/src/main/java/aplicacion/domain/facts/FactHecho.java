@@ -39,7 +39,20 @@ public class FactHecho {
     @JoinColumn(name = "categoriaId")
     private DimensionCategoria dimensionCategoria;
 
-    private Long cantidadDeHechos = 0L;
+    private Long cantidadDeHechos = 1L;
+
+
+    public FactHecho(DimensionUbicacion dimensionUbicacion, DimensionTiempo dimensionTiempo, DimensionCategoria dimensionCategoria, Long cantidadDeHechos) {
+        this.dimensionUbicacion = dimensionUbicacion;
+        this.dimensionTiempo = dimensionTiempo;
+        this.dimensionCategoria = dimensionCategoria;
+        this.id = new FactHechoId(dimensionUbicacion.getId_ubicacion(), dimensionTiempo.getIdTiempo(), dimensionCategoria.getIdCategoria());
+        this.cantidadDeHechos = cantidadDeHechos;
+    }
+
+    public FactHecho() {
+
+    }
 
 
     public static FactHecho fromHecho(Hecho hecho) {
@@ -50,10 +63,18 @@ public class FactHecho {
         factHecho.setDimensionCategoria(new DimensionCategoria(hecho.getCategoria().getNombre()));
         return factHecho;
     }
+//ayuda-help me-ayuda(en chino)
 
 
-
-
+    public String toString(){
+        return "FactHecho{" +
+                "id=" + id +
+                ", dimensionUbicacion=" + dimensionUbicacion +
+                ", dimensionTiempo=" + dimensionTiempo +
+                ", dimensionCategoria=" + dimensionCategoria +
+                ", cantidadDeHechos=" + cantidadDeHechos +
+                '}';
+    }
 
     public void sumarOcurrencia() {
         cantidadDeHechos++;
