@@ -26,5 +26,5 @@ public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColec
     DELETE FROM HechoXColeccion hxc
     WHERE hxc.coleccion.id = :coleccionID
     """)
-    void deleteAllByColeccionId(@Param("coleccionID") String coleccionID);
+    void deleteAllByColeccionId(@Param("coleccionID") Long coleccionID);
 }

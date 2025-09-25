@@ -13,11 +13,11 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class HechoXColeccionId implements Serializable {
     private String hechoId;
-    private String coleccionId;
+    private Long coleccionId;
 
     public HechoXColeccionId() {}
 
-    public HechoXColeccionId(String hechoId, String coleccionId) {
+    public HechoXColeccionId(String hechoId, Long coleccionId) {
         this.hechoId = hechoId;
         this.coleccionId = coleccionId;
     }

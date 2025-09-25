@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ColeccionOutputDto {
-    private String id;
+    private Long id;
     private String titulo;
     private String descripcion;
     private List<CriterioDePertenenciaOutputDto> criteriosDePertenencia;

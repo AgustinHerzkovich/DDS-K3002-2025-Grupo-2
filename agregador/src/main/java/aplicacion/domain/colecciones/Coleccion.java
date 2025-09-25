@@ -20,8 +20,8 @@ import java.util.List;
 @Setter
 public class Coleccion{
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(length = 50)
     private String titulo;
     @Column(length = 150)

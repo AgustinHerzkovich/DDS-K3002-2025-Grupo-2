@@ -51,7 +51,7 @@ public class ColeccionService {
     }
     @Transactional
     public void asociarHechosPreexistentes(Coleccion coleccion) {
-        System.out.println("Asociando hechos preexistentes de "+coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
+        System.out.println("Asociando hechos preexistentes de "+coleccion.getTitulo() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
         List<Fuente> fuentes = coleccion.getFuentes();
         for (Fuente fuente : fuentes) {
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
