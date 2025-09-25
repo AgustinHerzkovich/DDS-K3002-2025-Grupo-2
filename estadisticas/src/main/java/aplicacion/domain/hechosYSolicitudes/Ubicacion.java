@@ -13,4 +13,12 @@ import lombok.Setter;
 public class Ubicacion {
     private Double latitud;
     private Double longitud;
+
+    @Override
+    public String toString() {
+        return "Ubicacion{" +
+                "latitud=" + latitud +
+                ", longitud=" + longitud +
+                '}';
+    }
 }

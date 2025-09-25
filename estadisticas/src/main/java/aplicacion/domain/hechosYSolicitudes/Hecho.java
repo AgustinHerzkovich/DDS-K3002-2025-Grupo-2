@@ -30,14 +30,20 @@ public class Hecho {
     @EqualsAndHashCode.Include
     @Column(name = "fecha_acontecimiento")
     private LocalDateTime fechaAcontecimiento;
+    @Column(name = "fecha_carga")
+    private LocalDateTime fechaCarga;
+
+
 
 
     public Hecho(Categoria categoria,
                  Ubicacion ubicacion,
-                 LocalDateTime fechaAcontecimiento) {
+                 LocalDateTime fechaAcontecimiento,
+                 LocalDateTime fechaCarga) {
         this.categoria = categoria;
         this.ubicacion = ubicacion;
         this.fechaAcontecimiento = fechaAcontecimiento;
+        this.fechaCarga = fechaCarga;
     }
 
     public String toString() {

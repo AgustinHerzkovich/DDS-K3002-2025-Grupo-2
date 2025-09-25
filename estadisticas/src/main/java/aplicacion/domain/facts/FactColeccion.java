@@ -16,16 +16,20 @@ public class FactColeccion {
     @EmbeddedId
     private FactColeccionId id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_coleccion")
+    @MapsId("coleccionId")
+    @JoinColumn(name = "coleccionId")
     private DimensionColeccion dimensionColeccion;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_ubicacion")
+    @MapsId("ubicacionId")
+    @JoinColumn(name = "ubicacionId")
     private DimensionUbicacion dimensionUbicacion;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_tiempo")
+    @MapsId("tiempoId")
+    @JoinColumn(name = "tiempoId")
     private DimensionTiempo dimensionTiempo;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_categoria")
+    @MapsId("categoriaId")
+    @JoinColumn(name = "categoriaId")
     private DimensionCategoria dimensionCategoria;
 
     private Long cantidadHechos;

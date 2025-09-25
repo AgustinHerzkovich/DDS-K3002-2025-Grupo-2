@@ -1,0 +1,4 @@
+hay que hacer un endpoint para actualizar estadisticas a mano, igual que el que esta en agregador para pedir hechos
+hay que hacer la conexion con la bdd original para pedir y formatear los hechos
+y otro endpoint/endpoints (todavia no lo se) para las distintas estadisticas,
+porque por como esta hecho el modelo, se puede expandir a mas posibles consultas de las que nos piden

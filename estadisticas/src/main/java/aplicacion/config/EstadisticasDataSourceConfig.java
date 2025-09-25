@@ -41,7 +41,7 @@ public class EstadisticasDataSourceConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("aplicacion.domain.facts", "aplicacion.domain.dimensiones", "aplicacion.domain.id")
+                .packages("aplicacion.domain.facts", "aplicacion.domain.dimensiones", "aplicacion.domain.id", "aplicacion.utils")
                 .persistenceUnit("estadisticasPU")
                 .properties(jpaProperties.getProperties())
                 .build();

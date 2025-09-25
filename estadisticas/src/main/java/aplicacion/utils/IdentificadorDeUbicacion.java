@@ -41,6 +41,7 @@ public class IdentificadorDeUbicacion {
 
     private static IdentificadorDeUbicacion instance;
     private List<Provincia> provinciasCache = new ArrayList<>();
+    private final Provincia defaultProvincia = new Provincia(null, "Desconocida", "Desconocido", "XX");
     // Lista de provincias en memoria
     private final GeometryFactory gf = new GeometryFactory();
     // Factory necesario para crear puntos y evaluarlos
@@ -109,7 +110,7 @@ public class IdentificadorDeUbicacion {
                 // Si esta devuelve la provincia
             }
         }
-        return null;
+        return defaultProvincia;
         // Si llegue aca, es que no esta en el mapa
     }
 }
