@@ -24,7 +24,7 @@ public class Hecho {
     @ManyToOne
     @EqualsAndHashCode.Include
     private Categoria categoria;
-    @ManyToOne
+    @Embedded
     @EqualsAndHashCode.Include
     private Ubicacion ubicacion;
     @EqualsAndHashCode.Include
