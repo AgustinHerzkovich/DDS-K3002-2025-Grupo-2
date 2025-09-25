@@ -1,12 +1,9 @@
 package aplicacion.domain.dimensiones;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.Id;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -17,6 +14,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class DimensionUbicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ubicacion_id")
     private Long id_ubicacion;
     private String pais = "Argentina";
     private String provincia;

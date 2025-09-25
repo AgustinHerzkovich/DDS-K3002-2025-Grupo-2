@@ -1,5 +1,6 @@
 package aplicacion.domain.dimensiones;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,6 +19,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class DimensionCategoria {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "categoria_id")
     private Long idCategoria;
     private String nombre;
     public DimensionCategoria(String nombre) {

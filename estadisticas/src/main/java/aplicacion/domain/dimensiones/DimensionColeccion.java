@@ -1,5 +1,6 @@
 package aplicacion.domain.dimensiones;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,7 +14,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class DimensionColeccion {
     @Id
-    private String idColeccion;
+    @Column(name = "coleccionId")
+    private Long idColeccion;
+    private String idColeccionAgregador;
     private String titulo;
     private String descripcion;
 }
