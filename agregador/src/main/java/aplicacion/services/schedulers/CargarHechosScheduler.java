@@ -9,13 +9,17 @@ import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.FuenteService;
+import aplicacion.utils.ProgressBar;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class CargarHechosScheduler {
@@ -34,35 +38,53 @@ public class CargarHechosScheduler {
     }
 
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Transactional
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
-        for (Coleccion coleccion : colecciones) {
-            System.out.println("Cargando coleccion: " + coleccion.getId() + " " + coleccion.getTitulo());
-            LocalDateTime inicioCarga = LocalDateTime.now();
-            List<Fuente> fuentes= coleccion.getFuentes();
-            Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentes);
-            LocalDateTime finCarga = LocalDateTime.now();
-            System.out.println("Tiempo de carga = " + Duration.between(inicioCarga, finCarga).toSeconds() + "s "+ Duration.between(inicioCarga, finCarga).toMillisPart() + "ms");
-            normalizadorDeHechos.normalizarTodos(hechosPorFuente);
-            LocalDateTime finNormalizacion= LocalDateTime.now();
-            System.out.println("Tiempo de normalizacion = " + Duration.between(finCarga, finNormalizacion).toSeconds() + "s "+ Duration.between(finCarga, finNormalizacion).toMillisPart() + "ms");
-            depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
-            LocalDateTime finDepuracion = LocalDateTime.now();
-            System.out.println("Tiempo de depuracion = " + Duration.between(finNormalizacion, finDepuracion).toSeconds() + "s "+ Duration.between(finNormalizacion, finDepuracion).toMillisPart() + "ms");
+        Set<Fuente> fuenteSet = new HashSet<>();
+        for (Coleccion coleccion : colecciones){
+            fuenteSet.addAll(coleccion.getFuentes());
         }
-        System.out.println("Se asignaran los hechos a las colecciones");
+        System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
+
+        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet.stream().toList());
+        normalizadorDeHechos.normalizarTodos(hechosPorFuente);
+        depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
+
+        System.out.println("""
+        
+        
+        ============================
+         Carga de hechos finalizada
+        ============================
+        
+        
+        Se asignaran los hechos a las colecciones...
+        
+        """);
+        Long inicioAsignacion = System.nanoTime();
+        int indiceColeccion = 0;
+        int indiceFuente = 0;
         for(Coleccion coleccion : colecciones){
+            indiceColeccion++;
+            System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
+
             for(Fuente fuente : coleccion.getFuentes()){
-                List<Hecho> hechosObtenidos = fuenteService.obtenerHechosPorFuente(fuente.getId());
+                indiceFuente++;
+                List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
+                ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
                     HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                     hechoService.guardarHechoPorColeccion(hechoPorColeccion);
+                    progressBar.avanzar();
                 }
             }
+            indiceFuente = 0;
         }
-        System.out.println("Se asignaron los hechos a las colecciones");
+        Long finAsignacion = System.nanoTime();
+        System.out.printf("\nSe asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
 
         // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
         // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
@@ -71,7 +93,13 @@ public class CargarHechosScheduler {
         // si se duplica un hecho dentro de la misma fuente -> Se sobreescribe? Presuponemos que no hay hechos duplicados dentro de una misma fuente
         // en ambos casos se carga la entrada en hechoxfuente, lo que varia es a que hecho apunta.
         // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
-        System.out.println("Carga de hechos finalizada.");
+        System.out.println("""
+                
+                =================================
+                 Asignación de hechos finalizada
+                =================================
+                
+                """);
     }
 
 }

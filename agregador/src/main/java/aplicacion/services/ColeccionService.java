@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
@@ -13,7 +14,6 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
-import aplicacion.repositorios.RepositorioDeHechosXFuente;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,18 +26,16 @@ public class ColeccionService {
     private final RepositorioDeColecciones repositorioDeColecciones;
     private final HechoService hechoService;
     private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
-    private final RepositorioDeHechosXFuente repositorioDeHechosXFuente;
     private final ColeccionInputMapper coleccionInputMapper;
     private final ColeccionOutputMapper coleccionOutputMapper;
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, RepositorioDeHechosXFuente repositorioDeHechosXFuente, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
-        this.repositorioDeHechosXFuente = repositorioDeHechosXFuente;
         this.coleccionInputMapper = coleccionInputMapper;
         this.coleccionOutputMapper = coleccionOutputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -46,8 +44,30 @@ public class ColeccionService {
     }
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
-        Coleccion coleccionLocal = repositorioDeColecciones.save(coleccionInputMapper.map(coleccion));
-        return coleccionOutputMapper.map(coleccionLocal);
+        Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
+        this.asociarHechosPreexistentes(coleccionLocal);
+        Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
+        return coleccionOutputMapper.map(coleccionGuardada);
+    }
+    @Transactional
+    public void asociarHechosPreexistentes(Coleccion coleccion) {
+        System.out.println("Asociando hechos preexistentes de "+coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
+        List<Fuente> fuentes = coleccion.getFuentes();
+        for (Fuente fuente : fuentes) {
+            asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
+        }
+    }
+    @Transactional
+    public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
+
+        List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
+        List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
+                .filter(coleccion::cumpleCriterios)
+                .toList();
+        List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
+                .map(hecho -> new HechoXColeccion(hecho, coleccion))
+                .collect(Collectors.toList());
+        repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
     }
 
     public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
@@ -142,10 +162,11 @@ public class ColeccionService {
 
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
         Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
-        fuenteService.guardarFuente(fuente);
+        fuente = fuenteService.guardarFuenteSiNoExiste(fuente);
         Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
         coleccion = repositorioDeColecciones.save(coleccion);
+        asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);        //Agrega hechos viejos a la coleccion, si es fuente nueva no se agrega nada
         return coleccionOutputMapper.map(coleccion);
     }
 
@@ -161,7 +182,8 @@ public class ColeccionService {
 
         // Si en fuente por coleccion no quedan mas registros para esta fuente, entonces se eliminan las entradas de HechoXFuente que tengan este FuenteId
         if (!repositorioDeColecciones.existsByFuenteId(fuenteId)) {
-            repositorioDeHechosXFuente.deleteAllByFuenteId(fuenteId);
+            fuente.eliminarTodosLosHechos();
+            fuenteService.guardarFuente(fuente);
         }
 
         // Quitamos de HechoXColeccion aquellos hechos que eran de esta fuente
