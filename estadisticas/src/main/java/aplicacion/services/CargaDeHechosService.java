@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -84,37 +86,38 @@ public class CargaDeHechosService {
         List<DimensionCategoria> dimensionCategoriaList = dimensionCategoriaRepository.findByNombreCategoria(factHechoSet.stream().map(factHecho -> factHecho.getDimensionCategoria().getNombre()).toList());
         List<DimensionTiempo> dimensionTiempoList = dimensionTiempoRepository.findByTiempo(factHechoSet.stream().map(factHecho -> factHecho.getDimensionTiempo().getCodigo()).toList());
         List<DimensionUbicacion> dimensionUbicacionList = dimensionUbicacionRepository.findByUbicaciones(factHechoSet.stream().map(factHecho -> factHecho.getDimensionUbicacion().getCodigo()).toList());
+        // Usar maps hace que sea mas rapido, aunque mucho no se nota, ya que el principal cuello de botella esta con la BD
+        Map<String, DimensionCategoria> categoriaMap = dimensionCategoriaList.stream()
+                .collect(Collectors.toMap(DimensionCategoria::getNombre, Function.identity()));
+        Map<String, DimensionTiempo> tiempoMap = dimensionTiempoList.stream()
+                .collect(Collectors.toMap(DimensionTiempo::getCodigo, Function.identity()));
+        Map<String, DimensionUbicacion> ubicacionMap = dimensionUbicacionList.stream()
+                .collect(Collectors.toMap(DimensionUbicacion::getCodigo, Function.identity()));
 
         System.out.println("Dimensiones previas encontradas: " + dimensionCategoriaList.size() + " - " + dimensionTiempoList.size() + " - " + dimensionUbicacionList.size() + "         (Categoria - Tiempo - Ubicacion)");
 
         for (FactHecho factHecho : factHechoSet) {
-            DimensionUbicacion dimensionUbicacion;
-            DimensionTiempo dimensionTiempo;
-            DimensionCategoria dimensionCategoria;
+            String codUbicacion = factHecho.getDimensionUbicacion().getCodigo();
+            String codTiempo = factHecho.getDimensionTiempo().getCodigo();
+            String nomCategoria = factHecho.getDimensionCategoria().getNombre();
 
-
-            Optional<DimensionUbicacion> dimensionUbicacionOpt = dimensionUbicacionList.stream().filter(dimUbi -> dimUbi.getCodigo().equals(factHecho.getDimensionUbicacion().getCodigo())).findFirst();
-            if(dimensionUbicacionOpt.isEmpty()){
+            DimensionUbicacion dimensionUbicacion = ubicacionMap.get(codUbicacion);
+            if (dimensionUbicacion == null) {
                 dimensionUbicacion = dimensionUbicacionRepository.save(factHecho.getDimensionUbicacion());
-                dimensionUbicacionList.add(dimensionUbicacion);
-            }else
-                dimensionUbicacion = dimensionUbicacionOpt.get();
+                ubicacionMap.put(codUbicacion, dimensionUbicacion);
+            }
 
-            Optional<DimensionTiempo> dimensionTiempoOpt = dimensionTiempoList.stream().filter(dimTie -> dimTie.getCodigo().equals(factHecho.getDimensionTiempo().getCodigo())).findFirst();
-            if(dimensionTiempoOpt.isEmpty()){
+            DimensionTiempo dimensionTiempo = tiempoMap.get(codTiempo);
+            if (dimensionTiempo == null) {
                 dimensionTiempo = dimensionTiempoRepository.save(factHecho.getDimensionTiempo());
-                dimensionTiempoList.add(dimensionTiempo);
-            }else
-                dimensionTiempo = dimensionTiempoOpt.get();
+                tiempoMap.put(codTiempo, dimensionTiempo);
+            }
 
-
-            Optional<DimensionCategoria> dimensionCategoriaOpt = dimensionCategoriaList.stream().filter(dimCat -> dimCat.getNombre().equals(factHecho.getDimensionCategoria().getNombre())).findFirst();
-            if(dimensionCategoriaOpt.isEmpty()){
+            DimensionCategoria dimensionCategoria = categoriaMap.get(nomCategoria);
+            if (dimensionCategoria == null) {
                 dimensionCategoria = dimensionCategoriaRepository.save(factHecho.getDimensionCategoria());
-                dimensionCategoriaList.add(dimensionCategoria);
-            }else
-                dimensionCategoria = dimensionCategoriaOpt.get();
-
+                categoriaMap.put(nomCategoria, dimensionCategoria);
+            }
 
             factHecho.setDimensionUbicacion(dimensionUbicacion);
             factHecho.setDimensionTiempo(dimensionTiempo);
@@ -125,16 +128,30 @@ public class CargaDeHechosService {
                     dimensionCategoria.getIdCategoria()
             ));
         }
+
         System.out.println("Guardando " + factHechoSet.size() + " hechos");
-        for (FactHecho factHecho : factHechoSet) {
-            FactHecho existingFactHecho = factHechoRepository.findById(factHecho.getId()).orElse(null); //
-            if (existingFactHecho != null) {
-                existingFactHecho.sumarOcurrencias(factHecho.getCantidadDeHechos());
-                factHechoRepository.save(existingFactHecho);
+
+        Set<FactHechoId> ids = factHechoSet.stream() // Los que tengo ya tienen ID, separo todos los IDs
+                .map(FactHecho::getId)
+                .collect(Collectors.toSet());
+
+        List<FactHecho> existentes = factHechoRepository.findAllById(ids);  // Busco todos los que ya existen
+        Map<FactHechoId, FactHecho> existentesMap = existentes.stream()
+                .collect(Collectors.toMap(FactHecho::getId, Function.identity()));  // Los meto en un Map
+
+        List<FactHecho> hechosParaGuardar = new ArrayList<>();
+
+        for (FactHecho f : factHechoSet) {
+            if (existentesMap.containsKey(f.getId())) { // Los que existen...
+                FactHecho existente = existentesMap.get(f.getId());
+                existente.sumarOcurrencias(f.getCantidadDeHechos());    // Los actualizo
+                hechosParaGuardar.add(existente);                       // Y lo agrego para actualizar
             } else {
-                factHechoRepository.save(factHecho);
+                hechosParaGuardar.add(f);                               // Si es nuevo lo tengo que guardar despues tambien
             }
         }
+
+        factHechoRepository.saveAll(hechosParaGuardar);                 // Guardo tod0 de una (menos querys)
 
         System.out.println("Registros de hechos persistidos: " + factHechoSet.size());
     }
