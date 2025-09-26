@@ -27,8 +27,11 @@ public class EstadisticasController {
     public ResponseEntity<Void> actualizarEstadisticas() {
         System.out.println("Actualizando estadisticas...");
         actualizacionEstadisticasScheduler.actualizarEstadisticas(); // Tarea scheduleada de inmediato
-        System.out.println("Estadisticas actualizadas.");
-        System.out.println("-----------------------------------");
+        System.out.println("""
+                ---------------------------------
+                    Estadisticas actualizadas.
+                ---------------------------------
+                """);
         return ResponseEntity.noContent().build();
     }
 }

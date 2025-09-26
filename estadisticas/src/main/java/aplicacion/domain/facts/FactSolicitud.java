@@ -1,21 +1,23 @@
 package aplicacion.domain.facts;
 
-import aplicacion.domain.dimensiones.DimensionEstado;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.HashCodeExclude;
 
 @Entity
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class FactSolicitud {
     @Id
-    @Column(name = "id_solicitud", nullable = false)
-    private Long idSolicitud;
-
+    private String nombreEstado;
+    @HashCodeExclude
     private Long cantidadDeSolicitudes;
 
-    @ManyToOne
-    private DimensionEstado dimensionEstado;
-
-
+    @Override
+    public String toString() {
+        return "(" + nombreEstado + " - " + cantidadDeSolicitudes + ")";
+    }
 }
