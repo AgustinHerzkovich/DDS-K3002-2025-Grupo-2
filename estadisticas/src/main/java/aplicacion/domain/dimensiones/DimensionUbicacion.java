@@ -13,6 +13,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @AllArgsConstructor
+@EqualsAndHashCode
+
 public class DimensionUbicacion {
     @HashCodeExclude
     @Id
