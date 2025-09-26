@@ -42,6 +42,7 @@ public class CargaDeHechosService {
 
 
     public void actualizarHechos() {
+        System.out.println("Actualizando hechos");
         Integer tamañoPagina = 3000;
         List<Hecho> hechosAImportar;
         ConfiguracionGlobal fechaConfiguracion = configuracionGlobalRepository.findById("ultima_actualizacion_hechos").orElse(null);
