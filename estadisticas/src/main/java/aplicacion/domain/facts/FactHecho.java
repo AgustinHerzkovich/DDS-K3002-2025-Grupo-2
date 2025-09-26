@@ -39,7 +39,7 @@ public class FactHecho {
     @JoinColumn(name = "categoriaId", insertable = false, updatable = false)
     private DimensionCategoria dimensionCategoria;
 
-    private Long cantidadDeHechos = 0L;
+    private Long cantidadDeHechos = 1L;
 
 
     public static FactHecho fromHecho(Hecho hecho) {
