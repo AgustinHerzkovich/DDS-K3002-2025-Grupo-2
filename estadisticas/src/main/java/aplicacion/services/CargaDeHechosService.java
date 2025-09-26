@@ -53,11 +53,14 @@ public class CargaDeHechosService {
 
 
     public void actualizarHechos() {
+        Integer tamañoPagina = 3000;
         List<Hecho> hechosAImportar;
         ConfiguracionGlobal fechaConfiguracion = configuracionGlobalRepository.findById("ultima_actualizacion_hechos").orElse(null);
+        long inicio = System.nanoTime();
         int c = 0;
+        int q = 0;
         do {
-            Pageable pageable = PageRequest.of(c, 1000);
+            Pageable pageable = PageRequest.of(c, tamañoPagina);
             if(fechaConfiguracion != null) {
                 hechosAImportar = hechoRepository.findByFechaAfter(LocalDateTime.parse(fechaConfiguracion.getValor()), pageable).getContent();
             } else {
@@ -65,9 +68,25 @@ public class CargaDeHechosService {
             }
             System.out.println("Analizando " + hechosAImportar.size() + " hechos. Página: " + c);
             sumarHechos(hechosAImportar);
-            System.out.println("Tanda de hechos importada");
+            q+=hechosAImportar.size();
             c++;
-        } while (hechosAImportar.size() == 1000);
+        } while (hechosAImportar.size() == tamañoPagina);
+        long fin = System.nanoTime();
+        System.out.printf("Tiempo total: %3d ms - %d hechos - %d paginas - %1.2f hechos/segundo \n" , (fin-inicio)/1_000_000, q, c, q / (double) ( (fin-inicio) / 1_000_000_000 ) );
+    /* Pruebas con 35000 hechos
+    * - Páginas de 10:      167,46 hechos/segundo
+    * - Páginas de 50:      333,33 hechos/segundo
+    * - Páginas de 100:     397,73 hechos/segundo
+    * - Páginas de 1000:    583,33 hechos/segundo
+    * - Páginas de 3000:    625,00 hechos/segundo
+    * - Páginas de 5000:    636,36 hechos/segundo
+    * - Páginas de 15000:   648,15 hechos/segundo
+    * - Páginas de 35000:   648,15 hechos/segundo
+    *
+    * Productividad marginal decreciente?
+    * Paginas mas grandes siempre significa menos requests a la BD, por lo que es mas rapido, pero requiere de más RAN
+    * Lo dejo en 3000 que parece bastante optimo
+    * */
     }
 
 
@@ -81,7 +100,7 @@ public class CargaDeHechosService {
                 });
         }
 
-        System.out.println("Registros de hechos agrupados: " + hechos.size());
+        //System.out.println("Registros de hechos agrupados: " + hechos.size());
 
         List<DimensionCategoria> dimensionCategoriaList = dimensionCategoriaRepository.findByNombreCategoria(factHechoSet.stream().map(factHecho -> factHecho.getDimensionCategoria().getNombre()).toList());
         List<DimensionTiempo> dimensionTiempoList = dimensionTiempoRepository.findByTiempo(factHechoSet.stream().map(factHecho -> factHecho.getDimensionTiempo().getCodigo()).toList());
@@ -94,42 +113,71 @@ public class CargaDeHechosService {
         Map<String, DimensionUbicacion> ubicacionMap = dimensionUbicacionList.stream()
                 .collect(Collectors.toMap(DimensionUbicacion::getCodigo, Function.identity()));
 
-        System.out.println("Dimensiones previas encontradas: " + dimensionCategoriaList.size() + " - " + dimensionTiempoList.size() + " - " + dimensionUbicacionList.size() + "         (Categoria - Tiempo - Ubicacion)");
+        //System.out.println("Dimensiones previas encontradas: " + dimensionCategoriaList.size() + " - " + dimensionTiempoList.size() + " - " + dimensionUbicacionList.size() + "         (Categoria - Tiempo - Ubicacion)");
 
+        Set<DimensionUbicacion> ubicacionesNuevas = new HashSet<>();
+        Set<DimensionTiempo> tiemposNuevos = new HashSet<>();
+        Set<DimensionCategoria> categoriasNuevas = new HashSet<>();
+
+        //  Agrego las dimensiones fuera de la DB a una lista particular
+        for (FactHecho factHecho : factHechoSet) {
+            String codUbicacion = factHecho.getDimensionUbicacion().getCodigo();
+            String codTiempo = factHecho.getDimensionTiempo().getCodigo();
+            String nomCategoria = factHecho.getDimensionCategoria().getNombre();
+
+            if (!ubicacionMap.containsKey(codUbicacion)) {
+                ubicacionesNuevas.add(factHecho.getDimensionUbicacion());
+            }
+
+            if (!tiempoMap.containsKey(codTiempo)) {
+                tiemposNuevos.add(factHecho.getDimensionTiempo());
+            }
+
+            if (!categoriaMap.containsKey(nomCategoria)) {
+                categoriasNuevas.add(factHecho.getDimensionCategoria());
+            }
+        }
+
+        //System.out.println("Dimensiones nuevas a persistir: " + categoriasNuevas.size() + " - " + tiemposNuevos.size() + " - " + ubicacionesNuevas.size() + "       (Categoria - Tiempo - Ubicacion)");
+
+        // Guardo las nuevas dimensiones en la DB con pocas querys
+        List<DimensionUbicacion> ubicacionesGuardadas = dimensionUbicacionRepository.saveAll(ubicacionesNuevas);
+        for (DimensionUbicacion ubi : ubicacionesGuardadas) {
+            ubicacionMap.put(ubi.getCodigo(), ubi);
+        }
+
+        List<DimensionTiempo> tiemposGuardados = dimensionTiempoRepository.saveAll(tiemposNuevos);
+        for (DimensionTiempo tie : tiemposGuardados) {
+            tiempoMap.put(tie.getCodigo(), tie);
+        }
+
+        List<DimensionCategoria> categoriasGuardadas = dimensionCategoriaRepository.saveAll(categoriasNuevas);
+        for (DimensionCategoria cat : categoriasGuardadas) {
+            categoriaMap.put(cat.getNombre(), cat);
+        }
+        //System.out.println("Dimensiones nuevas persistidas");
+
+        // Recien ahora asigno dimensiones
         for (FactHecho factHecho : factHechoSet) {
             String codUbicacion = factHecho.getDimensionUbicacion().getCodigo();
             String codTiempo = factHecho.getDimensionTiempo().getCodigo();
             String nomCategoria = factHecho.getDimensionCategoria().getNombre();
 
             DimensionUbicacion dimensionUbicacion = ubicacionMap.get(codUbicacion);
-            if (dimensionUbicacion == null) {
-                dimensionUbicacion = dimensionUbicacionRepository.save(factHecho.getDimensionUbicacion());
-                ubicacionMap.put(codUbicacion, dimensionUbicacion);
-            }
-
             DimensionTiempo dimensionTiempo = tiempoMap.get(codTiempo);
-            if (dimensionTiempo == null) {
-                dimensionTiempo = dimensionTiempoRepository.save(factHecho.getDimensionTiempo());
-                tiempoMap.put(codTiempo, dimensionTiempo);
-            }
-
             DimensionCategoria dimensionCategoria = categoriaMap.get(nomCategoria);
-            if (dimensionCategoria == null) {
-                dimensionCategoria = dimensionCategoriaRepository.save(factHecho.getDimensionCategoria());
-                categoriaMap.put(nomCategoria, dimensionCategoria);
-            }
 
             factHecho.setDimensionUbicacion(dimensionUbicacion);
             factHecho.setDimensionTiempo(dimensionTiempo);
             factHecho.setDimensionCategoria(dimensionCategoria);
+
             factHecho.setId(new FactHechoId(
                     dimensionUbicacion.getId_ubicacion(),
                     dimensionTiempo.getIdTiempo(),
                     dimensionCategoria.getIdCategoria()
             ));
         }
-
-        System.out.println("Guardando " + factHechoSet.size() + " hechos");
+        //System.out.println("Guardando " + factHechoSet.size() + " hechos...");
 
         Set<FactHechoId> ids = factHechoSet.stream() // Los que tengo ya tienen ID, separo todos los IDs
                 .map(FactHecho::getId)
@@ -153,7 +201,7 @@ public class CargaDeHechosService {
 
         factHechoRepository.saveAll(hechosParaGuardar);                 // Guardo tod0 de una (menos querys)
 
-        System.out.println("Registros de hechos persistidos: " + factHechoSet.size());
+        //System.out.println("Registros de hechos persistidos: " + factHechoSet.size());
     }
 
 
