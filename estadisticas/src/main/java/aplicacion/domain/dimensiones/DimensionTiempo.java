@@ -25,13 +25,9 @@ public class DimensionTiempo {
     @Column(name = "tiempo_id")
     private Long idTiempo;
     private Integer anio;
-    private Integer mes;
-    private Integer dia;
     private Integer hora;
     public DimensionTiempo(LocalDateTime fechaAcontecimiento) {
         this.anio = fechaAcontecimiento.getYear();
-        this.mes = fechaAcontecimiento.getMonthValue();
-        this.dia = fechaAcontecimiento.getDayOfMonth();
         this.hora = fechaAcontecimiento.getHour();
     }
 
@@ -41,6 +37,6 @@ public class DimensionTiempo {
 
 
     public String getCodigo() {
-        return String.join("|", anio.toString(), mes.toString(), dia.toString(), hora.toString());
+        return String.join("|", anio.toString(), hora.toString());
     }
 }

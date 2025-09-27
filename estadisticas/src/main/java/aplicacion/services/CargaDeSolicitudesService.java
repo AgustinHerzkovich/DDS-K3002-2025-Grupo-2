@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CargaDeSolicitudesService {
-
     SolicitudRepository solicitudRepository;
     FactSolicitudRepository factSolicitudRepository;
 
@@ -20,6 +19,7 @@ public class CargaDeSolicitudesService {
         this.solicitudRepository = solicitudRepo;
         this.factSolicitudRepository = factSolicitudRepository;
     }
+
     public void actualizarSolicitudes() {
         System.out.println("Actualizando Solicitudes...");
         factSolicitudRepository.deleteAll();
@@ -32,5 +32,8 @@ public class CargaDeSolicitudesService {
         s.forEach(System.out::println);
         factSolicitudRepository.saveAll(s);
         System.out.println("Solicitudes actualizadas");
+
+
     }
+
 }
