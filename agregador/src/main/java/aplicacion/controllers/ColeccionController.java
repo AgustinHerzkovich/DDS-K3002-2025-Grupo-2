@@ -61,10 +61,9 @@ public class ColeccionController {
                                                           @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
-                                                          @RequestParam(name = "longitud", required = false) Double longitud,
-                                                          @RequestParam(name = "search", required = false) String textoBuscado){
+                                                          @RequestParam(name = "longitud", required = false) Double longitud){
 
-        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
+        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
@@ -75,10 +74,9 @@ public class ColeccionController {
                                                      @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
-                                                     @RequestParam(name = "longitud", required = false) Double longitud,
-                                                     @RequestParam(name = "search", required = false) String textoBuscado){
+                                                     @RequestParam(name = "longitud", required = false) Double longitud){
 
-        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
+        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     // Operaciones UPDATE sobre Colecciones
