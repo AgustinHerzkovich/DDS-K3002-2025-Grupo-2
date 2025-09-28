@@ -59,4 +59,10 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             nativeQuery = true
     )
     List<Hecho> findByCodigoHasheadoIn(List<String> codigos);
+
+    @Query(value = "SELECT * FROM hecho " +
+            "WHERE MATCH(titulo, descripcion, contenido_texto) " +
+            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            nativeQuery = true)
+    List<Hecho>findByTextoLibre(@Param("textoLibre") String textoLibre);
 }

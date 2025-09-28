@@ -16,8 +16,7 @@ import aplicacion.utils.Md5Hasher;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Service
 public class HechoService {
@@ -43,6 +42,14 @@ public class HechoService {
         return repositorioDeHechos.findAll();
     }
 
+    public List<HechoOutputDto> obtenerHechosPorTextoLibreDto(String textoLibre){
+        return obtenerHechosPorTextoLibre(textoLibre).stream().map(hechoOutputMapper::map).toList();
+    }
+
+    public List<Hecho> obtenerHechosPorTextoLibre(String textoLibre) {
+        return repositorioDeHechos.findByTextoLibre(textoLibre);
+    }
+
     public List<HechoOutputDto> obtenerHechosAsDTO() {
         return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
     }
@@ -55,6 +62,7 @@ public class HechoService {
             repositorioDeHechosXColeccion.save(hechoPorColeccion);
         }
     }
+
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
         try{
             return repositorioDeHechos.findByHechoId(idHecho);
@@ -71,7 +79,6 @@ public class HechoService {
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
     }
-
 
     public void guardarHecho(Hecho hecho) {
         repositorioDeHechos.save(hecho);

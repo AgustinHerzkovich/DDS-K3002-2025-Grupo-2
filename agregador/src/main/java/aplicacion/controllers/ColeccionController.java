@@ -36,10 +36,16 @@ public class ColeccionController {
 
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
-    public List<ColeccionOutputDto> mostrarColecciones() {
-        List<ColeccionOutputDto> coleccion;
-        coleccion = coleccionService.obtenerColeccionesDTO();
-        return coleccion;
+    public List<ColeccionOutputDto> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado) {
+        List<ColeccionOutputDto> colecciones;
+        if (textoBuscado == null) {
+            colecciones = coleccionService.obtenerColeccionesDTO();
+        }
+        else {
+            colecciones = coleccionService.obtenerColeccionesPorTextoLibre(textoBuscado);
+        }
+
+        return colecciones;
     }
 
     @GetMapping("/colecciones/{id}")
@@ -55,8 +61,10 @@ public class ColeccionController {
                                                           @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
-                                                          @RequestParam(name = "longitud", required = false) Double longitud) {
-        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+                                                          @RequestParam(name = "longitud", required = false) Double longitud,
+                                                          @RequestParam(name = "search", required = false) String textoBuscado){
+
+        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
@@ -67,8 +75,10 @@ public class ColeccionController {
                                                      @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
-                                                     @RequestParam(name = "longitud", required = false) Double longitud){
-        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+                                                     @RequestParam(name = "longitud", required = false) Double longitud,
+                                                     @RequestParam(name = "search", required = false) String textoBuscado){
+
+        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
     }
 
     // Operaciones UPDATE sobre Colecciones
@@ -93,7 +103,7 @@ public class ColeccionController {
         return ResponseEntity.ok(coleccionOutputDto);
     }
 
-    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}/{fuenteTipo}")
+    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable("id") String idColeccion,
                                              @PathVariable("fuenteId") String fuenteId) {
         try {
