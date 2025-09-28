@@ -21,8 +21,16 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDto> obtenerHechos() {
-        return hechoService.obtenerHechosAsDTO();
+    public List<HechoOutputDto> obtenerHechos(@RequestParam(name = "search", required = false) String textoBuscado) {
+        List<HechoOutputDto> hechos;
+        if (textoBuscado == null) {
+            hechos = hechoService.obtenerHechosAsDTO();
+        }
+        else
+        {
+            hechos = hechoService.obtenerHechosPorTextoLibreDto(textoBuscado);
+        }
+        return hechos;
     }
 
     @PostMapping("/hechos")

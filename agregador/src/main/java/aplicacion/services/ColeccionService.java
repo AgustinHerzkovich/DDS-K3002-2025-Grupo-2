@@ -74,6 +74,10 @@ public class ColeccionService {
         return obtenerColecciones().stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
     }
 
+    public List<ColeccionOutputDto> obtenerColeccionesPorTextoLibre(String texto) {
+        return repositorioDeColecciones.findByTextoLibre(texto).stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
+    }
+
     public List<Coleccion> obtenerColecciones() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
         return repositorioDeColecciones.findAll();
     }
@@ -95,10 +99,11 @@ public class ColeccionService {
                                                                       LocalDateTime fechaAcontecimientoDesde,
                                                                       LocalDateTime fechaAcontecimientoHasta,
                                                                       Double latitud,
-                                                                      Double longitud) {
+                                                                      Double longitud,
+                                                                      String textoLibre) {
         List<Hecho> hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
 
-        return filtrarHechosQueryParam(hechosIrrestrictos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return filtrarHechosQueryParam(hechosIrrestrictos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre);
     }
 
     public List<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
@@ -108,10 +113,11 @@ public class ColeccionService {
                                                                     LocalDateTime fechaAcontecimientoDesde,
                                                                     LocalDateTime fechaAcontecimientoHasta,
                                                                     Double latitud,
-                                                                    Double longitud) {
+                                                                    Double longitud,
+                                                                    String textoLibre) {
         List<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
 
-        return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre);
     }
 
     public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
@@ -121,7 +127,8 @@ public class ColeccionService {
                                                         LocalDateTime fechaAcontecimientoDesde,
                                                         LocalDateTime fechaAcontecimientoHasta,
                                                         Double latitud,
-                                                        Double longitud) {
+                                                        Double longitud,
+                                                        String textoLibre) {
         return hechos.stream()
                 .filter(h -> categoria_buscada == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria_buscada))
                 .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
@@ -130,6 +137,7 @@ public class ColeccionService {
                 .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
+                .filter(h -> textoLibre == null || this.hechoService.obtenerHechosPorTextoLibre(textoLibre).contains(h))
                 .map(hechoOutputMapper::map)
                 .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
     }
