@@ -12,6 +12,8 @@ import aplicacion.utils.Provincia;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EstadisticasService {
     private FactHechoRepository factHechoRepository;
@@ -24,26 +26,24 @@ public class EstadisticasService {
         this.factColeccionRepository = factColeccionRepository;
     }
 
-    public ProvinciaConMasHechosDeColeccionDTO obtenerProvinciasConMasHechosDeUnaColeccion(String coleccion_id) {
-        return factColeccionRepository.provinciasOrdenadasPorCantidadHechos(coleccion_id, PageRequest.of(0, 1))
-                .getContent().stream()
-                .findFirst().orElse(null);
+    public List<ProvinciaConMasHechosDeColeccionDTO> obtenerProvinciasConMasHechosDeUnaColeccion(String coleccion_id, Integer page, Integer size) {
+        return factColeccionRepository.provinciasOrdenadasPorCantidadHechos(coleccion_id, PageRequest.of(page, size))
+                .getContent();
     }
 
-    public CategoriaConMasHechosDTO obtenerCategoriaConMasHechos() {
-        return factHechoRepository.categoriaConMasHechos(PageRequest.of(0, 1)).getContent().stream().findFirst().orElse(null);
+    public List<CategoriaConMasHechosDTO> obtenerCategoriaConMasHechos(Integer page, Integer size) {
+        return factHechoRepository.categoriaConMasHechos(PageRequest.of(page, size))
+                .getContent();
     }
 
-    public ProvinciaConMasHechosDTO obtenerProvinciaConMasHechosPorCategoria(String nombreCategoria) {
-        return factHechoRepository.provinciaConMasHechosDeCategoria(nombreCategoria, PageRequest.of(0, 1))
-                .getContent().stream()
-                .findFirst().orElse(null);
+    public List<ProvinciaConMasHechosDTO> obtenerProvinciaConMasHechosPorCategoria(String nombreCategoria, Integer page, Integer size) {
+        return factHechoRepository.provinciaConMasHechosDeCategoria(nombreCategoria, PageRequest.of(page, size))
+                .getContent();
     }
 
-    public HoraConMasHechosDeCategoriaDTO obtenerHoraConMasHechosPorCategoria(String nombreCategoria) {
-        return factHechoRepository.obtenerHoraConMasHechosDeCategoria(nombreCategoria, PageRequest.of(0, 1))
-                .getContent().stream()
-                .findFirst().orElse(null);
+    public List<HoraConMasHechosDeCategoriaDTO> obtenerHoraConMasHechosPorCategoria(String nombreCategoria, Integer page, Integer size) {
+        return factHechoRepository.obtenerHoraConMasHechosDeCategoria(nombreCategoria, PageRequest.of(page, size))
+                .getContent();
     }
 
     public CantidadSolicitudesSpamDTO obtenerCantidadSolicitudSpam() {
