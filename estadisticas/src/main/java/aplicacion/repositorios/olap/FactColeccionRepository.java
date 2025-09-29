@@ -23,5 +23,5 @@ public interface FactColeccionRepository extends JpaRepository<FactColeccion, Fa
     GROUP BY c.dimensionUbicacion
     ORDER BY SUM(c.cantidadHechos) DESC
     """)
-    Page<ProvinciaConMasHechosDeColeccionDTO> provinciasOrdenadasPorCantidadHechos(@Param("coleccionId") Long coleccionId, Pageable pageable);
+    Page<ProvinciaConMasHechosDeColeccionDTO> provinciasOrdenadasPorCantidadHechos(@Param("coleccionId") String coleccionId, Pageable pageable);
 }

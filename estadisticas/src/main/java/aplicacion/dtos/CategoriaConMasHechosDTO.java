@@ -1,5 +1,10 @@
 package aplicacion.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CategoriaConMasHechosDTO {
     private Long categoriaId;
     private String nombreCategoria;

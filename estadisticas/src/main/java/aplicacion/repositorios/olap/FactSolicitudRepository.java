@@ -9,17 +9,17 @@ import java.util.Map;
 public interface FactSolicitudRepository extends JpaRepository<FactSolicitud, String> {
     @Query(
             value = """
-            SELECT count(*) 
-            FROM fact_solicitud
-            WHERE estado = 'Spam'
+            SELECT cantidadDeSolicitudes
+            FROM FactSolicitud
+            WHERE nombreEstado = 'EstadoSolicitudSpam'
             """,
             nativeQuery = true
     )
     Long obtenerCantidadSolicitudesSpam();
     @Query(
             value = """
-            SELECT count(*) 
-            FROM fact_solicitud
+            SELECT SUM(cantidadDeSolicitudes) 
+            FROM FactSolicitud
             """,
             nativeQuery = true
     )

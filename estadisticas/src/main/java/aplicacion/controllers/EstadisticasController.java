@@ -44,7 +44,7 @@ public class EstadisticasController {
     }
 
     @GetMapping("/provinciasDeColeccion")
-    public ResponseEntity<ProvinciaConMasHechosDeColeccionDTO> provinciasDeColeccion(@RequestParam("idColeccion") Long idColeccion) {
+    public ResponseEntity<ProvinciaConMasHechosDeColeccionDTO> provinciasDeColeccion(@RequestParam("idColeccion") String idColeccion) {
         return ResponseEntity.ok(estadisticasService.obtenerProvinciasConMasHechosDeUnaColeccion(idColeccion));
     }
 

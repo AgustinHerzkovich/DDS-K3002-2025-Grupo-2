@@ -24,7 +24,7 @@ public class EstadisticasService {
         this.factColeccionRepository = factColeccionRepository;
     }
 
-    public ProvinciaConMasHechosDeColeccionDTO obtenerProvinciasConMasHechosDeUnaColeccion(Long coleccion_id) {
+    public ProvinciaConMasHechosDeColeccionDTO obtenerProvinciasConMasHechosDeUnaColeccion(String coleccion_id) {
         return factColeccionRepository.provinciasOrdenadasPorCantidadHechos(coleccion_id, PageRequest.of(0, 1))
                 .getContent().stream()
                 .findFirst().orElse(null);
