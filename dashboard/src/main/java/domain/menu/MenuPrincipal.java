@@ -1,6 +1,7 @@
 package domain.menu;
 
-public class MenuPrincipal extends Menu{
+
+public class MenuPrincipal extends MenuAbstracto {
 
     @Override
     void mostrarTextoOpciones() {
@@ -8,6 +9,7 @@ public class MenuPrincipal extends Menu{
         System.out.println("1. Menu API publica");
         System.out.println("2. Menu API administrativa");
         System.out.println("3. Menu fuente dinámica");
+        System.out.println("4. Menu estadisticas");
     }
 
     @Override
@@ -23,6 +25,9 @@ public class MenuPrincipal extends Menu{
                 break;
             case 3:
                 new MenuFuenteDinamica().abrirMenu();
+                break;
+            case 4:
+                new MenuEstadisticas().abrirMenu();
                 break;
         }
         return false;

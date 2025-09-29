@@ -9,6 +9,7 @@ import domain.dashboardDTOs.solicitudes.SolicitudDTO;
 import domain.dashboardDTOs.usuarios.ContribuyenteDTO;
 import domain.dashboardDTOs.usuarios.IdentidadDTO;
 import domain.dashboardDTOs.usuarios.IdentidadPatchDTO;
+import domain.dtos.estadisticasDTOs.*;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
@@ -75,5 +76,48 @@ public class ApiClient {
         String url = conexion.getUri() + "/apiPublica/solicitudes";
         restTemplate.postForObject(url, solicitudDTO, void.class);
     }
+
+
+    public static void postActualizarEstadisticas(Conexion conexion) {
+        String url = conexion.getUri() + "/estadisticas/actualizar";
+        restTemplate.postForObject(url, null, Void.class);
+    }
+
+    public static List<ProvinciaConMasHechosDeColeccionDTO> getProvinciasConMasHechosDeColeccion(String idColeccion, int page, int limit, Conexion conexion) {
+        String url = String.format("%s/estadisticas/provinciasConMasHechosDeColeccion?idColeccion=%s&page=%d&limit=%d", conexion.getUri(), idColeccion, page, limit);
+        ProvinciaConMasHechosDeColeccionDTO[] response = restTemplate.getForObject(url, ProvinciaConMasHechosDeColeccionDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    public static List<CategoriaConMasHechosDTO> getCategoriasConMasHechos(int page, int limit, Conexion conexion) {
+        String url = String.format("%s/estadisticas/categoriasConMasHechos?page=%d&limit=%d", conexion.getUri(), page, limit);
+        CategoriaConMasHechosDTO[] response = restTemplate.getForObject(url, CategoriaConMasHechosDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    public static List<ProvinciaConMasHechosDTO> getProvinciasConMasHechosDeCategoria(String nombreCategoria, int page, int limit, Conexion conexion) {
+        String url = String.format("%s/estadisticas/provinciasConMasHechosDeCategoria?nombreCategoria=%s&page=%d&limit=%d", conexion.getUri(), nombreCategoria, page, limit);
+        ProvinciaConMasHechosDTO[] response = restTemplate.getForObject(url, ProvinciaConMasHechosDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    public static List<HoraConMasHechosDeCategoriaDTO> getHoraConMasHechosDeCategoria(String nombreCategoria, int page, int limit, Conexion conexion) {
+        String url = String.format("%s/estadisticas/horaConMasHechosDeCategoria?nombreCategoria=%s&page=%d&limit=%d", conexion.getUri(), nombreCategoria, page, limit);
+        HoraConMasHechosDeCategoriaDTO[] response = restTemplate.getForObject(url, HoraConMasHechosDeCategoriaDTO[].class);
+        return Arrays.asList(response);
+    }
+
+    public static CantidadSolicitudesSpamDTO getSolicitudesDeEliminacionSpam(Conexion conexion) {
+        String url = conexion.getUri() + "/estadisticas/solicitudesDeEliminacionSpam";
+        return restTemplate.getForObject(url, CantidadSolicitudesSpamDTO.class);
+    }
+
+    public static List<ColeccionDisponibleDTO> getColeccionesDisponiblesDTO(Conexion conexion, int page, int limit) {
+        String url = String.format("%s/estadisticas/coleccionesDisponibles?&page=%d&limit=%d", conexion.getUri(), page, limit);
+        return Arrays.stream(restTemplate.getForObject(url, ColeccionDisponibleDTO[].class)).toList();
+    }
+
+
+
 
 }

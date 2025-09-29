@@ -2,7 +2,7 @@ package domain.menu;
 
 import java.util.Scanner;
 
-abstract class Menu{
+public abstract class MenuAbstracto {
     String textoAMostrar;
     public void abrirMenu(){
         boolean exit = false;

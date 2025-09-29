@@ -1,11 +1,11 @@
 package domain.menu;
 
-import domain.subMenu.apiPublica.SubMenuGetColecciones;
-import domain.subMenu.apiPublica.SubMenuGetHechosCurados;
-import domain.subMenu.apiPublica.SubMenuGetHechosIrrestrictos;
-import domain.subMenu.apiPublica.SubMenuPostSolicitud;
+import domain.menu.subMenu.apiPublica.SubMenuGetColecciones;
+import domain.menu.subMenu.apiPublica.SubMenuGetHechosCurados;
+import domain.menu.subMenu.apiPublica.SubMenuGetHechosIrrestrictos;
+import domain.menu.subMenu.apiPublica.SubMenuPostSolicitud;
 
-public class MenuApiPublica extends Menu{
+public class MenuApiPublica extends MenuAbstracto {
     @Override
     void mostrarTextoOpciones() {
         System.out.println("API Publica\nElija la opcion:");

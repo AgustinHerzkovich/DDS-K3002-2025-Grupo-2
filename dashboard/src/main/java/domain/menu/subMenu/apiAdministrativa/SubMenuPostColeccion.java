@@ -1,4 +1,4 @@
-package domain.subMenu.apiAdministrativa;
+package domain.menu.subMenu.apiAdministrativa;
 
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;

@@ -1,11 +1,11 @@
 package domain.menu;
 
-import domain.subMenu.fuenteDinamica.SubMenuEnviarPostFuenteDinamica;
-import domain.subMenu.fuenteDinamica.SubMenuPostIdentidad;
-import domain.subMenu.fuenteDinamica.SubMenuPostContribuyente;
-import domain.subMenu.fuenteDinamica.SubMenuPostHecho;
+import domain.menu.subMenu.fuenteDinamica.SubMenuEnviarPostFuenteDinamica;
+import domain.menu.subMenu.fuenteDinamica.SubMenuPostIdentidad;
+import domain.menu.subMenu.fuenteDinamica.SubMenuPostContribuyente;
+import domain.menu.subMenu.fuenteDinamica.SubMenuPostHecho;
 
-public class MenuFuenteDinamica extends Menu{
+public class MenuFuenteDinamica extends MenuAbstracto {
     @Override
     void mostrarTextoOpciones() {
         System.out.println("Elija la opcion:");

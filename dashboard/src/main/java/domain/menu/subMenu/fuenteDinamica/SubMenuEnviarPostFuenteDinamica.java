@@ -1,4 +1,4 @@
-package domain.subMenu.fuenteDinamica;
+package domain.menu.subMenu.fuenteDinamica;
 
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;

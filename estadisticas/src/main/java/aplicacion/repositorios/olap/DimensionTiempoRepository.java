@@ -14,7 +14,7 @@ public interface DimensionTiempoRepository extends JpaRepository<DimensionTiempo
     @Query(
             value = """
                         SELECT * FROM DimensionTiempo dt
-                        WHERE CONCAT_WS('|', dt.anio, dt.mes, dt.dia, dt.hora) IN (:codigos)""",
+                        WHERE CONCAT_WS('|', dt.anio, dt.hora) IN (:codigos)""",
             nativeQuery = true
     )
     List<DimensionTiempo> findByTiempo(Set<String> codigos);
