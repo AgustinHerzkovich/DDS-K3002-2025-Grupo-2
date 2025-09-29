@@ -1,8 +1,8 @@
 package domain.menu;
 
-import domain.subMenu.apiAdministrativa.SubMenuPostColeccion;
+import domain.menu.subMenu.apiAdministrativa.SubMenuPostColeccion;
 
-public class MenuApiAdministrativa extends Menu{
+public class MenuApiAdministrativa extends MenuAbstracto {
     @Override
     void mostrarTextoOpciones() {
         System.out.println("API Administrativa\nElija una opcion:");

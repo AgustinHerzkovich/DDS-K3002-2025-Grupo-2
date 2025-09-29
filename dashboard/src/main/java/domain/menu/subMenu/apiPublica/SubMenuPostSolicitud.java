@@ -1,4 +1,4 @@
-package domain.subMenu.apiPublica;
+package domain.menu.subMenu.apiPublica;
 
 import domain.dashboardDTOs.usuarios.ContribuyenteSolicitudDTO;
 import domain.dashboardDTOs.solicitudes.SolicitudDTO;

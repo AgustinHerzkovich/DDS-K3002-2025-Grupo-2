@@ -61,6 +61,11 @@ public class CargaDeHechosService {
             q+=hechosAImportar.size();
             c++;
         } while (hechosAImportar.size() == tamañoPagina);
+        if(fechaConfiguracion != null)
+            fechaConfiguracion.setValor(LocalDateTime.now().toString());
+        else
+            fechaConfiguracion = new ConfiguracionGlobal("ultima_actualizacion_hechos", LocalDateTime.now().toString());
+        configuracionGlobalRepository.save(fechaConfiguracion);
         long fin = System.nanoTime();
         System.out.printf("Tiempo total: %3d ms - %d hechos - %d paginas - %1.2f hechos/segundo \n" , (fin-inicio)/1_000_000, q, c, q / (double) ( (fin-inicio) / 1_000_000_000 ) );
     /* Pruebas con 35000 hechos
