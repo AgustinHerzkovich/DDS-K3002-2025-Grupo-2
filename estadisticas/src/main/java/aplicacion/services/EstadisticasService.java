@@ -1,10 +1,8 @@
 package aplicacion.services;
 
-import aplicacion.dtos.CantidadSolicitudesSpamDTO;
-import aplicacion.dtos.CategoriaConMasHechosDTO;
-import aplicacion.dtos.HoraConMasHechosDeCategoriaDTO;
-import aplicacion.dtos.ProvinciaConMasHechosDTO;
-import aplicacion.dtos.ProvinciaConMasHechosDeColeccionDTO;
+import aplicacion.domain.dimensiones.DimensionColeccion;
+import aplicacion.dtos.*;
+import aplicacion.repositorios.olap.DimensionColeccionRepository;
 import aplicacion.repositorios.olap.FactColeccionRepository;
 import aplicacion.repositorios.olap.FactHechoRepository;
 import aplicacion.repositorios.olap.FactSolicitudRepository;
@@ -19,11 +17,13 @@ public class EstadisticasService {
     private FactHechoRepository factHechoRepository;
     private FactColeccionRepository factColeccionRepository;
     private FactSolicitudRepository factSolicitudRepository;
+    private DimensionColeccionRepository dimensionColeccionRepository;
 
-    public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository) {
+    public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository, DimensionColeccionRepository dimensionColeccionRepository) {
         this.factSolicitudRepository = factSolicitudRepository;
         this.factHechoRepository = factHechoRepository;
         this.factColeccionRepository = factColeccionRepository;
+        this.dimensionColeccionRepository = dimensionColeccionRepository;
     }
 
     public List<ProvinciaConMasHechosDeColeccionDTO> obtenerProvinciasConMasHechosDeUnaColeccion(String coleccion_id, Integer page, Integer size) {
@@ -50,5 +50,9 @@ public class EstadisticasService {
         Long solicitudes_spam = factSolicitudRepository.obtenerCantidadSolicitudesSpam();
         Long solicitudes_totales = factSolicitudRepository.obtenerCantidadSolicitudesTotal();
         return new CantidadSolicitudesSpamDTO(solicitudes_spam, solicitudes_totales);
+    }
+
+    public List<ColeccionDisponibleDTO> obtenerColeccionesDisponibles(int page, int limit) {
+        return dimensionColeccionRepository.findAll(PageRequest.of(page, limit)).getContent().stream().map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion())).toList();
     }
 }
