@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EstadisticasService {
@@ -49,10 +50,15 @@ public class EstadisticasService {
     public CantidadSolicitudesSpamDTO obtenerCantidadSolicitudSpam() {
         Long solicitudes_spam = factSolicitudRepository.obtenerCantidadSolicitudesSpam();
         Long solicitudes_totales = factSolicitudRepository.obtenerCantidadSolicitudesTotal();
+        if (solicitudes_spam == null) solicitudes_spam = 0L;
+        if (solicitudes_totales == null) solicitudes_totales = 0L;
         return new CantidadSolicitudesSpamDTO(solicitudes_spam, solicitudes_totales);
     }
 
     public List<ColeccionDisponibleDTO> obtenerColeccionesDisponibles(int page, int limit) {
         return dimensionColeccionRepository.findAll(PageRequest.of(page, limit)).getContent().stream().map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion())).toList();
+    }
+    public List<String> obtenerTodasColeccionesDisponiblesIds() {
+        return dimensionColeccionRepository.findAll().stream().map(DimensionColeccion::getIdColeccionAgregador).toList();
     }
 }

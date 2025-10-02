@@ -4,9 +4,13 @@ import aplicacion.dtos.*;
 //import aplicacion.services.EstadisticasService;
 import aplicacion.services.EstadisticasService;
 import aplicacion.services.scheduler.ActualizacionEstadisticasScheduler;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import aplicacion.utils.CSVConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,11 +37,28 @@ public class EstadisticasController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/provinciasConMasHechosDeColeccion")
-    public ResponseEntity<List<ProvinciaConMasHechosDeColeccionDTO>> provinciasDeColeccion(@RequestParam("idColeccion") String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit) {
-        if(isPaginaYLimiteInvalid(page, limit))
+    @GetMapping(value = "/provinciasConMasHechosDeColeccion", produces = { MediaType.APPLICATION_JSON_VALUE, "text/csv" })
+    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(value = "idColeccion", required = false) String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit, @RequestHeader(HttpHeaders.ACCEPT) String accept) throws Exception {
+        if(isPaginaYLimiteInvalid(page, limit)) {
+            System.out.println("Pagina o limite invalidos");
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(estadisticasService.obtenerProvinciasConMasHechosDeUnaColeccion(idColeccion, page, limit));
+        }
+        List<ProvinciaConMasHechosDeColeccionDTO> dtos = new ArrayList<>();
+
+        if (idColeccion == null) {
+            List<String> coleccionesIds = estadisticasService.obtenerTodasColeccionesDisponiblesIds();
+            for (String coleccionId : coleccionesIds) {
+                dtos.addAll(estadisticasService.obtenerProvinciasConMasHechosDeUnaColeccion(coleccionId, page, limit));
+            }
+        }else
+            dtos.addAll(estadisticasService.obtenerProvinciasConMasHechosDeUnaColeccion(idColeccion, page, limit));
+
+        if(accept.contains("text/csv")) {
+            String csvData = CSVConverter.convert(dtos);
+            return ResponseEntity.status(200).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=provinciaConMasHechosDeColeccion.csv")
+                    .body(csvData);
+        }
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/categoriasConMasHechos")
@@ -76,5 +97,4 @@ public class EstadisticasController {
     public boolean isPaginaYLimiteInvalid(Integer page, Integer limit){
         return !(page >= 0 && limit > 0);
     }
-
 }
