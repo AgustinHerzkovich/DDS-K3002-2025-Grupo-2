@@ -16,7 +16,7 @@ import java.util.List;
 public interface FactColeccionRepository extends JpaRepository<FactColeccion, FactColeccionId> {
     @Query("""
     SELECT new aplicacion.dtos.ProvinciaConMasHechosDeColeccionDTO(
-        c.dimensionUbicacion.id_ubicacion, c.dimensionUbicacion.provincia, c.dimensionUbicacion.pais, SUM(c.cantidadHechos)
+        c.dimensionUbicacion.id_ubicacion, c.dimensionUbicacion.provincia, c.dimensionUbicacion.pais, SUM(c.cantidadHechos), :coleccionId
     )
     FROM FactColeccion c
     WHERE c.dimensionColeccion.idColeccionAgregador = :coleccionId

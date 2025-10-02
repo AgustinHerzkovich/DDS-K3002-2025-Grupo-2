@@ -4,7 +4,7 @@ import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.id.FactHechoId;
 import aplicacion.dtos.CategoriaConMasHechosDTO;
 import aplicacion.dtos.HoraConMasHechosDeCategoriaDTO;
-import aplicacion.dtos.ProvinciaConMasHechosDTO;
+import aplicacion.dtos.ProvinciaConMasHechosDeCategoriaDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,25 +26,25 @@ public interface FactHechoRepository extends JpaRepository<FactHecho, FactHechoI
     Page<CategoriaConMasHechosDTO> categoriaConMasHechos(Pageable pageable);
 
     @Query(value = """
-                SELECT new aplicacion.dtos.ProvinciaConMasHechosDTO(
+                SELECT new aplicacion.dtos.ProvinciaConMasHechosDeCategoriaDTO(
                     h.dimensionUbicacion.id_ubicacion, h.dimensionUbicacion.provincia, h.dimensionUbicacion.pais, SUM(h.cantidadDeHechos)
                 )
                 FROM FactHecho h
                 GROUP BY h.dimensionUbicacion
                 ORDER BY SUM(h.cantidadDeHechos) DESC
                 """)
-    Page<ProvinciaConMasHechosDTO> provinciaConMasHechos(Pageable pageable);
+    Page<ProvinciaConMasHechosDeCategoriaDTO> provinciaConMasHechos(Pageable pageable);
 
     @Query(value = """
-                SELECT new aplicacion.dtos.ProvinciaConMasHechosDTO(
-                    h.dimensionUbicacion.id_ubicacion, h.dimensionUbicacion.provincia, h.dimensionUbicacion.pais, SUM(h.cantidadDeHechos)
+                SELECT new aplicacion.dtos.ProvinciaConMasHechosDeCategoriaDTO(
+                    h.dimensionUbicacion.id_ubicacion, h.dimensionUbicacion.provincia, h.dimensionUbicacion.pais, SUM(h.cantidadDeHechos), :categoria
                 )
                 FROM FactHecho h
                 WHERE h.dimensionCategoria.nombre = :categoria
                 GROUP BY h.dimensionUbicacion
                 ORDER BY SUM(h.cantidadDeHechos) DESC
                 """)
-    Page<ProvinciaConMasHechosDTO> provinciaConMasHechosDeCategoria(@Param("categoria") String categoria, Pageable pageable);
+    Page<ProvinciaConMasHechosDeCategoriaDTO> provinciaConMasHechosDeCategoria(@Param("categoria") String categoria, Pageable pageable);
 
     @Query(
             value = """
