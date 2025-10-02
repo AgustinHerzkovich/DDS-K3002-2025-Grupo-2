@@ -1,30 +1,28 @@
 package aplicacion.services;
 
+import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
 import aplicacion.dtos.*;
-import aplicacion.repositorios.olap.DimensionColeccionRepository;
-import aplicacion.repositorios.olap.FactColeccionRepository;
-import aplicacion.repositorios.olap.FactHechoRepository;
-import aplicacion.repositorios.olap.FactSolicitudRepository;
-import aplicacion.utils.Provincia;
+import aplicacion.repositorios.olap.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EstadisticasService {
+    private final DimensionCategoriaRepository dimensionCategoriaRepository;
     private FactHechoRepository factHechoRepository;
     private FactColeccionRepository factColeccionRepository;
     private FactSolicitudRepository factSolicitudRepository;
     private DimensionColeccionRepository dimensionColeccionRepository;
 
-    public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository, DimensionColeccionRepository dimensionColeccionRepository) {
+    public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository, DimensionColeccionRepository dimensionColeccionRepository, DimensionCategoriaRepository dimensionCategoriaRepository) {
         this.factSolicitudRepository = factSolicitudRepository;
         this.factHechoRepository = factHechoRepository;
         this.factColeccionRepository = factColeccionRepository;
         this.dimensionColeccionRepository = dimensionColeccionRepository;
+        this.dimensionCategoriaRepository = dimensionCategoriaRepository;
     }
 
     public List<ProvinciaConMasHechosDeColeccionDTO> obtenerProvinciasConMasHechosDeUnaColeccion(String coleccion_id, Integer page, Integer size) {
@@ -37,7 +35,7 @@ public class EstadisticasService {
                 .getContent();
     }
 
-    public List<ProvinciaConMasHechosDTO> obtenerProvinciaConMasHechosPorCategoria(String nombreCategoria, Integer page, Integer size) {
+    public List<ProvinciaConMasHechosDeCategoriaDTO> obtenerProvinciaConMasHechosPorCategoria(String nombreCategoria, Integer page, Integer size) {
         return factHechoRepository.provinciaConMasHechosDeCategoria(nombreCategoria, PageRequest.of(page, size))
                 .getContent();
     }
@@ -58,7 +56,11 @@ public class EstadisticasService {
     public List<ColeccionDisponibleDTO> obtenerColeccionesDisponibles(int page, int limit) {
         return dimensionColeccionRepository.findAll(PageRequest.of(page, limit)).getContent().stream().map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion())).toList();
     }
+
     public List<String> obtenerTodasColeccionesDisponiblesIds() {
         return dimensionColeccionRepository.findAll().stream().map(DimensionColeccion::getIdColeccionAgregador).toList();
+    }
+    public List<String> obtenerTodasCategoriasDisponiblesIds() {
+        return dimensionCategoriaRepository.findAll().stream().map(DimensionCategoria::getNombre).toList();
     }
 }

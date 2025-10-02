@@ -13,7 +13,8 @@ public class ProvinciaConMasHechosDTO {
     private String nombreProvincia;
     private String pais;
     private Long cantidadHechos;
+    private String categoria;
     public String toString(){
-        return String.format("%s  -  %s  -  %d hechos", nombreProvincia, pais, cantidadHechos);
+        return String.format("%s - %s  -  %s  -  %d hechos", categoria, nombreProvincia, pais, cantidadHechos);
     }
 }

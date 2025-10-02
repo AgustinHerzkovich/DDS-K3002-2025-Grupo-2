@@ -13,6 +13,6 @@ public class HoraConMasHechosDeCategoriaDTO {
     private String categoria;
 
     public String toString(){
-        return String.format("%d:00   -   %d", horaConMasHechosDeCategoria, cantidadDeHechos);
+        return String.format("%s  -  %d:00   -   %d",categoria , horaConMasHechosDeCategoria, cantidadDeHechos);
     }
 }

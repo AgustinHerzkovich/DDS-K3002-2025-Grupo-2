@@ -14,8 +14,8 @@ public class ProvinciaConMasHechosDeColeccionDTO {
     private String nombre_provincia;
     private String nombre_pais;
     private Long cantidad_hechos;
-
+    private String coleccion_id;
     public String toString(){
-        return String.format("%s   -   %s   -   %d", nombre_provincia, nombre_pais, cantidad_hechos);
+        return String.format("%s  -  %s   -   %s   -   %d", coleccion_id, nombre_provincia, nombre_pais, cantidad_hechos);
     }
 }
