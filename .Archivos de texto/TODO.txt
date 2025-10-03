@@ -13,3 +13,6 @@ patron de integracion agregador -> que agregador no exponga datos, solo que  arg
 
 Testear endpoints y algoritmos
 
+A futuro -> dividir el componente estadisticas en 2 componentes:
+Uno que cargue la base de datos
+Otro que consuma la base de datos
