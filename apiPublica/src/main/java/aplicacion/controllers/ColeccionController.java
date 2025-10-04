@@ -24,7 +24,7 @@ public class ColeccionController {
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public ResponseEntity<Object> mostrarHechosIrrestrictos(
             @PathVariable String id,
-            @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+            @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
             @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
@@ -34,14 +34,14 @@ public class ColeccionController {
     )
     {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
-        UrlHelper.appendAllQueryParams(url, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
+        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
     public ResponseEntity<Object> mostrarHechosCurados(
             @PathVariable String id,
-            @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+            @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
             @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
@@ -50,7 +50,7 @@ public class ColeccionController {
             @RequestParam(name = "longitud", required = false) Double longitud
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
-        UrlHelper.appendAllQueryParams(url, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
+        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 }

@@ -93,34 +93,46 @@ public class ColeccionService {
     }
 
     public List<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
-                                                                      String categoria_buscada,
+                                                                      String categoria,
                                                                       LocalDateTime fechaReporteDesde,
                                                                       LocalDateTime fechaReporteHasta,
                                                                       LocalDateTime fechaAcontecimientoDesde,
                                                                       LocalDateTime fechaAcontecimientoHasta,
                                                                       Double latitud,
-                                                                      Double longitud) {
+                                                                      Double longitud,
+                                                                      String textoLibre) {
 
-        List<Hecho> hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
+        List<Hecho> hechosIrrestrictos;
+        if (textoLibre != null && !textoLibre.isBlank()) {
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, textoLibre);
+        } else{
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
+        }
 
-        return filtrarHechosQueryParam(hechosIrrestrictos, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return filtrarHechosQueryParam(hechosIrrestrictos, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public List<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
-                                                                    String categoria_buscada,
+                                                                    String categoria,
                                                                     LocalDateTime fechaReporteDesde,
                                                                     LocalDateTime fechaReporteHasta,
                                                                     LocalDateTime fechaAcontecimientoDesde,
                                                                     LocalDateTime fechaAcontecimientoHasta,
                                                                     Double latitud,
-                                                                    Double longitud) {
-        List<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
+                                                                    Double longitud,
+                                                                    String textoLibre) {
+        List<Hecho> hechosCurados;
+        if (textoLibre != null && !textoLibre.isBlank()) {
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, textoLibre);
+        } else{
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
+        }
 
-        return filtrarHechosQueryParam(hechosCurados, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return filtrarHechosQueryParam(hechosCurados, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
-                                                        String categoria_buscada,
+                                                        String categoria,
                                                         LocalDateTime fechaReporteDesde,
                                                         LocalDateTime fechaReporteHasta,
                                                         LocalDateTime fechaAcontecimientoDesde,
@@ -128,7 +140,7 @@ public class ColeccionService {
                                                         Double latitud,
                                                         Double longitud) {
         return hechos.stream()
-                .filter(h -> categoria_buscada == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria_buscada))
+                .filter(h -> categoria == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria))
                 .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
                 .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
                 .filter(h -> fechaAcontecimientoDesde == null || h.getFechaAcontecimiento().isAfter(fechaAcontecimientoDesde))
