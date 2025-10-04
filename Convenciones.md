@@ -4,7 +4,7 @@
   Ejemplo: `Persona`, `FacturaElectronica`
 
 - **Nombres de los atributos**: `camelCase`  
-  Ejemplo: `nombre_completo`, `fecha_nacimiento`
+  Ejemplo: `nombreCompleto`, `fechaNacimiento`
 
 - **Nombres de los métodos**: `camelCase`  
   Ejemplo: `calcularEdad()`, `obtenerNombreCompleto()`
