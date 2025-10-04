@@ -51,6 +51,6 @@ public class FactColeccion {
 
     public static FactColeccion fromHechoYColeccion(Hecho hecho, DimensionColeccion dimensionColeccion){
         Provincia prov = IdentificadorDeUbicacion.getInstance().identificar(hecho.getUbicacion().getLatitud(), hecho.getUbicacion().getLongitud());
-        return new FactColeccion(dimensionColeccion, new DimensionCategoria(hecho.getCategoria().getNombre()), new DimensionUbicacion(prov.getPais(), prov.getProvincia()));
+        return new FactColeccion(dimensionColeccion, new DimensionCategoria(hecho.getCategoria().getNombre()), new DimensionUbicacion(prov.getProvincia(), prov.getPais()));
     }
 }
