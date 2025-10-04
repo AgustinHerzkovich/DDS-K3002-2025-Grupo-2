@@ -55,28 +55,30 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public List<HechoOutputDto> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
-                                                          @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+                                                          @RequestParam(name = "categoria", required = false) String categoria,
                                                           @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
                                                           @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
                                                           @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
-                                                          @RequestParam(name = "longitud", required = false) Double longitud){
+                                                          @RequestParam(name = "longitud", required = false) Double longitud,
+                                                          @RequestParam(name = "search", required = false) String textoLibre){
 
-        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
     public List<HechoOutputDto> mostrarHechosCurados(@PathVariable("id") String idColeccion,
-                                                     @RequestParam(name = "categoria_buscada", required = false) String categoria_buscada,
+                                                     @RequestParam(name = "categoria", required = false) String categoria,
                                                      @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
                                                      @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
                                                      @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
-                                                     @RequestParam(name = "longitud", required = false) Double longitud){
+                                                     @RequestParam(name = "longitud", required = false) Double longitud,
+                                                     @RequestParam(name = "search", required = false) String textoLibre){
 
-        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria_buscada, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre);
     }
 
     // Operaciones UPDATE sobre Colecciones

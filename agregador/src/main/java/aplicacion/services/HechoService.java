@@ -76,8 +76,16 @@ public class HechoService {
         return repositorioDeHechos.findByCollectionId(idColeccion);
     }
 
+    public List<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion, String textoLibre) {
+        return repositorioDeHechos.findByCollectionIdAndTextoLibre(idColeccion, textoLibre);
+    }
+
     public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findCuredByCollectionId(idColeccion);
+    }
+
+    public List<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion, String textoLibre) {
+        return repositorioDeHechos.findCuredByCollectionIdAndTextoLibre(idColeccion, textoLibre);
     }
 
     public void guardarHecho(Hecho hecho) {
