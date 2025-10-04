@@ -22,6 +22,14 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     """)
     List<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion);
 
+    @Query(value = "SELECT h.* FROM hecho h " +
+            "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
+            "WHERE hc.coleccion_id = :idColeccion " +
+            "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
+            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            nativeQuery = true)
+    List<Hecho> findByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre);
+
     @Query("""
         SELECT h
         FROM Hecho h
@@ -29,6 +37,15 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
         WHERE hc.coleccion.id = :idColeccion AND hc.consensuado = true
     """)
     List<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion);
+
+    @Query(value = "SELECT h.* FROM hecho h " +
+            "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
+            "WHERE hc.coleccion_id = :idColeccion " +
+            "AND hc.consensuado = true " +
+            "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
+            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            nativeQuery = true)
+    List<Hecho> findCuredByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre);
 
     @Query("""
         SELECT h
