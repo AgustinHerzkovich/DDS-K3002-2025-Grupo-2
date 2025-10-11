@@ -9,15 +9,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>fuenteEstatica</module>
-        <module>fuenteDinamica</module>
-        <module>fuenteProxy</module>
-        <module>agregador</module>
-        <module>estadisticas</module>
-        <module>utils</module>
-        <module>apiPublica</module>
-        <module>apiAdministrativa</module>
-        <module>dashboard</module>
+        <module>frontend</module>
+        <module>backend</module>
     </modules>
 
     <properties>

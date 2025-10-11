@@ -5,9 +5,22 @@
     <file url="file://$PROJECT_DIR$/agregador/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apiAdministrativa/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apiPublica/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/agregador/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/apiAdministrativa/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/apiPublica/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/dashboard/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/estadisticas/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/fuenteDinamica/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/fuenteEstatica/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/fuenteProxy/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/utils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dashboard/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/estadisticas/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/estadisticas/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/frontend/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/frontend/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fuenteDinamica/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fuenteDinamica/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fuenteEstatica/src/main/java" charset="UTF-8" />
