@@ -30,11 +30,12 @@ public class ColeccionController {
             @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
-            @RequestParam(name = "longitud", required = false) Double longitud
+            @RequestParam(name = "longitud", required = false) Double longitud,
+            @RequestParam(name = "search", required = false) String textoLibre
     )
     {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
-        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
+        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
@@ -47,10 +48,11 @@ public class ColeccionController {
             @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
-            @RequestParam(name = "longitud", required = false) Double longitud
+            @RequestParam(name = "longitud", required = false) Double longitud,
+            @RequestParam(name = "search", required = false) String textoLibre
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
-        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null);
+        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 }

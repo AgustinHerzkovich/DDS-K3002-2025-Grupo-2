@@ -7,6 +7,7 @@ import aplicacion.services.schedulers.CargarHechosScheduler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,14 +22,21 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDto> obtenerHechos(@RequestParam(name = "search", required = false) String textoBuscado) {
+    public List<HechoOutputDto> obtenerHechos(@RequestParam(name = "categoria", required = false) String categoria,
+                                               @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
+                                               @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
+                                               @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
+                                               @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
+                                               @RequestParam(name = "latitud", required = false) Double latitud,
+                                               @RequestParam(name = "longitud", required = false) Double longitud,
+                                               @RequestParam(name = "search", required = false) String textoBuscado) {
         List<HechoOutputDto> hechos;
         if (textoBuscado == null) {
-            hechos = hechoService.obtenerHechosAsDTO();
+            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
         }
         else
         {
-            hechos = hechoService.obtenerHechosPorTextoLibreDto(textoBuscado);
+            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
         }
         return hechos;
     }
