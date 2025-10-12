@@ -1,13 +1,11 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import aplicacion.helpers.UrlHelper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apiPublica")
@@ -23,5 +21,21 @@ public class HechoController {
     @PostMapping("/hechos")
     public ResponseEntity<Object> reportarHecho(@RequestBody Object body) {
         return solicitudesHttp.post(urlBaseAgregador + "/hechos", body, Object.class);
+    }
+
+    @GetMapping("/hechos")
+    public ResponseEntity<Object> obtenerHechos(
+            @RequestParam(name = "categoria", required = false) String categoria,
+            @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
+            @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
+            @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
+            @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
+            @RequestParam(name = "latitud", required = false) Double latitud,
+            @RequestParam(name = "longitud", required = false) Double longitud,
+            @RequestParam(name = "search", required = false) String textoLibre
+    ) {
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos");
+        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
+        return solicitudesHttp.get(url.toString(), Object.class);
     }
 }

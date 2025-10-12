@@ -15,7 +15,9 @@ import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,16 +44,29 @@ public class HechoService {
         return repositorioDeHechos.findAll();
     }
 
-    public List<HechoOutputDto> obtenerHechosPorTextoLibreDto(String textoLibre){
-        return obtenerHechosPorTextoLibre(textoLibre).stream().map(hechoOutputMapper::map).toList();
+    public List<HechoOutputDto> obtenerHechosPorTextoLibreDto(String categoria,
+                                                              LocalDateTime fechaReporteDesde,
+                                                              LocalDateTime fechaReporteHasta,
+                                                              LocalDateTime fechaAcontecimientoDesde,
+                                                              LocalDateTime fechaAcontecimientoHasta,
+                                                              Double latitud,
+                                                              Double longitud,
+                                                              String textoLibre){
+        return filtrarHechosQueryParam(obtenerHechosPorTextoLibre(textoLibre), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public List<Hecho> obtenerHechosPorTextoLibre(String textoLibre) {
         return repositorioDeHechos.findByTextoLibre(textoLibre);
     }
 
-    public List<HechoOutputDto> obtenerHechosAsDTO() {
-        return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
+    public List<HechoOutputDto> obtenerHechosAsDTO(String categoria,
+                                                  LocalDateTime fechaReporteDesde,
+                                                  LocalDateTime fechaReporteHasta,
+                                                  LocalDateTime fechaAcontecimientoDesde,
+                                                  LocalDateTime fechaAcontecimientoHasta,
+                                                  Double latitud,
+                                                  Double longitud) {
+        return filtrarHechosQueryParam(obtenerHechos(), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
@@ -139,5 +154,25 @@ public class HechoService {
             }
         }
         return hechosDuplicados;
+    }
+
+    public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
+                                                        String categoria,
+                                                        LocalDateTime fechaReporteDesde,
+                                                        LocalDateTime fechaReporteHasta,
+                                                        LocalDateTime fechaAcontecimientoDesde,
+                                                        LocalDateTime fechaAcontecimientoHasta,
+                                                        Double latitud,
+                                                        Double longitud) {
+        return hechos.stream()
+                .filter(h -> categoria == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria))
+                .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
+                .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
+                .filter(h -> fechaAcontecimientoDesde == null || h.getFechaAcontecimiento().isAfter(fechaAcontecimientoDesde))
+                .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
+                .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
+                .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
+                .map(hechoOutputMapper::map)
+                .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
     }
 }

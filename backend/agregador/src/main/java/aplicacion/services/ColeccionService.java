@@ -109,7 +109,7 @@ public class ColeccionService {
             hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
         }
 
-        return filtrarHechosQueryParam(hechosIrrestrictos, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return hechoService.filtrarHechosQueryParam(hechosIrrestrictos, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public List<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
@@ -128,27 +128,7 @@ public class ColeccionService {
             hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
         }
 
-        return filtrarHechosQueryParam(hechosCurados, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
-    }
-
-    public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
-                                                        String categoria,
-                                                        LocalDateTime fechaReporteDesde,
-                                                        LocalDateTime fechaReporteHasta,
-                                                        LocalDateTime fechaAcontecimientoDesde,
-                                                        LocalDateTime fechaAcontecimientoHasta,
-                                                        Double latitud,
-                                                        Double longitud) {
-        return hechos.stream()
-                .filter(h -> categoria == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria))
-                .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
-                .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
-                .filter(h -> fechaAcontecimientoDesde == null || h.getFechaAcontecimiento().isAfter(fechaAcontecimientoDesde))
-                .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
-                .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
-                .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
-                .map(hechoOutputMapper::map)
-                .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
+        return hechoService.filtrarHechosQueryParam(hechosCurados, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public void eliminarColeccion(String idColeccion) {
