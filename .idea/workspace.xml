@@ -5,439 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="empiezo con inputoutput dto en agregador">
-      <change afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/InterfazAgregadorAplicacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/java/aplicacion/InterfazFuenteDinamicaAplicacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/java/aplicacion/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/UIfuentedinamica.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/pasosUI.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/AgregadorAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/clasesIntermedias/HechoXColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/clasesIntermedias/HechoXColeccionId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/clienteMedidorTrafico/PrometheusClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/config/FullTextIndexInitializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/ColeccionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/ContribuyenteController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/HechoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/SolicitudController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsenso.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoAbsoluto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoIrrestricto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoMayoriaSimple.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/AlgoritmoConsensoMultiplesMenciones.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/algoritmos/TipoAlgoritmoConsenso.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/Coleccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/Fuente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteDinamica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteEstatica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/colecciones/fuentes/FuenteProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDeDistancia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDeFecha.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/criterios/CriterioDePertenencia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/Categoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/Etiqueta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/Hecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/Origen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/Ubicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/multimedias/Audio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/multimedias/Imagen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/multimedias/Multimedia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/hechos/multimedias/Video.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/DetectorDeSpam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/DetectorDeSpamPrueba.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitudAceptada.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitudPendiente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitudPrescripta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitudRechazada.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/EstadoSolicitudSpam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/solicitudes/SolicitudEliminacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/usuarios/Contribuyente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/domain/usuarios/IdentidadContribuyente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/AudioInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/CategoriaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/ColeccionInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/ContribuyenteInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/CriterioDeDistanciaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/CriterioDeFechaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/CriterioDePertenenciaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/FuenteDinamicaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/FuenteEstaticaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/FuenteInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/FuenteProxyInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/HechoInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/IdentidadContribuyenteInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/ImagenInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/MultimediaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/SolicitudInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/UbicacionInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/input/VideoInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/AudioInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/AudioOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CategoriaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CategoriaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ColeccionInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ColeccionOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ContribuyenteInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ContribuyenteOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDeDistanciaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDeDistanciaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDeFechaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDeFechaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDePertenenciaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/CriterioDePertenenciaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/EstadoSolicitudOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/FuenteDinamicaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/FuenteEstaticaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/FuenteInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/FuenteOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/FuenteProxyInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/HechoInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/HechoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/IdentidadContribuyenteInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/IdentidadContribuyenteOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ImagenInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/ImagenOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/MultimediaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/MultimediaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/SolicitudOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/UbicacionInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/UbicacionOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/VideoInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/mappers/VideoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/AudioOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/CategoriaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/ColeccionOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/ContribuyenteOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/CriterioDeDistanciaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/CriterioDeFechaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/CriterioDePertenenciaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/EstadoSolicitudOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/FuenteOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/HechoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/IdentidadContribuyenteOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/ImagenOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/MultimediaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/SolicitudOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/UbicacionOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/dto/output/VideoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/CategoriaNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/ColeccionNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/EtiquetaNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/FuenteNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/HechoNoEncontradoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/MotivoSolicitudException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/excepciones/UbicacionNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeCategorias.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeColecciones.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeContribuyentes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeEtiquetas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeFuentes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeHechosXColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/repositorios/RepositorioDeSolicitudes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/CategoriaService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/ColeccionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/ContribuyenteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/EtiquetaService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/FuenteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/HechoService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/SolicitudService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/depurador/DepuradorDeHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/NingunTerminoCumpleUmbralException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/NormalizadorDeHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/NormalizadorDeTerminos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/Termino.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/UmbralNoDefinidoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/normalizador/readme.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedulers/CalcularHorarioBajaCargaScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedulers/CargarHechosScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/services/schedulers/EjecutarAlgoritmoConsensoScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/utils/Md5Hasher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/java/aplicacion/utils/ProgressBar.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/agregador/src/main/test/TestNormalizador.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/ApiAdministrativaAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/AgregadorConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/ConfigService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/controllers/ColeccionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/java/aplicacion/controllers/SolicitudController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiAdministrativa/src/main/resources/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/ApiPublicaAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/AgregadorConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/ConfigService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/controllers/ColeccionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/controllers/HechoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/controllers/SolicitudController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/helpers/UrlHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/java/aplicacion/prometheus/PrometheusStarter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/chunks_head/000001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/queries.active" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/wal/00000000" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/data/wal/00000001" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiPublica/src/main/resources/prometheus.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/Dashboard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/apiClient/ApiClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/connectionManager/Conexion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/connectionManager/ConnectionManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/CantidadSolicitudesSpamDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/CategoriaConMasHechosDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/ColeccionDisponibleDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/HoraConMasHechosDeCategoriaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/ProvinciaConMasHechosDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/dtos/estadisticasDTOs/ProvinciaConMasHechosDeColeccionDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuAbstracto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuApiAdministrativa.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuApiPublica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuEstadisticas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuFuenteDinamica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/MenuPrincipal.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiAdministrativa/SubMenuPostColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiPublica/SubMenuGetColecciones.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiPublica/SubMenuGetHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiPublica/SubMenuGetHechosCurados.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiPublica/SubMenuGetHechosIrrestrictos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/apiPublica/SubMenuPostSolicitud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuActualizarEstadisticas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuCategoriasConMasHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuColeccionesDisponibles.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuHorasConMasHechosDeCategoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuObtenerSolicitudesSpam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuProvinciasConMasHechosDeCategoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/estadisticas/SubMenuProvinciasConMasHechosDeColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/fuenteDinamica/SubMenuEnviarPostFuenteDinamica.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/fuenteDinamica/SubMenuPostContribuyente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/fuenteDinamica/SubMenuPostHecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/java/domain/menu/subMenu/fuenteDinamica/SubMenuPostIdentidad.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/EstadisticasAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/AgregadorDataSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/AgregadorJpaProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/EstadisticasDataSourceConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/EstadisticasJpaProperties.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/JPAConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/controllers/EstadisticasController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/dimensiones/DimensionCategoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/dimensiones/DimensionColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/dimensiones/DimensionTiempo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/dimensiones/DimensionUbicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/facts/FactColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/facts/FactHecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/facts/FactSolicitud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/Categoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/Coleccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/Hecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/HechoXColeccion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/HechoXColeccionId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/Ubicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitud.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitudAceptada.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitudPendiente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitudPrescripta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitudRechazada.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/EstadoSolicitudSpam.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/hechosYSolicitudes/solicitudes/SolicitudEliminacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/id/FactColeccionId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/domain/id/FactHechoId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/CantidadSolicitudesSpamDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/CategoriaConMasHechosDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/ColeccionDisponibleDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/HoraConMasHechosDeCategoriaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/ProvinciaConMasHechosDeCategoriaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/dtos/ProvinciaConMasHechosDeColeccionDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/agregador/ColeccionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/agregador/HechoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/agregador/HechoXColeccionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/agregador/SolicitudRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/ConfiguracionGlobalRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/DimensionCategoriaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/DimensionColeccionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/DimensionTiempoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/DimensionUbicacionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/FactColeccionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/FactHechoRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/repositorios/olap/FactSolicitudRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/services/CargaDeColeccionesService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/services/CargaDeHechosService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/services/CargaDeSolicitudesService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/services/EstadisticasService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/services/scheduler/ActualizacionEstadisticasScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/CSVConverter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/ConfiguracionGlobal.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/IdentificadorDeUbicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/Provincia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/etl/AbstractFactProcessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/etl/ColeccionFactProcesor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/etl/DimensionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/java/aplicacion/utils/etl/HechoFactProcesor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/resources/comando conversion de archivos de geoJson" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/resources/provincias.rar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/src/main/tests/IdentificadorDeUbicacionTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/estadisticas/todos.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/FuenteDinamicaAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/controllers/ContribuyenteController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/controllers/HechoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Categoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/EstadoRevision.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Hecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Origen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/RevisionHecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/Ubicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Audio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Imagen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Multimedia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/hechos/multimedias/Video.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/usuarios/Contribuyente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/domain/usuarios/IdentidadContribuyente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/AudioInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/CambioEstadoRevisionInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/CategoriaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/ContribuyenteInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/HechoEdicionInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/HechoInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/IdentidadContribuyenteInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/ImagenInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/MultimediaInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/UbicacionInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/input/VideoInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/AudioInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/AudioOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/CategoriaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/CategoriaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/ContribuyenteInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/ContribuyenteOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/HechoInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/HechoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/HechoRevisadoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/IdentidadContribuyenteInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/IdentidadContribuyenteOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/ImagenInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/ImagenOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/MultimediaInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/MultimediaOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/UbicacionInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/UbicacionOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/VideoInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/mappers/VideoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/AudioOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/CategoriaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/ContribuyenteOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/HechoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/HechoRevisadoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/IdentidadContribuyenteOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/ImagenOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/MultimediaOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/UbicacionOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/dto/output/VideoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/excepciones/AnonimatoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/excepciones/ContribuyenteNoConfiguradoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/excepciones/HechoNoEncontradoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/excepciones/PlazoEdicionVencidoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/repositorios/RepositorioDeContribuyentes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/repositorios/RepositorioDeHechos.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/ContribuyenteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/java/aplicacion/services/HechoService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/FuenteEstaticaAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/ArchivoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/controllers/HechoController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Categoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Hecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Origen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/hechos/Ubicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/lectores/LectorArchivo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/domain/lectores/LectorCsv.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/dto/mappers/HechoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/dto/output/HechoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/ArchivoService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/java/aplicacion/services/AwsS3FileServerService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteEstatica/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/FuenteProxyAplicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/controllers/FuenteProxyController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/FuenteProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/fuentesDemo/Conexion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/fuentesDemo/ConexionPrueba.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/fuentesDemo/FuenteDemo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/fuentesDemo/HechoBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/fuentesProxy/fuentesMetamapa/FuenteMetamapa.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/Categoria.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/Etiqueta.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/Hecho.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/Origen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/Ubicacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/multimedias/Audio.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/multimedias/Imagen.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/multimedias/Multimedia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/domain/hechos/multimedias/Video.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/input/FuenteProxyInputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/mappers/FuenteProxyInputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/mappers/FuenteProxyOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/mappers/HechoOutputMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/output/FuenteProxyOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/dto/output/HechoOutputDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/repositorios/RepositorioDeFuentesProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/FuenteProxyService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/excepciones/FuenteNoEncontradaException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/java/aplicacion/services/schedulers/PedirHechosScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fuenteProxy/src/test/java/fuentesDemo/TestFuenteDemo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/agregador/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/agregador/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apiAdministrativa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apiAdministrativa/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/apiPublica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apiPublica/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/dashboard/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/dashboard/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/estadisticas/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/estadisticas/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/fuenteDinamica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteDinamica/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/fuenteEstatica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteEstatica/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/fuenteProxy/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteProxy/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/AlgoritmoConsensoDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/ColeccionBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/ColeccionDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/criterios/CriterioDeDistanciaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/criterios/CriterioDeFechaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/colecciones/criterios/CriterioDePertenenciaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/fuentes/FuenteDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/fuentes/FuenteDinamicaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/fuentes/FuenteIdDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/CategoriaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/ContenidoMultimediaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/HechoBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/HechoDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/HechoPostBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/HechoPostDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/hechos/UbicacionDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/solicitudes/SolicitudDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/usuarios/ContribuyenteDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/usuarios/ContribuyenteSolicitudDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/usuarios/IdentidadDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/dashboardDTOs/usuarios/IdentidadPatchDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/excepciones/IdInvalidoException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/peticiones/SolicitudesHttp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/src/main/java/domain/peticiones/Validaciones.java" beforeDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
     <list id="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" name="Changes by Lucas" comment="" />
-    <list id="ad98645f-8eb6-4672-a1f0-d095df565697" name="Changes by nicol" comment="">
-      <change beforePath="$PROJECT_DIR$/fuenteDinamica/src/main/resources/application.properties" beforeDir="false" />
-    </list>
+    <list id="ad98645f-8eb6-4672-a1f0-d095df565697" name="Changes by nicol" comment="" />
     <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -510,66 +102,67 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Agregador.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Dashboard.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FuenteEstatica.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TestFuenteDemo.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.TestClase.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.TestClase.prueba.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.testCargarArchivos.cargarArchivos.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.testCargarArchivos.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.testColeccionConsumeHechos.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.testColeccionConsumeHechos.verHechosFuente.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AgregadorAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ApiPublicaAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EstadisticasAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FuenteDinamicaAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FuenteEstaticaAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.FuenteProxyAplicacion.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/agregador/src/main/java/aplicacion/domain&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/backend/src/main/java/org/springframework/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Agregador.executor": "Run",
+    "Application.Dashboard.executor": "Run",
+    "Application.FuenteEstatica.executor": "Run",
+    "Application.TestFuenteDemo.executor": "Run",
+    "JUnit.TestClase.executor": "Run",
+    "JUnit.TestClase.prueba.executor": "Run",
+    "JUnit.testCargarArchivos.cargarArchivos.executor": "Run",
+    "JUnit.testCargarArchivos.executor": "Run",
+    "JUnit.testColeccionConsumeHechos.executor": "Run",
+    "JUnit.testColeccionConsumeHechos.verHechosFuente.executor": "Debug",
+    "JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica.executor": "Run",
+    "JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.AgregadorAplicacion.executor": "Run",
+    "Spring Boot.ApiPublicaAplicacion.executor": "Run",
+    "Spring Boot.EstadisticasAplicacion.executor": "Run",
+    "Spring Boot.FuenteDinamicaAplicacion.executor": "Run",
+    "Spring Boot.FuenteEstaticaAplicacion.executor": "Run",
+    "Spring Boot.FuenteProxyAplicacion.executor": "Run",
+    "Spring Boot.InterfazAgregadorAplicacion.executor": "Run",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/frontend/interfaz-agregador/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/user/Desktop/tp-diseño/DDS-K3002-2025-Grupo-2/frontend/interfaz-fuente-dinamica/src/main/java/org/springframework/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="aplicacion.services.excepciones" />
       <recent name="domain.connectionManager" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\frontend\interfaz-agregador\src\main\resources" />
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\agregador\src\main\java\aplicacion\domain" />
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\fuenteProxy\src\main\java\aplicacion\domain" />
       <recent name="C:\Users\jzorr\OneDrive\Documents\Julian\UTN\Diseño de Sistemas de Información\DDS-K3002-2025-Grupo-2\fuenteDinamica\src\main\java\domain" />
       <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\apiAdministrativa\src\main\resources" />
-      <recent name="C:\Users\nicol\Documents\tpDiseno\DDS-K3002-2025-Grupo-2\apiPublica\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\Desktop\tp-diseño\DDS-K3002-2025-Grupo-2\backend" />
@@ -582,17 +175,18 @@
       <recent name="domain" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="aplicacion.config" />
+      <recent name="aplicacion" />
       <recent name="domain.Colecciones" />
       <recent name="domain.colecciones" />
       <recent name="domain.controllers" />
-      <recent name="domain.config" />
-      <recent name="domain.repositorios" />
     </key>
   </component>
   <component name="RubyModuleManagerSettings">
     <option name="blackListedRootsPaths">
       <list>
         <option value="$PROJECT_DIR$" />
+        <option value="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica" />
       </list>
     </option>
   </component>
@@ -607,7 +201,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.FuenteDinamicaAplicacion">
+  <component name="RunManager" selected="Spring Boot.InterfazAgregadorAplicacion">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="fuenteDinamica" />
       <option name="ENV_FILES" value="" />
@@ -737,29 +331,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestFuenteDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="aplicacion.domain.fuentesDemo.TestFuenteDemo" />
-      <module name="fuenteProxy" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="aplicacion.domain.fuentesDemo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testCargarArchivos.cargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="fuenteEstatica" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testCargarArchivos" />
-      <option name="METHOD_NAME" value="cargarArchivos" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="testCargarArchivos.cargarArchivos" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="fuenteEstatica" />
       <option name="PACKAGE_NAME" value="" />
@@ -775,26 +346,6 @@
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
       <option name="METHOD_NAME" value="verHechosFuenteDinamica" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testColeccionConsumeHechos.verHechosFuenteDinamica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="otros" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
-      <option name="METHOD_NAME" value="verHechosFuenteDinamica" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="testColeccionConsumeHechos.verHechosFuenteEstatica" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="otros" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="testColeccionConsumeHechos" />
-      <option name="METHOD_NAME" value="verHechosFuenteEstatica" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -861,6 +412,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ApiAdministrativaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="apiAdministrativa" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.ApiAdministrativaAplicacion" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="aplicacion.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ApiPublicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="apiPublica" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.ApiPublicaAplicacion" />
@@ -877,6 +441,32 @@
     <configuration name="ApiPublicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="apiPublica" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.ApiPublicaAplicacion" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="aplicacion.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Dashboard" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="dashboard" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.Dashboard" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EstadisticasAplicacion (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="estadisticas" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.EstadisticasAplicacion" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="aplicacion.*" />
@@ -949,6 +539,19 @@
     <configuration name="FuenteProxyAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="fuenteProxy" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.FuenteProxyAplicacion" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InterfazAgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="interfaz-agregador" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.InterfazAgregadorAplicacion" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="aplicacion.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -1006,24 +609,24 @@
       <item itemvalue="Application.Agregador" />
       <item itemvalue="Application.FuenteEstatica" />
       <item itemvalue="Application.Dashboard" />
-      <item itemvalue="Application.TestFuenteDemo" />
-      <item itemvalue="JUnit.testCargarArchivos.cargarArchivos" />
-      <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica" />
-      <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica" />
       <item itemvalue="Spring Boot.AgregadorAplicacion" />
       <item itemvalue="Spring Boot.EstadisticasAplicacion" />
       <item itemvalue="Spring Boot.FuenteDinamicaAplicacion" />
       <item itemvalue="Spring Boot.FuenteEstaticaAplicacion" />
       <item itemvalue="Spring Boot.FuenteProxyAplicacion" />
+      <item itemvalue="Spring Boot.ApiAdministrativaAplicacion" />
+      <item itemvalue="Spring Boot.Dashboard" />
+      <item itemvalue="Spring Boot.EstadisticasAplicacion (1)" />
+      <item itemvalue="Spring Boot.InterfazAgregadorAplicacion" />
       <item itemvalue="Spring Boot.ApiPublicaAplicacion" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestFuenteDemo" />
+        <item itemvalue="Spring Boot.InterfazAgregadorAplicacion" />
+        <item itemvalue="Spring Boot.ApiAdministrativaAplicacion" />
+        <item itemvalue="Spring Boot.Dashboard" />
+        <item itemvalue="Spring Boot.EstadisticasAplicacion (1)" />
         <item itemvalue="Spring Boot.ApiPublicaAplicacion" />
-        <item itemvalue="Application.Dashboard" />
-        <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica" />
-        <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica" />
       </list>
     </recent_temporary>
   </component>
@@ -1102,7 +705,8 @@
       <workItem from="1759544499227" duration="2288000" />
       <workItem from="1760186784408" duration="3277000" />
       <workItem from="1760222137009" duration="722000" />
-      <workItem from="1760223084195" duration="300000" />
+      <workItem from="1760223084195" duration="2064000" />
+      <workItem from="1760225628160" duration="3905000" />
     </task>
     <task id="LOCAL-00001" summary="empiezo con inputoutput dto en agregador">
       <option name="closed" value="true" />
@@ -1167,6 +771,16 @@
           <url>file://$PROJECT_DIR$/backend/src/main/java/org/springframework/Main.java</url>
           <line>13</line>
           <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/org/springframework/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/java/org/springframework/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/otros/src/main/java/domain/colecciones/Coleccion.java</url>

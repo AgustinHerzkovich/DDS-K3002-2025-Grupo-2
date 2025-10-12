@@ -5,7 +5,7 @@
 
     <groupId>org.springframework</groupId>
     <artifactId>DDS-K3002-2025-Grupo-2</artifactId>
-    <version>0.1.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
