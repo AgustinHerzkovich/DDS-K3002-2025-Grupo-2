@@ -19,7 +19,7 @@ public class ContribuyenteController {
         this.urlBaseAgregador = configService.getUrl();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
-    
+
     @PostMapping("/contribuyentes")
     public ResponseEntity<Object> agregarContribuyente(@RequestBody Object body) {
         return solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, Object.class);
