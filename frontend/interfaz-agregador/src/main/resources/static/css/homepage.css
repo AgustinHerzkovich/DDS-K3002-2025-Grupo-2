@@ -1,17 +1,19 @@
-bodyHome {
+.bodyHome {
     font-family: 'Roboto Mono', monospace;
 }
 
-.imagen-background {
-    width: 100vw;
-    height: auto;   
-    display: block;     
-    opacity: 0.8;
-    min-width: 1000px;
-}
-
-.redText{
-    color: red;
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Ocupa toda la altura de la ventana del navegador */
+    background-image: url('../images/mapa-home-page.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 50px;
 }
 
 @keyframes spin-slow {
@@ -23,6 +25,68 @@ bodyHome {
       }
     }
 
+@keyframes spin-boat {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(3deg);
+    }
+    75% {
+        transform: rotate(-3deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 .spin-slow {
     animation: spin-slow 4s linear infinite;
+}
+
+/* Botón de Mapa Interactivo */
+.map-button {
+    background-color: black;
+    color: white;
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    animation:spin-boat 10s linear infinite;
+    transform: translateY(260px);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    z-index: 2;
+}
+
+/* Flecha deslizable */
+.scroll-arrow {
+    cursor: pointer;
+    animation: bounce 2s infinite; /* Efecto de rebote */
+    margin-bottom: 10px;
+}
+
+/* Cambia el color de la flecha a oscuro para mayor contraste */
+.scroll-arrow path {
+    stroke: #333; /* Color oscuro */
+}
+
+/* Animación de la flecha */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+/* Contenido inferior */
+.content {
+    height: 100vh;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
