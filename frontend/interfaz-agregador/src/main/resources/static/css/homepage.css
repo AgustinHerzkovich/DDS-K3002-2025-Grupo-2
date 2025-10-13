@@ -1,3 +1,8 @@
 bodyHome {
     font-family: 'Roboto Mono', monospace;
 }
+.imagen-background{
+      width: 100vw;   /* Ancho igual al ancho del viewport */
+      height: auto;   /* Alto proporcional al ancho */
+      display: block; /* Evita espacios debajo de la imagen */
+}
