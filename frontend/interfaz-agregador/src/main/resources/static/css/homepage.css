@@ -3,12 +3,11 @@ bodyHome {
 }
 
 .imagen-background {
-    width: 100vw;      
+    width: 100vw;
     height: auto;   
     display: block;     
-    border: 5px solid red;  
-    background-color: yellow;
-    opacity: 0.8;     
+    opacity: 0.8;
+    min-width: 1000px;
 }
 
 .redText{
