@@ -4,6 +4,9 @@ import aplicacion.dto.mappers.ContribuyenteInputMapper;
 import aplicacion.dto.mappers.ContribuyenteOutputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteOutputMapper;
+import aplicacion.dto.input.ContribuyenteInputDto;
+import aplicacion.dto.output.ContribuyenteOutputDto;
+import aplicacion.excepciones.MailYaExisteException;
 import aplicacion.repositorios.RepositorioDeContribuyentes;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
@@ -26,14 +29,18 @@ public class ContribuyenteService {
         this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
         this.contribuyenteOutputMapper = contribuyenteOutputMapper;
         this.contribuyenteInputMapper = contribuyenteInputMapper;
-    }/*
+    }
 
     @Transactional
-    public ContribuyenteOutputDTO guardarContribuyente(ContribuyenteInputDTO contribuyente) {
-        if (!repositorioDeContribuyentes.existsById(contribuyente.getId())) {
-            repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyente));
+    public ContribuyenteOutputDto guardarContribuyente(ContribuyenteInputDto contribuyente) {
+        if (!repositorioDeContribuyentes.existsByMail(contribuyente.getMail())) {
+            Contribuyente contribuyenteGuardado = repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyente));
+            return contribuyenteOutputMapper.map(contribuyenteGuardado);
+        } else {
+            throw new MailYaExisteException("El mail " + contribuyente.getMail() + " ya existe en la base de datos.");
         }
-    }*/
+    }
+
     @Transactional
     public Contribuyente obtenerContribuyentePorId(Long id) {
         return repositorioDeContribuyentes.findById(id)
@@ -45,7 +52,7 @@ public class ContribuyenteService {
                 })
                 .orElseGet(() -> { // TODO: Cambiar esto
                     // Si no existe, lo creamos
-                    Contribuyente nuevo = new Contribuyente(false, new IdentidadContribuyente("NombrePorDefecto", "ApellidoPorDefecto", null));
+                    Contribuyente nuevo = new Contribuyente(false, new IdentidadContribuyente("NombrePorDefecto", "ApellidoPorDefecto", null), "mailPorDefecto");
                     nuevo.setId(id);
                     return repositorioDeContribuyentes.save(nuevo);
                 });

@@ -26,10 +26,12 @@ public class Contribuyente {
     private List<SolicitudEliminacion> solicitudesEliminacion;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;
+    String mail;
 
-    public Contribuyente(Boolean esAdministrador, IdentidadContribuyente identidad) {
+    public Contribuyente(Boolean esAdministrador, IdentidadContribuyente identidad, String mail) {
         this.esAdministrador = esAdministrador;
         this.identidad = identidad;
+        this.mail = mail;
         this.solicitudesEliminacion = new ArrayList<>();
         this.hechosContribuidos = new ArrayList<>();
     }
