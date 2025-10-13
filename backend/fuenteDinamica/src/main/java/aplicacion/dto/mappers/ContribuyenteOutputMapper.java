@@ -17,6 +17,6 @@ public class ContribuyenteOutputMapper implements Mapper<Contribuyente, Contribu
     public ContribuyenteOutputDto map(Contribuyente contribuyente) {
         IdentidadContribuyente identidad = contribuyente.getIdentidad();
         IdentidadContribuyenteOutputDto identidadOutput = identidadContribuyenteOutputMapper.map(identidad);
-        return new ContribuyenteOutputDto(contribuyente.getId(), contribuyente.getEsAdministrador(), identidadOutput);
+        return new ContribuyenteOutputDto(contribuyente.getId(), contribuyente.getEsAdministrador(), identidadOutput, contribuyente.getMail());
     }
 }
