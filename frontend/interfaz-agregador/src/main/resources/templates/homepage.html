@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetaMapa - Bienvenido</title>
+
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Enlace a nuestra hoja de estilos externa -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
+</head>
+<body class="bg-gray-100">
+
+<!-- =========== Barra de Navegación (Header) =========== -->
+<header class="bg-indigo-800 text-white sticky top-0 z-50">
+    <!-- El 'relative' en nav es para posicionar el título central de forma absoluta -->
+    <!-- Quitamos 'container mx-auto' para que los elementos se vayan a los extremos -->
+    <nav class="px-6 py-4 flex justify-between items-center relative">
+
+        <!-- Izquierda: Logo -->
+        <a href="/" class="flex items-center space-x-2 z-10">
+            <img th:src="@{/images/logo-metamapa.png}" alt="Logo de MetaMapa" class="w-24 h-24">
+        </a>
+
+        <!-- Centro: Título (con texto negro) -->
+        <div class="absolute inset-x-0 text-center">
+            <h1 class="text-5xl font-bold tracking-wider text-black">Bienvenido!</h1>
+        </div>
+
+        <!-- Derecha: Icono de Login/Siguiente (con icono negro) -->
+        <a href="/protegido" class="hover:opacity-80 z-10 text-black">
+            <!-- Icono de Flecha (SVG) -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+            </svg>
+        </a>
+    </nav>
+</header>
+
+<!-- resto del contenido -->
+<main class="container mx-auto p-8">
+    <h2 class="text-2xl">Contenido Principal de la Página</h2>
+</main>
+</body>
+</html>

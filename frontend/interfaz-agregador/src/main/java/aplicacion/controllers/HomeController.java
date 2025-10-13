@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
 
     @GetMapping("/")
-    @ResponseBody
-    public String paginaPrincipal() {
-        return "Esta es la página principal. <a href='/protegido'>Ir a la sección protegida</a>";
+    public String paginaInicial() {
+        return "homepage";
     }
 
     @GetMapping("/protegido")
