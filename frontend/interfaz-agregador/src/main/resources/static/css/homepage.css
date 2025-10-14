@@ -24,7 +24,9 @@
         transform: rotate(360deg);
       }
     }
-
+.spin{
+    animation: spin-slow 5s linear infinite;
+}
 @keyframes spin-boat {
     0% {
         transform: rotate(0deg);
@@ -83,10 +85,82 @@
 }
 
 /* Contenido inferior */
-.content {
-    height: 100vh;
+.content-home {
+    min-height: 100vh;
     background-color: #f9f9f9;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px 20px;
+    gap: 30px; /* Espaciado entre elementos */
+}
+
+.content-home h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.content-home svg {
+    width: 64px;
+    height: 64px;
+    color: #4f46e5; /* Color indigo para los íconos */
+}
+
+/* Barra separadora - mismo grosor que header principal */
+header.bg-indigo-800 nav {
+    min-height: 112px; /* Mismo alto que el header principal (logo de 96px + padding) */
+}
+@keyframes moveAndRotate {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+    20% {
+        transform: translateX(500px) rotate(320deg);
+    }
+    40% {
+        transform: translateX(0px) rotate(0deg);
+    }
+    60% {
+        transform: translateX(-500px) rotate(-320deg);
+    }
+    80% {
+        transform: translateX(0) rotate(0deg);
+    }
+    90% {
+        transform: rotate(900deg);
+    }
+    100% {
+        transform: translateX(0) rotate(0deg);
+    }
+}
+
+.moveAndRotate {
+    animation: moveAndRotate 4s ease-in-out infinite;
+    animation-play-state: paused;
+}
+
+.moveAndRotate:hover {
+    animation-play-state: running;
+}
+
+@keyframes dodge {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(500px);
+    }
+    40% {
+        transform: translateX(0px);
+    }
+    60% {
+        transform: translateX(-500px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }

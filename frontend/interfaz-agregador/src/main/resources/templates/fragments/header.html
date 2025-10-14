@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Tokens CSRF para formularios POST -->
+    <meta name="_csrf" th:content="${_csrf?.token}" />
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" />
+</head>
+<body>
+
+<!-- Fragment: Header de navegación -->
+<header th:fragment="navbar(titulo, botonDerecha)" class="bg-indigo-800 text-white">
+    <nav class="px-6 py-4 flex justify-between items-center relative">
+        <!-- Izquierda: Logo -->
+        <a href="/" class="flex items-center space-x-2 z-10">
+            <img th:src="@{/images/logo-metamapa.png}" class="w-24 h-24">
+        </a>
+
+        <!-- Centro: Título -->
+        <div class="absolute inset-x-0 text-center">
+            <h1 class="text-5xl font-bold tracking-wider text-black" th:text="${titulo}">Título</h1>
+        </div>
+
+        <!-- Derecha: Botón dinámico (login o volver) -->
+        <div th:replace="~{__${botonDerecha}__}"></div>
+    </nav>
+</header>
+
+</body>
+</html>

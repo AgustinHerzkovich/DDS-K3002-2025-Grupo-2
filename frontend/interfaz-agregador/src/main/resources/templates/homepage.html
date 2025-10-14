@@ -1,90 +1,66 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaMapa - Bienvenido</title>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('Bienvenido', ~{::main}, ${botonDerechaFragment})}">
+<body>
 
-    <!-- Tailwind CSS desde CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Enlace a nuestra hoja de estilos externa -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
-</head>
-<body class="bodyHome">
-
-<!-- =========== Barra de Navegación (Header) =========== -->
-<header class="bg-indigo-800 text-white sticky top-0 z-50">
-    <!-- El 'relative' en nav es para posicionar el título central de forma absoluta -->
-    <!-- Quitamos 'container mx-auto' para que los elementos se vayan a los extremos -->
-    <nav class="px-6 py-4 flex justify-between items-center relative">
-
-        <!-- Izquierda: Logo -->
-        <a href="/" class="flex items-center space-x-2 z-10">
-            <img th:src="@{/images/logo-metamapa.png}" class="w-24 h-24">
-        </a>
-
-        <!-- Centro: Título (con texto negro) -->
-        <div class="absolute inset-x-0 text-center">
-            <h1 class="text-5xl font-bold tracking-wider text-black">Bienvenido!</h1>
-        </div>
-
-        <!-- Derecha: Icono de Login/Siguiente (con icono negro) -->
-        <a href="/protegido" class="hover:opacity-80 z-10 text-black">
-            <!-- Icono de Flecha (SVG) -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
-            </svg>
-        </a>
-    </nav>
-</header>
-
-<!-- resto del contenido -->
-<!--
-    <main class="container mx-auto p-8">
-        <h2 class="text-2xl">Contenido Principal de la Página</h2>
-    </main>
--->
-
-<div class="map-container">
-    <!-- Botón centrado -->
-    <button class="map-button">Mapa Interactivo</button>
-
-    <!-- Flecha deslizante -->
-    <svg class="scroll-arrow" onclick="scrollToContent()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-    </svg>
+<!-- Botón de login para el header -->
+<div th:fragment="botonLogin" class="z-10">
+    <a href="#" onclick="openLoginModal(); return false;" class="hover:opacity-80 text-black">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+        </svg>
+    </a>
 </div>
 
-<!-- Contenido inferior -->
-<div class="content">
-    <h1>Contenido adicional aquí</h1>
-</div>
+<!-- Contenido Principal -->
+<main>
+    <div class="map-container">
+        <!-- Botón centrado -->
+        <button class="map-button">Mapa Interactivo</button>
 
-<script>
-    // Función para deslizar al contenido inferior
-    function scrollToContent() {
-        const target = document.querySelector('.content');
-        window.scrollTo({
-            top: target.offsetTop,
-            behavior: 'smooth'
-        });
-    }
-</script>
+        <!-- Flecha deslizante -->
+        <svg class="scroll-arrow" onclick="scrollToContent()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+        </svg>
+    </div>
 
-<!-- No es tecnicamente un header... pero sirve -->
-<header class="bg-indigo-800 text-white sticky top-0 z-50">
-    <nav class="px-6 py-20 flex justify-between items-center relative">
-    </nav>
-</header>
-<h1>La plataforma de mapeo colaborativo número uno del mundo</h1>
+    <script>
+        // Función para deslizar al contenido inferior
+        function scrollToContent() {
+            const target = document.querySelector('.content-home');
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
 
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 
+    <!-- Barra separadora -->
+    <header class="bg-indigo-800 text-white">
+        <nav class="px-6 py-4"></nav>
+    </header>
+
+    <!-- Contenido inferior -->
+    <div class="content-home s">
+        <h1>La plataforma de mapeo colaborativo número uno del mundo</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
+        </svg>
+        <h1>Aquí puedes consultar hechos y colecciones</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+        </svg>
+        <h1>Publica hechos tú mismo</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+        <h1>Solicita la eliminación de un hecho</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+        </svg>
+    </div>
+</main>
 
 </body>
 </html>

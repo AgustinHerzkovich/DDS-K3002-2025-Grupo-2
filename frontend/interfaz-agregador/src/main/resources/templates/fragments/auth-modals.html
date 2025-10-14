@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!-- Fragment: Modal de Recuperar Contraseña (Paso 1 - Ingresar Email) -->
+<div th:fragment="forgotPasswordModal" id="forgotPasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-8 relative animate-fadeIn">
+
+        <!-- Botón cerrar -->
+        <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Logo y título -->
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-indigo-800">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-indigo-800 mb-2">¿Olvidaste tu contraseña?</h2>
+            <p class="text-gray-600">Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña</p>
+        </div>
+
+        <!-- Formulario -->
+        <form id="forgotPasswordForm" class="space-y-6">
+
+            <!-- Campo Email -->
+            <div>
+                <label for="forgot-email" class="block text-sm font-medium text-gray-700 mb-2">
+                    Correo electrónico
+                </label>
+                <input
+                    type="email"
+                    id="forgot-email"
+                    name="email"
+                    placeholder="tu@email.com"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    required
+                />
+            </div>
+
+            <!-- Botón Restaurar Contraseña -->
+            <button
+                type="submit"
+                class="w-full bg-indigo-800 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl"
+            >
+                Restaurar Contraseña
+            </button>
+        </form>
+
+        <!-- Volver al login -->
+        <div class="mt-6 text-center">
+            <a href="#" onclick="closeForgotPasswordModal(); openLoginModal(); return false;" class="text-sm text-indigo-600 hover:text-indigo-800 transition">
+                ← Volver al inicio de sesión
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Fragment: Modal de Nueva Contraseña (Paso 2) -->
+<div th:fragment="resetPasswordModal" id="resetPasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-8 relative animate-fadeIn">
+
+        <!-- Botón cerrar -->
+        <button onclick="closeResetPasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Logo y título -->
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-green-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-indigo-800 mb-2">Nueva Contraseña</h2>
+            <p class="text-gray-600">Ingresa tu nueva contraseña</p>
+        </div>
+
+        <!-- Formulario -->
+        <form id="resetPasswordForm" class="space-y-6">
+
+            <!-- Campo Nueva Contraseña -->
+            <div>
+                <label for="new-password" class="block text-sm font-medium text-gray-700 mb-2">
+                    Nueva Contraseña
+                </label>
+                <input
+                    type="password"
+                    id="new-password"
+                    name="password"
+                    placeholder="••••••••"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    required
+                    minlength="8"
+                />
+            </div>
+
+            <!-- Campo Repetir Contraseña -->
+            <div>
+                <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-2">
+                    Repetir Contraseña
+                </label>
+                <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    required
+                    minlength="8"
+                />
+            </div>
+
+            <!-- Mensaje de error -->
+            <div id="password-error" class="hidden text-red-600 text-sm">
+                Las contraseñas no coinciden
+            </div>
+
+            <!-- Botón Cambiar Contraseña -->
+            <button
+                type="submit"
+                class="w-full bg-indigo-800 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl"
+            >
+                Cambiar Contraseña
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<!-- Fragment: Modal de Registro -->
+<div th:fragment="registerModal" id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md p-8 relative animate-fadeIn max-h-[90vh] overflow-y-auto">
+
+        <!-- Botón cerrar -->
+        <button onclick="closeRegisterModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Logo y título -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-indigo-800 mb-2">Crear Cuenta</h2>
+            <p class="text-gray-600">Únete a MetaMapa hoy</p>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <form id="registerForm" class="space-y-4">
+
+            <!-- Campos Obligatorios -->
+            <div class="border-b border-gray-200 pb-4">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Información requerida</h3>
+
+                <!-- Campo Email -->
+                <div class="mb-4">
+                    <label for="register-email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Correo electrónico <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="register-email"
+                        name="email"
+                        placeholder="tu@email.com"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                        required
+                    />
+                </div>
+
+                <!-- Campo Password -->
+                <div class="mb-4">
+                    <label for="register-password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Contraseña <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="register-password"
+                        name="password"
+                        placeholder="••••••••"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                        required
+                        minlength="8"
+                    />
+                    <p class="text-xs text-gray-500 mt-1">Mínimo 8 caracteres</p>
+                </div>
+
+                <!-- Campo Repetir Password -->
+                <div>
+                    <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Repetir Contraseña <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="register-confirm-password"
+                        name="confirmPassword"
+                        placeholder="••••••••"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                        required
+                        minlength="8"
+                    />
+                </div>
+
+                <!-- Mensaje de error de contraseñas -->
+                <div id="register-password-error" class="hidden text-red-600 text-sm mt-2">
+                    Las contraseñas no coinciden
+                </div>
+            </div>
+
+            <!-- Campos Opcionales -->
+            <div class="pt-4">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Información adicional (opcional)</h3>
+
+                <!-- Campo Nombre -->
+                <div class="mb-4">
+                    <label for="register-nombre" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nombre
+                    </label>
+                    <input
+                        type="text"
+                        id="register-nombre"
+                        name="nombre"
+                        placeholder="Tu nombre"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    />
+                </div>
+
+                <!-- Campo Apellido -->
+                <div class="mb-4">
+                    <label for="register-apellido" class="block text-sm font-medium text-gray-700 mb-2">
+                        Apellido
+                    </label>
+                    <input
+                        type="text"
+                        id="register-apellido"
+                        name="apellido"
+                        placeholder="Tu apellido"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    />
+                </div>
+
+                <!-- Campo Fecha de Nacimiento -->
+                <div>
+                    <label for="register-fecha-nacimiento" class="block text-sm font-medium text-gray-700 mb-2">
+                        Fecha de Nacimiento
+                    </label>
+                    <input
+                        type="date"
+                        id="register-fecha-nacimiento"
+                        name="fechaNacimiento"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                    />
+                </div>
+            </div>
+
+            <!-- Botón Registrarse -->
+            <button
+                type="submit"
+                class="w-full bg-indigo-800 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-200 shadow-lg hover:shadow-xl mt-6"
+            >
+                Crear Cuenta
+            </button>
+        </form>
+
+        <!-- Ya tienes cuenta -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                ¿Ya tienes cuenta?
+                <a href="#" onclick="closeRegisterModal(); openLoginModal(); return false;" class="text-indigo-600 hover:text-indigo-800 font-semibold transition">
+                    Inicia sesión
+                </a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.2s ease-out;
+    }
+</style>
+
+</body>
+</html>
+

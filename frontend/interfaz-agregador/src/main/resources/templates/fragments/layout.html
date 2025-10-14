@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (titulo, contenido, botonDerecha)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${'MetaMapa - ' + titulo}">MetaMapa</title>
+
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Enlace a nuestra hoja de estilos externa -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
+</head>
+<body class="bodyHome bg-gray-50">
+
+<!-- Header -->
+<div th:replace="~{fragments/header :: navbar(${titulo}, ${botonDerecha})}"></div>
+
+<!-- Contenido Principal (variable) -->
+<div th:replace="${contenido}"></div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Modal de Login -->
+<div th:replace="~{fragments/login-modal :: loginModal}"></div>
+
+<!-- Modales de Autenticación (Registro y Recuperación de Contraseña) -->
+<div th:replace="~{fragments/auth-modals :: forgotPasswordModal}"></div>
+<div th:replace="~{fragments/auth-modals :: resetPasswordModal}"></div>
+<div th:replace="~{fragments/auth-modals :: registerModal}"></div>
+
+<!-- Scripts para manejar los modales -->
+<script th:src="@{/js/login-modal.js}"></script>
+<script th:src="@{/js/auth-modals.js}"></script>
+
+<!-- Script para el menú de perfil -->
+<div th:replace="~{fragments/user-button :: profileScript}"></div>
+
+</body>
+</html>

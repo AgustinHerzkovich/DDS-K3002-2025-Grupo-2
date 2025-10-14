@@ -1,5 +1,6 @@
 package aplicacion.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,23 +12,24 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/save-redirect-url"))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Permitimos el acceso público a la raíz ('/'), y a todo lo que esté
-                        // dentro de las carpetas /css/ y /images/ de nuestra carpeta 'static'.
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/"),
-                                new AntPathRequestMatcher("/css/**"),
-                                new AntPathRequestMatcher("/images/**")
-                        ).permitAll()
-                        // Cualquier otra petición (como /protegido) requerirá iniciar sesión.
-                        .anyRequest().authenticated()
+                        // permite acceso a recursos estáticos (CSS, JS, imágenes, etc.)
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fragments/**").permitAll()
+                        // protege el perfil
+                        .requestMatchers("/profile").authenticated()
+                        // el resto es público
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(customizer -> customizer
-                        .defaultSuccessUrl("/protegido", true) // Redirige aquí tras un login exitoso
-                );
+                        .successHandler(successHandler));
 
         return http.build();
     }
