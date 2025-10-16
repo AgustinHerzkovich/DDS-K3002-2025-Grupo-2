@@ -5,8 +5,7 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.services.ContribuyenteService;
-import domain.excepciones.IdInvalidoException;
-import domain.peticiones.Validaciones;
+import aplicacion.excepciones.IdInvalidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,9 @@ public class ContribuyenteController {
     public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
                                                                                  @PathVariable("id") Long id) {
         try {
-            Validaciones.validarId(id);
+            if (id <= 0) {
+                throw new IdInvalidoException();
+            }
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
             System.out.println("Se ha modificado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
             return ResponseEntity.ok(contribuyenteProcesado);

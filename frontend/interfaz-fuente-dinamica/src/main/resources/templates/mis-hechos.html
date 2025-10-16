@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Hechos</title>
+  <link rel="stylesheet" th:href="@{/css/homepage.css}" />
+  <style>
+    .hechos-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .hecho-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+
+    .hecho-titulo {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .hecho-descripcion {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .hecho-metadata {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .hecho-acciones {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-editar, .btn-eliminar {
+      padding: 8px 15px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-editar {
+      background-color: #bcd9e3;
+      color: #333;
+    }
+
+    .btn-eliminar {
+      background-color: #ff4444;
+      color: white;
+    }
+
+    .no-hechos {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<!-- Header igual que en homepage.html -->
+<header>
+  <div class="logo-container">
+    <a th:href="@{/}" class="logo">FD</a>
+  </div>
+
+  <div th:if="${principal != null}" class="user-menu-container">
+    <button id="userMenuBtn" class="user-profile-button" aria-expanded="false">
+      <span th:text="${principal.attributes['name']}">Nombre de Usuario</span>
+      <svg class="dropdown-arrow" viewBox="0 0 24 24">
+        <path d="M7 10l5 5 5-5z"/>
+      </svg>
+    </button>
+    <div id="userDropdown" class="user-dropdown-menu hidden">
+      <a th:href="@{/mis-hechos}" class="dropdown-item">
+        <i class="fas fa-file-alt"></i> Mis Hechos
+      </a>
+      <a th:href="@{/editar-perfil}" class="dropdown-item">
+        <i class="fas fa-user-edit"></i> Editar Perfil
+      </a>
+      <hr class="dropdown-divider">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="dropdown-item">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<div class="hechos-container">
+  <h1>Mis Hechos</h1>
+
+  <div th:if="${hechos.empty}" class="no-hechos">
+    <p>Aún no has subido ningún hecho.</p>
+    <a th:href="@{/subir-hechos}" class="btn-editar">Subir mi primer hecho</a>
+  </div>
+
+  <div th:each="hecho : ${hechos}" class="hecho-card">
+    <h2 class="hecho-titulo" th:text="${hecho.titulo}">Título del Hecho</h2>
+    <p class="hecho-descripcion" th:text="${hecho.descripcion}">Descripción del hecho</p>
+    <div class="hecho-metadata">
+                <span th:text="${#temporals.format(hecho.fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
+                    Fecha de modificación
+                </span>
+      <div class="hecho-acciones">
+        <button class="btn-editar" th:onclick="'editarHecho(\'' + ${hecho.id} + '\')'">
+          Editar
+        </button>
+        <button class="btn-eliminar" th:onclick="'eliminarHecho(\'' + ${hecho.id} + '\')'">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Funcionalidad del menú desplegable
+  document.addEventListener('DOMContentLoaded', () => {
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+
+    if (userMenuBtn) {
+      userMenuBtn.addEventListener('click', () => {
+        userDropdown.classList.toggle('hidden');
+      });
+    }
+
+    // Cerrar el menú cuando se hace clic fuera
+    document.addEventListener('click', (event) => {
+      if (userMenuBtn && !userMenuBtn.contains(event.target) &&
+              userDropdown && !userDropdown.contains(event.target)) {
+        userDropdown.classList.add('hidden');
+      }
+    });
+  });
+
+  // Funciones para editar y eliminar hechos
+  function editarHecho(id) {
+    window.location.href = `/editar-hecho/${id}`;
+  }
+
+  function eliminarHecho(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este hecho?')) {
+      fetch(`/fuentesDinamicas/hechos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+              .then(response => {
+                if (response.ok) {
+                  window.location.reload();
+                } else {
+                  alert('Error al eliminar el hecho');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar el hecho');
+              });
+    }
+  }
+</script>
+</body>
+</html>

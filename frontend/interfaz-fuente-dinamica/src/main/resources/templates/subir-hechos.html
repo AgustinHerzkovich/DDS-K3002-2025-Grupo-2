@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear nuevo hecho</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/subir-hechos.css}">
+</head>
+<body>
+
+<div class="modal-fact">
+  <div class="modal-header">
+    <h2>Crear nuevo hecho</h2>
+    <span class="close-btn" onclick="window.location.href='/';">&times;</span>
+  </div>
+
+  <form id="fact-form">
+    <div class="form-group">
+      <label for="titulo">Título del hecho</label>
+      <input type="text" id="titulo" name="titulo" required>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" name="descripcion" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="categoria">Categoría</label>
+      <input type="text" id="categoria" name="categoria">
+    </div>
+
+    <div class="form-group">
+      <label for="latitud">Latitud</label>
+      <input type="number" step="any" id="latitud" name="latitud">
+    </div>
+
+    <div class="form-group">
+      <label for="longitud">Longitud</label>
+      <input type="number" step="any" id="longitud" name="longitud">
+    </div>
+
+    <div class="form-group">
+      <label for="fechaAcontecimiento">Fecha de acontecimiento</label>
+      <input type="datetime-local" id="fechaAcontecimiento" name="fechaAcontecimiento">
+    </div>
+
+    <div class="form-group">
+      <label for="contenidoTexto">Contenido</label>
+      <textarea id="contenidoTexto" name="contenidoTexto"></textarea>
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="anonimato">
+      <label for="anonimato">Publicar de forma anónima</label>
+    </div>
+
+    <fieldset class="multimedia-container">
+      <legend>Contenido Multimedia (Opcional)</legend>
+
+      <div class="form-group">
+        <label for="multimediaTipo">Tipo de Multimedia</label>
+        <select id="multimediaTipo" name="multimediaTipo">
+          <option value="">-- Seleccionar --</option>
+          <option value="imagen">Imagen</option>
+          <option value="video">Video</option>
+          <option value="audio">Audio</option>
+        </select>
+      </div>
+
+      <div id="multimedia-fields-container">
+      </div>
+    </fieldset>
+
+    <div class="button-container">
+      <button type="button" class="btn btn-cancel" onclick="window.location.href='/';">Cancelar</button>
+      <button type="submit" class="btn btn-publish">Publicar</button>
+    </div>
+  </form>
+</div>
+
+<script th:inline="javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('fact-form');
+    const multimediaTipoSelect = document.getElementById('multimediaTipo');
+    const multimediaFieldsContainer = document.getElementById('multimedia-fields-container');
+
+    // Muestra los campos de multimedia correctos según la selección
+    multimediaTipoSelect.addEventListener('change', function() {
+      const tipo = this.value;
+      multimediaFieldsContainer.innerHTML = ''; // Limpiar campos
+
+      if (tipo === 'imagen' || tipo === 'video' || tipo === 'audio') {
+        const commonFields = `
+                <div class="form-group">
+                    <label for="url">URL</label>
+                    <input type="text" id="url" name="url">
+                </div>
+                <div class="form-group">
+                    <label for="formato">Formato (ej: jpg, mp4, mp3)</label>
+                    <input type="text" id="formato" name="formato">
+                </div>
+                <div class="form-group">
+                    <label for="tamanio">Tamaño (en bytes)</label>
+                    <input type="number" id="tamanio" name="tamanio">
+                </div>
+            `;
+        multimediaFieldsContainer.innerHTML += commonFields;
+      }
+
+      if (tipo === 'imagen') {
+        const extraFields = `
+                <div class="form-group">
+                    <label for="resolucion">Resolución (ej: 1024x768)</label>
+                    <input type="text" id="resolucion" name="resolucion">
+                </div>
+            `;
+        multimediaFieldsContainer.innerHTML += extraFields;
+      } else if (tipo === 'video' || tipo === 'audio') {
+        const extraFields = `
+                <div class="form-group">
+                    <label for="duracion">Duración (en segundos)</label>
+                    <input type="number" id="duracion" name="duracion">
+                </div>
+            `;
+        multimediaFieldsContainer.innerHTML += extraFields;
+      }
+    });
+
+    // Maneja el envío del formulario
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Recolectar datos del formulario
+      const multimediaTipo = multimediaTipoSelect.value;
+      let multimediaObject = null;
+
+      if (multimediaTipo) {
+        multimediaObject = {
+          tipo: multimediaTipo,
+          formato: form.formato.value || null,
+          tamanio: parseFloat(form.tamanio.value) || null,
+          url: form.url.value || null
+        };
+
+        if (multimediaTipo === 'imagen') {
+          multimediaObject.resolucion = form.resolucion.value || null;
+        } else if (multimediaTipo === 'video' || multimediaTipo === 'audio') {
+          multimediaObject.duracion = parseFloat(form.duracion.value) || null;
+          // Si es video, también tiene resolución
+          if (multimediaTipo === 'video') {
+            multimediaObject.resolucion = form.resolucion.value || null;
+          }
+        }
+      }
+
+      const formData = {
+        titulo: form.titulo.value,
+        descripcion: form.descripcion.value,
+        categoria: {
+          nombre: form.categoria.value || null
+        },
+        ubicacion: {
+          latitud: parseFloat(form.latitud.value) || 0,
+          longitud: parseFloat(form.longitud.value) || 0
+        },
+        fechaAcontecimiento: form.fechaAcontecimiento.value ? new Date(form.fechaAcontecimiento.value).toISOString() : null,
+        origen: "CONTRIBUYENTE",
+        contenidoTexto: form.contenidoTexto.value,
+        contenidoMultimedia: multimediaObject ? [multimediaObject] : [],
+        anonimato: form.anonimato.checked
+      };
+
+      // Petición al endpoint de la API
+      fetch('http://localhost:8082/fuentesDinamicas/hechos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else if (response.status === 404) {
+                  return response.text().then(text => Promise.reject(new Error(text)));
+                }
+                throw new Error('Error al enviar el formulario.');
+              })
+              .then(data => {
+                console.log('Success:', data);
+                alert('Hecho publicado con éxito. ID: ' + data.id);
+                window.location.href = '/';
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+              });
+    });
+  });
+</script>
+
+</body>
+</html>

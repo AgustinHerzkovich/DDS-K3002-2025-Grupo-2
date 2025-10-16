@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FD - Landing Page</title>
+  <link rel="stylesheet" th:href="@{/css/homepage.css}" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<header>
+  <div class="logo-container">
+    <div class="logo">FD</div>
+    <button id="hamburgerBtn" class="hamburger-btn">&#9776;</button>
+  </div>
+
+  <th:block th:if="${principal == null}">
+    <button id="openLoginModal" class="login-button-header">Iniciar Sesión</button>
+  </th:block>
+
+  <div th:if="${principal != null}" class="user-menu-container">
+    <button id="userMenuBtn" class="user-profile-button" aria-expanded="false">
+      <span th:text="${principal.attributes['name']}">Nombre de Usuario</span>
+      <svg class="dropdown-arrow" viewBox="0 0 24 24">
+        <path d="M7 10l5 5 5-5z"/>
+      </svg>
+    </button>
+    <div id="userDropdown" class="user-dropdown-menu hidden">
+      <a th:href="@{/mis-hechos}" class="dropdown-item">
+        <i class="fas fa-file-alt"></i> Mis Hechos
+      </a>
+      <a th:href="@{/editar-perfil}" class="dropdown-item">
+        <i class="fas fa-user-edit"></i> Editar Perfil
+      </a>
+      <hr class="dropdown-divider">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="dropdown-item">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<div id="sidebar" class="sidebar">
+  <button id="closeSidebar" class="close-sidebar">&times;</button>
+  <a th:href="@{/subir-hechos}" class="sidebar-link">Subir Hechos</a>
+</div>
+
+<div class="features-container">
+  <div class="feature-item">
+    <svg class="icon-svg" viewBox="0 0 24 24">
+      <path d="M13 1v9h6l-7 13v-9H6l7-13z"/>
+    </svg>
+    <p class="feature-title">Rápido y sencillo</p>
+    <p class="feature-description">Publica en segundos.</p>
+  </div>
+  <div class="feature-item">
+    <svg class="icon-svg" viewBox="0 0 24 24">
+      <path d="M21 6H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 10H4v-1h16v1zm0-3H4v-1h16v1zm0-3H4V9h16v1z"/>
+    </svg>
+    <p class="feature-title">Exprésate libremente</p>
+    <p class="feature-description">Cuenta lo que quieras sin censura.</p>
+  </div>
+  <div class="feature-item">
+    <svg class="icon-svg" viewBox="0 0 24 24">
+      <path d="M18 10h-1V7c0-2.76-2.24-5-5-5S7 4.24 7 7h1.01C8.01 5.4 9.49 4 11.5 4S15 5.4 15 7v3H6c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zm0 10H6v-8h12v8zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+    </svg>
+    <p class="feature-title">Seguro y anónimo</p>
+    <p class="feature-description">Cuenta lo que quieras sin censura.</p>
+  </div>
+</div>
+
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" data-modal="loginModal">&times;</span>
+    <h1>Iniciar Sesión</h1>
+    <div class="divider"><hr><span>o</span><hr></div>
+    <form id="loginForm" class="login-form">
+      <label for="email">email</label>
+      <input type="email" id="email" name="email" class="input-field" placeholder="tu@correo.com" required>
+      <label for="password">contraseña</label>
+      <input type="password" id="password" name="password" class="input-field" required>
+      <a href="#" id="forgotPasswordLink" class="forgot-password">¿Olvidaste tu contraseña?</a>
+      <button type="submit" class="login-submit-button">Login</button>
+      <button id="googleLoginButton" class="social-login-button google-button">
+        <svg class="user-icon-black" viewBox="0 0 24 24">
+          <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C8.67 14 6 16.67 6 20H18C18 16.67 15.33 14 12 14Z" fill="currentColor"/>
+        </svg>
+        Ingreso con Google
+      </button>
+    </form>
+    <p class="register-text">
+      ¿No tienes cuenta? <a href="#" id="openRegisterModal" class="register-link">Regístrate</a>
+    </p>
+  </div>
+</div>
+
+<div id="forgotPasswordModal" class="modal hidden">
+  <div class="modal-content small">
+    <span class="close-button" data-modal="forgotPasswordModal">&times;</span>
+    <h1>Restablecer contraseña</h1>
+    <p style="font-size:14px; color:#666;">Ingresa tu email y te enviaremos un enlace.</p>
+    <form id="forgotPasswordForm" class="login-form">
+      <label for="resetEmail">email</label>
+      <input type="email" id="resetEmail" class="input-field" placeholder="tu@correo.com" required>
+      <button type="submit" class="login-submit-button">Enviar enlace</button>
+    </form>
+  </div>
+</div>
+
+<div id="registerModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button" data-modal="registerModal">&times;</span>
+    <h1>Crear cuenta</h1>
+    <form id="registerForm" class="login-form">
+      <label for="regEmail">email</label>
+      <input type="email" id="regEmail" class="input-field" placeholder="tu@correo.com" required>
+      <label for="regPassword">contraseña</label>
+      <input type="password" id="regPassword" class="input-field" required>
+      <label for="firstName">nombre</label>
+      <input type="text" id="firstName" class="input-field" required>
+      <label for="lastName">apellido</label>
+      <input type="text" id="lastName" class="input-field" required>
+      <label for="birthDate">fecha de nacimiento</label>
+      <input type="date" id="birthDate" class="input-field" required>
+      <button type="submit" class="login-submit-button">Registrarse</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Script para manejar los modales de autenticación, la sidebar y el menú de usuario.
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // --------- Elementos del DOM principales ----------
+    const loginModal = document.getElementById('loginModal');
+    const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+    const registerModal = document.getElementById('registerModal');
+    const openLoginBtn = document.getElementById('openLoginModal'); // Botón de login del header
+    const openRegisterLink = document.getElementById('openRegisterModal'); // Enlace de registro en el modal de login
+    const forgotPasswordLink = document.getElementById('forgotPasswordLink'); // Enlace de 'olvidé contraseña'
+    const closeButtons = document.querySelectorAll('.close-button'); // Botones de cerrar (X) en los modales
+    const googleBtn = document.getElementById('googleLoginButton'); // Botón de Google en el modal de login
+    const loginForm = document.getElementById('loginForm'); // Formulario de login estándar
+    const sidebar = document.getElementById('sidebar');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
+    const userMenuBtn = document.getElementById('userMenuBtn'); // Botón de perfil de usuario
+    const userDropdown = document.getElementById('userDropdown'); // Menú desplegable del usuario
+
+    // --------- FUNCIONES DE UTILIDAD PARA MODALES ----------
+    function openModal(modalElement) {
+      closeAllModals(); // Siempre cierra todos los modales antes de abrir uno nuevo
+      if (modalElement) {
+        modalElement.style.display = "block"; // Usamos style.display para consistencia con tu código original
+        document.body.style.overflow = 'hidden'; // Evitar scroll
+      }
+    }
+
+    function closeModal(modalElement) {
+      if (modalElement) {
+        modalElement.style.display = "none";
+        document.body.style.overflow = 'auto'; // Restaurar scroll
+      }
+    }
+
+    function closeAllModals() {
+      closeModal(loginModal);
+      closeModal(forgotPasswordModal);
+      closeModal(registerModal);
+    }
+
+    // --------- FUNCIÓN: Guardar URL y redirigir ----------
+    function saveCurrentUrlAndLogin(provider) {
+      closeAllModals();
+      const currentUrl = window.location.pathname;
+      fetch('/save-redirect-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'url=' + encodeURIComponent(currentUrl)
+      }).then(() => {
+        if (provider === 'google') {
+          window.location.href = '/oauth2/authorization/keycloak?kc_idp_hint=google';
+        } else {
+          window.location.href = '/oauth2/authorization/keycloak';
+        }
+      }).catch(error => {
+        console.error('Error guardando URL:', error);
+        if (provider === 'google') {
+          window.location.href = '/oauth2/authorization/keycloak?kc_idp_hint=google';
+        } else {
+          window.location.href = '/oauth2/authorization/keycloak';
+        }
+      });
+    }
+
+    // --------- ASIGNACIÓN DE EVENTOS A ELEMENTOS DEL HTML ----------
+
+    // 1. Botón de "Iniciar Sesión" del header
+    if (openLoginBtn) {
+      openLoginBtn.addEventListener('click', () => openModal(loginModal));
+    }
+
+    // 2. Navegación entre Modales
+    if (openRegisterLink) {
+      openRegisterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(registerModal);
+      });
+    }
+    if (forgotPasswordLink) {
+      forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(forgotPasswordModal);
+      });
+    }
+
+    // 3. Cerrar Modales
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', closeAllModals);
+    });
+    window.addEventListener('click', (event) => {
+      if (event.target.classList.contains("modal")) {
+        closeAllModals();
+      }
+    });
+
+    // 4. Eventos de los formularios
+    if (googleBtn) {
+      googleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        saveCurrentUrlAndLogin('google');
+      });
+    }
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveCurrentUrlAndLogin();
+      });
+    }
+
+    // 5. Lógica del Sidebar y Menú de Usuario
+    if (hamburgerBtn) {
+      hamburgerBtn.addEventListener('click', () => {
+        sidebar.style.width = "300px";
+        document.body.style.overflow = 'hidden';
+      });
+    }
+    if (closeSidebarBtn) {
+      closeSidebarBtn.addEventListener('click', () => {
+        sidebar.style.width = "0";
+        document.body.style.overflow = 'auto';
+      });
+    }
+    if (userMenuBtn) {
+      userMenuBtn.addEventListener('click', () => {
+        if (userDropdown) {
+          userDropdown.classList.toggle('hidden');
+        }
+      });
+    }
+    window.addEventListener('click', (event) => {
+      if (userMenuBtn && !userMenuBtn.contains(event.target) && userDropdown && !userDropdown.contains(event.target)) {
+        if (userDropdown) {
+          userDropdown.classList.add('hidden');
+        }
+      }
+    });
+
+    // 6. Cerrar modales con tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllModals();
+      }
+    });
+
+    // Lógica de formularios de ejemplo (registro/olvidé contraseña)
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    if (forgotPasswordForm) {
+      forgotPasswordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Enlace de recuperación enviado!');
+        closeModal(forgotPasswordModal);
+      });
+    }
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+      registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('¡Cuenta creada exitosamente! Por favor, inicia sesión.');
+        closeModal(registerModal);
+      });
+    }
+
+
+
+  });
+</script>
+</body>
+</html>
