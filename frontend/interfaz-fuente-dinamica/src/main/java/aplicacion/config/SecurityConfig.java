@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -14,11 +13,11 @@ public class SecurityConfig {
 
     @Autowired
     private CustomAuthenticationSuccessHandler successHandler;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
+
+        http.authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos").permitAll()
                         .anyRequest().authenticated()
                 )
