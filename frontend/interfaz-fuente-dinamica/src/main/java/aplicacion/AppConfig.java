@@ -1,10 +1,9 @@
-package aplicacion.config; // Asegúrate de que este paquete sea escaneado
-
+package aplicacion.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration // CRUCIAL: Le dice a Spring que busque métodos @Bean aquí.
+@Configuration
 public class AppConfig {
 
 

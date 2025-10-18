@@ -59,26 +59,7 @@
             "create-realm"
           ],
           "client": {
-            "metamapa-realm": [
-              "manage-users",
-              "manage-realm",
-              "view-users",
-              "impersonation",
-              "view-identity-providers",
-              "manage-events",
-              "query-clients",
-              "view-realm",
-              "query-groups",
-              "create-client",
-              "query-realms",
-              "view-events",
-              "view-authorization",
-              "manage-clients",
-              "query-users",
-              "manage-identity-providers",
-              "manage-authorization",
-              "view-clients"
-            ],
+      
             "master-realm": [
               "view-clients",
               "view-authorization",

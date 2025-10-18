@@ -7,6 +7,7 @@ import aplicacion.dto.mappers.IdentidadContribuyenteOutputMapper;
 import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.excepciones.MailYaExisteException;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.repositorios.RepositorioDeContribuyentes;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
@@ -32,7 +33,7 @@ public class ContribuyenteService {
     }
 
     @Transactional
-    public ContribuyenteOutputDto guardarContribuyente(ContribuyenteInputDto contribuyente) {
+    public ContribuyenteOutputDto guardarContribuyente(ContribuyenteInputDto contribuyente) throws MailYaExisteException {
         if (!repositorioDeContribuyentes.existsByMail(contribuyente.getMail())) {
             Contribuyente contribuyenteGuardado = repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyente));
             return contribuyenteOutputMapper.map(contribuyenteGuardado);
@@ -42,7 +43,7 @@ public class ContribuyenteService {
     }
 
     @Transactional
-    public Contribuyente obtenerContribuyentePorId(Long id) {
+    public Contribuyente obtenerContribuyentePorId(Long id) { // Lo usamos para cargar hechos
         return repositorioDeContribuyentes.findById(id)
                 .map(contribuyente -> {
                     Hibernate.initialize(contribuyente.getId());
@@ -56,5 +57,15 @@ public class ContribuyenteService {
                     nuevo.setId(id);
                     return repositorioDeContribuyentes.save(nuevo);
                 });
+    }
+
+    public Contribuyente obtenerContribuyente(Long id) throws ContribuyenteNoConfiguradoException { // Lo usamos para consultar si un contribuyente existe a la hora de login
+        return repositorioDeContribuyentes.findById(id)
+                .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con ID: " + id));
+    }
+
+    public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) throws ContribuyenteNoConfiguradoException {
+        return repositorioDeContribuyentes.findByMail(mail).map(contribuyenteOutputMapper::map)
+                .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con mail: " + mail));
     }
 }

@@ -11,6 +11,8 @@
     </parent>
 
     <artifactId>fuenteDinamica</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -21,10 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
+            <groupId>com.domain</groupId>
             <artifactId>utils</artifactId>
-            <version>0.1.0</version>
-            <scope>compile</scope>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

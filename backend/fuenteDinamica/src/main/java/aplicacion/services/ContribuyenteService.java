@@ -7,10 +7,12 @@ import aplicacion.dto.mappers.ContribuyenteOutputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
+import aplicacion.excepciones.MailYaExisteException;
 import aplicacion.repositorios.RepositorioDeContribuyentes;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.domain.usuarios.IdentidadContribuyente;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ContribuyenteService {
@@ -26,10 +28,21 @@ public class ContribuyenteService {
         this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
     }
 
-    public ContribuyenteOutputDto guardarContribuyente(ContribuyenteInputDto contribuyenteInputDto) {
-       Contribuyente contribuyente = repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyenteInputDto));
-         return contribuyenteOutputMapper.map(contribuyente);
+    public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) throws ContribuyenteNoConfiguradoException {
+        return repositorioDeContribuyentes.findByMail(mail).map(contribuyenteOutputMapper::map)
+                .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con mail: " + mail));
     }
+
+    public ContribuyenteOutputDto guardarContribuyente(ContribuyenteInputDto contribuyenteInputDto) throws MailYaExisteException {
+        if (!repositorioDeContribuyentes.existsByMail(contribuyenteInputDto.getMail())) {
+            Contribuyente contribuyenteGuardado = repositorioDeContribuyentes.save(contribuyenteInputMapper.map(contribuyenteInputDto));
+            return contribuyenteOutputMapper.map(contribuyenteGuardado);
+        } else {
+            throw new MailYaExisteException("El mail " + contribuyenteInputDto.getMail() + " ya existe en la base de datos.");
+        }
+    }
+
+
 
     public Contribuyente obtenerContribuyente(Long id) throws ContribuyenteNoConfiguradoException {
         return repositorioDeContribuyentes.findById(id)

@@ -8,7 +8,7 @@ RESP: El enunciado no deja del todo claro que es la "carga manual". Pero lo que 
 RESP: Se refiere a la fecha del acontecimiento.
 
 3. ¿Ser anónimo es por hecho o para siempre? Es decir, ¿Yo puedo un día subir un hecho siendo anónimo, al día siguiente subo uno con mis datos, y otro día puedo volver a subir un hecho de forma anónima?
-RESP: Un mismo usuario debería ser capaz de subir hechos tanto de forma anónima como no anónima independientemente del momento. La manera con la que transaccionan entre anónimo y no anónimo es algo que deben decidir ustedes. 
+RESP: Un mismo registroUsuarioDto debería ser capaz de subir hechos tanto de forma anónima como no anónima independientemente del momento. La manera con la que transaccionan entre anónimo y no anónimo es algo que deben decidir ustedes.
 
 4. ¿Los datos personales de un contribuyente son por hecho o son para siempre? Es decir, ¿Un día puede subir un hecho con el nombre carlos y al otro día con el nombre juan, o una vez que pone sus datos ya se queda así para siempre?
 RESP: El enunciado por el momento no es muy claro al respecto, pero asumo que una vez registrado el contribuyente debería poder editar sus datos posteriormente.
@@ -27,7 +27,7 @@ Respondiendo a tus preguntas, depende como lo diseñes. Por ejemplo, podés expo
 Espero haber contestado tu consulta, cualquier cosa no dudes en preguntar nuevamente.
 
 7. un contribuyente es toda persona humana que sube un hecho o solo son contribuyentes los que suben algo de forma no anónima? remarcar contradicción entre el enunciado y la respuesta que dio el ayudante.
-RESP: Nueva redefinición adoptada: una persona puede subir un hecho tanto registrado como no registrado, entendiendo por registrado a que la persona tiene una cuenta en el sistema, es decir usuario y contraseña, y se encuentra logueado. Si sube un hecho sin estar registrado, es decir, sin cuenta, solo lo podrá hacer de manera anónima, y este mismo no podrá ser editado. En cambio, si sube un hecho registrado con cuenta, puede optar por subirlo de forma anónima o no anónima, incluyendo en este último caso los datos personales del autor que lo subió, y permitiendo en ambos casos, la edición del hecho.
+RESP: Nueva redefinición adoptada: una persona puede subir un hecho tanto registrado como no registrado, entendiendo por registrado a que la persona tiene una cuenta en el sistema, es decir registroUsuarioDto y contraseña, y se encuentra logueado. Si sube un hecho sin estar registrado, es decir, sin cuenta, solo lo podrá hacer de manera anónima, y este mismo no podrá ser editado. En cambio, si sube un hecho registrado con cuenta, puede optar por subirlo de forma anónima o no anónima, incluyendo en este último caso los datos personales del autor que lo subió, y permitiendo en ambos casos, la edición del hecho.
 
 8. para esta iteración debemos modelar todo aquello que no se encuentre en el alcance de la entrega 1? por ejemplo fuentes dinámicas. osea entendemos que para esta entrega no se pide pero tal vez estaría bueno hacerlo de cara al futuro.
 RESP: Podemos ir modelando lo que sigue pero solo se entrega lo del alcance de la entrega 1.

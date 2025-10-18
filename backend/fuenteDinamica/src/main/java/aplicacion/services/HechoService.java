@@ -40,6 +40,12 @@ public class HechoService {
         this.multimediaInputMapper = multimediaInputMapper;
     }
 
+    @Transactional
+    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+        contribuyenteService.obtenerContribuyente(contribuyenteId);
+        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+    }
+
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
     public List<Hecho> obtenerHechos() {
         return repositorioDeHechos.findAll();
