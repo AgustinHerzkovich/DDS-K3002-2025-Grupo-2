@@ -15,6 +15,7 @@
     </parent>
 
     <modules>
+        <module>utils</module>
         <module>fuenteEstatica</module>
         <module>fuenteDinamica</module>
         <module>fuenteProxy</module>
@@ -23,7 +24,6 @@
         <module>apiPublica</module>
         <module>apiAdministrativa</module>
         <module>dashboard</module>
-        <module>utils</module>
     </modules>
 
     <dependencies>

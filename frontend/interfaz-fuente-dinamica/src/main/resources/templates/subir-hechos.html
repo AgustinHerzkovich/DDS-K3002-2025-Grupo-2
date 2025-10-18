@@ -86,73 +86,38 @@
     const multimediaTipoSelect = document.getElementById('multimediaTipo');
     const multimediaFieldsContainer = document.getElementById('multimedia-fields-container');
 
-    // Muestra los campos de multimedia correctos según la selección
-    multimediaTipoSelect.addEventListener('change', function() {
-      const tipo = this.value;
-      multimediaFieldsContainer.innerHTML = ''; // Limpiar campos
 
-      if (tipo === 'imagen' || tipo === 'video' || tipo === 'audio') {
-        const commonFields = `
-                <div class="form-group">
-                    <label for="url">URL</label>
-                    <input type="text" id="url" name="url">
-                </div>
-                <div class="form-group">
-                    <label for="formato">Formato (ej: jpg, mp4, mp3)</label>
-                    <input type="text" id="formato" name="formato">
-                </div>
-                <div class="form-group">
-                    <label for="tamanio">Tamaño (en bytes)</label>
-                    <input type="number" id="tamanio" name="tamanio">
-                </div>
-            `;
-        multimediaFieldsContainer.innerHTML += commonFields;
-      }
-
-      if (tipo === 'imagen') {
-        const extraFields = `
-                <div class="form-group">
-                    <label for="resolucion">Resolución (ej: 1024x768)</label>
-                    <input type="text" id="resolucion" name="resolucion">
-                </div>
-            `;
-        multimediaFieldsContainer.innerHTML += extraFields;
-      } else if (tipo === 'video' || tipo === 'audio') {
-        const extraFields = `
-                <div class="form-group">
-                    <label for="duracion">Duración (en segundos)</label>
-                    <input type="number" id="duracion" name="duracion">
-                </div>
-            `;
-        multimediaFieldsContainer.innerHTML += extraFields;
-      }
-    });
+    const userData = {
+            nombre: [[${principal != null ? principal.claims['given_name'] : null}]],
+            apellido: [[${principal != null ? principal.claims['family_name'] : null}]],
+            fechaNacimiento: [[${principal != null ? principal.claims['birthdate'] : null}]],
+            contribuyenteId: [[${session.CONTRIBUYENTE_ID}]],
+            esAdministrador: [[${isAdmin}]]
+  };
 
     // Maneja el envío del formulario
     form.addEventListener('submit', function(event) {
       event.preventDefault();
 
-      // Recolectar datos del formulario
+      const esAnonimo = form.anonimato.checked;
       const multimediaTipo = multimediaTipoSelect.value;
       let multimediaObject = null;
 
-      if (multimediaTipo) {
-        multimediaObject = {
-          tipo: multimediaTipo,
-          formato: form.formato.value || null,
-          tamanio: parseFloat(form.tamanio.value) || null,
-          url: form.url.value || null
-        };
+      // 1. Construir el objeto AUTOR si NO es anónimo
+      let autorObject = null;
 
-        if (multimediaTipo === 'imagen') {
-          multimediaObject.resolucion = form.resolucion.value || null;
-        } else if (multimediaTipo === 'video' || multimediaTipo === 'audio') {
-          multimediaObject.duracion = parseFloat(form.duracion.value) || null;
-          // Si es video, también tiene resolución
-          if (multimediaTipo === 'video') {
-            multimediaObject.resolucion = form.resolucion.value || null;
+      if (!esAnonimo && userData.contribuyenteId) {
+        autorObject = {
+          nombre: userData.nombre ,
+          apellido: userData.apellido ,
+          fechaNacimiento: userData.fechaNacimiento ,
+
+
+          contribuyente: {
+            contribuyenteId: String(userData.contribuyenteId), // Asegurar que sea string si el backend lo espera así
+            esAdministrador: userData.esAdministrador
           }
-        }
+        };
       }
 
       const formData = {
@@ -169,11 +134,13 @@
         origen: "CONTRIBUYENTE",
         contenidoTexto: form.contenidoTexto.value,
         contenidoMultimedia: multimediaObject ? [multimediaObject] : [],
-        anonimato: form.anonimato.checked
+        anonimato: esAnonimo,
+        autor: autorObject
+
       };
 
-      // Petición al endpoint de la API
-      fetch('http://localhost:8082/fuentesDinamicas/hechos', {
+      // Petición al endpoint del propio backend (/subir-hechos-post)
+      fetch('/subir-hechos-post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,14 +150,14 @@
               .then(response => {
                 if (response.ok) {
                   return response.json();
-                } else if (response.status === 404) {
-                  return response.text().then(text => Promise.reject(new Error(text)));
+                } else if (response.status === 401) {
+                  throw new Error('No autorizado. Vuelve a iniciar sesión.');
                 }
-                throw new Error('Error al enviar el formulario.');
+                throw new Error('Error al enviar el formulario. Estado: ' + response.status);
               })
               .then(data => {
                 console.log('Success:', data);
-                alert('Hecho publicado con éxito. ID: ' + data.id);
+                alert('Hecho publicado con éxito.');
                 window.location.href = '/';
               })
               .catch((error) => {

@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
-import aplicacion.models.RegistroUsuarioDto;
+
+import aplicacion.dtos.HechoInputDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,18 +29,6 @@ public class HomeController {
     public HomeController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-
-    @Value("${keycloak.auth-server-url}")
-    private String keycloakServerUrl;
-
-    @Value("${keycloak.realm}")
-    private String realm;
-
-    @Value("${keycloak.resource}")
-    private String clientId;
-
-    @Value("${keycloak.credentials.secret}")
-    private String clientSecret;
 
 
     @GetMapping({"/", "/home"})
@@ -99,19 +88,73 @@ public class HomeController {
         return "redirect:/";
     }
 
+
     @GetMapping("/subir-hechos")
-    public String showUploadForm() {
+    public String showUploadForm(@AuthenticationPrincipal OidcUser principal, Model model) {
+        if (principal != null) {
+            model.addAttribute("principal", principal);
+
+            boolean isAdmin = checkClaimForRole(principal, "admin");
+            model.addAttribute("isAdmin", isAdmin);
+        }
         return "subir-hechos";
     }
-
-    // ... otros métodos GetMapping (como /mis-hechos, etc.) deben ser revisados
-    // para asegurar que solo haya una definición por ruta.
 
     @PostMapping("/save-redirect-url")
     @ResponseBody
     public String saveRedirectUrl(@RequestParam String url, HttpServletRequest request) {
         request.getSession().setAttribute("REDIRECT_URL_AFTER_LOGIN", url);
         return "OK";
+    }
+
+    private static final String HECHOS_API_URL = "http://localhost:8082/fuentesDinamicas/hechos";
+
+    @PostMapping("/subir-hechos-post")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> subirHechos(@RequestBody HechoInputDto hechoDto, HttpServletRequest request) {
+
+        Long idDeSesion = (Long) request.getSession().getAttribute("CONTRIBUYENTE_ID");
+
+        // 1. Lógica para la vinculación (Si NO es anónimo)
+        if (!hechoDto.getAnonimato()) {
+
+            if (idDeSesion == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("{\"error\": \"ID de contribuyente no encontrado en la sesión. Vuelva a iniciar sesión.\"}");
+            }
+
+            //  ÚNICA INSERCIÓN NECESARIA: ID en la raíz
+            hechoDto.setContribuyenteId(idDeSesion);
+            System.out.println(" Hecho vinculado al ID: " + idDeSesion);
+
+        } else {
+            // 2. Si es anónimo, se asegura que el campo sea NULL
+            hechoDto.setContribuyenteId(null);
+            System.out.println(" Subida anónima.");
+        }
+
+        // 3. Enviar el DTO al microservicio (POST final)
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<HechoInputDto> requestEntity = new HttpEntity<>(hechoDto, headers);
+
+            // POST al microservicio
+            ResponseEntity<String> response = restTemplate.exchange(
+                    HECHOS_API_URL,
+                    HttpMethod.POST,
+                    requestEntity,
+                    String.class
+            );
+
+            // Retornar la respuesta del microservicio
+            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+
+        } catch (Exception e) {
+            // Manejo de errores
+            System.err.println(" ERROR FATAL al procesar hecho: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Comunicación fallida.\"}");
+        }
     }
 
     /*

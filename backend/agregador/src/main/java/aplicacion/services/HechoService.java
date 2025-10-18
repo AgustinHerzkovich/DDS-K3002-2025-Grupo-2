@@ -8,12 +8,14 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -27,13 +29,15 @@ public class HechoService {
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
+    private final ContribuyenteService contribuyenteService;
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.hechoInputMapper = hechoInputMapper;
+        this.contribuyenteService = contribuyenteService;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -76,6 +80,12 @@ public class HechoService {
         if (coleccion.cumpleCriterios(hecho)) {
             repositorioDeHechosXColeccion.save(hechoPorColeccion);
         }
+    }
+
+    @Transactional
+    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+        contribuyenteService.obtenerContribuyente(contribuyenteId);
+        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{

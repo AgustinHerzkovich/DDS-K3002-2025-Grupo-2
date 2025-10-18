@@ -24,7 +24,7 @@ public class Contribuyente {
     private IdentidadContribuyente identidad;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;
-    String mail;
+    private String mail;
 
     public Contribuyente(Boolean esAdministrador, IdentidadContribuyente identidad, String mail) {
         this.esAdministrador = esAdministrador;

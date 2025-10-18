@@ -15,14 +15,16 @@ public class SecurityConfig {
     private CustomAuthenticationSuccessHandler successHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http.authorizeHttpRequests(authorize -> authorize
+        http.csrf(csrf -> csrf
+                        // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
+                        .ignoringRequestMatchers("/subir-hechos-post"))
+            .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/", true)  // Forzar redirección después del login
+                        .successHandler(successHandler)
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")         // Redireccionar después del logout
