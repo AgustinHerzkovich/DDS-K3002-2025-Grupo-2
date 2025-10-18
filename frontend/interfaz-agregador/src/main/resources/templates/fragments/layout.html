@@ -27,18 +27,6 @@
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 
-<!-- Modal de Login -->
-<div th:replace="~{fragments/login-modal :: loginModal}"></div>
-
-<!-- Modales de Autenticación (Registro y Recuperación de Contraseña) -->
-<div th:replace="~{fragments/auth-modals :: forgotPasswordModal}"></div>
-<div th:replace="~{fragments/auth-modals :: resetPasswordModal}"></div>
-<div th:replace="~{fragments/auth-modals :: registerModal}"></div>
-
-<!-- Scripts para manejar los modales -->
-<script th:src="@{/js/login-modal.js}"></script>
-<script th:src="@{/js/auth-modals.js}"></script>
-
 <!-- Script para el menú de perfil -->
 <div th:replace="~{fragments/user-button :: profileScript}"></div>
 

@@ -82,4 +82,6 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
     List<Hecho>findByTextoLibre(@Param("textoLibre") String textoLibre);
+
+    List<Hecho> findByAutorId(Long autorId);
 }

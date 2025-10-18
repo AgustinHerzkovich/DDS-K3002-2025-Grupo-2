@@ -1,5 +1,6 @@
 package aplicacion.config;
 
+import aplicacion.services.CustomOidcUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,29 +9,53 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CustomOidcUserService customOidcUserService;
     @Autowired
     private CustomAuthenticationSuccessHandler successHandler;
+
+    public SecurityConfig(CustomOidcUserService customOidcUserService) {
+        this.customOidcUserService = customOidcUserService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/save-redirect-url"))
                 .authorizeHttpRequests(authorize -> authorize
-                        // permite acceso a recursos estáticos (CSS, JS, imágenes, etc.)
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fragments/**").permitAll()
-                        // protege el perfil
-                        .requestMatchers("/profile").authenticated()
-                        // el resto es público
-                        .anyRequest().permitAll()
+                        // Declaramos explícitamente todas las rutas públicas
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/"),
+                                new AntPathRequestMatcher("/home"),
+                                new AntPathRequestMatcher("/about"),
+                                new AntPathRequestMatcher("/css/**"),
+                                new AntPathRequestMatcher("/js/**"),
+                                new AntPathRequestMatcher("/images/**"),
+                                new AntPathRequestMatcher("/fragments/**"),
+                                new AntPathRequestMatcher("/favicon.ico")
+                        ).permitAll()
+                        // Cualquier otra petición (como /profile) requerirá autenticación
+                        .anyRequest().authenticated()
                 )
-                .oauth2Login(customizer -> customizer
-                        .successHandler(successHandler));
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .oidcUserService(customOidcUserService)
+                        )
+                        .successHandler(successHandler)
+                )
+                // Configuración de Logout estándar que se integra con Keycloak
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")         // Redireccionar después del logout
+                        .logoutUrl("/logout")          // URL para procesar el logout
+                        .invalidateHttpSession(true)   // Invalidar sesión
+                        .clearAuthentication(true)     // Limpiar autenticación
+                        .deleteCookies("JSESSIONID")   // Eliminar cookies
+                );
 
         return http.build();
     }
+
 }
