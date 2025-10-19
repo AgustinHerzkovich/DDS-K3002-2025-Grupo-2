@@ -3,10 +3,7 @@ package aplicacion.controllers;
 import aplicacion.config.ConfigService;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;
 
 @RestController
@@ -23,5 +20,10 @@ public class ContribuyenteController {
     @PostMapping("/contribuyentes")
     public ResponseEntity<Object> agregarContribuyente(@RequestBody Object body) {
         return solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, Object.class);
+    }
+
+    @GetMapping("/contribuyentes/{id}/hechos")
+    public ResponseEntity<Object> obtenerHechosContribuyente(@PathVariable("id") Long id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", Object.class);
     }
 }
