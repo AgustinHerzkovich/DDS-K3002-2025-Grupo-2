@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('Bienvenido', ~{::main}, ${botonDerechaFragment})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::contenidoSuperior}, ~{::main}, ${botonDerechaFragment})}">
 <body>
+
+<div th:fragment="contenidoSuperior">
+    <h1 class="text-2xl font-semibold">Bienvenido</h1>
+</div>
 
 <!-- Contenido Principal -->
 <main>
     <div class="map-container">
         <!-- Botón centrado -->
-        <button class="map-button" th:href="/mapa">Mapa Interactivo</button>
+        <button class="map-button" th:href="@{/mapa}">Mapa Interactivo</button>
 
         <!-- Flecha deslizante -->
         <svg class="scroll-arrow" onclick="scrollToContent()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40">
