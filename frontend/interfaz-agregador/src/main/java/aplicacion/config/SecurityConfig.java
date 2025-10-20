@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 new AntPathRequestMatcher("/"),
                                 new AntPathRequestMatcher("/home"),
+                                new AntPathRequestMatcher("/mapa"),
                                 new AntPathRequestMatcher("/about"),
                                 new AntPathRequestMatcher("/css/**"),
                                 new AntPathRequestMatcher("/js/**"),

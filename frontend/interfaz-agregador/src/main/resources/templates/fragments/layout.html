@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (titulo, contenido, botonDerecha)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (contenidoCentral, contenido, menuDerecha)">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${'MetaMapa - ' + titulo}">MetaMapa</title>
+    <title>MetaMapa</title>
 
     <!-- Tailwind CSS desde CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,7 +19,7 @@
 <body class="bodyHome bg-gray-50">
 
 <!-- Header -->
-<div th:replace="~{fragments/header :: navbar(${titulo}, ${botonDerecha})}"></div>
+<div th:replace="~{fragments/header :: navbar(${contenidoCentral}, ${menuDerecha})}"></div>
 
 <!-- Contenido Principal (variable) -->
 <div th:replace="${contenido}"></div>
