@@ -9,20 +9,18 @@
 <body>
 
 <!-- Fragment: Header de navegación -->
-<header th:fragment="navbar(titulo, botonDerecha)" class="bg-indigo-800 text-white">
+<header th:fragment="navbar(contenidoCentral, menuDerecha)" class="bg-indigo-800 text-white">
     <nav class="px-6 py-4 flex justify-between items-center relative">
         <!-- Izquierda: Logo -->
         <a href="/" class="flex items-center space-x-2 z-10">
             <img th:src="@{/images/logo-metamapa.png}" class="w-24 h-24">
         </a>
 
-        <!-- Centro: Título -->
-        <div class="absolute inset-x-0 text-center">
-            <h1 class="text-5xl font-bold tracking-wider text-black" th:text="${titulo}">Título</h1>
-        </div>
+        <!-- Centro: Puede ser título, barra de búsqueda, etc -->
+        <div th:replace="~{__${contenidoCentral}__}"></div>
 
-        <!-- Derecha: Botón dinámico (login o volver) -->
-        <div th:replace="~{__${botonDerecha}__}"></div>
+        <!-- Derecha: Menú derecho -->
+        <div th:replace="~{__${menuDerecha}__}"></div>
     </nav>
 </header>
 
