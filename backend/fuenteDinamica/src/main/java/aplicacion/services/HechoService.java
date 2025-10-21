@@ -103,11 +103,11 @@ public class HechoService {
 
         hecho.editar(hechoEdicionInputDto.getTitulo(),
                 hechoEdicionInputDto.getDescripcion(),
-                categoriaInputMapper.map(hechoEdicionInputDto.getCategoria()),
-                ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()),
+                hechoEdicionInputDto.getCategoria() != null ? categoriaInputMapper.map(hechoEdicionInputDto.getCategoria()) : null,
+                hechoEdicionInputDto.getUbicacion() != null ? ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()) : null,
                 hechoEdicionInputDto.getFechaAcontecimiento(),
                 hechoEdicionInputDto.getContenidoTexto(),
-                hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList());
+                hechoEdicionInputDto.getContenidoMultimedia() != null ? hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null);
 
         hecho = repositorioDeHechos.save(hecho);
         return hechoOutputMapper.map(hecho);
