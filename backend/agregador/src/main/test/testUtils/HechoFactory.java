@@ -1,0 +1,52 @@
+package testUtils;
+
+import aplicacion.domain.hechos.Categoria;
+import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.hechos.Origen;
+import aplicacion.domain.hechos.Ubicacion;
+import aplicacion.domain.hechos.multimedias.Multimedia;
+import aplicacion.domain.hechos.multimedias.Video;
+import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.domain.usuarios.IdentidadContribuyente;
+
+import java.time.LocalDateTime;
+import java.util.*;
+
+public class HechoFactory {
+
+    private static final Random random = new Random();
+
+    public static Hecho crearHechoAleatorio() {
+        String titulo = RandomThingsGenerator.generarOracionAleatoria();
+        String descripcion = RandomThingsGenerator.generarTextoAleatorio();
+        Categoria categoria = CategoriaFactory.obtenerCategoriaAleatoria();
+        Ubicacion ubicacion = RandomThingsGenerator.generarUbicacionAleatoria();
+        LocalDateTime fechaAcontecimiento = LocalDateTime.now().minusDays(random.nextInt(100));
+        Origen origen = RandomThingsGenerator.generarOrigenAleatorio();
+        String contenidoTexto = "Contenido de texto generado aleatoriamente " + UUID.randomUUID();
+        Boolean anonimato = random.nextBoolean();
+        Contribuyente autor = anonimato ? null : ContribuyenteFactory.crearContribuyenteAleatorio();
+
+        return new Hecho(
+                titulo,
+                descripcion,
+                categoria,
+                ubicacion,
+                fechaAcontecimiento,
+                origen,
+                contenidoTexto,
+                List.of(new Video("mp4", 100, RandomThingsGenerator.generarLinkYoutubeAleatorio(), "720x1280", 2)),
+                anonimato,
+                autor
+        );
+    }
+
+    public static List<Hecho> crearHechosAleatorios(int cantidad) {
+        List<Hecho> hechos = new ArrayList<>();
+        for (int i = 0; i < cantidad; i++) {
+            hechos.add(crearHechoAleatorio());
+        }
+        return hechos;
+    }
+}
+
