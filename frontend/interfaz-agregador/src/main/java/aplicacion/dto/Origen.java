@@ -1,4 +1,4 @@
-package aplicacion.dto.input;
+package aplicacion.dto;
 
 // ORIGEN
 public enum Origen {

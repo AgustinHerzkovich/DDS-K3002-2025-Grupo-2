@@ -1,5 +1,6 @@
 package aplicacion.dto.input;
 
+import aplicacion.dto.TipoAlgoritmoConsenso;
 import lombok.Getter;
 
 import java.util.List;
