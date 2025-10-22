@@ -1,6 +1,5 @@
-package aplicacion.dtos;
+package aplicacion.dtos.input;
 
-import aplicacion.dtos.IdentidadContribuyenteInputDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,10 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{::contenidoSuperior}, ~{::main}, ${botonDerechaFragment})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ${menuDerecho})}">
 <body>
-
-<div th:fragment="contenidoSuperior">
-    <h1 class="text-2xl font-semibold">Bienvenido</h1>
-</div>
 
 <!-- Contenido Principal -->
 <main>

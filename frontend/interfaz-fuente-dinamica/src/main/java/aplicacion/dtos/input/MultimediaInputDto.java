@@ -1,4 +1,4 @@
-package aplicacion.dtos;
+package aplicacion.dtos.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

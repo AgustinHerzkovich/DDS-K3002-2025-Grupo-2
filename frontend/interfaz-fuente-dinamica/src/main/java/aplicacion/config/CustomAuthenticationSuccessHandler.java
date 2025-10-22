@@ -1,13 +1,14 @@
 package aplicacion.config;
 
-import aplicacion.dtos.ContribuyenteInputDto;
-import aplicacion.dtos.IdentidadContribuyenteInputDto;
+import aplicacion.dtos.input.ContribuyenteInputDto;
+import aplicacion.dtos.input.IdentidadContribuyenteInputDto;
 import aplicacion.dtos.output.ContribuyenteOutputDto; // Clase que contiene el ID de la base de datos
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -111,6 +112,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
             sendContribuyenteCreationRequest(oidcUser, request);
         }
+
+        System.out.println("=== Authorities del usuario ===");
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            System.out.println(" -> " + authority.getAuthority());
+        }
+        System.out.println("==============================");
 
         // 2. Lógica de Redirección (Tu código original)
         String targetUrl = (String) request.getSession().getAttribute("REDIRECT_URL_AFTER_LOGIN");

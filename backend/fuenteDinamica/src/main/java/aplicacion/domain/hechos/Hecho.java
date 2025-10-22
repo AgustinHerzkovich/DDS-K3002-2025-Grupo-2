@@ -99,4 +99,7 @@ public class Hecho {
     public boolean estaAceptado() {
         return this.estadoRevision == EstadoRevision.ACEPTADO;
     }
+    public boolean estaPendiente() {
+        return this.estadoRevision == EstadoRevision.PENDIENTE;
+    }
 }
