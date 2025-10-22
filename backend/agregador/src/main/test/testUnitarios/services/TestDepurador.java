@@ -6,21 +6,22 @@ import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testUtils.HechoFactory;
+import testUtils.RandomThingsGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TestDepurador {
-
     @Mock
     private HechoService hechoService;
 
@@ -31,7 +32,7 @@ class TestDepurador {
     private DepuradorDeHechos depuradorDeHechos;
 
     @Test
-    void testDepurar() {
+    void noTiraExcepciones() {
         Fuente fuente = new FuenteEstatica();
         fuente.setId("fuente-test");
         fuente.setHechos(new ArrayList<>());
@@ -48,6 +49,41 @@ class TestDepurador {
         verify(hechoService).hallarHechosDuplicadosDeLista(hechos);
         verify(hechoService, times(2)).quitarHechosDeSublista(hechos, List.of());
         verify(hechoService).guardarHechos(hechos);
+        verify(fuenteService).guardarFuente(fuente);
+    }
+
+    @Test
+    void evitaHechosRepetidos() {
+        Fuente fuente = new FuenteEstatica();
+        fuente.setId("fuente-test");
+        fuente.setHechos(new ArrayList<>());
+
+
+
+        List<Hecho> unicos = HechoFactory.crearHechosAleatorios(50);
+        List<Hecho> repetidos = new ArrayList<>(unicos.subList(RandomThingsGenerator.generarEnteroAleatorio(30, 35), 40));
+        List<Hecho> todosLosHechos = new ArrayList<>(unicos);
+        todosLosHechos.addAll(repetidos);
+        List<Hecho> hechos = new ArrayList<>(todosLosHechos);
+
+        Map<Fuente, List<Hecho>> hechosPorFuente = Map.of(fuente, hechos);
+
+        when(hechoService.hallarHechosDuplicadosDeBD(anyList())).thenReturn(new ArrayList<>());
+        when(hechoService.hallarHechosDuplicadosDeLista(anyList())).thenReturn(new ArrayList<>(repetidos));
+        doAnswer(invocation -> {
+            List<Hecho> listaOriginal = invocation.getArgument(0);
+            List<Hecho> hechosAQuitar = invocation.getArgument(1);
+            listaOriginal.removeIf(hechosAQuitar::contains);
+            return null;
+        }).when(hechoService).quitarHechosDeSublista(anyList(), anyList());
+
+
+        depuradorDeHechos.depurar(hechosPorFuente);
+
+        verify(hechoService).guardarHechos(
+                argThat(lista -> lista.size() == unicos.size())
+        );
+
         verify(fuenteService).guardarFuente(fuente);
     }
 }

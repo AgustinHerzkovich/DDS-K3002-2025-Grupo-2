@@ -144,4 +144,8 @@ public class RandomThingsGenerator {
         }
         return palabra.substring(0, 1).toLowerCase() + palabra.substring(1);
     }
+
+    public static Integer generarEnteroAleatorio(int desde, int hasta){
+        return random.nextInt(desde, hasta);
+    }
 }
