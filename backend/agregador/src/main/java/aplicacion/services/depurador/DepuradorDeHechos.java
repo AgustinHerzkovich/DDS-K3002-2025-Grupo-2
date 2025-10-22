@@ -43,6 +43,7 @@ public class DepuradorDeHechos {
             // Saca los que ya estan en la BD de lista "hechos"
             hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeBD);
             hechoService.quitarHechosDeSublista(hechos, hechosDuplicadosDeLista);
+            hechos.addAll(hechosDuplicadosDeLista); // Los agrega 1 vez para que estén.
             progressBar.avanzar();
 
             // No guarda los repetidos
