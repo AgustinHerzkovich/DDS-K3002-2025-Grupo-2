@@ -16,11 +16,11 @@ public class HomeController {
     public String paginaInicial(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         if (oidcUser != null) {
             boolean isAdmin = checkClaimForRole(oidcUser, "admin");
-            model.addAttribute("botonDerechaFragment", "fragments/user-button :: botonPerfil");
+            model.addAttribute("menuDerecho", "fragments/right-menu :: homeLoggedIn");
             model.addAttribute("userName", oidcUser.getFullName());
             model.addAttribute("isAdmin", isAdmin);
         } else {
-            model.addAttribute("botonDerechaFragment", "fragments/user-button :: botonLogin");
+            model.addAttribute("menuDerecho", "fragments/right-menu :: homeNotLoggedIn");
         }
         return "homepage";
     }
@@ -39,7 +39,7 @@ public class HomeController {
 
     @GetMapping("/about")
     public String paginaAcercaDe(Model model) {
-        model.addAttribute("botonDerechaFragment", "fragments/user-button :: botonVolver");
+        model.addAttribute("menuDerecho", "fragments/right-menu :: about");
         return "about";
     }
 }

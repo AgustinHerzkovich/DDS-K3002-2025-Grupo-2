@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Hecho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/subir-hechos.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/layout :: mainHeader}"></div>
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<div class="modal-fact">
+    <div class="modal-header">
+        <h2>Editar Hecho ID: <span th:text="${hecho.id}"></span></h2>
+        <span class="close-btn" onclick="window.location.href='/mis-hechos';">&times;</span>
+    </div>
+
+    <form id="edit-fact-form">
+
+        <input type="hidden" id="hechoId" th:value="${hecho.id}">
+
+        <div class="form-group">
+            <label for="titulo">Título del hecho</label>
+            <input type="text" id="titulo" name="titulo" th:value="${hecho.titulo}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" th:text="${hecho.descripcion}" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="categoria">Categoría</label>
+            <input type="text" id="categoria" name="categoria" th:value="${hecho.categoria != null ? hecho.categoria.nombre : ''}">
+        </div>
+
+        <div class="form-group">
+            <label for="latitud">Latitud</label>
+            <input type="number" step="any" id="latitud" name="latitud" th:value="${hecho.ubicacion != null ? hecho.ubicacion.latitud : ''}">
+        </div>
+
+        <div class="form-group">
+            <label for="longitud">Longitud</label>
+            <input type="number" step="any" id="longitud" name="longitud" th:value="${hecho.ubicacion != null ? hecho.ubicacion.longitud : ''}">
+        </div>
+
+        <div class="form-group">
+            <label for="fechaAcontecimiento">Fecha de acontecimiento</label>
+            <input type="datetime-local" id="fechaAcontecimiento" name="fechaAcontecimiento"
+                   th:value="${hecho.fechaAcontecimiento != null ? #temporals.format(hecho.fechaAcontecimiento, 'yyyy-MM-dd''T''HH:mm') : ''}">
+        </div>
+
+        <div class="form-group">
+            <label for="contenidoTexto">Contenido</label>
+            <textarea id="contenidoTexto" name="contenidoTexto" th:text="${hecho.contenidoTexto}"></textarea>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="anonimato" name="anonimato" th:checked="${hecho.anonimato}">
+            <label for="anonimato">Publicar de forma anónima</label>
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="btn btn-cancel" onclick="window.location.href='/mis-hechos';">Cancelar</button>
+            <button type="submit" class="btn btn-publish">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('edit-fact-form');
+        const hechoId = document.getElementById('hechoId').value;
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+
+            const categoriaNombre = document.getElementById('categoria').value.trim();
+            const latitudValue = document.getElementById('latitud').value;
+            const longitudValue = document.getElementById('longitud').value;
+
+
+            const categoriaData = categoriaNombre ? { nombre: categoriaNombre } : null;
+
+            const ubicacionData = (latitudValue || longitudValue) ? {
+                latitud: parseFloat(latitudValue) || 0,
+                longitud: parseFloat(longitudValue) || 0
+            } : null;
+
+
+            const dataEdicion = {
+                titulo: document.getElementById('titulo').value,
+                descripcion: document.getElementById('descripcion').value,
+                contenidoTexto: document.getElementById('contenidoTexto').value,
+                fechaAcontecimiento: form.fechaAcontecimiento.value ? form.fechaAcontecimiento.value + ':00' : null,
+                anonimato: document.getElementById('anonimato').checked,
+
+                categoria: categoriaData,
+                ubicacion: ubicacionData,
+                contenidoMultimedia: null //TODO
+            };
+
+            fetch(`/guardar-edicion/${hechoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataEdicion)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('¡Cambios guardados con éxito!');
+                        window.location.href = '/mis-hechos';
+                    } else if (response.status === 403 || response.status === 404) {
+                        // --- Mostrar el mensaje de error del Backend (Mejora 3) ---
+                        return response.text().then(errorMessageText => {
+                            // Intentar mostrar el mensaje específico de la excepción del backend
+                            alert(`Error ${response.status}: ${errorMessageText}`);
+                        });
+                    } else {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de edición:', error);
+                    alert('Error al intentar guardar los cambios: ' + error.message);
+                });
+        });
+    });
+</script>
+</body>
+</html>

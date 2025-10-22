@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="homeNotLoggedIn">
+    <div th:replace="~{fragments/user-button :: botonPerfil}"></div>
+</div>
+
+<div th:fragment="homeLoggedIn">
+    <div th:replace="~{fragments/user-button :: botonLogin}"></div>
+</div>
+
+<div th:fragment="about">
+    <div th:replace="~{fragments/user-button :: botonVolver}"></div>
+</div>
+
+<div th:fragment="mapNotLoggedIn"></div>
+
+<div th:fragment="mapLoggedIn"></div>
+</body>
+</html>

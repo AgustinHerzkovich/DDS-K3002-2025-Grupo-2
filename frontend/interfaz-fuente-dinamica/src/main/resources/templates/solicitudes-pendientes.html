@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitudes Pendientes</title>
+    <link rel="stylesheet" th:href="@{/css/homepage.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .solicitudes-container { max-width: 1000px; margin: 50px auto; }
+        .solicitud-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 6px; background-color: #fff; }
+        .solicitud-header { font-weight: bold; margin-bottom: 10px; }
+        .solicitud-acciones button { margin-left: 10px; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-aceptar { background-color: #4CAF50; color: white; }
+        .btn-rechazar { background-color: #f44336; color: white; }
+        .btn-visualizar { background-color: #bcd9e3; color: #333; }
+        .no-hechos { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: mainHeader}"></div>
+<div th:replace="~{fragments/layout :: sidebar}"></div>
+
+<div class="solicitudes-container">
+    <h1>Solicitudes Pendientes de Hechos</h1>
+
+    <div th:if="${solicitudes.empty}" class="no-hechos">
+        <p>No hay solicitudes pendientes en este momento.</p>
+    </div>
+
+    <div th:each="hecho : ${solicitudes}" class="solicitud-card">
+        <h2 class="solicitud-header" th:text="'Título: ' + ${hecho.titulo}">Título de la Solicitud</h2>
+        <p th:text="'Descripción: ' + ${hecho.descripcion}"></p>
+
+        <p th:text="'Fecha: ' + ${#temporals.format(hecho.fechaAcontecimiento, 'dd/MM/yyyy')}"></p>
+        <p th:text="'ID: ' + ${hecho.id}"></p>
+
+        <div class="solicitud-acciones">
+            <button class="btn-visualizar"
+                    th:attr="data-id=${hecho.id}"
+                    onclick="visualizarHecho(this.dataset.id)">
+                Visualizar Detalle
+            </button>
+            <button class="btn-aceptar"
+                    th:attr="data-id=${hecho.id}"
+                    onclick="aprobarHecho(this.dataset.id, true)">
+                Aceptar
+            </button>
+            <button class="btn-rechazar"
+                    th:attr="data-id=${hecho.id}"
+                    onclick="aprobarHecho(this.dataset.id, false)">
+                Rechazar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: authModals}"></div>
+<div th:replace="~{fragments/layout :: pageScripts}"></div>
+
+<script th:inline="javascript">
+    const API_URL = "http://localhost:8082/fuentesDinamicas/hechos/";
+
+    // Funciones para Editar/Eliminar (las dejamos como placeholders para que no fallen)
+    function editarHecho(id) { console.log(`[EDITAR] Funcionalidad pendiente para ID: ${id}`); }
+    function eliminarHecho(id) { console.log(`[ELIMINAR] Funcionalidad pendiente para ID: ${id}`); }
+
+    function visualizarHecho(id) {
+        alert(`Visualizando detalles del hecho ID: ${id}`);
+    }
+
+    function aprobarHecho(id, esAceptado) {
+        if (!confirm(`¿Seguro que desea ${esAceptado ? 'ACEPTAR' : 'RECHAZAR'} el hecho ID ${id}?`)) {
+            return;
+        }
+
+
+        fetch(API_URL + id + '/aprobar', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ aprobado: esAceptado })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert(`Hecho ID ${id} fue ${esAceptado ? 'ACEPTADO' : 'RECHAZADO'}.`);
+                    window.location.reload();
+                } else {
+                    return response.text().then(text => Promise.reject(new Error(text)));
+                }
+            })
+            .catch(error => {
+                console.error('Error de aprobación:', error);
+                alert('Error al procesar la solicitud: ' + error.message);
+            });
+    }
+</script>
+</body>
+</html>

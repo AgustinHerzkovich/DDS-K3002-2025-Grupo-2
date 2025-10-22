@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -17,9 +18,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf
                         // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
-                        .ignoringRequestMatchers("/subir-hechos-post"))
+                        .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad"))
             .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
+                        //.requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos").permitAll()
                         .anyRequest().authenticated()
                 )

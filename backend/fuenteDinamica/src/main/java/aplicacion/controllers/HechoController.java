@@ -27,12 +27,13 @@ public class HechoController {
     @GetMapping("/hechos")
     public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA,
+            @RequestParam(value = "pendiente", required = false) Boolean pendiente
     ) {
         List<HechoOutputDto> hechos;
         if (fechaMayorA != null) {
             hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
-        } else {
+        } else{
             hechos = hechoService.obtenerHechosAceptados();
         }
 
@@ -76,6 +77,7 @@ public class HechoController {
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable("id") String id,
                                          @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
+        System.out.println("EDITANDO el hecho: " + id );
         try {
             HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto);
             System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")");

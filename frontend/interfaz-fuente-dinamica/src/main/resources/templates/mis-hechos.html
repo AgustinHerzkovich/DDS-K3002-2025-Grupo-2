@@ -72,35 +72,8 @@
   </style>
 </head>
 <body>
-<!-- Header igual que en homepage.html -->
-<header>
-  <div class="logo-container">
-    <a th:href="@{/}" class="logo">FD</a>
-  </div>
-
-  <div th:if="${principal != null}" class="user-menu-container">
-    <button id="userMenuBtn" class="user-profile-button" aria-expanded="false">
-      <span th:text="${principal.attributes['name']}">Nombre de Usuario</span>
-      <svg class="dropdown-arrow" viewBox="0 0 24 24">
-        <path d="M7 10l5 5 5-5z"/>
-      </svg>
-    </button>
-    <div id="userDropdown" class="user-dropdown-menu hidden">
-      <a th:href="@{/mis-hechos}" class="dropdown-item">
-        <i class="fas fa-file-alt"></i> Mis Hechos
-      </a>
-      <a th:href="@{/editar-perfil}" class="dropdown-item">
-        <i class="fas fa-user-edit"></i> Editar Perfil
-      </a>
-      <hr class="dropdown-divider">
-      <form th:action="@{/logout}" method="post">
-        <button type="submit" class="dropdown-item">
-          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </button>
-      </form>
-    </div>
-  </div>
-</header>
+<div th:replace="~{fragments/layout :: mainHeader}"></div>
+<div th:replace="~{fragments/layout :: sidebar}"></div>
 
 <div class="hechos-container">
   <h1>Mis Hechos</h1>
@@ -113,27 +86,38 @@
   <div th:each="hecho : ${hechos}" class="hecho-card">
     <h2 class="hecho-titulo" th:text="${hecho.titulo}">Título del Hecho</h2>
     <p class="hecho-descripcion" th:text="${hecho.descripcion}">Descripción del hecho</p>
+
     <div class="hecho-metadata">
-                <span th:text="${#temporals.format(hecho.fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
-                    Fecha de modificación
-                </span>
+    <span th:text="${#temporals.format(hecho.fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
+      Fecha de modificación
+    </span>
+
       <div class="hecho-acciones">
-        <button class="btn-editar" th:onclick="'editarHecho(\'' + ${hecho.id} + '\')'">
+
+        <button
+                class="btn-editar"
+                th:attr="data-id=${hecho.id}"
+                onclick="editarHecho(this.dataset.id)">
           Editar
         </button>
-        <button class="btn-eliminar" th:onclick="'eliminarHecho(\'' + ${hecho.id} + '\')'">
+
+        <button
+                class="btn-eliminar"
+                th:attr="data-id=${hecho.id}"
+                onclick="eliminarHecho(this.dataset.id)">
           Eliminar
         </button>
+
       </div>
     </div>
   </div>
-</div>
-
-<script>
-  // Funcionalidad del menú desplegable
+</div> <script>
+  // 1. Lógica del Menú Desplegable (CORREGIDO para que no falle)
   document.addEventListener('DOMContentLoaded', () => {
     const userMenuBtn = document.getElementById('userMenuBtn');
     const userDropdown = document.getElementById('userDropdown');
+
+
 
     if (userMenuBtn) {
       userMenuBtn.addEventListener('click', () => {
@@ -150,13 +134,15 @@
     });
   });
 
-  // Funciones para editar y eliminar hechos
+  // 2. Funciones JavaScript de Acción
   function editarHecho(id) {
+    // Redirige al controlador que cargará el formulario pre-llenado
     window.location.href = `/editar-hecho/${id}`;
   }
 
   function eliminarHecho(id) {
     if (confirm('¿Estás seguro de que deseas eliminar este hecho?')) {
+
       fetch(`/fuentesDinamicas/hechos/${id}`, {
         method: 'DELETE',
         headers: {
