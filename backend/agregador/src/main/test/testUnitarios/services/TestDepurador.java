@@ -60,15 +60,19 @@ class TestDepurador {
 
 
 
-        List<Hecho> unicos = HechoFactory.crearHechosAleatorios(50);
-        List<Hecho> repetidos = new ArrayList<>(unicos.subList(RandomThingsGenerator.generarEnteroAleatorio(30, 35), 40));
-        List<Hecho> todosLosHechos = new ArrayList<>(unicos);
-        todosLosHechos.addAll(repetidos);
+        List<Hecho> todosLosHechos = HechoFactory.crearHechosAleatorios(50);
+        List<Hecho> repetidos = new ArrayList<>(todosLosHechos.subList(RandomThingsGenerator.generarEnteroAleatorio(30, 35), 40));
+        List<Hecho> repetidosBD = new ArrayList<>(todosLosHechos.subList(RandomThingsGenerator.generarEnteroAleatorio(5, 10), 20));
         List<Hecho> hechos = new ArrayList<>(todosLosHechos);
+        hechos.addAll(repetidos);
+        List<Hecho> unicos = new ArrayList<>(todosLosHechos);
+        unicos.removeAll(repetidosBD);
+        unicos.removeAll(repetidos);
+        unicos.addAll(repetidos);
 
         Map<Fuente, List<Hecho>> hechosPorFuente = Map.of(fuente, hechos);
 
-        when(hechoService.hallarHechosDuplicadosDeBD(anyList())).thenReturn(new ArrayList<>());
+        when(hechoService.hallarHechosDuplicadosDeBD(anyList())).thenReturn(new ArrayList<>(repetidosBD));
         when(hechoService.hallarHechosDuplicadosDeLista(anyList())).thenReturn(new ArrayList<>(repetidos));
         doAnswer(invocation -> {
             List<Hecho> listaOriginal = invocation.getArgument(0);
