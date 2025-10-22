@@ -140,4 +140,9 @@ public class Hecho {
         );
     }
 
+    @Override
+    public String toString(){
+        return String.format("(Hecho){titulo: %s ; descripcion: %s ; id: %s}", titulo, descripcion, id);
+    }
+
 }
