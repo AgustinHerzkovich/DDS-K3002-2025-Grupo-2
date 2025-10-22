@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (contenidoSuperior, contenido, menuDerecha)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (contenidoSuperior, contenido, menuDerecho)">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
 <body class="bodyHome bg-gray-50">
 
 <!-- Header -->
-<div th:insert="~{fragments/header :: navbar(${contenidoSuperior}, ${menuDerecha})}"></div>
+<div th:replace="~{fragments/header :: navbar(${contenidoSuperior}, ${menuDerecho})}"></div>
 
 <!-- Contenido Principal (variable) -->
 <div th:replace="${contenido}"></div>
@@ -28,7 +28,7 @@
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 <!-- Script para el menú de perfil -->
-<div th:replace="~{fragments/user-button :: profileScript}"></div>
+<div th:replace="~{fragments/button :: profileScript}"></div>
 
 </body>
 </html>

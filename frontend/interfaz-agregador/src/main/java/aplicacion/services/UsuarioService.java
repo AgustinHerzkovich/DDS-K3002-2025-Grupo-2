@@ -2,21 +2,24 @@ package aplicacion.services;
 
 import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
-import io.github.cdimascio.dotenv.Dotenv;
 
 import java.time.LocalDate;
 import java.util.Collection;
 
 @Service
 public class UsuarioService {
-    private final WebClient webClient;
+    private WebClient webClient;
 
-    public UsuarioService() {
-        Dotenv dotenv = Dotenv.load();
-        String apiPublicaPort = dotenv.get("API_PUBLICA_PORT");
+    @Value("${api.publica.port}")
+    private Integer apiPublicaPort;
+
+    @PostConstruct
+    public void init() {
         this.webClient = WebClient.create("http://localhost:" + apiPublicaPort + "/apiPublica");
     }
 

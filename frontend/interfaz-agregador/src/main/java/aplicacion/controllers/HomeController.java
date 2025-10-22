@@ -16,11 +16,11 @@ public class HomeController {
     public String paginaInicial(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         if (oidcUser != null) {
             boolean isAdmin = checkClaimForRole(oidcUser, "admin");
-            model.addAttribute("menuDerecho", "fragments/right-menu :: homeLoggedIn");
+            model.addAttribute("isLoggedIn", true);
             model.addAttribute("userName", oidcUser.getFullName());
             model.addAttribute("isAdmin", isAdmin);
         } else {
-            model.addAttribute("menuDerecho", "fragments/right-menu :: homeNotLoggedIn");
+            model.addAttribute("isLoggedIn", false);
         }
         return "homepage";
     }
@@ -38,8 +38,7 @@ public class HomeController {
     }
 
     @GetMapping("/about")
-    public String paginaAcercaDe(Model model) {
-        model.addAttribute("menuDerecho", "fragments/right-menu :: about");
+    public String paginaAcercaDe() {
         return "about";
     }
 }

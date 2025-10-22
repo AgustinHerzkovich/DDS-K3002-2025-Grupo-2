@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ${menuDerecho})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ${isLoggedIn} ? ~{fragments/right-menu :: homeLoggedIn} : ~{fragments/right-menu :: homeNotLoggedIn})}">
 <body>
 
 <!-- Contenido Principal -->
 <main>
     <div class="map-container">
         <!-- Botón centrado -->
-        <button class="map-button" th:href="@{/mapa}">Mapa Interactivo</button>
+        <a th:href="@{/mapa}" class="map-button">Mapa Interactivo</a>
 
         <!-- Flecha deslizante -->
         <svg class="scroll-arrow" onclick="scrollToContent()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40">

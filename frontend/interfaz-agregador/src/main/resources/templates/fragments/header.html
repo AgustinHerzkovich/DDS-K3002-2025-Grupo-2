@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <title>MetaMapa</title>
     <!-- Tokens CSRF para formularios POST -->
     <meta name="_csrf" th:content="${_csrf?.token}" />
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" />
@@ -9,7 +10,7 @@
 <body>
 
 <!-- Fragment: Header de navegación -->
-<header th:fragment="navbar(contenidoSuperior, menuDerecha)" class="bg-indigo-800 text-white">
+<header th:fragment="navbar(contenidoSuperior, menuDerecho)" class="bg-indigo-800 text-white">
     <nav class="px-6 py-4 flex justify-between items-center relative">
         <!-- Izquierda: Logo -->
         <a href="/" class="flex items-center space-x-2 z-10">
@@ -17,10 +18,10 @@
         </a>
 
         <!-- Centro: Puede ser título, barra de búsqueda, etc -->
-        <div th:replace="~{__${contenidoSuperior}__}"></div>
+        <div th:replace="${contenidoSuperior}"></div>
 
         <!-- Derecha: Menú derecho -->
-        <div th:replace="~{__${menuDerecha}__}"></div>
+        <div th:replace="${menuDerecho}"></div>
     </nav>
 </header>
 
