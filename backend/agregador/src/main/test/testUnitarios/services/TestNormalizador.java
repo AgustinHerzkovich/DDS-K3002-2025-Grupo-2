@@ -1,3 +1,5 @@
+package testUnitarios.services;
+
 import aplicacion.services.normalizador.NormalizadorDeTerminos;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +26,6 @@ public class TestNormalizador {
         List<String> terminosNormalizados = new ArrayList<>();
         for (String t : terminos){
             String out = norm.normalizarTermino(t);
-            System.out.println(out);
             if(out == null){
                 norm.agregarTermino(t);
                 terminosNormalizados.add(t);
@@ -34,7 +35,6 @@ public class TestNormalizador {
             }
         }
 
-        System.out.println(terminosNormalizados);
         assert (Objects.equals(terminosNormalizados.get(7), "Uva"));
         assert (Objects.equals(terminosNormalizados.getLast(), "Uy"));
 
