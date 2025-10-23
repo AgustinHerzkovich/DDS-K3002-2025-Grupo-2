@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class HechoTest {
     Hecho hecho = HechoFactory.crearHechoAleatorio();
 
@@ -25,7 +27,8 @@ public class HechoTest {
     }
     @Test
     public void generaClaveUnica(){
-        Assert.hasLength(hecho.getClaveUnica(), "Clave unica esta vacia");
+        // No se puede crear si no normalizo categoria (Se hace al normalizar)
+        assertThrows(NullPointerException.class ,() -> hecho.getClaveUnica());
     }
     @Test
     public void iniciaSiendoVisible(){
