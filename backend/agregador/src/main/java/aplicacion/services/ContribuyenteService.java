@@ -15,6 +15,7 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -82,5 +83,10 @@ public class ContribuyenteService {
     public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) throws ContribuyenteNoConfiguradoException {
         return repositorioDeContribuyentes.findByMail(mail).map(contribuyenteOutputMapper::map)
                 .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con mail: " + mail));
+    }
+
+    public List<ContribuyenteOutputDto> obtenerContribuyentes() {
+        List<Contribuyente> contribuyentes = repositorioDeContribuyentes.findAll();
+        return contribuyentes.stream().map(contribuyenteOutputMapper::map).toList();
     }
 }

@@ -1,10 +1,12 @@
 package aplicacion.controllers;
 
-import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.services.HechoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +35,9 @@ public class MapaController {
             @RequestParam(name = "search", required = false) String search,
             Model model
     ) {
+
         // Obtener hechos desde la API Pública
-        List<HechoOutputDto> hechos;
+        List<HechoMapaOutputDto> hechos;
 
         if (categoria != null || fechaReporteDesde != null || fechaReporteHasta != null ||
             fechaAcontecimientoDesde != null || fechaAcontecimientoHasta != null ||
@@ -61,7 +64,7 @@ public class MapaController {
 
         try {
             String hechosJson = mapper.writeValueAsString(hechos);
-            model.addAttribute("hechosJson", hechosJson);
+            model.addAttribute("hechos", hechosJson);
         } catch (Exception e) {
             System.err.println("Error al convertir hechos a JSON: " + e.getMessage());
         }

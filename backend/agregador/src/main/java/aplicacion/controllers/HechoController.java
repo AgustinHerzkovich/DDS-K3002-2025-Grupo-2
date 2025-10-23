@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,16 @@ public class HechoController {
             hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
         }
         return hechos;
+    }
+
+    @GetMapping("/hechos/{id}")
+    public ResponseEntity<HechoOutputDto> obtenerHechoPorId(@PathVariable("id") String id) {
+        try {
+            HechoOutputDto hecho = hechoService.obtenerHechoDto(id);
+            return ResponseEntity.ok(hecho);
+        } catch (HechoNoEncontradoException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/hechos")

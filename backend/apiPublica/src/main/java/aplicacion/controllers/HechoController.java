@@ -38,4 +38,10 @@ public class HechoController {
         UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
+
+    @GetMapping("/hechos/{id}")
+    public ResponseEntity<Object> obtenerHechoPorId(@PathVariable("id") String id) {
+        String url = urlBaseAgregador + "/hechos/" + id;
+        return solicitudesHttp.get(url, Object.class);
+    }
 }

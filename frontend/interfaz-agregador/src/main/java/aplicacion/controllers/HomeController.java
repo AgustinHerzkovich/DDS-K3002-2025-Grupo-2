@@ -13,28 +13,8 @@ import java.util.Collection;
 public class HomeController {
 
     @GetMapping({"/", "/home"})
-    public String paginaInicial(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
-        if (oidcUser != null) {
-            boolean isAdmin = checkClaimForRole(oidcUser, "admin");
-            model.addAttribute("isLoggedIn", true);
-            model.addAttribute("userName", oidcUser.getFullName());
-            model.addAttribute("isAdmin", isAdmin);
-        } else {
-            model.addAttribute("isLoggedIn", false);
-        }
+    public String paginaInicial() {
         return "homepage";
-    }
-
-    private boolean checkClaimForRole(OidcUser oidcUser, String targetRole) {
-        Object rolesClaim = oidcUser.getClaim("realm_access"); // Keycloak usa 'realm_access.roles'
-        if (rolesClaim instanceof java.util.Map) {
-            @SuppressWarnings("unchecked")
-            Collection<String> roles = (Collection<String>) ((java.util.Map<String, Object>) rolesClaim).get("roles");
-            if (roles != null) {
-                return roles.stream().anyMatch(role -> role.equalsIgnoreCase(targetRole));
-            }
-        }
-        return false;
     }
 
     @GetMapping("/about")

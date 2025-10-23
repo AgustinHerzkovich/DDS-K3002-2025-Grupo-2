@@ -52,4 +52,19 @@ public class ContribuyenteController {
             return ResponseEntity.ok(contribuyente);
         }
     }
+
+    @GetMapping("/contribuyentes")
+    public  ResponseEntity<?> obtenerContribuyentes(@RequestParam(name = "mail", required = false) String mail) {
+        if (mail == null) {
+            List<ContribuyenteOutputDto> contribuyentes = contribuyenteService.obtenerContribuyentes();
+            return ResponseEntity.ok(contribuyentes);
+        } else {
+            try {
+                ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(mail);
+                return ResponseEntity.ok(contribuyente);
+            } catch (ContribuyenteNoConfiguradoException e) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+    }
 }

@@ -1,15 +1,13 @@
 package aplicacion.services;
 
+import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 @Service
 public class HechoService {
@@ -33,15 +31,24 @@ public class HechoService {
     }
 
     // Metodo que devuelve un Flux de hechos
-    public Flux<HechoOutputDto> obtenerHechos() {
+    public Flux<HechoMapaOutputDto> obtenerHechos() {
         return webClient.get()
                 .uri("/hechos")
                 .retrieve()
-                .bodyToFlux(HechoOutputDto.class)
+                .bodyToFlux(HechoMapaOutputDto.class)
                 .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
     }
 
-    public Flux<HechoOutputDto> obtenerHechosConFiltros(
+    public HechoOutputDto obtenerHecho(String id) {
+        return webClient.get()
+                .uri("/hechos/{id}", id)
+                .retrieve()
+                .bodyToMono(HechoOutputDto.class)
+                .doOnError(e -> System.err.println("Error al obtener hecho con ID " + id + " de la API Pública: " + e.getMessage()))
+                .block();
+    }
+
+    public Flux<HechoMapaOutputDto> obtenerHechosConFiltros(
             String categoria,
             String fechaReporteDesde,
             String fechaReporteHasta,
@@ -67,7 +74,7 @@ public class HechoService {
                     return uriBuilder.build();
                 })
                 .retrieve()
-                .bodyToFlux(HechoOutputDto.class)
+                .bodyToFlux(HechoMapaOutputDto.class)
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
     }
 }

@@ -101,6 +101,11 @@ public class HechoService {
         }
     }
 
+    public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException {
+        Hecho hecho = obtenerHechoPorId(idHecho);
+        return hechoOutputMapper.map(hecho);
+    }
+
     public List<Hecho> obtenerHechosPorColeccion(String idColeccion) {
         return repositorioDeHechos.findByCollectionId(idColeccion);
     }

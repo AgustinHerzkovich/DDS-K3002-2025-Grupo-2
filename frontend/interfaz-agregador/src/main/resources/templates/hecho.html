@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: hecho}, ~{::main}, ~{fragments/right-menu :: hecho(${isLoggedIn})})}">
+
+<body>
+<main>
+    <div class="hecho-container" th:object="${hecho}">
+        <div class="hecho-grid">
+            <!-- Sección Izquierda -->
+            <div class="left-section">
+                <!-- Categoría -->
+                <div class="categoria-badge" th:text="*{categoria.nombre}">Categoría</div>
+
+                <!-- Carousel de Contenido Multimedia -->
+                <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel" th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
+                    <div class="carousel-inner">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </button>
+                        <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
+                             th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
+                            <img th:src="${multimedia.url}" class="d-block w-100" th:alt="${multimedia.tipo}" style="max-height: 400px; object-fit: contain;">
+                        </div>
+                    </div>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselHecho" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Placeholder si no hay multimedia -->
+                <div class="carousel-container" th:if="*{contenidoMultimedia == null or contenidoMultimedia.isEmpty()}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 100px; height: 100px; color: #9ca3af;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                    </svg>
+                </div>
+
+                <!-- Fecha de Acontecimiento -->
+                <div class="info-item">
+                    <div class="info-label">Fecha de acontecimiento</div>
+                    <div class="info-value" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                </div>
+
+                <!-- Autor -->
+                <div class="info-item">
+                    <div class="info-label">Autor</div>
+                    <div class="info-value" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
+                </div>
+            </div>
+
+            <!-- Sección Derecha -->
+            <div class="right-section">
+                <!-- Título -->
+                <h1 class="fw-bold mb-3" th:text="*{titulo}">Título</h1>
+
+                <!-- Descripción -->
+                <div class="info-item">
+                    <div class="info-label">Descripción</div>
+                    <div class="info-value" th:text="*{descripcion}">Descripción</div>
+                </div>
+
+                <!-- Origen -->
+                <div class="info-item">
+                    <div class="info-label">Origen</div>
+                    <div class="info-value" th:text="*{origen}">Origen</div>
+                </div>
+
+                <!-- Fecha de Carga -->
+                <div class="info-item">
+                    <div class="info-label">Fecha de carga</div>
+                    <div class="info-value" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                </div>
+
+                <!-- Última Modificación -->
+                <div class="ultima-modificacion">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
+                    <span>Editado por última vez: <span th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</span></span>
+                </div>
+
+                <!-- Botón Solicitar Eliminación (solo si está logueado) -->
+                <div th:if="${isLoggedIn}" style="position: relative;">
+                    <button class="btn-solicitar mt-4" onclick="toggleModal()">
+                        Solicitar eliminación
+                    </button>
+
+                    <!-- Modal personalizado -->
+                    <div id="modalSolicitud" class="custom-modal" style="display: none;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Usted va a solicitar la eliminación de este hecho</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formSolicitud">
+                                <div class="mb-3">
+                                    <label for="motivo" class="form-label">Motivo</label>
+                                    <textarea class="form-control" id="motivo" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="toggleModal()">Cancelar</button>
+                            <button type="button" class="btn btn-danger" onclick="enviarSolicitud()">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Texto -->
+        <div class="contenido-texto" th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}">
+            <h3 class="fw-bold mb-3">Contenido Texto</h3>
+            <p th:text="*{contenidoTexto}">Aquí va el contenido de texto del hecho...</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        function toggleModal() {
+            const modal = document.getElementById('modalSolicitud');
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                modal.style.display = 'block';
+            } else {
+                modal.style.display = 'none';
+                // Limpiar formulario al cerrar
+                document.getElementById('motivo').value = '';
+            }
+        }
+
+        function enviarSolicitud() {
+            const motivo = document.getElementById('motivo').value;
+            if (!motivo.trim()) {
+                alert('Por favor ingrese un motivo');
+                return;
+            }
+
+            const hechoId = /*[[${hecho.id}]]*/ '';
+            const solicitanteId = /*[[${userId}]]*/ '';
+
+            if (!solicitanteId) {
+                alert('Debe estar logueado para enviar una solicitud de eliminación');
+                return;
+            }
+
+            const solicitud = {
+                solicitanteId: solicitanteId,
+                hechoId: hechoId,
+                motivo: motivo
+            };
+
+            // Log de la solicitud antes de enviarla
+            console.log('Solicitud a enviar:', solicitud);
+            console.log('JSON de la solicitud:', JSON.stringify(solicitud, null, 2));
+
+            // POST request al backend (API Pública) para crear la solicitud de eliminación
+            fetch('http://localhost:8085/apiPublica/solicitudes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    solicitanteId: solicitanteId,
+                    hechoId: hechoId,
+                    motivo: motivo
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Solicitud enviada exitosamente');
+                    // Cerrar modal
+                    toggleModal();
+                } else {
+                    return response.text().then(text => {
+                        alert('Error al enviar la solicitud: ' + text);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al enviar la solicitud');
+            });
+        }
+    </script>
+</main>
+</body>
+</html>

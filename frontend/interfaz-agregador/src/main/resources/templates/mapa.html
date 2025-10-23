@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: mapNotLoggedIn})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn})})}">
 
 <body>
 <main>
-    <div th:replace="~{fragments/mid-content :: mapa}"></div>
+    <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
 </main>
 </body>
 </html>

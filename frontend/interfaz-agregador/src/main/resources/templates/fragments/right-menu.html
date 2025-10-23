@@ -1,27 +1,22 @@
-<div th:fragment="homeNotLoggedIn">
-    <div th:replace="~{fragments/button :: botonLogin}"></div>
-</div>
-
-<div th:fragment="homeLoggedIn">
-    <div th:replace="~{fragments/button :: botonPerfil}"></div>
+<div th:fragment="home(isLoggedIn)">
+    <th:block th:if="${!isLoggedIn}">
+        <div th:replace="~{fragments/button :: botonLogin}"></div>
+    </th:block>
+    <th:block th:if="${isLoggedIn}">
+        <div th:replace="~{fragments/button :: botonPerfil}"></div>
+    </th:block>
 </div>
 
 <div th:fragment="about">
     <div th:replace="~{fragments/button :: botonVolver}"></div>
 </div>
 
-<div th:fragment="userMap"  class="flex gap-3 items-center justify-center">
+<div th:fragment="map(isLoggedIn)"  class="flex gap-3 items-center justify-center">
     <div th:replace="~{fragments/button :: botonColecciones}"></div>
     <div th:replace="~{fragments/button :: botonCrearHecho}"></div>
+    <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
 </div>
 
-<div th:fragment="mapNotLoggedIn"  class="flex gap-3 items-center justify-center">
-    <div th:replace="~{fragments/right-menu :: userMap}"></div>
-    <div th:replace="~{fragments/button :: botonLogin}"></div>
-</div>
-
-
-<div th:fragment="mapLoggedIn"  class="flex gap-3 items-center justify-center">
-    <div th:replace="~{fragments/right-menu :: userMap}"></div>
-    <div th:replace="~{fragments/button :: botonPerfil}"></div>
+<div th:fragment="hecho(isLoggedIn)">
+    <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
 </div>

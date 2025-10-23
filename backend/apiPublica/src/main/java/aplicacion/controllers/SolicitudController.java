@@ -4,13 +4,11 @@ import aplicacion.config.ConfigService;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apiPublica")
+@CrossOrigin(origins = "http://localhost:8094", allowCredentials = "true")
 public class SolicitudController {
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;

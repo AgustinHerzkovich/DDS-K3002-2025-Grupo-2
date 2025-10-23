@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ${isLoggedIn} ? ~{fragments/right-menu :: homeLoggedIn} : ~{fragments/right-menu :: homeNotLoggedIn})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ~{fragments/right-menu :: home(${isLoggedIn})})}">
 <body>
 
 <!-- Contenido Principal -->
