@@ -108,7 +108,7 @@ public class Hecho {
     }
 
     public boolean contieneEtiqueta(Etiqueta etiqueta) {
-        return etiquetas.contains(etiqueta);
+        return etiquetas.stream().anyMatch(et-> et.esIdenticaA(etiqueta.getNombre()));
     }
 
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
