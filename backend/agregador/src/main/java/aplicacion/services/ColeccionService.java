@@ -14,6 +14,8 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,12 +72,12 @@ public class ColeccionService {
         repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
     }
 
-    public List<ColeccionOutputDto> obtenerColeccionesDTO() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
-        return obtenerColecciones().stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
+    public Page<ColeccionOutputDto> obtenerColeccionesDTO(Pageable pageable) { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
+        return repositorioDeColecciones.findAll(pageable).map(coleccionOutputMapper::map);
     }
 
-    public List<ColeccionOutputDto> obtenerColeccionesPorTextoLibre(String texto) {
-        return repositorioDeColecciones.findByTextoLibre(texto).stream().map(coleccionOutputMapper::map).collect(Collectors.toList());
+    public Page<ColeccionOutputDto> obtenerColeccionesPorTextoLibre(String texto, Pageable pageable) {
+        return repositorioDeColecciones.findByTextoLibre(texto, pageable).map(coleccionOutputMapper::map);
     }
 
     public List<Coleccion> obtenerColecciones() { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.

@@ -26,17 +26,6 @@ public class ColeccionController {
         return solicitudesHttp.post(urlBaseAgregador + "/colecciones", body, Object.class);
     }
 
-    // --- READ ---
-    @GetMapping("/colecciones")
-    public ResponseEntity<Object> mostrarColecciones() {
-        return solicitudesHttp.get(urlBaseAgregador + "/colecciones", Object.class);
-    }
-
-    @GetMapping("/colecciones/{id}")
-    public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
-        return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
-    }
-
     // --- UPDATE ---
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<Object> modificarAlgoritmo(@PathVariable String id,

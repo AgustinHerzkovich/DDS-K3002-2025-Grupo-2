@@ -55,4 +55,19 @@ public class ColeccionController {
         UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
+
+    // --- READ ---
+    @GetMapping("/colecciones")
+    public ResponseEntity<Object> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
+                                                     @RequestParam(defaultValue = "0") Integer page,
+                                                     @RequestParam(defaultValue = "10") Integer size) {
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
+        UrlHelper.appendAllQueryParams(url, textoBuscado, page != null ? page.toString() : null, size != null ? size.toString() : null);
+        return solicitudesHttp.get(url.toString(), Object.class);
+    }
+
+    @GetMapping("/colecciones/{id}")
+    public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
+    }
 }
