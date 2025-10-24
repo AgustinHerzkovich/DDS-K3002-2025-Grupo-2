@@ -9,10 +9,13 @@
 
 <div th:fragment="searchBar">
     <div class="flex justify-center items-center w-full">
-        <form class="relative w-full" role="search">
+        <form class="relative w-full" role="search" onsubmit="return handleSearch(event)">
             <input
+                    id="search-input"
                     class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-14 text-base text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     type="search"
+                    name="search"
+                    th:value="${search}"
                     placeholder="Búsqueda"
                     aria-label="Búsqueda"
                     style="background-color: white;"
@@ -25,6 +28,27 @@
             </button>
         </form>
     </div>
+
+    <script>
+        function handleSearch(event) {
+            event.preventDefault();
+
+            const searchValue = document.getElementById('search-input').value.trim();
+
+            if (searchValue) {
+                // Obtener la URL actual
+                const currentUrl = new URL(window.location.href);
+
+                // Agregar o actualizar el parámetro search
+                currentUrl.searchParams.set('search', searchValue);
+
+                // Redirigir a la nueva URL con el parámetro search
+                window.location.href = currentUrl.toString();
+            }
+
+            return false;
+        }
+    </script>
 </div>
 
 <div th:fragment="about">
@@ -33,6 +57,10 @@
 
 <div th:fragment="hecho">
     <h1 class="text-5xl font-semibold text-black">Hecho</h1>
+</div>
+
+<div th:fragment="colecciones">
+    <h1 class="text-5xl font-semibold text-black">Colecciones</h1>
 </div>
 
 </body>

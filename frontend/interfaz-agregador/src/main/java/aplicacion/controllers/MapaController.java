@@ -2,11 +2,6 @@ package aplicacion.controllers;
 
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.services.HechoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,16 +53,24 @@ public class MapaController {
 
         if (hechos == null) hechos = List.of();
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        // Obtener los 5 hechos más recientes (con menor fechaCarga), sin duplicados
+        List<HechoMapaOutputDto> hechosRecientes = hechos.stream()
+                .filter(h -> h.getFechaCarga() != null)
+                .distinct() // Elimina duplicados basándose en equals() y hashCode()
+                .sorted((h1, h2) -> h2.getFechaCarga().compareTo(h1.getFechaCarga()))
+                .limit(5)
+                .toList();
 
-        try {
-            String hechosJson = mapper.writeValueAsString(hechos);
-            model.addAttribute("hechos", hechosJson);
-        } catch (Exception e) {
-            System.err.println("Error al convertir hechos a JSON: " + e.getMessage());
-        }
+        model.addAttribute("hechos", hechos);
+        model.addAttribute("hechosRecientes", hechosRecientes);
+
+        // Pasar los filtros actuales al modelo para mantenerlos en los inputs
+        model.addAttribute("categoria", categoria != null ? categoria : "");
+        model.addAttribute("fechaReporteDesde", fechaReporteDesde != null ? fechaReporteDesde : "");
+        model.addAttribute("fechaReporteHasta", fechaReporteHasta != null ? fechaReporteHasta : "");
+        model.addAttribute("fechaAcontecimientoDesde", fechaAcontecimientoDesde != null ? fechaAcontecimientoDesde : "");
+        model.addAttribute("fechaAcontecimientoHasta", fechaAcontecimientoHasta != null ? fechaAcontecimientoHasta : "");
+        model.addAttribute("search", search != null ? search : "");
 
         return "mapa";
     }

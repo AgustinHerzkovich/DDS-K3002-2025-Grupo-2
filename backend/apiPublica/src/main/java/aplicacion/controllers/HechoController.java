@@ -35,7 +35,14 @@ public class HechoController {
             @RequestParam(name = "search", required = false) String textoLibre
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos");
-        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
+        UrlHelper.appendQueryParam(url, "categoria", categoria);
+        UrlHelper.appendQueryParam(url, "fechaReporteDesde", fechaReporteDesde);
+        UrlHelper.appendQueryParam(url, "fechaReporteHasta", fechaReporteHasta);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoDesde", fechaAcontecimientoDesde);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        UrlHelper.appendQueryParam(url, "latitud", latitud);
+        UrlHelper.appendQueryParam(url, "longitud", longitud);
+        UrlHelper.appendQueryParam(url, "search", textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 

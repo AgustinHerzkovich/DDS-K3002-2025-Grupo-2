@@ -2,8 +2,14 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn})})}">
 
 <body>
-<main>
+<main style="position: relative;">
     <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
+
+    <!-- Contenedor para los paneles laterales -->
+    <div style="position: absolute; top: 100px; left: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 16px; max-width: 380px;">
+        <div th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}"></div>
+        <div th:replace="~{fragments/mid-content :: filtros}"></div>
+    </div>
 </main>
 </body>
 </html>

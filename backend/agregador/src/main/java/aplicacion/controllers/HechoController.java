@@ -8,6 +8,8 @@ import aplicacion.services.schedulers.CargarHechosScheduler;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,20 +26,31 @@ public class HechoController {
 
     @GetMapping("/hechos")
     public List<HechoOutputDto> obtenerHechos(@RequestParam(name = "categoria", required = false) String categoria,
-                                               @RequestParam(name = "fechaReporteDesde", required = false) LocalDateTime fechaReporteDesde,
-                                               @RequestParam(name = "fechaReporteHasta", required = false) LocalDateTime fechaReporteHasta,
-                                               @RequestParam(name = "fechaAcontecimientoDesde", required = false) LocalDateTime fechaAcontecimientoDesde,
-                                               @RequestParam(name = "fechaAcontecimientoHasta", required = false) LocalDateTime fechaAcontecimientoHasta,
+                                               @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
+                                               @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
+                                               @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
+                                               @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                @RequestParam(name = "latitud", required = false) Double latitud,
                                                @RequestParam(name = "longitud", required = false) Double longitud,
                                                @RequestParam(name = "search", required = false) String textoBuscado) {
+
+        // Decodificar y convertir strings de fecha a LocalDateTime
+        LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
+            LocalDateTime.parse(URLDecoder.decode(fechaReporteDesde, StandardCharsets.UTF_8)) : null;
+        LocalDateTime fechaReporteHastaDateTime = fechaReporteHasta != null ?
+            LocalDateTime.parse(URLDecoder.decode(fechaReporteHasta, StandardCharsets.UTF_8)) : null;
+        LocalDateTime fechaAcontecimientoDesdeDateTime = fechaAcontecimientoDesde != null ?
+            LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoDesde, StandardCharsets.UTF_8)) : null;
+        LocalDateTime fechaAcontecimientoHastaDateTime = fechaAcontecimientoHasta != null ?
+            LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8)) : null;
+
         List<HechoOutputDto> hechos;
         if (textoBuscado == null) {
-            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud);
         }
         else
         {
-            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoBuscado);
+            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado);
         }
         return hechos;
     }
