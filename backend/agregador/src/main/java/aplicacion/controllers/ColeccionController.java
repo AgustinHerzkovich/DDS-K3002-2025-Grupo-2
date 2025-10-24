@@ -8,6 +8,9 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDto;
@@ -36,16 +39,20 @@ public class ColeccionController {
 
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
-    public List<ColeccionOutputDto> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado) {
-        List<ColeccionOutputDto> colecciones;
+    public ResponseEntity<Page<ColeccionOutputDto>> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ColeccionOutputDto> colecciones;
+
         if (textoBuscado == null) {
-            colecciones = coleccionService.obtenerColeccionesDTO();
+            colecciones = coleccionService.obtenerColeccionesDTO(pageable);
         }
         else {
-            colecciones = coleccionService.obtenerColeccionesPorTextoLibre(textoBuscado);
+            colecciones = coleccionService.obtenerColeccionesPorTextoLibre(textoBuscado, pageable);
         }
 
-        return colecciones;
+        return ResponseEntity.ok(colecciones);
     }
 
     @GetMapping("/colecciones/{id}")
