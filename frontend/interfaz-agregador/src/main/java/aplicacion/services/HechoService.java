@@ -137,4 +137,3 @@ public class HechoService {
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
     }
 }
-
