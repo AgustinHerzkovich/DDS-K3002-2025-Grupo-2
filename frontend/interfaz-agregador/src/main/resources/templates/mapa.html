@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn})})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
 
 <body>
 <main style="position: relative;">

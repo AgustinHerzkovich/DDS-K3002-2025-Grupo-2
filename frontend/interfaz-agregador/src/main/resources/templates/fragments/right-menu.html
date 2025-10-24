@@ -11,7 +11,10 @@
     <div th:replace="~{fragments/button :: botonVolver}"></div>
 </div>
 
-<div th:fragment="map(isLoggedIn)"  class="flex gap-3 items-center justify-center">
+<div th:fragment="map(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-center">
+    <th:block th:if="${isAdmin}">
+        <div th:replace="~{fragments/button :: botonSolicitudes}"></div>
+    </th:block>
     <div th:replace="~{fragments/button :: botonColecciones}"></div>
     <div th:replace="~{fragments/button :: botonCrearHecho}"></div>
     <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
