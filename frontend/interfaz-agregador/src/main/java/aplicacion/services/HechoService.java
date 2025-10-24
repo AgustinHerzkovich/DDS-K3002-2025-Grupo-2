@@ -4,6 +4,7 @@ import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,6 +17,12 @@ public class HechoService {
     private String apiPublicaPort;
 
     private WebClient webClient;
+
+    private final GeocodingService geocodingService;
+
+    public HechoService(GeocodingService geocodingService) {
+        this.geocodingService = geocodingService;
+    }
 
     @PostConstruct
     public void init() {
@@ -30,22 +37,57 @@ public class HechoService {
                 .build();
     }
 
-    // Metodo que devuelve un Flux de hechos
+    // Metodo que devuelve un Flux de hechos con direcciones calculadas
     public Flux<HechoMapaOutputDto> obtenerHechos() {
         return webClient.get()
                 .uri("/hechos")
                 .retrieve()
                 .bodyToFlux(HechoMapaOutputDto.class)
+                .flatMap(hecho -> {
+                    // Si el hecho tiene ubicación, calcular la dirección
+                    if (hecho.getUbicacion() != null &&
+                        hecho.getUbicacion().getLatitud() != null &&
+                        hecho.getUbicacion().getLongitud() != null) {
+
+                        return geocodingService.obtenerDireccionCorta(
+                                hecho.getUbicacion().getLatitud(),
+                                hecho.getUbicacion().getLongitud()
+                        ).map(direccion -> {
+                            hecho.setDireccion(direccion);
+                            return hecho;
+                        });
+                    }
+                    // Si no tiene ubicación, usar valor por defecto
+                    hecho.setDireccion("Sin ubicación");
+                    return Flux.just(hecho);
+                })
                 .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
     }
 
     public HechoOutputDto obtenerHecho(String id) {
-        return webClient.get()
+        HechoOutputDto hecho = webClient.get()
                 .uri("/hechos/{id}", id)
                 .retrieve()
                 .bodyToMono(HechoOutputDto.class)
                 .doOnError(e -> System.err.println("Error al obtener hecho con ID " + id + " de la API Pública: " + e.getMessage()))
                 .block();
+
+        // Calcular la dirección completa si tiene ubicación
+        if (hecho != null && hecho.getUbicacion() != null &&
+            hecho.getUbicacion().getLatitud() != null &&
+            hecho.getUbicacion().getLongitud() != null) {
+
+            String direccion = geocodingService.obtenerDireccion(
+                    hecho.getUbicacion().getLatitud(),
+                    hecho.getUbicacion().getLongitud()
+            ).block(); // Bloqueamos para obtener el resultado
+
+            hecho.setDireccion(direccion);
+        } else if (hecho != null) {
+            hecho.setDireccion("Sin ubicación");
+        }
+
+        return hecho;
     }
 
     public Flux<HechoMapaOutputDto> obtenerHechosConFiltros(
@@ -75,6 +117,23 @@ public class HechoService {
                 })
                 .retrieve()
                 .bodyToFlux(HechoMapaOutputDto.class)
+                .flatMap(hecho -> {
+                    // Calcular la dirección si tiene ubicación
+                    if (hecho.getUbicacion() != null &&
+                        hecho.getUbicacion().getLatitud() != null &&
+                        hecho.getUbicacion().getLongitud() != null) {
+
+                        return geocodingService.obtenerDireccionCorta(
+                                hecho.getUbicacion().getLatitud(),
+                                hecho.getUbicacion().getLongitud()
+                        ).map(direccion -> {
+                            hecho.setDireccion(direccion);
+                            return hecho;
+                        });
+                    }
+                    hecho.setDireccion("Sin ubicación");
+                    return Flux.just(hecho);
+                })
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
     }
 }

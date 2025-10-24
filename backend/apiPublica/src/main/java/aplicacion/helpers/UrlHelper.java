@@ -8,8 +8,10 @@ import java.util.List;
 public class UrlHelper {
 
     public static void appendQueryParam(StringBuilder url, String paramName, Object value) {
-        if (value != null) {
-            if (url.charAt(url.length() - 1) != '?' && url.charAt(url.length() - 1) != '&') {
+        if (value != null && !value.toString().isEmpty()) {
+            if (url.indexOf("?") == -1) {
+                url.append("?");
+            } else {
                 url.append("&");
             }
             url.append(paramName)

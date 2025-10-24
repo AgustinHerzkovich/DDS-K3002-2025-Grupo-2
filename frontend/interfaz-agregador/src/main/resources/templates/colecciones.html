@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+    <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: colecciones}, ~{::main}, ~{fragments/right-menu :: home(${isLoggedIn})})}">
+
+    <body>
+        <main>
+            <div class="colecciones-container">
+                <div class="left-section">
+                    <div th:each="coleccion : ${colecciones.content}"  class="coleccion-card">
+                        <div class="coleccion-titulo">
+                            <h1 class="fw-bold mb-3" th:text="${coleccion.titulo}">HOLis</h1>
+                        </div>
+                        <div class="coleccion-descripccion">
+                            <h1 class="fw-bold mb-3" th:text="${coleccion.descripcion}"></h1>
+                        </div>
+                        <div class="button-coleccion">
+                            <form th:action="@{/hechos/{id}(id=${coleccion.id})}" method="get">
+                                <button class="btn btn-primary" type="submit">Hechos</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

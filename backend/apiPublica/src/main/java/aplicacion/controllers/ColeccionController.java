@@ -35,7 +35,14 @@ public class ColeccionController {
     )
     {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
-        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
+        UrlHelper.appendQueryParam(url, "categoria", categoria);
+        UrlHelper.appendQueryParam(url, "fechaReporteDesde", fechaReporteDesde);
+        UrlHelper.appendQueryParam(url, "fechaReporteHasta", fechaReporteHasta);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoDesde", fechaAcontecimientoDesde);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        UrlHelper.appendQueryParam(url, "latitud", latitud);
+        UrlHelper.appendQueryParam(url, "longitud", longitud);
+        UrlHelper.appendQueryParam(url, "search", textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
@@ -52,7 +59,14 @@ public class ColeccionController {
             @RequestParam(name = "search", required = false) String textoLibre
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
-        UrlHelper.appendAllQueryParams(url, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud != null ? latitud.toString() : null, longitud != null ? longitud.toString() : null, textoLibre);
+        UrlHelper.appendQueryParam(url, "categoria", categoria);
+        UrlHelper.appendQueryParam(url, "fechaReporteDesde", fechaReporteDesde);
+        UrlHelper.appendQueryParam(url, "fechaReporteHasta", fechaReporteHasta);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoDesde", fechaAcontecimientoDesde);
+        UrlHelper.appendQueryParam(url, "fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        UrlHelper.appendQueryParam(url, "latitud", latitud);
+        UrlHelper.appendQueryParam(url, "longitud", longitud);
+        UrlHelper.appendQueryParam(url, "search", textoLibre);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
@@ -62,7 +76,9 @@ public class ColeccionController {
                                                      @RequestParam(defaultValue = "0") Integer page,
                                                      @RequestParam(defaultValue = "10") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
-        UrlHelper.appendAllQueryParams(url, textoBuscado, page != null ? page.toString() : null, size != null ? size.toString() : null);
+        UrlHelper.appendQueryParam(url, "search", textoBuscado);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "size", size);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
