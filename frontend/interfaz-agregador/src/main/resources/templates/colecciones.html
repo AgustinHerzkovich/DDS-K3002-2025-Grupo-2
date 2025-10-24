@@ -5,7 +5,8 @@
         <main>
             <div class="colecciones-container">
                 <div class="left-section">
-                    <div th:each="coleccion : ${colecciones.content}"  class="coleccion-card">
+                    <div th:each="coleccion : ${colecciones}"  class="coleccion-card">
+                        <script>console.log("estas son las colecciones: " + colecciones)</script>
                         <div class="coleccion-titulo">
                             <h1 class="fw-bold mb-3" th:text="${coleccion.titulo}">HOLis</h1>
                         </div>
