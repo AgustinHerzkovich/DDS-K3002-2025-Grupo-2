@@ -1,9 +1,12 @@
+package testUnitarios.services;
+
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -32,6 +35,7 @@ class DepuradorTest {
     private DepuradorDeHechos depuradorDeHechos;
 
     @Test
+    @DisplayName("No debe tirar excepciones al ejecutarse")
     void noTiraExcepciones() {
         Fuente fuente = new FuenteEstatica();
         fuente.setId("fuente-test");
@@ -53,6 +57,7 @@ class DepuradorTest {
     }
 
     @Test
+    @DisplayName("No debe guardar hechos repetidos")
     void evitaHechosRepetidos() {
         Fuente fuente = new FuenteEstatica();
         fuente.setId("fuente-test");
