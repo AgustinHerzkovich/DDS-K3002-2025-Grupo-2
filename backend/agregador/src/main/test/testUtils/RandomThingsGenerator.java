@@ -148,4 +148,18 @@ public class RandomThingsGenerator {
     public static Integer generarEnteroAleatorio(int desde, int hasta){
         return random.nextInt(desde, hasta);
     }
+    private static List<String> MOTIVOELIMINACION = List.of("No me gusta. ", "Es ofensivo. ", "Incumple la ley. ", "Es ilegal. ", "Es feo. ", "Te voy a denunciar. ", "Borra eso. ", "Te odio. ", "Tiene Copyright. ", "Va en contra de los terminos y condiciones de uso de metamapa. ");
+
+    public static String generarMotivoAleatorio() {
+        return MOTIVOELIMINACION.get(random.nextInt(MOTIVOELIMINACION.size()));
+    }
+
+    public static String generarMotivoEliminacionLargo(){
+        StringBuilder texto = new StringBuilder();
+        texto.append(generarMotivoAleatorio());
+        while (texto.length() < 520) {
+            texto.append(minusculaPrimeraLetra(generarMotivoAleatorio()));
+        }
+        return texto.toString().trim();
+    }
 }
