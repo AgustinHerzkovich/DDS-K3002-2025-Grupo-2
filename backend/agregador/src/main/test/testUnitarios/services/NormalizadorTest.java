@@ -1,6 +1,7 @@
 package testUnitarios.services;
 
 import aplicacion.services.normalizador.NormalizadorDeTerminos;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 public class NormalizadorTest {
     @Test
+    @DisplayName("Debe normalizar terminos correctamente")
     public void testNormalizadorDeTerminos(){
         NormalizadorDeTerminos norm = new NormalizadorDeTerminos(1);
         List<String> terminos = new ArrayList<>();

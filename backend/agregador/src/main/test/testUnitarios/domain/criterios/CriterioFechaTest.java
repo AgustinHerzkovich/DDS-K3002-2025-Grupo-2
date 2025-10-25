@@ -3,6 +3,7 @@ package testUnitarios.domain.criterios;
 import aplicacion.domain.criterios.CriterioDeFecha;
 import aplicacion.domain.hechos.Hecho;
 import jakarta.validation.constraints.AssertTrue;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import testUtils.HechoFactory;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CriterioFechaTest {
     @Test
+    @DisplayName("Debe filtrar correctamente")
     public void testCriterioFecha(){
         CriterioDeFecha criterioDeFecha = new CriterioDeFecha(LocalDateTime.now().minusYears(5), LocalDateTime.now().plusYears(5));
         Hecho hecho = HechoFactory.crearHechoAleatorio();

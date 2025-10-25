@@ -13,6 +13,7 @@ import aplicacion.services.ContribuyenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -58,6 +59,7 @@ class HechoServiceTest
     }
 
     @Test
+    @DisplayName("Debe guardar el hecho y actualizar contribuyente")
     void guardarHechoGuardaHechoYActualizaContribuyente() {
         Contribuyente autor = new Contribuyente();
         hecho.setAutor(autor);
@@ -72,6 +74,7 @@ class HechoServiceTest
         assertEquals(autorActualizado, hecho.getAutor());
     }
     @Test
+    @DisplayName("Debe obtener hecho por ID")
     void obtenerHechoPorIdDevolvuelveHechoExistente() throws HechoNoEncontradoException {
         when(repositorioDeHechos.findByHechoId("abcd")).thenReturn(hecho);
 
@@ -81,12 +84,14 @@ class HechoServiceTest
         verify(repositorioDeHechos).findByHechoId("abcd");
     }
     @Test
+    @DisplayName("Debe tirar excepcion si no existe el hecho buscado")
     void obtenerHechoPorIdTiraExcepcionSiNoExiste() {
         when(repositorioDeHechos.findByHechoId("inexistente")).thenThrow(new RuntimeException());
 
         assertThrows(HechoNoEncontradoException.class, () -> hechoService.obtenerHechoPorId("inexistente"));
     }
     @Test
+    @DisplayName("Debe guardar hechos y devolver su DTO")
     void agregarHechoGuardaYDevuelveDto() {
         HechoInputDto inputDto = new HechoInputDto();
         when(hechoInputMapper.map(inputDto)).thenReturn(hecho);
@@ -101,6 +106,7 @@ class HechoServiceTest
     }
 
     @Test
+    @DisplayName("Debe guardar lista de hechos")
     void guardarHechosGuardaListaDeHechos() {
         List<Hecho> hechos = HechoFactory.crearHechosAleatorios(3);
 
@@ -109,6 +115,7 @@ class HechoServiceTest
         verify(repositorioDeHechos).saveAll(hechos);
     }
     @Test
+    @DisplayName("Debe filtrar correctamente por categoria y fecha")
     void filtrarHechosQueryParamFiltraPorCategoriaYFecha() {
         Hecho hecho1 = HechoFactory.crearHechoAleatorio();
         hecho1.getCategoria().setNombre("Accidente");
@@ -137,6 +144,7 @@ class HechoServiceTest
     }
 
     @Test
+    @DisplayName("Debe hallar hechos duplicados de una lista (Si se guardaron antes en la DB)")
     void hallarHechosDuplicadosDeListaDetectaDuplicados() {
         Hecho hecho1 = HechoFactory.crearHechoAleatorio();
         Hecho hecho2 = HechoFactory.crearHechoAleatorio();
@@ -151,6 +159,7 @@ class HechoServiceTest
         assertEquals(hecho2, duplicados.getFirst());
     }
     @Test
+    @DisplayName("Debe obtener hechos de un contribuyente determinado")
     void obtenerHechosDeContribuyentDevolvuelveHechosDelAutor() throws Exception {
         Hecho hecho = HechoFactory.crearHechoAleatorio();
         hecho.getAutor().setId(123L);
