@@ -160,7 +160,7 @@ class HechoServiceTest
     }
     @Test
     @DisplayName("Debe obtener hechos de un contribuyente determinado")
-    void obtenerHechosDeContribuyentDevolvuelveHechosDelAutor() throws Exception {
+    void obtenerHechosDeContribuyentDevolvuelveHechosDelAutor() {
         Hecho hecho = HechoFactory.crearHechoAleatorio();
         hecho.getAutor().setId(123L);
         Long contribuyenteId = hecho.getAutor().getId();

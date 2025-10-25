@@ -2,7 +2,6 @@ package testUnitarios.domain.criterios;
 
 import aplicacion.domain.criterios.CriterioDeFecha;
 import aplicacion.domain.hechos.Hecho;
-import jakarta.validation.constraints.AssertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import testUtils.HechoFactory;

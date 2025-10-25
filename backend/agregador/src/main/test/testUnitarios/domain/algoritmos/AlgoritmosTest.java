@@ -4,8 +4,6 @@ import aplicacion.domain.algoritmos.AlgoritmoConsensoAbsoluto;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoMayoriaSimple;
 import aplicacion.domain.algoritmos.AlgoritmoConsensoMultiplesMenciones;
-import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
 import aplicacion.domain.hechos.Hecho;
 import org.junit.jupiter.api.*;
 import testUtils.HechoFactory;

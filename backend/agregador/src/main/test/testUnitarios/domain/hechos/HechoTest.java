@@ -3,18 +3,12 @@ package testUnitarios.domain.hechos;
 import aplicacion.domain.hechos.*;
 import aplicacion.domain.hechos.multimedias.Video;
 import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
-import domain.dashboardDTOs.hechos.HechoBuilder;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 import testUtils.HechoFactory;
 import testUtils.RandomThingsGenerator;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
