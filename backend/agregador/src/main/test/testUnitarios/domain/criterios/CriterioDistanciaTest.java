@@ -3,12 +3,14 @@ package testUnitarios.domain.criterios;
 import aplicacion.domain.criterios.CriterioDeDistancia;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Ubicacion;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 import testUtils.HechoFactory;
 
 public class CriterioDistanciaTest {
     @Test
+    @DisplayName("Debe filtrar correctamente")
     public void testCriterioDeDistancia() {
         // Origen: Buenos Aires
         Ubicacion origen = new Ubicacion(-34.6, -58.4);
