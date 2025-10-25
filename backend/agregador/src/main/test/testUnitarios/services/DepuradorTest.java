@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TestDepurador {
+class DepuradorTest {
     @Mock
     private HechoService hechoService;
 

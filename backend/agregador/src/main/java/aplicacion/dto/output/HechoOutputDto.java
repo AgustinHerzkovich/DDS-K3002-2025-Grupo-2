@@ -3,6 +3,7 @@ package aplicacion.dto.output;
 import aplicacion.domain.hechos.Origen;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class HechoOutputDto {
     private String id;
     private String titulo;

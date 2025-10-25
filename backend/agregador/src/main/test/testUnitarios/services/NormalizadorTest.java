@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TestNormalizador {
+public class NormalizadorTest {
     @Test
     public void testNormalizadorDeTerminos(){
         NormalizadorDeTerminos norm = new NormalizadorDeTerminos(1);
