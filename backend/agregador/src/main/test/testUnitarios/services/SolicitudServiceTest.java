@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,7 +98,7 @@ class SolicitudServiceTest {
     @DisplayName("Debe devolver lista de solicitudes como DTOs")
     void obtenerSolicitudesDTOMapeaLista() {
         SolicitudOutputDto dto = new SolicitudOutputMapper(new EstadoSolicitudOutputMapper()).map(solicitud);
-        when(repositorioDeSolicitudes.findAll()).thenReturn(List.of(solicitud));
+        when(repositorioDeSolicitudes.findAllOrderByPendienteFirst(PageRequest.of(0, 3))).thenReturn(new PageImpl<>(List.of(solicitud)));
         when(solicitudOutputMapper.map(solicitud)).thenReturn(dto);
 
         Page<SolicitudOutputDto> resultado = solicitudService.obtenerSolicitudesDTO(PageRequest.of(0, 3));
