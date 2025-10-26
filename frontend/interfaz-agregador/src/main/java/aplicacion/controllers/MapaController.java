@@ -29,7 +29,7 @@ public class MapaController {
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "100") Integer size,
+            @RequestParam(defaultValue = "10") Integer size,
             Model model
     ) {
 

@@ -52,25 +52,25 @@
                 <!-- Fecha de Acontecimiento -->
                 <div class="info-item">
                     <div class="info-label">Fecha de acontecimiento</div>
-                    <div class="info-value" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                    <div class="info-value" style="color: black" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
                 </div>
 
                 <!-- Autor -->
                 <div class="info-item">
                     <div class="info-label">Autor</div>
-                    <div class="info-value" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
+                    <div class="info-value" style="color: black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
                 </div>
             </div>
 
             <!-- Sección Derecha -->
             <div class="right-section">
                 <!-- Título -->
-                <h1 class="fw-bold mb-3" th:text="*{titulo}">Título</h1>
+                <h1 class="fw-bold mb-3" style="color: black" th:text="*{titulo}">Título</h1>
 
                 <!-- Descripción -->
                 <div class="info-item">
                     <div class="info-label">Descripción</div>
-                    <div class="info-value" th:text="*{descripcion}">Descripción</div>
+                    <div class="info-value" style="color: black" th:text="*{descripcion}">Descripción</div>
                 </div>
 
                 <!-- Dirección Completa -->
@@ -82,19 +82,19 @@
                         </svg>
                         Ubicación
                     </div>
-                    <div class="info-value" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
+                    <div class="info-value" style="color: black" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
                 </div>
 
                 <!-- Origen -->
                 <div class="info-item">
                     <div class="info-label">Origen</div>
-                    <div class="info-value" th:text="*{origen}">Origen</div>
+                    <div class="info-value" style="color: black" th:text="*{origen}">Origen</div>
                 </div>
 
                 <!-- Fecha de Carga -->
                 <div class="info-item">
                     <div class="info-label">Fecha de carga</div>
-                    <div class="info-value" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                    <div class="info-value" style="color: black" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
                 </div>
 
                 <!-- Última Modificación -->
@@ -102,7 +102,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                     </svg>
-                    <span>Editado por última vez: <span th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</span></span>
+                    <span>Editado por última vez: <span style="color: black" th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</span></span>
                 </div>
 
                 <!-- Botón Solicitar Eliminación (solo si está logueado) -->
