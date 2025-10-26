@@ -18,7 +18,6 @@ public class ContribuyenteService {
     public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) {
         try {
             String url = "/apiPublica/contribuyentes?mail=" + mail;
-            System.out.println("Llamando a API Pública: " + url);
 
             // La API devuelve una lista, no un solo objeto
             List<ContribuyenteOutputDto> contribuyentes = webClient.get()
@@ -29,7 +28,6 @@ public class ContribuyenteService {
 
             if (contribuyentes != null && !contribuyentes.isEmpty()) {
                 ContribuyenteOutputDto contribuyente = contribuyentes.get(0);
-                System.out.println("Contribuyente obtenido: " + contribuyente.getId());
                 return contribuyente;
             } else {
                 System.err.println("No se encontraron contribuyentes con el email: " + mail);
