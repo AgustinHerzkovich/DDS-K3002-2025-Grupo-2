@@ -15,12 +15,14 @@ import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -52,29 +54,31 @@ public class HechoService {
         return repositorioDeHechos.findAll();
     }
 
-    public List<HechoOutputDto> obtenerHechosPorTextoLibreDto(String categoria,
+    public Page<HechoOutputDto> obtenerHechosPorTextoLibreDto(String categoria,
                                                               LocalDateTime fechaReporteDesde,
                                                               LocalDateTime fechaReporteHasta,
                                                               LocalDateTime fechaAcontecimientoDesde,
                                                               LocalDateTime fechaAcontecimientoHasta,
                                                               Double latitud,
                                                               Double longitud,
-                                                              String textoLibre){
-        return filtrarHechosQueryParam(obtenerHechosPorTextoLibre(textoLibre), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+                                                              String textoLibre,
+                                                              Pageable pageable) {
+        return filtrarHechosQueryParam(obtenerHechosPorTextoLibre(textoLibre, pageable), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    public List<Hecho> obtenerHechosPorTextoLibre(String textoLibre) {
-        return repositorioDeHechos.findByTextoLibre(textoLibre);
+    public Page<Hecho> obtenerHechosPorTextoLibre(String textoLibre, Pageable pageable) {
+        return repositorioDeHechos.findByTextoLibre(textoLibre, pageable);
     }
 
-    public List<HechoOutputDto> obtenerHechosAsDTO(String categoria,
-                                                  LocalDateTime fechaReporteDesde,
-                                                  LocalDateTime fechaReporteHasta,
-                                                  LocalDateTime fechaAcontecimientoDesde,
-                                                  LocalDateTime fechaAcontecimientoHasta,
-                                                  Double latitud,
-                                                  Double longitud) {
-        return filtrarHechosQueryParam(obtenerHechos(), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+    public Page<HechoOutputDto> obtenerHechosAsDTO(String categoria,
+                                                   LocalDateTime fechaReporteDesde,
+                                                   LocalDateTime fechaReporteHasta,
+                                                   LocalDateTime fechaAcontecimientoDesde,
+                                                   LocalDateTime fechaAcontecimientoHasta,
+                                                   Double latitud,
+                                                   Double longitud,
+                                                   Pageable pageable) {
+        return filtrarHechosQueryParam(repositorioDeHechos.findAll(pageable), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
@@ -106,20 +110,20 @@ public class HechoService {
         return hechoOutputMapper.map(hecho);
     }
 
-    public List<Hecho> obtenerHechosPorColeccion(String idColeccion) {
-        return repositorioDeHechos.findByCollectionId(idColeccion);
+    public Page<Hecho> obtenerHechosPorColeccion(String idColeccion, Pageable pageable) {
+        return repositorioDeHechos.findByCollectionId(idColeccion, pageable);
     }
 
-    public List<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion, String textoLibre) {
-        return repositorioDeHechos.findByCollectionIdAndTextoLibre(idColeccion, textoLibre);
+    public Page<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion, String textoLibre, Pageable pageable) {
+        return repositorioDeHechos.findByCollectionIdAndTextoLibre(idColeccion, textoLibre, pageable);
     }
 
-    public List<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion) {
-        return repositorioDeHechos.findCuredByCollectionId(idColeccion);
+    public Page<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion, Pageable pageable) {
+        return repositorioDeHechos.findCuredByCollectionId(idColeccion, pageable);
     }
 
-    public List<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion, String textoLibre) {
-        return repositorioDeHechos.findCuredByCollectionIdAndTextoLibre(idColeccion, textoLibre);
+    public Page<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion, String textoLibre, Pageable pageable) {
+        return repositorioDeHechos.findCuredByCollectionIdAndTextoLibre(idColeccion, textoLibre, pageable);
     }
 
     public void guardarHecho(Hecho hecho) {
@@ -183,7 +187,7 @@ public class HechoService {
         return hechosDuplicados;
     }
 
-    public List<HechoOutputDto> filtrarHechosQueryParam(List<Hecho> hechos,
+    public Page<HechoOutputDto> filtrarHechosQueryParam(Page<Hecho> hechos,
                                                         String categoria,
                                                         LocalDateTime fechaReporteDesde,
                                                         LocalDateTime fechaReporteHasta,
@@ -191,7 +195,9 @@ public class HechoService {
                                                         LocalDateTime fechaAcontecimientoHasta,
                                                         Double latitud,
                                                         Double longitud) {
-        return hechos.stream()
+        List<HechoOutputDto> hechosFiltrados = hechos
+                .getContent()
+                .stream()
                 .filter(h -> categoria == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria))
                 .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
                 .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
@@ -200,6 +206,8 @@ public class HechoService {
                 .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
                 .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
                 .map(hechoOutputMapper::map)
-                .collect(Collectors.toList()); //convierte el stream de elementos (después de aplicar los .filter(...), .map(...), etc.) en una lista (List<T>) de resultados.
+                .toList();
+
+        return new PageImpl<>(hechosFiltrados, hechos.getPageable(), hechosFiltrados.size());
     }
 }

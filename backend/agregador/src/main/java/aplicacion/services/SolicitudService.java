@@ -54,8 +54,9 @@ public class SolicitudService {
     }
 
     public Page<SolicitudOutputDto> obtenerSolicitudesDTO(Pageable pageable) {
-        return repositorioDeSolicitudes.findAll(pageable).map(solicitudOutputMapper::map);
+        return repositorioDeSolicitudes.findAllOrderByPendienteFirst(pageable).map(solicitudOutputMapper::map); // Me trae primero las pendientes
     }
+
     public List<SolicitudEliminacion> obtenerSolicitudes() {
         return repositorioDeSolicitudes.findAll();
     }

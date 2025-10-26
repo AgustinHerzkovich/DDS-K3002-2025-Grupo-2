@@ -3,6 +3,8 @@ package aplicacion.repositorios;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Ubicacion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,15 +22,20 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
         JOIN HechoXColeccion hc ON h.id = hc.hecho.id
         WHERE hc.coleccion.id = :idColeccion
     """)
-    List<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion);
+    Page<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion, Pageable pageable);
 
     @Query(value = "SELECT h.* FROM hecho h " +
             "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
             "WHERE hc.coleccion_id = :idColeccion " +
             "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
             "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            countQuery = "SELECT h.* FROM hecho h " +
+                    "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
+                    "WHERE hc.coleccion_id = :idColeccion " +
+                    "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
+                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
-    List<Hecho> findByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre);
+    Page<Hecho> findByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre, Pageable pageable);
 
     @Query("""
         SELECT h
@@ -36,7 +43,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
         JOIN HechoXColeccion hc ON h.id = hc.hecho.id
         WHERE hc.coleccion.id = :idColeccion AND hc.consensuado = true
     """)
-    List<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion);
+    Page<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion, Pageable pageable);
 
     @Query(value = "SELECT h.* FROM hecho h " +
             "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
@@ -44,8 +51,14 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             "AND hc.consensuado = true " +
             "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
             "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            countQuery = "SELECT h.* FROM hecho h " +
+                    "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
+                    "WHERE hc.coleccion_id = :idColeccion " +
+                    "AND hc.consensuado = true " +
+                    "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
+                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
-    List<Hecho> findCuredByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre);
+    Page<Hecho> findCuredByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre, Pageable pageable);
 
     @Query("""
         SELECT h
@@ -80,8 +93,11 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     @Query(value = "SELECT * FROM hecho " +
             "WHERE MATCH(titulo, descripcion, contenido_texto) " +
             "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            countQuery = "SELECT * FROM hecho " +
+                    "WHERE MATCH(titulo, descripcion, contenido_texto) " +
+                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
-    List<Hecho>findByTextoLibre(@Param("textoLibre") String textoLibre);
+    Page<Hecho>findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
 
     List<Hecho> findByAutorId(Long autorId);
 }

@@ -23,7 +23,7 @@
         console.log("Hechos en JS:", hechos); // Para verificar que llegan correctamente
 
         // Inicializamos el mapa centrado en Buenos Aires
-        const map = L.map('map').setView([-34.6037, -58.3816], 12);
+        const map = L.map('map').setView([-34.6037, -58.3816], 5);
 
         // Capa de mapa de OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,28 +44,65 @@
             popupAnchor: [0, -41]
         });
 
+        // Grupo de marcadores para poder borrarlos fácilmente si se implementara AJAX en el futuro
+        const markersLayer = L.layerGroup().addTo(map);
+
         // Agregamos un marker por cada hecho
         hechos.forEach(h => {
             if (h.ubicacion && h.ubicacion.latitud && h.ubicacion.longitud) {
                 const popupContent = `
-                    <div style="text-align: center;">
-                        <b>${h.titulo}</b>
+                    <div style="text-align: center; max-width: 200px;">
+                        <b style="word-wrap: break-word;">${h.titulo}</b>
                         <br><br>
                         <a href="/hechos/${h.id}"
-                           style="display: inline-block; padding: 8px 16px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 4px; font-weight: 500;">
+                           style="display: inline-block; padding: 6px 12px; background-color: #4f46e5; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
                            Ver hecho
                         </a>
                     </div>
                 `;
-                L.marker([h.ubicacion.latitud, h.ubicacion.longitud], {icon: customIcon})
-                    .addTo(map)
-                    .bindPopup(popupContent);
+                try {
+                    L.marker([h.ubicacion.latitud, h.ubicacion.longitud], {icon: customIcon})
+                        .addTo(markersLayer) // Añadir al grupo
+                        .bindPopup(popupContent);
+                } catch (e) {
+                    console.error("Error al crear marcador para hecho:", h, e);
+                }
+            } else {
+                console.warn("Hecho sin ubicación válida:", h);
             }
         });
+
+        // Ajustar el zoom para mostrar todos los marcadores (si hay alguno)
+        if (markersLayer.getLayers().length > 0) {
+            map.fitBounds(markersLayer.getBounds().pad(0.1)); // pad(0.1) añade un pequeño margen
+        }
+
         /*]]>*/
     </script>
+
+    <!-- Controles de Paginación -->
+    <div class="pagination-controls">
+        <a th:if="${hasPrevious}"
+           th:href="@{/mapa(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}"
+           class="pagination-btn">
+            ← Anterior
+        </a>
+        <!-- Enlace deshabilitado si no hay página anterior -->
+        <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
+
+        <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span></span>
+
+        <a th:if="${hasNext}"
+           th:href="@{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}"
+           class="pagination-btn">
+            Siguiente →
+        </a>
+        <!-- Enlace deshabilitado si no hay página siguiente -->
+        <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
+    </div>
 </div>
 
+<!-- Fragmento hechosRecientes -->
 <div th:fragment="hechosRecientes(hechos)">
     <div id="hechos-recientes-panel" class="bg-white rounded-lg shadow-lg"
          style="width: 100%; max-width: 380px;">
@@ -81,32 +118,34 @@
 
         <div id="hechos-content" class="px-4 pb-4 max-h-96 overflow-y-auto">
             <div class="space-y-2">
+                <!-- Reducción de padding (p-2), font-size (text-xs) y margin (mb-0.5) -->
                 <a th:each="hecho : ${hechos}"
                    th:href="@{/hechos/{id}(id=${hecho.id})}"
-                   class="block p-3 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
+                   class="block p-2 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
                     <div class="flex justify-between items-start">
-                    <div class="flex-1">
-                        <h5 class="font-semibold text-gray-900 mb-1" th:text="${hecho.titulo}">Título del hecho</h5>
-                        <p class="text-sm text-gray-600" th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
-                            Dirección del hecho
-                        </p>
-                    </div>
-                        <div class="text-right ml-3">
-                            <small class="text-gray-500 whitespace-nowrap">
-                                <span th:with="ahora=${T(java.time.LocalDateTime).now()},
-                                              duracion=${T(java.time.Duration).between(hecho.fechaCarga, ahora)}">
-                                    <span th:if="${duracion.toDays() > 0}" th:text="${'Hace ' + duracion.toDays() + (duracion.toDays() == 1 ? ' día' : ' días')}">Hace X días</span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() > 0}" th:text="${'Hace ' + duracion.toHours() + (duracion.toHours() == 1 ? ' hora' : ' horas')}">Hace X horas</span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() > 0}" th:text="${'Hace ' + duracion.toMinutes() + ' min'}">Hace X min</span>
+                        <div class="flex-1 min-w-0">
+                            <h5 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">Título del hecho</h5>
+                            <p class="text-xs text-gray-600 truncate" th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
+                                Dirección del hecho
+                            </p>
+                        </div>
+                        <div class="text-right ml-3 flex-shrink-0">
+                            <!-- Tamaño de fuente reducido a text-xs -->
+                            <small class="text-xs text-gray-500 whitespace-nowrap">
+                                <span th:if="${hecho.fechaCarga != null}" th:with="ahora=${T(java.time.LocalDateTime).now()}, duracion=${T(java.time.Duration).between(hecho.fechaCarga, ahora)}">
+                                    <span th:if="${duracion.toDays() > 0}" th:text="${'Hace ' + duracion.toDays() + (duracion.toDays() == 1 ? ' día' : ' días')}"></span>
+                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() > 0}" th:text="${'Hace ' + duracion.toHours() + (duracion.toHours() == 1 ? ' hora' : ' horas')}"></span>
+                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() > 0}" th:text="${'Hace ' + duracion.toMinutes() + ' min'}"></span>
                                     <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() == 0}">Hace un momento</span>
                                 </span>
+                                <span th:unless="${hecho.fechaCarga != null}">Fecha N/A</span>
                             </small>
                         </div>
                     </div>
                 </a>
             </div>
 
-            <div th:if="${hechos == null || hechos.isEmpty()}" class="text-center text-gray-500 py-4">
+            <div th:if="${hechos == null || hechos.isEmpty()}" class="text-center text-gray-500 py-4 text-sm"> <!-- Ajustado tamaño de fuente -->
                 No hay hechos recientes
             </div>
         </div>
@@ -120,19 +159,16 @@
             const chevron = document.getElementById('chevron-icon');
             let isExpanded = true;
 
-            toggleBtn.addEventListener('click', function() {
-                isExpanded = !isExpanded;
-
-                if (isExpanded) {
-                    content.style.display = 'block';
-                    separator.style.display = 'block';
-                    chevron.style.transform = 'rotate(0deg)';
-                } else {
-                    content.style.display = 'none';
-                    separator.style.display = 'none';
-                    chevron.style.transform = 'rotate(-90deg)';
-                }
-            });
+            if (toggleBtn && content && separator && chevron) { // Verificar si los elementos existen
+                toggleBtn.addEventListener('click', function() {
+                    isExpanded = !isExpanded;
+                    content.style.display = isExpanded ? 'block' : 'none';
+                    separator.style.display = isExpanded ? 'block' : 'none';
+                    chevron.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)';
+                });
+            } else {
+                console.error("No se encontraron todos los elementos para el panel de hechos recientes.");
+            }
         });
     </script>
 </div>

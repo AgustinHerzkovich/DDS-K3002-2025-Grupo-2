@@ -5,6 +5,9 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +28,16 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDto> obtenerHechos(@RequestParam(name = "categoria", required = false) String categoria,
+    public ResponseEntity<Page<HechoOutputDto>> obtenerHechos(@RequestParam(name = "categoria", required = false) String categoria,
                                                @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
                                                @RequestParam(name = "fechaAcontecimientoDesde", required = false) String fechaAcontecimientoDesde,
                                                @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                @RequestParam(name = "latitud", required = false) Double latitud,
                                                @RequestParam(name = "longitud", required = false) Double longitud,
-                                               @RequestParam(name = "search", required = false) String textoBuscado) {
+                                               @RequestParam(name = "search", required = false) String textoBuscado,
+                                              @RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "100") Integer size) {
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -44,15 +49,17 @@ public class HechoController {
         LocalDateTime fechaAcontecimientoHastaDateTime = fechaAcontecimientoHasta != null ?
             LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8)) : null;
 
-        List<HechoOutputDto> hechos;
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<HechoOutputDto> hechos;
         if (textoBuscado == null) {
-            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud);
+            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, pageable);
         }
         else
         {
-            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado);
+            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado, pageable);
         }
-        return hechos;
+        return ResponseEntity.ok(hechos);
     }
 
     @GetMapping("/hechos/{id}")
