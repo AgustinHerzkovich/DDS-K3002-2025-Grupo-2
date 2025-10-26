@@ -1,9 +1,12 @@
 package aplicacion.services;
 
+import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.dto.output.SolicitudOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -37,11 +40,16 @@ public class HechoService {
     }
 
     // Metodo que devuelve un Flux de hechos con direcciones calculadas
-    public Flux<HechoMapaOutputDto> obtenerHechos() {
+    public Flux<HechoMapaOutputDto> obtenerHechos(Integer page, Integer size) {
         return webClient.get()
-                .uri("/hechos")
+                .uri(uriBuilder -> uriBuilder
+                        .path("/hechos")
+                        .queryParam("page", page)
+                        .queryParam("size", size)
+                        .build())
                 .retrieve()
-                .bodyToFlux(HechoMapaOutputDto.class)
+                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
+                .flatMapMany(pageWrapper -> Flux.fromIterable(pageWrapper.getContent()))
                 .flatMap(hecho -> {
                     // Si el hecho tiene ubicación, calcular la dirección
                     if (hecho.getUbicacion() != null &&
@@ -97,7 +105,9 @@ public class HechoService {
             String fechaAcontecimientoHasta,
             Double latitud,
             Double longitud,
-            String search
+            String search,
+            Integer page,
+            Integer size
     ) {
         return webClient.get()
                 .uri(uriBuilder -> {
@@ -112,10 +122,14 @@ public class HechoService {
                     if (longitud != null) uriBuilder.queryParam("longitud", longitud);
                     if (search != null && !search.isEmpty()) uriBuilder.queryParam("search", search);
 
+                    uriBuilder.queryParam("page", page);
+                    uriBuilder.queryParam("size", size);
+
                     return uriBuilder.build();
                 })
                 .retrieve()
-                .bodyToFlux(HechoMapaOutputDto.class)
+                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
+                .flatMapMany(pageWrapper -> Flux.fromIterable(pageWrapper.getContent()))
                 .flatMap(hecho -> {
                     // Calcular la dirección si tiene ubicación
                     if (hecho.getUbicacion() != null &&

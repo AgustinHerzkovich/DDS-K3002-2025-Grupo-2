@@ -28,6 +28,8 @@ public class MapaController {
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String search,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "100") Integer size,
             Model model
     ) {
 
@@ -41,12 +43,12 @@ public class MapaController {
             hechos = hechoService.obtenerHechosConFiltros(
                 categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, search
+                latitud, longitud, search, page, size
             ).collectList().block(); // <--- recolecta el Flux en una lista
 
         } else {
             // Si no hay filtros, obtener todos los hechos
-            hechos = hechoService.obtenerHechos()
+            hechos = hechoService.obtenerHechos(page, size)
                     .collectList()
                     .block(); // <--- recolecta el Flux en una lista
         }
@@ -71,6 +73,11 @@ public class MapaController {
         model.addAttribute("fechaAcontecimientoDesde", fechaAcontecimientoDesde != null ? fechaAcontecimientoDesde : "");
         model.addAttribute("fechaAcontecimientoHasta", fechaAcontecimientoHasta != null ? fechaAcontecimientoHasta : "");
         model.addAttribute("search", search != null ? search : "");
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+        model.addAttribute("hasNext", hechos.size() == size); // Si hay tantos como el tamaño, podría haber otra página
+        model.addAttribute("hasPrevious", page > 0);
 
         return "mapa";
     }

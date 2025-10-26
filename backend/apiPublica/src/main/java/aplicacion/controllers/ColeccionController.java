@@ -31,7 +31,9 @@ public class ColeccionController {
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
-            @RequestParam(name = "search", required = false) String textoLibre
+            @RequestParam(name = "search", required = false) String textoLibre,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "100") Integer size
     )
     {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
@@ -43,6 +45,8 @@ public class ColeccionController {
         UrlHelper.appendQueryParam(url, "latitud", latitud);
         UrlHelper.appendQueryParam(url, "longitud", longitud);
         UrlHelper.appendQueryParam(url, "search", textoLibre);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "size", size);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 
@@ -56,7 +60,9 @@ public class ColeccionController {
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
-            @RequestParam(name = "search", required = false) String textoLibre
+            @RequestParam(name = "search", required = false) String textoLibre,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "100") Integer size
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
         UrlHelper.appendQueryParam(url, "categoria", categoria);
@@ -67,6 +73,8 @@ public class ColeccionController {
         UrlHelper.appendQueryParam(url, "latitud", latitud);
         UrlHelper.appendQueryParam(url, "longitud", longitud);
         UrlHelper.appendQueryParam(url, "search", textoLibre);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "size", size);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 

@@ -63,7 +63,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public List<HechoOutputDto> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
                                                           @RequestParam(name = "categoria", required = false) String categoria,
                                                           @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                           @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -71,7 +71,9 @@ public class ColeccionController {
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
                                                           @RequestParam(name = "longitud", required = false) Double longitud,
-                                                          @RequestParam(name = "search", required = false) String textoLibre){
+                                                          @RequestParam(name = "search", required = false) String textoLibre,
+                                                          @RequestParam(defaultValue = "0") Integer page,
+                                                          @RequestParam(defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -83,11 +85,14 @@ public class ColeccionController {
         LocalDateTime fechaAcontecimientoHastaDateTime = fechaAcontecimientoHasta != null ?
             LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8)) : null;
 
-        return coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
+        return ResponseEntity.ok(hechosIrrestrictos);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public List<HechoOutputDto> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosCurados(@PathVariable("id") String idColeccion,
                                                      @RequestParam(name = "categoria", required = false) String categoria,
                                                      @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                      @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -95,7 +100,9 @@ public class ColeccionController {
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
                                                      @RequestParam(name = "longitud", required = false) Double longitud,
-                                                     @RequestParam(name = "search", required = false) String textoLibre){
+                                                     @RequestParam(name = "search", required = false) String textoLibre,
+                                                     @RequestParam(defaultValue = "0") Integer page,
+                                                     @RequestParam(defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -107,7 +114,10 @@ public class ColeccionController {
         LocalDateTime fechaAcontecimientoHastaDateTime = fechaAcontecimientoHasta != null ?
             LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8)) : null;
 
-        return coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
+        return ResponseEntity.ok(hechosCurados);
     }
 
     // Operaciones UPDATE sobre Colecciones

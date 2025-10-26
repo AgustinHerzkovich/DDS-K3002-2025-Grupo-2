@@ -94,7 +94,7 @@ public class ColeccionService {
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public List<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
+    public Page<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
                                                                       String categoria,
                                                                       LocalDateTime fechaReporteDesde,
                                                                       LocalDateTime fechaReporteHasta,
@@ -102,19 +102,20 @@ public class ColeccionService {
                                                                       LocalDateTime fechaAcontecimientoHasta,
                                                                       Double latitud,
                                                                       Double longitud,
-                                                                      String textoLibre) {
+                                                                      String textoLibre,
+                                                                      Pageable pageable) {
 
-        List<Hecho> hechosIrrestrictos;
+        Page<Hecho> hechosIrrestrictos;
         if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, textoLibre);
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, textoLibre, pageable);
         } else{
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion);
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion, pageable);
         }
 
         return hechoService.filtrarHechosQueryParam(hechosIrrestrictos, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
     }
 
-    public List<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
+    public Page<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
                                                                     String categoria,
                                                                     LocalDateTime fechaReporteDesde,
                                                                     LocalDateTime fechaReporteHasta,
@@ -122,12 +123,13 @@ public class ColeccionService {
                                                                     LocalDateTime fechaAcontecimientoHasta,
                                                                     Double latitud,
                                                                     Double longitud,
-                                                                    String textoLibre) {
-        List<Hecho> hechosCurados;
+                                                                    String textoLibre,
+                                                                    Pageable pageable) {
+        Page<Hecho> hechosCurados;
         if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, textoLibre);
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, textoLibre, pageable);
         } else{
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion);
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, pageable);
         }
 
         return hechoService.filtrarHechosQueryParam(hechosCurados, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
