@@ -56,7 +56,6 @@ class ColeccionServiceTest {
         outputDto = new ColeccionOutputDto();
     }
 
-    // ------------------------------------------------------------------------
     @Test
     @DisplayName("Debe guardar una colección correctamente")
     void guardarColeccionGuardaColeccion() {
@@ -122,23 +121,22 @@ class ColeccionServiceTest {
         when(repositorioDeColecciones.findById("999")).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> coleccionService.obtenerColeccionDTO("999"));
     }
-/*
+
     @Test
     @DisplayName("Debe obtener hechos irrestrictos por colección con texto libre")
     void obtenerHechosIrrestrictosPorColeccionObtieneHechosConTextoLibre() {
-        when(hechoService.obtenerHechosPorColeccionYTextoLibre(anyString(), anyString()))
-                .thenReturn(List.of(new Hecho()));
-        when(hechoService.filtrarHechosQueryParam(anyList(), any(), any(), any(), any(), any(), any(), any()))
-                .thenReturn(List.of(new HechoOutputDto()));
-
         Pageable pageable = PageRequest.of(0, 10);
+        when(hechoService.obtenerHechosPorColeccionYTextoLibre(anyString(), anyString(), any()))
+                .thenReturn(new PageImpl<>(List.of(new Hecho())));
+        when(hechoService.filtrarHechosQueryParam(any(), any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(new PageImpl<>(List.of(new HechoOutputDto())));
+
 
         Page<HechoOutputDto> resultado = coleccionService.obtenerHechosIrrestrictosPorColeccion(
                 "123", null, null, null, null, null, null, null, "algo", pageable);
 
-        assertEquals(1, resultado.size());
+        assertEquals(1, resultado.getTotalElements());
     }
-*/
     @Test
     @DisplayName("Debe eliminar una colección existente")
     void eliminarColeccionBorraColeccion() {
@@ -150,7 +148,6 @@ class ColeccionServiceTest {
         verify(repositorioDeColecciones).delete(coleccion);
     }
 
-    // ------------------------------------------------------------------------
     @Test
     @DisplayName("Debe modificar el algoritmo de consenso de la colección")
     void modificarAlgoritmoDeColeccionActualizaAlgoritmoYGuarda() {
@@ -164,7 +161,6 @@ class ColeccionServiceTest {
         verify(repositorioDeColecciones).save(coleccion);
     }
 
-    // ------------------------------------------------------------------------
     @Test
     @DisplayName("Debe agregar una fuente a una colección y asociar hechos preexistentes")
     void agregarFuenteAColeccionAgregaFuenteYGuardar() {
@@ -182,7 +178,6 @@ class ColeccionServiceTest {
         verify(repositorioDeHechosXColeccion).saveAll(anyList());
     }
 
-    // ------------------------------------------------------------------------
     @Test
     @DisplayName("Debe quitar una fuente de la colección y limpiar hechos si es la última")
     void quitarFuenteDeColeccionQuitaFuenteYEliminaHechos() throws Exception {
