@@ -28,26 +28,6 @@ public class HechoController {
         HechoOutputDto hecho = hechoService.obtenerHecho(id);
         model.addAttribute("hecho", hecho);
 
-        // Agregar ID del contribuyente de la BD si está logueado
-        if (oidcUser != null) {
-            // Obtener el email del usuario de Keycloak
-            String email = oidcUser.getEmail();
-            System.out.println("Email del usuario de Keycloak: " + email);
-
-            // Buscar el contribuyente en la BD por email
-            ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(email);
-
-            if (contribuyente != null) {
-                // Usar el ID del contribuyente de la BD
-                System.out.println("ID del contribuyente encontrado: " + contribuyente.getId());
-                model.addAttribute("userId", contribuyente.getId());
-            } else {
-                System.err.println("No se encontró contribuyente con el email: " + email);
-            }
-        } else {
-            System.err.println("OidcUser es null - usuario no autenticado");
-        }
-
         return "hecho";
     }
 }

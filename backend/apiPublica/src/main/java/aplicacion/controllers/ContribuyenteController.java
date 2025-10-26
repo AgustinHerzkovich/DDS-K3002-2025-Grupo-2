@@ -1,13 +1,11 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
-import aplicacion.helpers.UrlHelper;
+import domain.helpers.UrlHelper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/apiPublica")

@@ -20,6 +20,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import testUtils.ContribuyenteFactory;
 import testUtils.HechoFactory;
@@ -97,9 +100,9 @@ class SolicitudServiceTest {
         when(repositorioDeSolicitudes.findAll()).thenReturn(List.of(solicitud));
         when(solicitudOutputMapper.map(solicitud)).thenReturn(dto);
 
-        List<SolicitudOutputDto> resultado = solicitudService.obtenerSolicitudesDTO();
+        Page<SolicitudOutputDto> resultado = solicitudService.obtenerSolicitudesDTO(PageRequest.of(0, 3));
 
-        assertEquals(1, resultado.size());
+        assertEquals(1, resultado.getTotalPages());
         verify(solicitudOutputMapper).map(solicitud);
     }
 
@@ -170,7 +173,7 @@ class SolicitudServiceTest {
     @DisplayName("Debe cambiar el estado de una solicitud a ACEPTADA")
     void actualizarEstadoSolicitudCambiaEstadoAAceptada() {
         SolicitudEliminacion solMock = mock(SolicitudEliminacion.class);
-        solicitudService.actualizarEstadoSolicitud(solMock, "ACEPTADA");
+        solicitudService.actualizarEstadoSolicitud(solMock, "ACEPTADA", null); // Temporal para que compile
         verify(solMock).aceptar(null);
     }
 
@@ -179,6 +182,6 @@ class SolicitudServiceTest {
     void actualizarEstadoSolicitudLanzaExcepcionPorEstadoInvalido() {
         SolicitudEliminacion solMock = mock(SolicitudEliminacion.class);
         assertThrows(IllegalArgumentException.class, () ->
-                solicitudService.actualizarEstadoSolicitud(solMock, "INVALIDO"));
+                solicitudService.actualizarEstadoSolicitud(solMock, "INVALIDO", null)); // Temporal para que compile
     }
 }

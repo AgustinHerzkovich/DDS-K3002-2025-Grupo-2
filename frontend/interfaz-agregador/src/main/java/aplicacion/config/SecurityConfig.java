@@ -4,6 +4,7 @@ import aplicacion.services.CustomOidcUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -12,6 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final CustomOidcUserService customOidcUserService;
@@ -34,14 +36,13 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/about"),
                                 new AntPathRequestMatcher("/hechos/**"),
                                 new AntPathRequestMatcher("/colecciones/**"),
-                                new AntPathRequestMatcher("/solicitudes/**"),
                                 new AntPathRequestMatcher("/css/**"),
                                 new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/images/**"),
                                 new AntPathRequestMatcher("/fragments/**"),
                                 new AntPathRequestMatcher("/favicon.ico")
                         ).permitAll()
-                        // Cualquier otra petición (como /profile) requerirá autenticación
+                        // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

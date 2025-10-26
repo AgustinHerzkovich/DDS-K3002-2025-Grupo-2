@@ -2,14 +2,20 @@ package aplicacion.controllers;
 
 import java.util.List;
 
+import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.dto.input.RevisionSolicitudInputDto;
 import aplicacion.dto.input.SolicitudInputDto;
 import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
+import aplicacion.services.ContribuyenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +24,12 @@ import org.springframework.web.bind.annotation.*;
 public class SolicitudController {
     private final SolicitudService solicitudService;
     private final HechoService hechoService;
-    public SolicitudController(SolicitudService solicitudService, HechoService hechoService) {
+    private final ContribuyenteService contribuyenteService;
+
+    public SolicitudController(SolicitudService solicitudService, HechoService hechoService, ContribuyenteService contribuyenteService) {
         this.solicitudService = solicitudService;
         this.hechoService = hechoService;
+        this.contribuyenteService = contribuyenteService;
     }
 
     @PostMapping("/solicitudes")
@@ -37,8 +46,10 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<List<SolicitudOutputDto>> obtenerSolicitudes() {
-        return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO());
+    public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(defaultValue = "0") Integer page,
+                                                                       @RequestParam(defaultValue = "3") Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO(pageable));
     }
 
     @GetMapping("/solicitudes/{id}")
@@ -50,17 +61,21 @@ public class SolicitudController {
     @PatchMapping ("/solicitudes/{id}/estado")
     public ResponseEntity<Void> actualizarEstadoSolicitud(
             @PathVariable("id") Long id,
-            @RequestBody String nuevoEstado) {
+            @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){
         List<SolicitudEliminacion> solis;
         SolicitudEliminacion sol;
+        Contribuyente contribuyente;
+        String nuevoEstado = revisionSolicitudInputDto.getNuevoEstado();
+        Long adminId = revisionSolicitudInputDto.getAdminId();
         try {
             solis = solicitudService.solicitudesRelacionadas(id);
             sol = solicitudService.obtenerSolicitud(id); // El primero es la solicitud a cambiar
+            contribuyente = contribuyenteService.obtenerContribuyentePorId(adminId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
 
-        solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado);
+        solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado, contribuyente);
 
         for (SolicitudEliminacion solicitud : solis) {
             solicitudService.save(solicitud);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: hecho}, ~{::main}, ~{fragments/right-menu :: hecho(${isLoggedIn})})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: hecho}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
 
 <body>
 <main>
@@ -11,23 +11,33 @@
                 <div class="categoria-badge" th:text="*{categoria.nombre}">Categoría</div>
 
                 <!-- Carousel de Contenido Multimedia -->
-                <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel" th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
+                <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel"
+                     th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
+
                     <div class="carousel-inner">
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                        </button>
                         <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
                              th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                            <img th:src="${multimedia.url}" class="d-block w-100" th:alt="${multimedia.tipo}" style="max-height: 400px; object-fit: contain;">
+                            <img th:src="${multimedia.url}" class="d-block w-100"
+                                 th:alt="${multimedia.tipo}"
+                                 style="max-height: 400px; object-fit: contain;">
                         </div>
                     </div>
+
+                    <!-- Flecha anterior -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                    </button>
+
+                    <!-- Flecha siguiente -->
                     <button class="carousel-control-next" type="button" data-bs-target="#carouselHecho" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                     </button>
                 </div>

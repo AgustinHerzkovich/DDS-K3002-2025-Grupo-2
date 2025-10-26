@@ -1,14 +1,15 @@
 package aplicacion.dto.output;
 
-import aplicacion.dto.output.EstadoSolicitudOutputDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class SolicitudOutputDto {
     private String hechoId;

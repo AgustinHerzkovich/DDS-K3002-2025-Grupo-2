@@ -12,6 +12,8 @@ import aplicacion.repositorios.RepositorioDeSolicitudes;
 import aplicacion.domain.solicitudes.*;
 import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -51,8 +53,8 @@ public class SolicitudService {
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
-    public List<SolicitudOutputDto> obtenerSolicitudesDTO() {
-        return obtenerSolicitudes().stream().map(solicitudOutputMapper::map).toList();
+    public Page<SolicitudOutputDto> obtenerSolicitudesDTO(Pageable pageable) {
+        return repositorioDeSolicitudes.findAll(pageable).map(solicitudOutputMapper::map);
     }
     public List<SolicitudEliminacion> obtenerSolicitudes() {
         return repositorioDeSolicitudes.findAll();
@@ -90,7 +92,7 @@ public class SolicitudService {
         }
     }
 
-    public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado) {
+    public void actualizarEstadoSolicitud(SolicitudEliminacion solicitud, String nuevoEstado, Contribuyente admin) {
         //nuevoEstado = nuevoEstado.replace("\"", "").trim();
         // Se puede hacer eso para que se deba mandar el estado entre comillas.
         switch (nuevoEstado) {
@@ -111,16 +113,16 @@ public class SolicitudService {
                 }
                 break;
             case "ACEPTADA":
-                solicitud.aceptar(null);
+                solicitud.aceptar(admin);
                 break;
             case "RECHAZADA":
-                solicitud.rechazar(null);
+                solicitud.rechazar(admin);
                 break;
             case "PRESCRIPTA":
                 solicitud.prescribir();
                 break;
             case "SPAM":
-                solicitud.marcarSpam(null);
+                solicitud.marcarSpam(admin);
                 break;
             default:
                 throw new IllegalArgumentException("Estado no válido: " + nuevoEstado);

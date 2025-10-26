@@ -1,7 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
-import aplicacion.helpers.UrlHelper;
+import domain.helpers.UrlHelper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
