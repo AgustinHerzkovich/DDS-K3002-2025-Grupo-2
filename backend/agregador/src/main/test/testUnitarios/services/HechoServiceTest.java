@@ -19,10 +19,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import testUtils.ContribuyenteFactory;
 import testUtils.HechoFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -125,10 +131,10 @@ class HechoServiceTest
         hecho2.getCategoria().setNombre("Otro");
         hecho2.setFechaCarga(LocalDateTime.now().minusDays(10));
 
-        List<Hecho> hechos = List.of(hecho1, hecho2);
+        Page<Hecho> hechos = new PageImpl<>(List.of(hecho1, hecho2), PageRequest.of(0, 2), 2);
         when(hechoOutputMapper.map(hecho1)).thenReturn(new HechoOutputDto());
 
-        List<HechoOutputDto> resultado = hechoService.filtrarHechosQueryParam(
+        Page<HechoOutputDto> resultado = hechoService.filtrarHechosQueryParam(
                 hechos,
                 "Accidente",
                 LocalDateTime.now().minusDays(2),
@@ -139,7 +145,7 @@ class HechoServiceTest
                 null
         );
 
-        assertEquals(1, resultado.size());
+        assertEquals(1, resultado.getTotalElements());
         verify(hechoOutputMapper).map(hecho1);
     }
 
@@ -162,6 +168,7 @@ class HechoServiceTest
     @DisplayName("Debe obtener hechos de un contribuyente determinado")
     void obtenerHechosDeContribuyentDevolvuelveHechosDelAutor() {
         Hecho hecho = HechoFactory.crearHechoAleatorio();
+        hecho.setAutor(ContribuyenteFactory.crearContribuyenteAleatorio());
         hecho.getAutor().setId(123L);
         Long contribuyenteId = hecho.getAutor().getId();
         when(contribuyenteService.obtenerContribuyente(contribuyenteId)).thenReturn(hecho.getAutor());
