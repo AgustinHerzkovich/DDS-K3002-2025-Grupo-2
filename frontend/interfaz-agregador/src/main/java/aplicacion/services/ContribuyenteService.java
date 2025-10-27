@@ -1,40 +1,41 @@
 package aplicacion.services;
 
 import aplicacion.dto.output.ContribuyenteOutputDto;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
-
 @Service
 public class ContribuyenteService {
-    private final WebClient webClient;
+    private WebClient webClient;
 
     @Value("${api.publica.port}")
-    private String apiPublicaPort;
+    private Integer apiPublicaPort;
 
-    public ContribuyenteService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:" + apiPublicaPort).build();
+    @PostConstruct
+    public void init() {
+        this.webClient = WebClient.builder()
+                .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
+                .build();
     }
 
     public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) {
         try {
-            String url = "/apiPublica/contribuyentes?mail=" + mail;
-
-            // La API devuelve una lista, no un solo objeto
-            List<ContribuyenteOutputDto> contribuyentes = webClient.get()
-                    .uri(url)
+            ContribuyenteOutputDto contribuyente = webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/contribuyentes")
+                            .queryParam("mail", mail)
+                            .build())
                     .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<List<ContribuyenteOutputDto>>() {})
+                    .bodyToMono(new ParameterizedTypeReference<ContribuyenteOutputDto>() {})
                     .block();
 
-            if (contribuyentes != null && !contribuyentes.isEmpty()) {
-                ContribuyenteOutputDto contribuyente = contribuyentes.get(0);
+            if (contribuyente != null) {
                 return contribuyente;
             } else {
-                System.err.println("No se encontraron contribuyentes con el email: " + mail);
+                System.err.println("No se encontro contribuyente con el email: " + mail);
                 return null;
             }
         } catch (Exception e) {

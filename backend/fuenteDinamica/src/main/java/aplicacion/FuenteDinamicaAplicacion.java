@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 public class FuenteDinamicaAplicacion {
   @Value("${interfaz.fuente.dinamica.port}")
-  private String interfazFuenteDinamicaPort;
+  private Integer interfazFuenteDinamicaPort;
 
   public static void main(String[] args) {
     SpringApplication.run(FuenteDinamicaAplicacion.class, args);
