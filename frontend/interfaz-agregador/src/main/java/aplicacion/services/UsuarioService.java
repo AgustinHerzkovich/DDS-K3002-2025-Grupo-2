@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -24,9 +25,15 @@ public class UsuarioService {
     }
 
     public void registrarUsuarioSiNoExiste(OidcUser oidcUser) {
+        Optional<LocalDate> fechaNacimiento;
+        try{
+            fechaNacimiento = Optional.of(LocalDate.parse(oidcUser.getClaimAsString("birthdate")));
+        }catch (Exception ignored){
+            fechaNacimiento = Optional.empty();
+        }
         IdentidadContribuyenteInputDto identidad = new IdentidadContribuyenteInputDto(oidcUser.getClaimAsString("given_name"),
                                                                                       oidcUser.getClaimAsString("family_name"),
-                                                                                      LocalDate.parse(oidcUser.getClaimAsString("birthdate")));
+                                                                                      fechaNacimiento.orElse(null));
         boolean esAdmin = false;
         Object rolesClaim = oidcUser.getClaim("realm_roles");
         if (rolesClaim instanceof Collection<?> roles) {
