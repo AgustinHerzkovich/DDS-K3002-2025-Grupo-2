@@ -63,7 +63,7 @@ public class HechoService {
                                                               Double longitud,
                                                               String textoLibre,
                                                               Pageable pageable) {
-        return filtrarHechosQueryParam(obtenerHechosPorTextoLibre(textoLibre, pageable), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return repositorioDeHechos.filtrarHechosPorTextoLibre(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable).map(hechoOutputMapper::map);
     }
 
     public Page<Hecho> obtenerHechosPorTextoLibre(String textoLibre, Pageable pageable) {
@@ -78,7 +78,7 @@ public class HechoService {
                                                    Double latitud,
                                                    Double longitud,
                                                    Pageable pageable) {
-        return filtrarHechosQueryParam(repositorioDeHechos.findAll(pageable), categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return repositorioDeHechos.filtrarHechos(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable).map(hechoOutputMapper::map);
     }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
@@ -97,12 +97,7 @@ public class HechoService {
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
-        try{
-            return repositorioDeHechos.findByHechoId(idHecho);
-        }
-        catch (Exception e){
-            throw new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho);
-        }
+        return repositorioDeHechos.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
     }
 
     public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException {
@@ -110,20 +105,54 @@ public class HechoService {
         return hechoOutputMapper.map(hecho);
     }
 
-    public Page<Hecho> obtenerHechosPorColeccion(String idColeccion, Pageable pageable) {
-        return repositorioDeHechos.findByCollectionId(idColeccion, pageable);
+    public Page<Hecho> obtenerHechosPorColeccion(String idColeccion,
+                                                 String categoria,
+                                                 LocalDateTime fechaReporteDesde,
+                                                 LocalDateTime fechaReporteHasta,
+                                                 LocalDateTime fechaAcontecimientoDesde,
+                                                 LocalDateTime fechaAcontecimientoHasta,
+                                                 Double latitud,
+                                                 Double longitud,
+                                                 Pageable pageable) {
+        return repositorioDeHechos.findByFiltrosYColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
     }
 
-    public Page<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion, String textoLibre, Pageable pageable) {
-        return repositorioDeHechos.findByCollectionIdAndTextoLibre(idColeccion, textoLibre, pageable);
+    public Page<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion,
+                                                            String categoria,
+                                                            LocalDateTime fechaReporteDesde,
+                                                            LocalDateTime fechaReporteHasta,
+                                                            LocalDateTime fechaAcontecimientoDesde,
+                                                            LocalDateTime fechaAcontecimientoHasta,
+                                                            Double latitud,
+                                                            Double longitud,
+                                                            String textoLibre,
+                                                            Pageable pageable) {
+        return repositorioDeHechos.findByFiltrosYColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
     }
 
-    public Page<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion, Pageable pageable) {
-        return repositorioDeHechos.findCuredByCollectionId(idColeccion, pageable);
+    public Page<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion,
+                                                        String categoria,
+                                                        LocalDateTime fechaReporteDesde,
+                                                        LocalDateTime fechaReporteHasta,
+                                                        LocalDateTime fechaAcontecimientoDesde,
+                                                        LocalDateTime fechaAcontecimientoHasta,
+                                                        Double latitud,
+                                                        Double longitud,
+                                                        Pageable pageable) {
+        return repositorioDeHechos.findByFiltrosYColeccionCurados(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
     }
 
-    public Page<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion, String textoLibre, Pageable pageable) {
-        return repositorioDeHechos.findCuredByCollectionIdAndTextoLibre(idColeccion, textoLibre, pageable);
+    public Page<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion,
+                                                                   String categoria,
+                                                                   LocalDateTime fechaReporteDesde,
+                                                                   LocalDateTime fechaReporteHasta,
+                                                                   LocalDateTime fechaAcontecimientoDesde,
+                                                                   LocalDateTime fechaAcontecimientoHasta,
+                                                                   Double latitud,
+                                                                   Double longitud,
+                                                                   String textoLibre,
+                                                                   Pageable pageable) {
+        return repositorioDeHechos.findByFiltrosYColeccionYTextoLibreCurados(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
     }
 
     public void guardarHecho(Hecho hecho) {
