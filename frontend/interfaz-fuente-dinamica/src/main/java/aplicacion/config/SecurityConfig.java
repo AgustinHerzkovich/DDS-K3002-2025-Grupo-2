@@ -3,12 +3,14 @@ package aplicacion.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import aplicacion.services.CustomOidcUserService;
 
 @Configuration
+@EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -24,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf
                         // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
-                        .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad"))
+                        .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad","/gestionar-solicitud/{id}"))
             .authorizeHttpRequests(authorize -> authorize
                         //.requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos").permitAll()
@@ -47,3 +49,7 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
+/*.csrf(csrf -> csrf
+        // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
+        .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad"))*/
