@@ -58,32 +58,47 @@
 <div th:replace="~{fragments/layout :: pageScripts}"></div>
 
 <script th:inline="javascript">
-    const API_URL = "http://localhost:8082/fuentesDinamicas/hechos/";
-
-    // Funciones para Editar/Eliminar (las dejamos como placeholders para que no fallen)
-    function editarHecho(id) { console.log(`[EDITAR] Funcionalidad pendiente para ID: ${id}`); }
-    function eliminarHecho(id) { console.log(`[ELIMINAR] Funcionalidad pendiente para ID: ${id}`); }
 
     function visualizarHecho(id) {
         alert(`Visualizando detalles del hecho ID: ${id}`);
     }
 
     function aprobarHecho(id, esAceptado) {
-        if (!confirm(`¿Seguro que desea ${esAceptado ? 'ACEPTAR' : 'RECHAZAR'} el hecho ID ${id}?`)) {
+        const accion = esAceptado ? 'ACEPTAR' : 'RECHAZAR';
+
+        if (!confirm(`¿Seguro que desea ${accion} el hecho ID ${id}?`)) {
             return;
         }
 
+        // 1. Determinar el estado para el DTO
+        const estadoRevision = esAceptado ? "ACEPTADO" : "RECHAZADO";
 
-        fetch(API_URL + id + '/aprobar', {
-            method: 'PUT',
+        // 2 Solicitar la sugerencia (es opcional, pero damos la opción de escribir)
+        let sugerencia = null;
+        const comentario = prompt(`Acción: ${accion}.\n\nOpcional: Introduzca una sugerencia o comentario:`);
+
+        // Asignar null si el usuario cancela (sugerencia === null) o deja vacío
+        if (comentario !== null && comentario.trim() !== "") {
+            sugerencia = comentario.trim();
+        }
+
+
+        const dataRevisada = {
+            estado: estadoRevision,
+            sugerencia: sugerencia
+        };
+
+        // 4. Enviar POST al endpoint LOCAL del HomeController
+        fetch("/gestionar-solicitud/" + id, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ aprobado: esAceptado })
+            body: JSON.stringify(dataRevisada)
         })
             .then(response => {
                 if (response.ok) {
-                    alert(`Hecho ID ${id} fue ${esAceptado ? 'ACEPTADO' : 'RECHAZADO'}.`);
+                    alert(`Hecho ID ${id} fue ${accion} con éxito.`);
                     window.location.reload();
                 } else {
                     return response.text().then(text => Promise.reject(new Error(text)));
@@ -91,7 +106,7 @@
             })
             .catch(error => {
                 console.error('Error de aprobación:', error);
-                alert('Error al procesar la solicitud: ' + error.message);
+                alert(`Error al procesar la solicitud: ${error.message}`);
             });
     }
 </script>
