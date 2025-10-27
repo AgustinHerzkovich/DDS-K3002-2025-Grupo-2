@@ -29,7 +29,7 @@ import java.util.Map;
 public class HomeController {
     private final RestTemplate restTemplate;
     @Value("${fuente.dinamica.port}")
-    private static String fuenteDinamicaPort;
+    private static Integer fuenteDinamicaPort;
     private static final String HECHOS_API_URL = "http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas";
 
     public HomeController(RestTemplate restTemplate) {

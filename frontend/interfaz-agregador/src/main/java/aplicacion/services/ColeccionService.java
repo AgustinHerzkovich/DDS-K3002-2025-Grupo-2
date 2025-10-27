@@ -2,7 +2,6 @@ package aplicacion.services;
 
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.ColeccionOutputDto;
-import aplicacion.dto.output.HechoMapaOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -10,14 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Service
 public class ColeccionService {
     private WebClient webClient;
 
     @Value("${api.publica.port}")
-    private String apiPublicaPort;
+    private Integer apiPublicaPort;
 
     @PostConstruct
     public void init() {
