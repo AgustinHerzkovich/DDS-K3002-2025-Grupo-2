@@ -41,11 +41,6 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "contenidoTexto": "Contenido texto ejemplo",
                                              "contenidoMultimedia": [
                                                {
-                                                 "tipo": "video",
-                                                 "formato": "mp4",
-                                                 "tamanio": 100,
-                                                 "resolucion": "1920x1080",
-                                                 "duracion": 30,
                                                  "url": "urlVideo"
                                                }
                                              ],
@@ -67,10 +62,6 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "contenidoTexto": "Contenido texto ejemplo 2",
                                              "contenidoMultimedia": [
                                                {
-                                                 "tipo": "imagen",
-                                                 "formato": "jpg",
-                                                 "tamanio": 200,
-                                                 "resolucion": "1024x768",
                                                  "url": "urlImagen"
                                                }
                                              ],
@@ -190,11 +181,6 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "contenidoTexto": "Contenido texto ejemplo",
                                              "contenidoMultimedia": [
                                                {
-                                                 "tipo": "video",
-                                                 "formato": "mp4",
-                                                 "tamanio": 100,
-                                                 "resolucion": "1920x1080",
-                                                 "duracion": 30,
                                                  "url": "urlVideo"
                                                }
                                              ],
@@ -216,10 +202,6 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "contenidoTexto": "Contenido texto ejemplo",
                                              "contenidoMultimedia": [
                                                {
-                                                 "tipo": "imagen",
-                                                 "formato": "jpg",
-                                                 "tamanio": 200,
-                                                 "resolucion": "1024x768",
                                                  "url": "urlImagen"
                                                }
                                              ],
@@ -240,10 +222,6 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "contenidoTexto": "Contenido texto ejemplo 2",
                                              "contenidoMultimedia": [
                                                {
-                                                 "tipo": "imagen",
-                                                 "formato": "jpg",
-                                                 "tamanio": 200,
-                                                 "resolucion": "1024x768",
                                                  "url": "urlImagen"
                                                }
                                              ],

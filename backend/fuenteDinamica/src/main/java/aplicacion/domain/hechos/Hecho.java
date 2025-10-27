@@ -1,8 +1,6 @@
 package aplicacion.domain.hechos;
 
-import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
 import jakarta.persistence.*;
 import lombok.*;
 

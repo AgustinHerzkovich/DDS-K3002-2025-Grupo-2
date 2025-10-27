@@ -1,7 +1,6 @@
 package testUnitarios.domain.hechos;
 
 import aplicacion.domain.hechos.*;
-import aplicacion.domain.hechos.multimedias.Video;
 import aplicacion.domain.usuarios.Contribuyente;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

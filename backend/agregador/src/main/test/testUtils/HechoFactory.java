@@ -4,10 +4,7 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
-import aplicacion.domain.hechos.multimedias.Multimedia;
-import aplicacion.domain.hechos.multimedias.Video;
 import aplicacion.domain.usuarios.Contribuyente;
-import aplicacion.domain.usuarios.IdentidadContribuyente;
 
 import java.time.LocalDateTime;
 import java.util.*;
