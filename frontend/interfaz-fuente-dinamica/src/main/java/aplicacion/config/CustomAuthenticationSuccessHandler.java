@@ -27,9 +27,6 @@ import java.util.Collection;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    //@Value("${fuente.dinamica.port}")
-    //private static String fuenteDinamicaPort;
-    //private static final String CONTRIBUYENTE_API_URL = "http://localhost:" + fuenteDinamicaPort + "/contribuyentes";
     private final UsuarioService usuarioService;
 
     @Autowired
@@ -37,79 +34,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         this.usuarioService = usuarioService;
     }
 
-    //  Envía la solicitud POST y guarda el ID en la sesión
-    /*
-    private void sendContribuyenteCreationRequest(OidcUser oidcUser, HttpServletRequest request) {
-        try {
-            // 1. Crear el DTO con los datos del usuario autenticado
-            ContribuyenteInputDto dto = createContribuyenteDto(oidcUser);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<ContribuyenteInputDto> requestEntity = new HttpEntity<>(dto, headers);
-            // 2. Ejecutar POST y capturar la respuesta (que contiene el ID)
-            ResponseEntity<ContribuyenteOutputDto> response = restTemplate.exchange(
-                    CONTRIBUYENTE_API_URL,
-                    HttpMethod.POST,
-                    requestEntity,
-                    ContribuyenteOutputDto.class // Captura el DTO de salida
-            );
-            // Verificar éxito y guardar ID
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                Long contribuyenteId = response.getBody().getId();
-                //  Guardar el ID en la Sesión HTTP para usarlo después (ej. para subir hechos)
-                request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteId);
-                System.out.println("Contribuyente ID guardado en sesión: " + contribuyenteId);
-            }
-        } catch (Exception e) {
-            System.err.println("ERROR al enviar POST para crear Contribuyente: " + e.getMessage());
-        }
-    }
-
-   // mapear OidcUser a ContribuyenteInputDto
-
-    private ContribuyenteInputDto createContribuyenteDto(OidcUser oidcUser) {
-        // Asumiendo que los DTOs tienen @Setter o son mutables.
-        ContribuyenteInputDto contribuyenteDto = new ContribuyenteInputDto();
-
-        // Extracción de datos de los claims de Keycloak
-        String nombre = oidcUser.getClaimAsString("given_name");
-        String apellido = oidcUser.getClaimAsString("family_name");
-        String mail = oidcUser.getEmail();
-        String fechaNacimientoStr = oidcUser.getClaimAsString("birthdate");
-
-        LocalDate fechaNacimiento = (fechaNacimientoStr != null) ? LocalDate.parse(fechaNacimientoStr) : null;
-
-        // Lógica de verificación de rol de administrador (usando el claim directo)
-        boolean esAdmin = false;
-        Object rolesClaim = oidcUser.getClaim("realm_roles");
-        if (rolesClaim instanceof Collection<?> roles) {
-            esAdmin = roles.stream()
-                    .map(Object::toString)
-                    .anyMatch(role -> role.equalsIgnoreCase("admin"));
-        }
-
-        // 1. Construir y rellenar el DTO de Identidad
-        IdentidadContribuyenteInputDto identidad = new IdentidadContribuyenteInputDto();
-
-        identidad.setNombre(nombre);
-        identidad.setApellido(apellido);
-        identidad.setFechaNacimiento(fechaNacimiento);
-
-        // 2. Rellenar el DTO principal
-        contribuyenteDto.setMail(mail);
-        contribuyenteDto.setEsAdministrador(esAdmin);
-        contribuyenteDto.setIdentidad(identidad);
-
-        return contribuyenteDto;
-    }*/
-
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        // 1. Si la autenticación fue exitosa y es de tipo OAuth2/OIDC
+        //  Si la autenticación fue exitosa y es de tipo OAuth2/OIDC
         if (authentication instanceof OAuth2AuthenticationToken) {
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
@@ -122,7 +52,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         }
         System.out.println("==============================");
 
-        // 2. Lógica de Redirección (Tu código original)
+        // Lógica de Redirección
         String targetUrl = (String) request.getSession().getAttribute("REDIRECT_URL_AFTER_LOGIN");
 
         if (targetUrl == null || targetUrl.isEmpty()) {
