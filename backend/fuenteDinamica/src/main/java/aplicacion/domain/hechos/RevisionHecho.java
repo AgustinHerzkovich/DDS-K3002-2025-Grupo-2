@@ -1,14 +1,31 @@
 package aplicacion.domain.hechos;
 
 import aplicacion.domain.usuarios.Contribuyente;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class RevisionHecho { // TODO: Registrar revisiones de hecho o quitar
+import java.time.LocalDateTime;
+
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+public class RevisionHecho {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
     private Contribuyente administrador;
+    @OneToOne
     private Hecho hecho;
+    private LocalDateTime fecha;
 
     public RevisionHecho(Contribuyente administrador, Hecho hecho) {
         this.administrador = administrador;
         this.hecho = hecho;
+        this.fecha = LocalDateTime.now();
     }
 }
     /*

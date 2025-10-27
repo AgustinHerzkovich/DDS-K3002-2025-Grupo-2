@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.domain.hechos.RevisionHecho;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import aplicacion.dto.input.HechoInputDto;
@@ -11,6 +12,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
 import aplicacion.repositorios.RepositorioDeHechos;
+import aplicacion.repositorios.RepositorioDeRevisiones;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +29,10 @@ public class HechoService {
     private final CategoriaInputMapper categoriaInputMapper;
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
+    private final RepositorioDeRevisiones repositorioDeRevisiones;
 
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper) {
+    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RepositorioDeRevisiones repositorioDeRevisiones) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.contribuyenteService = contribuyenteService;
         this.hechoInputMapper = hechoInputMapper;
@@ -38,6 +41,7 @@ public class HechoService {
         this.categoriaInputMapper = categoriaInputMapper;
         this.ubicacionInputMapper = ubicacionInputMapper;
         this.multimediaInputMapper = multimediaInputMapper;
+        this.repositorioDeRevisiones = repositorioDeRevisiones;
     }
 
     @Transactional
@@ -98,6 +102,14 @@ public class HechoService {
 
         hecho = repositorioDeHechos.save(hecho);
         return hechoRevisadoOutputMapper.map(hecho);
+    }
+
+    public void guardarRevision(String hechoId, Long administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
+        Hecho hecho = repositorioDeHechos.findById(hechoId)
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + hechoId));
+        Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
+        RevisionHecho revisionHecho = new RevisionHecho(administrador, hecho);
+        repositorioDeRevisiones.save(revisionHecho);
     }
 
     public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException {
