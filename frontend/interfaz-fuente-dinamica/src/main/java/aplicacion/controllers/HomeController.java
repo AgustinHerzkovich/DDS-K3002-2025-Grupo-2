@@ -7,6 +7,7 @@ import aplicacion.dtos.input.IdentidadContribuyenteInputDto;
 import aplicacion.dtos.output.HechoOutputDto;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +28,9 @@ import java.util.Map;
 @Controller
 public class HomeController {
     private final RestTemplate restTemplate;
-    private static final String HECHOS_API_URL = "http://localhost:8082/fuentesDinamicas";
+    @Value("${fuente.dinamica.port}")
+    private static String fuenteDinamicaPort;
+    private static final String HECHOS_API_URL = "http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas";
 
     public HomeController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;

@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -26,7 +27,9 @@ import java.util.Collection;
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final RestTemplate restTemplate;
-    private static final String CONTRIBUYENTE_API_URL = "http://localhost:8082/fuentesDinamicas/contribuyentes";
+    @Value("${fuente.dinamica.port}")
+    private static String fuenteDinamicaPort;
+    private static final String CONTRIBUYENTE_API_URL = "http://localhost:" + fuenteDinamicaPort + "/contribuyentes";
 
     // 💡 Constructor para inyectar RestTemplate
     @Autowired

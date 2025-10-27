@@ -1,6 +1,5 @@
 package aplicacion.domain.hechos;
 
-import aplicacion.domain.hechos.multimedias.Multimedia;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.persistence.*;

@@ -11,10 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableScheduling
 public class InterfazFuenteDinamicaAplicacion {
 
+
   public static void main(String[] args) {
     SpringApplication.run(InterfazFuenteDinamicaAplicacion.class, args);
   }
-    @Bean
+  /*  @Bean
     public WebMvcConfigurer corsConfigurer() {
       return new WebMvcConfigurer() {
         @Override
@@ -22,7 +23,7 @@ public class InterfazFuenteDinamicaAplicacion {
           registry.addMapping("/**").allowedOrigins("http://localhost:8092").allowedMethods("*").allowedHeaders("*"); //establece que front puede hacer peticiones al back, donde puede definir los metodos y headers permitidos
         }
       };
-  }
+  }*/
 }
 
 

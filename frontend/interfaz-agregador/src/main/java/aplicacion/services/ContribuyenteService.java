@@ -1,6 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.dto.output.ContribuyenteOutputDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,8 +12,11 @@ import java.util.List;
 public class ContribuyenteService {
     private final WebClient webClient;
 
+    @Value("${api.publica.port}")
+    private String apiPublicaPort;
+
     public ContribuyenteService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8085").build();
+        this.webClient = webClientBuilder.baseUrl("http://localhost:" + apiPublicaPort).build();
     }
 
     public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) {

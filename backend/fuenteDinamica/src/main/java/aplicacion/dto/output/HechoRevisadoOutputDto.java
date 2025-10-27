@@ -1,10 +1,7 @@
 package aplicacion.dto.output;
 
-import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.EstadoRevision;
 import aplicacion.domain.hechos.Origen;
-import aplicacion.domain.hechos.Ubicacion;
-import aplicacion.domain.hechos.multimedias.Multimedia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
