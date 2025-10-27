@@ -1,13 +1,14 @@
 package aplicacion.controllers;
 
 
+import aplicacion.dtos.input.CambioEstadoRevisionInputDto;
 import aplicacion.dtos.input.HechoEdicionInputDto;
 import aplicacion.dtos.input.HechoInputDto;
 import aplicacion.dtos.input.IdentidadContribuyenteInputDto;
 import aplicacion.dtos.output.HechoOutputDto;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,17 +21,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 @Controller
 public class HomeController {
     private final RestTemplate restTemplate;
-    @Value("${fuente.dinamica.port}")
-    private static Integer fuenteDinamicaPort;
-    private static final String HECHOS_API_URL = "http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas";
+    //@Value("${fuente.dinamica.port}")
+    //private static String fuenteDinamicaPort;
+    private static final String HECHOS_API_URL = "http://localhost:8082/fuentesDinamicas";
 
     public HomeController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -67,6 +66,7 @@ public class HomeController {
 
 
     @GetMapping("/editar-perfil")
+    @PreAuthorize("isAuthenticated()")
     public String editarPerfilForm(@AuthenticationPrincipal OidcUser principal, Model model) {
         if (principal != null) {
             model.addAttribute("principal", principal);
@@ -81,6 +81,9 @@ public class HomeController {
             perfilUsuario.put("fechaNacimiento", fechaNacimientoClaim);
 
             perfilUsuario.put("email", principal.getEmail());
+
+            boolean isAdmin = checkClaimForRole(principal, "admin");
+            model.addAttribute("isAdmin", isAdmin);
 
             model.addAttribute("usuario", perfilUsuario);
 
@@ -331,7 +334,8 @@ public class HomeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> modificarIdentidad(
             @RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
-            HttpServletRequest request
+            HttpServletRequest request,
+            @AuthenticationPrincipal OidcUser principal
     ) {
         Long contribuyenteId = (Long) request.getSession().getAttribute("CONTRIBUYENTE_ID");
 
@@ -341,6 +345,44 @@ public class HomeController {
         }
 
         String apiUrl = HECHOS_API_URL+"/contribuyentes/" + contribuyenteId + "/identidad";
+        try {
+            String keycloakUserId = principal.getSubject();
+            String adminToken = obtenerAdminToken(); // Asume que este método existe y funciona
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(adminToken);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            // Crear el cuerpo de la petición. Keycloak Admin API usa 'firstName', 'lastName' y 'attributes'
+            Map<String, Object> kcUpdateRequest = new HashMap<>();
+            kcUpdateRequest.put("firstName", identidadContribuyenteInputDto.getNombre());
+            kcUpdateRequest.put("lastName", identidadContribuyenteInputDto.getApellido());
+
+            // Manejo del atributo de fecha de nacimiento (birthdate)
+            // Se envía la fecha como una lista de String dentro del mapa de atributos
+            kcUpdateRequest.put("attributes", Collections.singletonMap(
+                    "birthdate",
+                    Collections.singletonList(identidadContribuyenteInputDto.getFechaNacimiento().toString())
+            ));
+
+            HttpEntity<Map<String, Object>> kcRequest = new HttpEntity<>(kcUpdateRequest, headers);
+
+            // Ejecutar PUT a la Admin API de Keycloak para actualizar el usuario
+            restTemplate.exchange(
+                    "http://localhost:8888/admin/realms/metamapa/users/" + keycloakUserId,
+                    HttpMethod.PUT,
+                    kcRequest,
+                    Void.class // No esperamos cuerpo de respuesta
+            );
+            System.out.println(" Keycloak actualizado para el usuario: " + keycloakUserId);
+
+        } catch (HttpClientErrorException kcEx) {
+            // Capturar errores 400/409/500 de la Admin API
+            System.err.println(" ERROR al actualizar Keycloak: " + kcEx.getResponseBodyAsString());
+            return ResponseEntity.status(kcEx.getStatusCode()).body(kcEx.getResponseBodyAsString());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo al actualizar Keycloak: " + e.getMessage() + "\"}");
+        }
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -364,7 +406,47 @@ public class HomeController {
             System.err.println("ERROR  al procesar identidad: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo de comunicación interna.\"}");
         }
+
+    }
+
+    @PostMapping("/gestionar-solicitud/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> gestionarSolicitud(
+            @PathVariable("id") String hechoId,
+            @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto // DTO que contiene ESTADO y SUGERENCIA
+    ) {
+
+        //  http://localhost:8082/fuentesDinamicas/hechos/{id}/estadoRevision
+        final String MICROSERVICE_URL = HECHOS_API_URL + "/hechos/" + hechoId + "/estadoRevision";
+
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<CambioEstadoRevisionInputDto> requestEntity = new HttpEntity<>(cambioEstadoDto, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    MICROSERVICE_URL,
+                    HttpMethod.PATCH,
+                    requestEntity,
+                    String.class
+            );
+
+            System.out.println("Gestión de solicitud enviada para ID: " + hechoId);
+
+            return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+
+        } catch (org.springframework.web.client.HttpClientErrorException httpEx) {
+            // Capturar 404 (Hecho no encontrado) u otros errores de negocio
+            System.err.println(" ERROR API de Revisión (" + httpEx.getStatusCode() + "): " + httpEx.getResponseBodyAsString());
+            return ResponseEntity.status(httpEx.getStatusCode()).body(httpEx.getResponseBodyAsString());
+        } catch (Exception e) {
+            System.err.println("ERROR FATAL al gestionar hecho ID " + hechoId + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo de comunicación.\"}");
+        }
+
     }
 }
+
+
 
 
