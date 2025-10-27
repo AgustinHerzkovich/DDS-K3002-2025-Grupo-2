@@ -38,7 +38,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     //  Envía la solicitud POST y guarda el ID en la sesión
-
+    /*
     private void sendContribuyenteCreationRequest(OidcUser oidcUser, HttpServletRequest request) {
         try {
             // 1. Crear el DTO con los datos del usuario autenticado
@@ -102,19 +102,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         contribuyenteDto.setIdentidad(identidad);
 
         return contribuyenteDto;
-    }
+    }*/
 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        System.out.println("auth " );
+        /*System.out.println("auth " );
         // 1. Si la autenticación fue exitosa y es de tipo OAuth2/OIDC
         if (authentication instanceof OAuth2AuthenticationToken) {
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
             sendContribuyenteCreationRequest(oidcUser, request);
-        }
+        }*/
 
         System.out.println("=== Authorities del usuario ===");
         for (GrantedAuthority authority : authentication.getAuthorities()) {

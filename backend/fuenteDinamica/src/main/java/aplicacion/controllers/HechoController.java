@@ -62,11 +62,15 @@ public class HechoController {
         }
     }
 
-    @PatchMapping("/hechos/{id}/estadoRevision") // TODO: Cuando tengamos acceso a datos de la sesión del administrador, se debe registrar la revisión en la clase RevisionHecho
+    @PatchMapping("/hechos/{id}/estadoRevision")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable("id") String id,
-                                                                  @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) {
+                                                     @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
+                                                     @RequestHeader(value = "Administrador", required = false) Long administradorId) {
         try {
             HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
+            if (administradorId != null) {
+                hechoService.guardarRevision(id, administradorId);
+            }
             System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionInputDto.getEstado());
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {

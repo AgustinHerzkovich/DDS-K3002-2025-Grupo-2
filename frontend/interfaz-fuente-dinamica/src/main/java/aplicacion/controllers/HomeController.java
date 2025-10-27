@@ -50,7 +50,7 @@ public class HomeController {
         return "homepage";
     }
 
-    // Creamos un método de utilidad para verificar el claim
+    // Metodo de utilidad para verificar el claim
     private boolean checkClaimForRole(OidcUser oidcUser, String targetRole) {
         // 1. Obtener el claim "realm_roles" (donde Keycloak pone el rol)
         Object rolesClaim = oidcUser.getClaim("realm_roles");

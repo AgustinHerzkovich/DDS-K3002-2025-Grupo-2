@@ -39,7 +39,7 @@ public class MapaController {
         if (categoria != null || fechaReporteDesde != null || fechaReporteHasta != null ||
             fechaAcontecimientoDesde != null || fechaAcontecimientoHasta != null ||
             latitud != null || longitud != null || search != null) {
-            // Si hay filtros, usar el método con filtros
+            // Si hay filtros, usar el metodo con filtros
             hechos = hechoService.obtenerHechosConFiltros(
                 categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
