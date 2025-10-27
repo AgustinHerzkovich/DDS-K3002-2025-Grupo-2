@@ -1,11 +1,15 @@
 package aplicacion.controllers;
 
+import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
+import aplicacion.services.GeocodingService;
 import aplicacion.services.HechoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -13,9 +17,11 @@ import java.util.List;
 public class MapaController {
 
     private final HechoService hechoService;
+    private final GeocodingService geocodingService;
 
-    public MapaController(HechoService hechoService) {
+    public MapaController(HechoService hechoService, GeocodingService geocodingService) {
         this.hechoService = hechoService;
+        this.geocodingService = geocodingService;
     }
 
     @GetMapping("/mapa")
@@ -34,29 +40,62 @@ public class MapaController {
     ) {
 
         // Obtener hechos desde la API Pública
-        List<HechoMapaOutputDto> hechos;
+        PageWrapper<HechoMapaOutputDto> pageWrapper;
 
         if (categoria != null || fechaReporteDesde != null || fechaReporteHasta != null ||
             fechaAcontecimientoDesde != null || fechaAcontecimientoHasta != null ||
             latitud != null || longitud != null || search != null) {
             // Si hay filtros, usar el metodo con filtros
-            hechos = hechoService.obtenerHechosConFiltros(
+            pageWrapper = hechoService.obtenerHechosConFiltros(
                 categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                 latitud, longitud, search, page, size
-            ).collectList().block(); // <--- recolecta el Flux en una lista
+            ).block();
 
         } else {
             // Si no hay filtros, obtener todos los hechos
-            hechos = hechoService.obtenerHechos(page, size)
-                    .collectList()
+            pageWrapper = hechoService.obtenerHechos(page, size)
                     .block(); // <--- recolecta el Flux en una lista
         }
 
-        if (hechos == null) hechos = List.of();
+        if (pageWrapper == null) {
+            model.addAttribute("hechos", List.of());
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("pageSize", size);
+            model.addAttribute("hasNext", false);
+            model.addAttribute("hasPrevious", false);
+            model.addAttribute("totalPages", 0);
+
+            return "mapa";
+        }
+
+        List<HechoMapaOutputDto> hechos = Flux.fromIterable(pageWrapper.getContent())
+                .flatMap(hecho -> {
+                    if (hecho.getUbicacion() != null &&
+                            hecho.getUbicacion().getLatitud() != null &&
+                            hecho.getUbicacion().getLongitud() != null) {
+
+                        return geocodingService.obtenerDireccionCorta(
+                                hecho.getUbicacion().getLatitud(),
+                                hecho.getUbicacion().getLongitud()
+                        ).map(direccion -> {
+                            hecho.setDireccion(direccion);
+                            return hecho;
+                        });
+                    } else {
+                        hecho.setDireccion("Sin ubicación");
+                        return Mono.just(hecho);
+                    }
+                })
+                .collectList()
+                .block();
+
+        if (hechos == null) {
+            hechos = List.of();
+        }
 
         // Obtener los 5 hechos más recientes (con menor fechaCarga), sin duplicados
-        List<HechoMapaOutputDto> hechosRecientes = hechos.stream()
+        List<HechoMapaOutputDto> hechosRecientes = pageWrapper.getContent().stream()
                 .filter(h -> h.getFechaCarga() != null)
                 .distinct() // Elimina duplicados basándose en equals() y hashCode()
                 .sorted((h1, h2) -> h2.getFechaCarga().compareTo(h1.getFechaCarga()))
@@ -65,6 +104,11 @@ public class MapaController {
 
         model.addAttribute("hechos", hechos);
         model.addAttribute("hechosRecientes", hechosRecientes);
+        model.addAttribute("currentPage", pageWrapper.getNumber());
+        model.addAttribute("pageSize", pageWrapper.getSize());
+        model.addAttribute("hasNext", !pageWrapper.isLast());
+        model.addAttribute("hasPrevious", !pageWrapper.isFirst());
+        model.addAttribute("totalPages", pageWrapper.getTotalPages());
 
         // Pasar los filtros actuales al modelo para mantenerlos en los inputs
         model.addAttribute("categoria", categoria != null ? categoria : "");
@@ -73,11 +117,6 @@ public class MapaController {
         model.addAttribute("fechaAcontecimientoDesde", fechaAcontecimientoDesde != null ? fechaAcontecimientoDesde : "");
         model.addAttribute("fechaAcontecimientoHasta", fechaAcontecimientoHasta != null ? fechaAcontecimientoHasta : "");
         model.addAttribute("search", search != null ? search : "");
-
-        model.addAttribute("currentPage", page);
-        model.addAttribute("pageSize", size);
-        model.addAttribute("hasNext", hechos.size() == size); // Si hay tantos como el tamaño, podría haber otra página
-        model.addAttribute("hasPrevious", page > 0);
 
         return "mapa";
     }

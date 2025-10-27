@@ -22,13 +22,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import testUtils.ContribuyenteFactory;
 import testUtils.HechoFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -82,17 +80,17 @@ class HechoServiceTest
     @Test
     @DisplayName("Debe obtener hecho por ID")
     void obtenerHechoPorIdDevolvuelveHechoExistente() throws HechoNoEncontradoException {
-        when(repositorioDeHechos.findByHechoId("abcd")).thenReturn(hecho);
+        when(repositorioDeHechos.findById("abcd")).thenReturn(hecho);
 
         Hecho resultado = hechoService.obtenerHechoPorId("abcd");
 
         assertEquals(hecho, resultado);
-        verify(repositorioDeHechos).findByHechoId("abcd");
+        verify(repositorioDeHechos).findById("abcd");
     }
     @Test
     @DisplayName("Debe tirar excepcion si no existe el hecho buscado")
     void obtenerHechoPorIdTiraExcepcionSiNoExiste() {
-        when(repositorioDeHechos.findByHechoId("inexistente")).thenThrow(new RuntimeException());
+        when(repositorioDeHechos.findById("inexistente")).thenThrow(new RuntimeException());
 
         assertThrows(HechoNoEncontradoException.class, () -> hechoService.obtenerHechoPorId("inexistente"));
     }

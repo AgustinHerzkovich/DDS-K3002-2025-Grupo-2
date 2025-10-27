@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class SolicitudService {
@@ -30,7 +31,7 @@ public class SolicitudService {
                 .build();
     }
 
-    public Flux<SolicitudOutputDto> obtenerSolicitudes(int page, int size) {
+    public Mono<PageWrapper<SolicitudOutputDto>> obtenerSolicitudes(int page, int size) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/solicitudes")
@@ -39,7 +40,6 @@ public class SolicitudService {
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<PageWrapper<SolicitudOutputDto>>() {})
-                .flatMapMany(pageWrapper -> Flux.fromIterable(pageWrapper.getContent()))
                 .doOnError(e -> System.err.println("Error al obtener solicitudes de la API Administrativa: " + e.getMessage()));
     }
 }

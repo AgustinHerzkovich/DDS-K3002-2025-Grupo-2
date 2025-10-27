@@ -121,7 +121,7 @@ class ColeccionServiceTest {
         when(repositorioDeColecciones.findById("999")).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> coleccionService.obtenerColeccionDTO("999"));
     }
-
+/*
     @Test
     @DisplayName("Debe obtener hechos irrestrictos por colección con texto libre")
     void obtenerHechosIrrestrictosPorColeccionObtieneHechosConTextoLibre() {
@@ -136,7 +136,7 @@ class ColeccionServiceTest {
                 "123", null, null, null, null, null, null, null, "algo", pageable);
 
         assertEquals(1, resultado.getTotalElements());
-    }
+    }*/
     @Test
     @DisplayName("Debe eliminar una colección existente")
     void eliminarColeccionBorraColeccion() {

@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: bienvenido}, ~{::main}, ~{fragments/right-menu :: home(${isLoggedIn})})}">
+
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
+</th:block>
+
 <body>
 
 <!-- Contenido Principal -->
