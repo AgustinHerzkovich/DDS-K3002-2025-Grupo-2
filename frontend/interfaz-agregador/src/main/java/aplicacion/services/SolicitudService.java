@@ -15,7 +15,7 @@ public class SolicitudService {
     private WebClient webClient;
 
     @Value("${api.administrativa.port}")
-    private String apiAdministrativaPort;
+    private Integer apiAdministrativaPort;
 
     @PostConstruct
     public void init() {
