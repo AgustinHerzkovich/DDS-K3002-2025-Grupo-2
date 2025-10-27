@@ -33,7 +33,9 @@ public class HechoController {
         List<HechoOutputDto> hechos;
         if (fechaMayorA != null) {
             hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
-        } else{
+        } else if(pendiente){
+            hechos = hechoService.obtenerHechosPendientes();
+        }else{
             hechos = hechoService.obtenerHechosAceptados();
         }
 
