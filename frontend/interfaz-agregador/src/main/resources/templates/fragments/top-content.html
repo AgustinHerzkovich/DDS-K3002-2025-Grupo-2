@@ -34,17 +34,13 @@
             event.preventDefault();
 
             const searchValue = document.getElementById('search-input').value.trim();
+            const currentUrl = new URL(window.location.href);
 
-            if (searchValue) {
-                // Obtener la URL actual
-                const currentUrl = new URL(window.location.href);
+            // Actualizar el parámetro search (aunque esté vacío)
+            currentUrl.searchParams.set('search', searchValue);
 
-                // Agregar o actualizar el parámetro search
-                currentUrl.searchParams.set('search', searchValue);
-
-                // Redirigir a la nueva URL con el parámetro search
-                window.location.href = currentUrl.toString();
-            }
+            // Redirigir a la nueva URL
+            window.location.href = currentUrl.toString();
 
             return false;
         }

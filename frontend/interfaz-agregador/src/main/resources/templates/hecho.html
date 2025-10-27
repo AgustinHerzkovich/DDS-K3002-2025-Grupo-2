@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: hecho}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
 
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hecho.css}" />
+</th:block>
+
 <body>
 <main>
     <div class="hecho-container" th:object="${hecho}">

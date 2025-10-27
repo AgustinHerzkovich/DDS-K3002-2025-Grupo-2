@@ -1,0 +1,115 @@
+.colecciones-container {
+    display: grid;
+    grid-template-rows: repeat(3, 8rem);
+    grid-template-columns: 70%;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-bottom: 23rem;
+}
+
+.coleccion-card {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.coleccion-titulo {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.coleccion-decripcion {
+    font-size: 15px;
+}
+
+.left-section {
+    display: flex;
+    margin-left: 1rem;
+}
+
+.coleccion-detalles {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5rem;
+    flex: 1;
+    color: black;
+    gap: 0.5rem;
+}
+
+.coleccion-descripcion{
+    font-size: 1rem;
+    font-weight: 400;
+    color: #555;
+    margin: 0.3rem 0 0.8rem 0;
+}
+
+.coleccion-botones {
+    display: flex;
+    gap: 2rem;
+}
+
+.right-section {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50px; /* 🔵 borde circular */
+    padding: 0.4rem 1rem;
+    width: 100%;
+    max-width: 400px; /* ancho máximo */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.search-form:focus-within {
+    border-color: #007bff; /* azul al hacer foco */
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+.search-form input {
+    border:  none;
+    outline: none;
+    flex: 1;
+    font-size: 1rem;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    background: #fff url('https://cdn-icons-png.flaticon.com/512/622/622669.png')no-repeat 10px center;
+    background-size: 18px;
+
+}
+.search-form input:focus {
+  outline: none;
+}
+
+.search-form button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 1.1rem;
+    padding-left: 0.4rem;
+    transition: color 0.2s ease;
+}
+
+.search-form button:hover {
+    color: #007bff;
+}

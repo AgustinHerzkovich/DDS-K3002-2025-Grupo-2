@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: solicitudes}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: solicitudes}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
+
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/solicitudes.css}" />
+</th:block>
 
 <body>
 <main th:inline="javascript">
@@ -62,29 +66,25 @@
             <p>No hay solicitudes de eliminación pendientes</p>
         </div>
 
-        <!-- Controles de paginación -->
-        <div th:if="${solicitudes != null && !solicitudes.isEmpty()}" class="pagination-controls">
-            <a th:if="${currentPage > 0}"
+        <!-- Controles de Paginación -->
+        <div class="pagination-controls">
+            <a th:if="${hasPrevious}"
                th:href="@{/solicitudes(page=${currentPage - 1}, size=${pageSize})}"
                class="pagination-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pagination-icon">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-                Anterior
+                ← Anterior
             </a>
+            <!-- Enlace deshabilitado si no hay página anterior -->
+            <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
 
-            <span class="pagination-info">
-                Página <span th:text="${currentPage + 1}">1</span> | Mostrando <span th:text="${pageSize}">10</span> por página
-            </span>
+            <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
 
-            <a th:if="${solicitudes.size() == pageSize}"
+            <a th:if="${hasNext}"
                th:href="@{/solicitudes(page=${currentPage + 1}, size=${pageSize})}"
                class="pagination-btn">
-                Siguiente
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pagination-icon">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
+                Siguiente →
             </a>
+            <!-- Enlace deshabilitado si no hay página siguiente -->
+            <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
         </div>
     </div>
 

@@ -107,12 +107,12 @@ public class ColeccionService {
 
         Page<Hecho> hechosIrrestrictos;
         if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, textoLibre, pageable);
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
         } else{
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion, pageable);
+            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
         }
 
-        return hechoService.filtrarHechosQueryParam(hechosIrrestrictos, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return hechosIrrestrictos.map(hechoOutputMapper::map);
     }
 
     public Page<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
@@ -127,12 +127,12 @@ public class ColeccionService {
                                                                     Pageable pageable) {
         Page<Hecho> hechosCurados;
         if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, textoLibre, pageable);
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
         } else{
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, pageable);
+            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);;
         }
 
-        return hechoService.filtrarHechosQueryParam(hechosCurados, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud);
+        return hechosCurados.map(hechoOutputMapper::map);
     }
 
     public void eliminarColeccion(String idColeccion) {

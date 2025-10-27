@@ -1,8 +1,6 @@
 package aplicacion.repositorios;
 
-import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.domain.hechos.Ubicacion;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,92 +10,226 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Optional; // Importar Optional
 
 @Repository
 public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
-    @Query("""
-        SELECT h
-        FROM Hecho h
-        JOIN HechoXColeccion hc ON h.id = hc.hecho.id
-        WHERE hc.coleccion.id = :idColeccion
-    """)
-    Page<Hecho> findByCollectionId(@Param("idColeccion") String idColeccion, Pageable pageable);
 
-    @Query(value = "SELECT h.* FROM hecho h " +
-            "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
-            "WHERE hc.coleccion_id = :idColeccion " +
-            "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
-            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
-            countQuery = "SELECT h.* FROM hecho h " +
-                    "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
-                    "WHERE hc.coleccion_id = :idColeccion " +
-                    "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
-                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
-            nativeQuery = true)
-    Page<Hecho> findByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre, Pageable pageable);
+    Optional<Hecho> findById(String id); // Devuelve Optional<Hecho>
 
-    @Query("""
-        SELECT h
-        FROM Hecho h
-        JOIN HechoXColeccion hc ON h.id = hc.hecho.id
-        WHERE hc.coleccion.id = :idColeccion AND hc.consensuado = true
-    """)
-    Page<Hecho> findCuredByCollectionId(@Param("idColeccion") String idColeccion, Pageable pageable);
-
-    @Query(value = "SELECT h.* FROM hecho h " +
-            "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
-            "WHERE hc.coleccion_id = :idColeccion " +
-            "AND hc.consensuado = true " +
-            "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
-            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
-            countQuery = "SELECT h.* FROM hecho h " +
-                    "JOIN hecho_coleccion hc ON h.id = hc.hecho_id " +
-                    "WHERE hc.coleccion_id = :idColeccion " +
-                    "AND hc.consensuado = true " +
-                    "AND MATCH(h.titulo, h.descripcion, h.contenido_texto) " +
-                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
-            nativeQuery = true)
-    Page<Hecho> findCuredByCollectionIdAndTextoLibre(@Param("idColeccion") String idColeccion, @Param("textoLibre") String textoLibre, Pageable pageable);
-
-    @Query("""
-        SELECT h
-        FROM Hecho h
-        WHERE h.id = :idHecho
-    """)
-    Hecho findByHechoId(@Param("idHecho") String idHecho);
-
-    @Query("""
-        SELECT h
-        FROM Hecho h
-        WHERE h.titulo = :titulo
-          AND h.descripcion = :descripcion
-          AND h.categoria = :categoria
-          AND h.ubicacion = :ubicacion
-          AND h.fechaAcontecimiento = :fechaAcontecimiento
-          AND h.contenidoTexto = :contenidoTexto
-    """)
-    Optional<Hecho> findDuplicado(@Param("titulo") String titulo,
-                                  @Param("descripcion") String descripcion,
-                                  @Param("categoria") Categoria categoria,
-                                  @Param("ubicacion") Ubicacion ubicacion,
-                                  @Param("fechaAcontecimiento") LocalDateTime fechaAcontecimiento,
-                                  @Param("contenidoTexto") String contenidoTexto);
     @Query(
             value = "SELECT * FROM hecho h WHERE MD5(CONCAT_WS('|', " +
                     "titulo, descripcion, categoria_id, latitud, longitud, fecha_acontecimiento, IFNULL(contenido_texto, ''))) IN (:codigos)",
             nativeQuery = true
     )
-    List<Hecho> findByCodigoHasheadoIn(List<String> codigos);
+    List<Hecho> findByCodigoHasheadoIn(@Param("codigos") List<String> codigos);
 
     @Query(value = "SELECT * FROM hecho " +
             "WHERE MATCH(titulo, descripcion, contenido_texto) " +
             "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
-            countQuery = "SELECT * FROM hecho " +
+            countQuery = "SELECT COUNT(*) FROM hecho " + // Corregido countQuery
                     "WHERE MATCH(titulo, descripcion, contenido_texto) " +
                     "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
-    Page<Hecho>findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
+    Page<Hecho> findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
 
     List<Hecho> findByAutorId(Long autorId);
+
+    @Query("""
+        SELECT h FROM Hecho h
+        WHERE (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+          AND (:fechaReporteDesde IS NULL OR h.fechaCarga > :fechaReporteDesde)
+          AND (:fechaReporteHasta IS NULL OR h.fechaCarga < :fechaReporteHasta)
+          AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento > :fechaAcontecimientoDesde)
+          AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento < :fechaAcontecimientoHasta)
+          AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
+          AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+    """)
+    Page<Hecho> filtrarHechos(
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
+    @Query(value = """
+    SELECT * FROM hecho h
+    WHERE (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (
+           :textoLibre IS NULL OR
+           MATCH(h.titulo, h.descripcion, h.contenido_texto)
+           AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)
+      )
+    """,
+            countQuery = """
+    SELECT COUNT(*) FROM hecho h
+    WHERE (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (
+           :textoLibre IS NULL OR
+           MATCH(h.titulo, h.descripcion, h.contenido_texto)
+           AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)
+      )
+    """,
+            nativeQuery = true)
+    Page<Hecho> filtrarHechosPorTextoLibre(
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            @Param("textoLibre") String textoLibre,
+            Pageable pageable
+    );
+
+    @Query(value = """
+    SELECT h.* FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
+    """,
+            countQuery = """
+    SELECT count(h.id) FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
+    """,
+            nativeQuery = true)
+    Page<Hecho> findByFiltrosYColeccionYTextoLibre(
+            @Param("idColeccion") String idColeccion,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            @Param("textoLibre") String textoLibre,
+            Pageable pageable
+    );
+
+    @Query("""
+    SELECT h
+    FROM Hecho h
+    JOIN HechoXColeccion hc ON h.id = hc.hecho.id
+    WHERE hc.coleccion.id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
+      AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+    """)
+    Page<Hecho> findByFiltrosYColeccion(
+            @Param("idColeccion") String idColeccion,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
+
+    @Query("""
+    SELECT h
+    FROM Hecho h
+    JOIN HechoXColeccion hc ON h.id = hc.hecho.id
+    WHERE hc.coleccion.id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
+      AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+      AND hc.consensuado = true
+    """)
+    Page<Hecho> findByFiltrosYColeccionCurados(
+            @Param("idColeccion") String idColeccion,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
+    @Query(value = """
+    SELECT h.* FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
+      AND hc.consensuado = true
+    """,
+            countQuery = """
+    SELECT count(h.id) FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud = :latitud)
+      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
+      AND hc.consensuado = true
+    """,
+            nativeQuery = true)
+    Page<Hecho> findByFiltrosYColeccionYTextoLibreCurados(
+            @Param("idColeccion") String idColeccion,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            @Param("textoLibre") String textoLibre,
+            Pageable pageable
+    );
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class HechoService {
@@ -40,7 +41,7 @@ public class HechoService {
     }
 
     // Metodo que devuelve un Flux de hechos con direcciones calculadas
-    public Flux<HechoMapaOutputDto> obtenerHechos(Integer page, Integer size) {
+    public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechos(Integer page, Integer size) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hechos")
@@ -49,25 +50,6 @@ public class HechoService {
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
-                .flatMapMany(pageWrapper -> Flux.fromIterable(pageWrapper.getContent()))
-                .flatMap(hecho -> {
-                    // Si el hecho tiene ubicación, calcular la dirección
-                    if (hecho.getUbicacion() != null &&
-                        hecho.getUbicacion().getLatitud() != null &&
-                        hecho.getUbicacion().getLongitud() != null) {
-
-                        return geocodingService.obtenerDireccionCorta(
-                                hecho.getUbicacion().getLatitud(),
-                                hecho.getUbicacion().getLongitud()
-                        ).map(direccion -> {
-                            hecho.setDireccion(direccion);
-                            return hecho;
-                        });
-                    }
-                    // Si no tiene ubicación, usar valor por defecto
-                    hecho.setDireccion("Sin ubicación");
-                    return Flux.just(hecho);
-                })
                 .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
     }
 
@@ -97,7 +79,7 @@ public class HechoService {
         return hecho;
     }
 
-    public Flux<HechoMapaOutputDto> obtenerHechosConFiltros(
+    public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechosConFiltros(
             String categoria,
             String fechaReporteDesde,
             String fechaReporteHasta,
@@ -129,24 +111,6 @@ public class HechoService {
                 })
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
-                .flatMapMany(pageWrapper -> Flux.fromIterable(pageWrapper.getContent()))
-                .flatMap(hecho -> {
-                    // Calcular la dirección si tiene ubicación
-                    if (hecho.getUbicacion() != null &&
-                        hecho.getUbicacion().getLatitud() != null &&
-                        hecho.getUbicacion().getLongitud() != null) {
-
-                        return geocodingService.obtenerDireccionCorta(
-                                hecho.getUbicacion().getLatitud(),
-                                hecho.getUbicacion().getLongitud()
-                        ).map(direccion -> {
-                            hecho.setDireccion(direccion);
-                            return hecho;
-                        });
-                    }
-                    hecho.setDireccion("Sin ubicación");
-                    return Flux.just(hecho);
-                })
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
     }
 }
