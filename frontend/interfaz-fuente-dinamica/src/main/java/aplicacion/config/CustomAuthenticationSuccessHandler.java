@@ -3,6 +3,7 @@ package aplicacion.config;
 import aplicacion.dtos.input.ContribuyenteInputDto;
 import aplicacion.dtos.input.IdentidadContribuyenteInputDto;
 import aplicacion.dtos.output.ContribuyenteOutputDto; // Clase que contiene el ID de la base de datos
+import aplicacion.services.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,15 +27,14 @@ import java.util.Collection;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final RestTemplate restTemplate;
-    @Value("${fuente.dinamica.port}")
-    private static Integer fuenteDinamicaPort;
-    private static final String CONTRIBUYENTE_API_URL = "http://localhost:" + fuenteDinamicaPort + "/contribuyentes";
+    //@Value("${fuente.dinamica.port}")
+    //private static String fuenteDinamicaPort;
+    //private static final String CONTRIBUYENTE_API_URL = "http://localhost:" + fuenteDinamicaPort + "/contribuyentes";
+    private final UsuarioService usuarioService;
 
-    // 💡 Constructor para inyectar RestTemplate
     @Autowired
-    public CustomAuthenticationSuccessHandler(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public CustomAuthenticationSuccessHandler(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     //  Envía la solicitud POST y guarda el ID en la sesión
@@ -108,13 +108,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        /*System.out.println("auth " );
+
         // 1. Si la autenticación fue exitosa y es de tipo OAuth2/OIDC
         if (authentication instanceof OAuth2AuthenticationToken) {
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
-            sendContribuyenteCreationRequest(oidcUser, request);
-        }*/
+            usuarioService.registrarUsuarioSiNoExiste(oidcUser, request);
+        }
 
         System.out.println("=== Authorities del usuario ===");
         for (GrantedAuthority authority : authentication.getAuthorities()) {

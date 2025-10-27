@@ -15,7 +15,7 @@
 
 <div style="padding: 20px;">
     <h1>Editar Perfil</h1>
-    <form id="perfil-form" th:action="@{/usuario/editar}" method="post">
+    <form id="perfil-form" th:action="@{/editarIdentidad}" method="post">
 
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required><br><br>
@@ -25,9 +25,6 @@
 
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
         <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" th:value="${usuario.email}" readonly><br><br>
 
         <button type="submit">Guardar Cambios</button>
     </form>
@@ -43,7 +40,7 @@
 
         // 2. Manejar el evento de envío
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // 🛑 Crítico: Detener el envío HTML que envía form-urlencoded
+            event.preventDefault();
 
             const identidadNueva = {
                 nombre: document.getElementById('nombre').value,
@@ -52,7 +49,7 @@
                 fechaNacimiento: document.getElementById('fechaNacimiento').value
             };
 
-            // 🚀 CORRECCIÓN: Usar form.action, que contiene el valor de th:action="@{/usuario/editar}"
+            // Usar form.action, que contiene el valor de th:action="@{/usuario/editar}"
             fetch(form.action, {
                 method: 'POST',
                 headers: {

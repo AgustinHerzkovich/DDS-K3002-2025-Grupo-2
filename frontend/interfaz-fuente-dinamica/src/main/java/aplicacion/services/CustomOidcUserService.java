@@ -17,12 +17,6 @@ import java.util.stream.Collectors;
 @Service
 public class CustomOidcUserService extends OidcUserService {
 
-    private final UsuarioService usuarioService;
-
-    public CustomOidcUserService(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // 1. Obtenemos el usuario de Keycloak como lo haría Spring por defecto
@@ -40,7 +34,7 @@ public class CustomOidcUserService extends OidcUserService {
         );
 
         // 4. Ejecutamos nuestra lógica personalizada de registro "Just-In-Time"
-        usuarioService.registrarUsuarioSiNoExiste(enrichedUser);
+        //usuarioService.registrarUsuarioSiNoExiste(enrichedUser);
 
         // 5. Devolvemos el usuario enriquecido con los roles
         return enrichedUser;
