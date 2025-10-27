@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
 
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mapa.css}" />
+</th:block>
+
 <body>
 <main style="position: relative;">
     <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>

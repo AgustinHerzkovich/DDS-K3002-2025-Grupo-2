@@ -90,7 +90,7 @@
         <!-- Enlace deshabilitado si no hay página anterior -->
         <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
 
-        <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span></span>
+        <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
 
         <a th:if="${hasNext}"
            th:href="@{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}"

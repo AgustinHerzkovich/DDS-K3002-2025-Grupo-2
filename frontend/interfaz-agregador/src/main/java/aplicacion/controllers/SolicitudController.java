@@ -1,12 +1,10 @@
 package aplicacion.controllers;
 
-import aplicacion.dto.output.ContribuyenteOutputDto;
+import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.services.ContribuyenteService;
 import aplicacion.services.SolicitudService;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,16 +27,27 @@ public class SolicitudController {
     public String paginaSolicitudes(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
-            @AuthenticationPrincipal OidcUser oidcUser,
             Model model) {
 
-        List<SolicitudOutputDto> solicitudes = solicitudService.obtenerSolicitudes(page, size)
-                .collectList()
+        PageWrapper<SolicitudOutputDto> pageWrapper = solicitudService.obtenerSolicitudes(page, size)
                 .block();
 
-        model.addAttribute("solicitudes", solicitudes);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("pageSize", size);
+        if (pageWrapper == null) {
+            model.addAttribute("solicitudes", List.of());
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("pageSize", size);
+            model.addAttribute("hasNext", false);
+            model.addAttribute("hasPrevious", false);
+            model.addAttribute("totalPages", 0);
+            return "solicitudes";
+        }
+
+        model.addAttribute("solicitudes", pageWrapper.getContent());
+        model.addAttribute("currentPage", pageWrapper.getNumber());
+        model.addAttribute("pageSize", pageWrapper.getSize());
+        model.addAttribute("hasNext", !pageWrapper.isLast());
+        model.addAttribute("hasPrevious", !pageWrapper.isFirst());
+        model.addAttribute("totalPages", pageWrapper.getTotalPages());
 
         return "solicitudes";
     }
