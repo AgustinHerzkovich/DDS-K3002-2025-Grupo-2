@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class CorsConfig {
 
     @Value("${interfaz.agregador.port}")
-    private String interfazAgregadorPort;
+    private Integer interfazAgregadorPort;
 
     @Bean
     public CorsFilter corsFilter() {

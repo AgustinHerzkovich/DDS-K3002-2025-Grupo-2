@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
 public class HechoService {
 
     @Value("${api.publica.port}")
-    private String apiPublicaPort;
+    private Integer apiPublicaPort;
 
     private WebClient webClient;
 
@@ -33,7 +33,7 @@ public class HechoService {
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
-                                configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024) // 16MB
+                                configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB
                         )
                         .build())
                 .build();

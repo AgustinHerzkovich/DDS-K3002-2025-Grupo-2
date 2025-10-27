@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -55,6 +57,10 @@ public class ContribuyenteController {
 
     @GetMapping("/contribuyentes")
     public  ResponseEntity<?> obtenerContribuyentes(@RequestParam(name = "mail", required = false) String mail) {
+        if (mail != null) {
+            mail = URLDecoder.decode(mail, StandardCharsets.UTF_8); // <- decodifica %40 -> @
+        }
+
         if (mail == null) {
             List<ContribuyenteOutputDto> contribuyentes = contribuyenteService.obtenerContribuyentes();
             return ResponseEntity.ok(contribuyentes);

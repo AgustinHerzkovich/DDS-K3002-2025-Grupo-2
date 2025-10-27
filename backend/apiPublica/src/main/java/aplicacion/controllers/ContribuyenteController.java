@@ -31,7 +31,7 @@ public class ContribuyenteController {
     @GetMapping("/contribuyentes")
     public  ResponseEntity<Object> obtenerContribuyentes(@RequestParam(name = "mail", required = false) String mail) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/contribuyentes");
-        UrlHelper.appendAllQueryParams(url, mail);
+        UrlHelper.appendQueryParam(url, "mail", mail);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 }

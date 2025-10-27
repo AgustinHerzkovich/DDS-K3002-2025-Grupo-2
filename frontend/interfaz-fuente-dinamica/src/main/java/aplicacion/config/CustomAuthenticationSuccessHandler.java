@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final RestTemplate restTemplate;
     @Value("${fuente.dinamica.port}")
-    private static String fuenteDinamicaPort;
+    private static Integer fuenteDinamicaPort;
     private static final String CONTRIBUYENTE_API_URL = "http://localhost:" + fuenteDinamicaPort + "/contribuyentes";
 
     // 💡 Constructor para inyectar RestTemplate
