@@ -28,8 +28,8 @@ public class SecurityConfig {
                         // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
                         .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad","/gestionar-solicitud/{id}"))
             .authorizeHttpRequests(authorize -> authorize
-                        //.requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos").permitAll()
+                        .requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
+                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos","/subir-hechos-post").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

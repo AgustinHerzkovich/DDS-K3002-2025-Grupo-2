@@ -33,10 +33,7 @@ public class CustomOidcUserService extends OidcUserService {
                 "sub" // nombre del claim que identifica al usuario
         );
 
-        // 4. Ejecutamos nuestra lógica personalizada de registro "Just-In-Time"
-        //usuarioService.registrarUsuarioSiNoExiste(enrichedUser);
 
-        // 5. Devolvemos el usuario enriquecido con los roles
         return enrichedUser;
     }
 
