@@ -109,7 +109,13 @@
     <!-- Modal personalizado -->
     <div id="modalCrearHecho" class="custom-modal" style="display: none;">
         <div class="modal-header">
-            <h5 class="modal-title">Crear Nuevo Hecho</h5>
+            <div class="bg-white p-4 rounded-md shadow-md flex flex-col">
+                <h5 class="modal-title text-center text-black">Crear Nuevo <br> Hecho</h5>
+            </div>
+            <div class="bg-white p-4 rounded-md shadow-md flex flex-col gap-2">
+                <button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
+                <button type="button" class="btn btn-danger-hecho" onclick="publicarHecho()">Publicar</button>
+            </div>
         </div>
 
         <div class="modal-body">
@@ -166,11 +172,6 @@
                     </label>
                 </div>
             </form>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
-            <button type="button" class="btn btn-danger-hecho" onclick="publicarHecho()">Publicar</button>
         </div>
     </div>
     <script th:src="@{/js/crear-hecho.js}"></script>
