@@ -121,22 +121,7 @@ class ColeccionServiceTest {
         when(repositorioDeColecciones.findById("999")).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> coleccionService.obtenerColeccionDTO("999"));
     }
-/*
-    @Test
-    @DisplayName("Debe obtener hechos irrestrictos por colección con texto libre")
-    void obtenerHechosIrrestrictosPorColeccionObtieneHechosConTextoLibre() {
-        Pageable pageable = PageRequest.of(0, 10);
-        when(hechoService.obtenerHechosPorColeccionYTextoLibre(anyString(), anyString(), any()))
-                .thenReturn(new PageImpl<>(List.of(new Hecho())));
-        when(hechoService.filtrarHechosQueryParam(any(), any(), any(), any(), any(), any(), any(), any()))
-                .thenReturn(new PageImpl<>(List.of(new HechoOutputDto())));
 
-
-        Page<HechoOutputDto> resultado = coleccionService.obtenerHechosIrrestrictosPorColeccion(
-                "123", null, null, null, null, null, null, null, "algo", pageable);
-
-        assertEquals(1, resultado.getTotalElements());
-    }*/
     @Test
     @DisplayName("Debe eliminar una colección existente")
     void eliminarColeccionBorraColeccion() {
