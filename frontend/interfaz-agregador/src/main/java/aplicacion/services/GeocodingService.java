@@ -1,15 +1,23 @@
 package aplicacion.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class GeocodingService {
 
     private final WebClient webClient;
-
+    // Cache de caffeine (pseudo LRU) de 50000 ubicaciones (No debería ser más de 30 MB de ram, estimando entradas de 700 bytes, tirando MUY para arriba)
+    private final Cache<String, String> cache = Caffeine.newBuilder()
+            .maximumSize(50000)
+            .expireAfterWrite(24, TimeUnit.HOURS)
+            .build();
     public GeocodingService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
                 .baseUrl("https://nominatim.openstreetmap.org")
@@ -145,6 +153,14 @@ public class GeocodingService {
             return Mono.just("Ubicación desconocida");
         }
 
+        String key = latitud + "," + longitud;
+
+        // Revisar cache primero
+        String cached = cache.getIfPresent(key);
+        if (cached != null) {
+            return Mono.just(cached);
+        }
+
         String url = "https://api.bigdatacloud.net/data/reverse-geocode-client"
                 + "?latitude=" + latitud
                 + "&longitude=" + longitud
@@ -165,16 +181,17 @@ public class GeocodingService {
                     }
 
                     if (response.has("principalSubdivision") && !response.get("principalSubdivision").asText().isEmpty()) {
-                        if (direccion.length() > 0) direccion.append(", ");
+                        if (!direccion.isEmpty()) direccion.append(", ");
                         direccion.append(response.get("principalSubdivision").asText());
                     }
 
                     if (response.has("countryName") && !response.get("countryName").asText().isEmpty()) {
-                        if (direccion.length() > 0) direccion.append(", ");
+                        if (!direccion.isEmpty()) direccion.append(", ");
                         direccion.append(response.get("countryName").asText());
                     }
-
-                    return direccion.length() > 0 ? direccion.toString() : "Ubicación desconocida";
+                    String result = !direccion.isEmpty() ? direccion.toString() : "Ubicación desconocida";
+                    cache.put(key, result); // Guardar en cache
+                    return result;
                 })
                 .onErrorReturn("Ubicación no disponible")
                 .defaultIfEmpty("Ubicación desconocida");
