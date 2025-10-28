@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MetaMapa</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
 
     <!-- Tailwind CSS desde CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,7 +26,6 @@
     <th:block th:replace="~{::pageStyles}" />
     <!-- ============================================== -->
 
-    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
     <!-- Recursos para el modal de crear hecho -->
     <th:block th:replace="~{fragments/button :: crearHechoColeccionResources}"></th:block>
 </head>
