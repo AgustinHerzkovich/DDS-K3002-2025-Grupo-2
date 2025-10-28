@@ -16,7 +16,7 @@ public class GeocodingService {
     // Cache de caffeine (pseudo LRU) de 50000 ubicaciones (No debería ser más de 30 MB de ram, estimando entradas de 700 bytes, tirando MUY para arriba)
     private final Cache<String, String> cache = Caffeine.newBuilder()
             .maximumSize(50000)
-            .expireAfterWrite(24, TimeUnit.HOURS)
+            .expireAfterAccess(7, TimeUnit.DAYS)
             .build();
     public GeocodingService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
