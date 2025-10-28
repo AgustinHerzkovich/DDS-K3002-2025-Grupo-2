@@ -173,6 +173,7 @@
             <button type="button" class="btn btn-danger-hecho" onclick="publicarHecho()">Publicar</button>
         </div>
     </div>
+    <script th:src="@{/js/crear-hecho.js}"></script>
 </div>
 
 <div th:fragment="botonCrearColeccion" class="z-10">
@@ -502,9 +503,3 @@
         </svg>
     </a>
 </div>
-
-<!-- Fragment: Recursos para el modal de crear hecho -->
-<th:block th:fragment="crearHechoResources">
-    <link rel="stylesheet" th:href="@{/css/crear-hecho.css}">
-    <script th:src="@{/js/crear-hecho.js}"></script>
-</th:block>
