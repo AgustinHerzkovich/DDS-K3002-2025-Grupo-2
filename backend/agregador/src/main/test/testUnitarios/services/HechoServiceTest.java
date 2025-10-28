@@ -118,34 +118,6 @@ class HechoServiceTest
 
         verify(repositorioDeHechos).saveAll(hechos);
     }
-    @Test
-    @DisplayName("Debe filtrar correctamente por categoria y fecha")
-    void filtrarHechosQueryParamFiltraPorCategoriaYFecha() {
-        Hecho hecho1 = HechoFactory.crearHechoAleatorio();
-        hecho1.getCategoria().setNombre("Accidente");
-        hecho1.setFechaCarga(LocalDateTime.now().minusDays(1));
-
-        Hecho hecho2 = HechoFactory.crearHechoAleatorio();
-        hecho2.getCategoria().setNombre("Otro");
-        hecho2.setFechaCarga(LocalDateTime.now().minusDays(10));
-
-        Page<Hecho> hechos = new PageImpl<>(List.of(hecho1, hecho2), PageRequest.of(0, 2), 2);
-        when(hechoOutputMapper.map(hecho1)).thenReturn(new HechoOutputDto());
-
-        Page<HechoOutputDto> resultado = hechoService.filtrarHechosQueryParam(
-                hechos,
-                "Accidente",
-                LocalDateTime.now().minusDays(2),
-                LocalDateTime.now(),
-                null,
-                null,
-                null,
-                null
-        );
-
-        assertEquals(1, resultado.getTotalElements());
-        verify(hechoOutputMapper).map(hecho1);
-    }
 
     @Test
     @DisplayName("Debe hallar hechos duplicados de una lista (Si se guardaron antes en la DB)")

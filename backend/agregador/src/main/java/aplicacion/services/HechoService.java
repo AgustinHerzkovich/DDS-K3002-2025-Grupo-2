@@ -215,28 +215,4 @@ public class HechoService {
         }
         return hechosDuplicados;
     }
-
-    public Page<HechoOutputDto> filtrarHechosQueryParam(Page<Hecho> hechos,
-                                                        String categoria,
-                                                        LocalDateTime fechaReporteDesde,
-                                                        LocalDateTime fechaReporteHasta,
-                                                        LocalDateTime fechaAcontecimientoDesde,
-                                                        LocalDateTime fechaAcontecimientoHasta,
-                                                        Double latitud,
-                                                        Double longitud) {
-        List<HechoOutputDto> hechosFiltrados = hechos
-                .getContent()
-                .stream()
-                .filter(h -> categoria == null || h.getCategoria().getNombre().equalsIgnoreCase(categoria))
-                .filter(h -> fechaReporteDesde == null ||  h.getFechaCarga().isAfter(fechaReporteDesde))
-                .filter(h -> fechaReporteHasta == null || h.getFechaCarga().isBefore(fechaReporteHasta))
-                .filter(h -> fechaAcontecimientoDesde == null || h.getFechaAcontecimiento().isAfter(fechaAcontecimientoDesde))
-                .filter(h -> fechaAcontecimientoHasta == null || h.getFechaAcontecimiento().isBefore(fechaAcontecimientoHasta))
-                .filter(h -> latitud == null || h.getUbicacion().getLatitud().equals(latitud))
-                .filter(h -> longitud == null || h.getUbicacion().getLongitud().equals(longitud))
-                .map(hechoOutputMapper::map)
-                .toList();
-
-        return new PageImpl<>(hechosFiltrados, hechos.getPageable(), hechosFiltrados.size());
-    }
 }
