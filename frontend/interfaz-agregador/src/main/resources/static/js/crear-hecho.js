@@ -2,7 +2,7 @@
 let multimediaCount = 0;
 
 // Función para toggle del modal
-function toggleModal() {
+function toggleModalHecho() {
     const modal = document.getElementById('modalCrearHecho');
 
     if (modal.style.display === 'none' || modal.style.display === '') {
@@ -139,7 +139,7 @@ function publicarHecho() {
         .then(response => {
             if (response.ok) {
                 alert('Hecho publicado exitosamente');
-                toggleModal();
+                toggleModalHecho();
                 // Opcional: Recargar la página o actualizar la lista de hechos dinámicamente
                 location.reload();
             } else {

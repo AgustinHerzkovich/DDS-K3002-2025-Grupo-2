@@ -174,12 +174,12 @@
     background-color: #4b5563;
 }
 
-.btn-danger {
+.btn-danger-hecho {
     background-color: #4338ca;
     color: white;
 }
 
-.btn-danger:hover {
+.btn-danger-hecho:hover {
     background-color: #4338ca;
 }
 

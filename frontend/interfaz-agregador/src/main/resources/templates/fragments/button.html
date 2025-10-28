@@ -59,40 +59,6 @@
             menu.classList.add('hidden');
         }
     });
-
-    // Función para cerrar sesión
-    function cerrarSesion() {
-        // Guardar la URL actual para redireccionar después de cerrar sesión
-        const urlActual = window.location.pathname;
-
-        // Crear un formulario para enviar la petición de logout
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/logout';
-
-        // Añadir el token CSRF si es necesario
-        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-
-        if (csrfToken && csrfHeader) {
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_csrf';
-            csrfInput.value = csrfToken;
-            form.appendChild(csrfInput);
-        }
-
-        // Añadir el parámetro de redirección
-        const redirectInput = document.createElement('input');
-        redirectInput.type = 'hidden';
-        redirectInput.name = 'redirectUrl';
-        redirectInput.value = urlActual;
-        form.appendChild(redirectInput);
-
-        // Añadir el formulario al DOM y enviarlo
-        document.body.appendChild(form);
-        form.submit();
-    }
 </script>
 
 <!-- Fragment: Botón de Volver -->
@@ -134,7 +100,7 @@
 
 <div th:fragment="botonCrearHecho" class="z-10">
     <!-- Script para pasar datos del usuario al JavaScript -->
-    <button class="hover:opacity-80 text-black" onClick="toggleModal()">
+    <button class="hover:opacity-80 text-black" onClick="toggleModalHecho()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
@@ -203,15 +169,15 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="toggleModal()">Cancelar</button>
-            <button type="button" class="btn btn-danger" onclick="publicarHecho()">Publicar</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
+            <button type="button" class="btn btn-danger-hecho" onclick="publicarHecho()">Publicar</button>
         </div>
     </div>
 </div>
 
 <div th:fragment="botonCrearColeccion" class="z-10">
     <!-- Botón para abrir el modal -->
-    <button class="hover:opacity-80 text-black" onClick="toggleModal()">
+    <button class="hover:opacity-80 text-black" onClick="toggleModalColeccion()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
@@ -223,7 +189,7 @@
             <!-- Header del Modal -->
             <div class="modal-header flex justify-between items-center p-4 border-b">
                 <h5 style="color: black" class="modal-title text-xl font-semibold text-indigo-800">Crear Nueva Colección</h5>
-                <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModal()">
+                <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalColeccion()">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
@@ -317,7 +283,7 @@
 
             <!-- Footer del Modal -->
             <div class="modal-footer flex justify-end items-center p-4 border-t space-x-3">
-                <button type="button" class="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" onclick="toggleModal()">Cancelar</button>
+                <button type="button" class="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" onclick="toggleModalColeccion()">Cancelar</button>
                 <button type="button" class="btn-primary px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 shadow-sm" onclick="crearColeccion()">Crear Colección</button>
             </div>
         </div>
@@ -325,7 +291,7 @@
 
     <script th:inline="javascript">
         // --- Funciones del Modal ---
-        function toggleModal() {
+        function toggleModalColeccion() {
             const modal = document.getElementById('modalCrearColeccion');
             modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
             // Resetear formulario al abrir (opcional)
@@ -507,7 +473,7 @@
                 .then(data => {
                     console.log('Colección creada:', data);
                     alert('¡Colección creada con éxito!');
-                    toggleModal();
+                    toggleModalColeccion();
                     window.location.reload();
                 })
                 .catch(error => {
@@ -538,7 +504,7 @@
 </div>
 
 <!-- Fragment: Recursos para el modal de crear hecho -->
-<th:block th:fragment="crearHechoColeccionResources">
-    <link rel="stylesheet" th:href="@{/css/crear-hecho-coleccion.css}">
-    <script th:src="@{/js/crear-hecho-coleccion.js}"></script>
+<th:block th:fragment="crearHechoResources">
+    <link rel="stylesheet" th:href="@{/css/crear-hecho.css}">
+    <script th:src="@{/js/crear-hecho.js}"></script>
 </th:block>

@@ -111,25 +111,25 @@
 
                 <!-- Botón Solicitar Eliminación (solo si está logueado) -->
                 <div th:if="${isLoggedIn}" style="position: relative;">
-                    <button class="btn-solicitar mt-4" onclick="toggleModal()">
+                    <button class="btn-solicitar mt-4" onclick="toggleModalSolicitud()">
                         Solicitar eliminación
                     </button>
 
                     <!-- Modal personalizado -->
-                    <div id="modalSolicitud" class="custom-modal" style="display: none;">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Usted va a solicitar la eliminación de este hecho</h5>
+                    <div id="modalSolicitud" class="custom-modal-solicitud" style="display: none;">
+                        <div class="modal-solicitud-header">
+                            <h5 class="modal-solicitud-title">Usted va a solicitar la eliminación de este hecho</h5>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-solicitud-body">
                             <form id="formSolicitud">
                                 <div class="mb-3">
-                                    <label for="motivo" class="form-label">Motivo</label>
-                                    <textarea class="form-control" id="motivo" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+                                    <label for="motivo" class="form-solicitud-label">Motivo</label>
+                                    <textarea class="form-solicitud-control" id="motivo" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="toggleModal()">Cancelar</button>
+                        <div class="modal-solicitud-footer">
+                            <button type="button" class="btn btn-secondary" onclick="toggleModalSolicitud()">Cancelar</button>
                             <button type="button" class="btn btn-danger" onclick="enviarSolicitud()">Enviar</button>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:inline="javascript">
-        function toggleModal() {
+        function toggleModalSolicitud() {
             const modal = document.getElementById('modalSolicitud');
             if (modal.style.display === 'none' || modal.style.display === '') {
                 modal.style.display = 'block';
@@ -199,7 +199,7 @@
                 if (response.ok) {
                     alert('Solicitud enviada exitosamente');
                     // Cerrar modal
-                    toggleModal();
+                    toggleModalSolicitud();
                 } else {
                     return response.text().then(text => {
                         alert('Error al enviar la solicitud: ' + text);
