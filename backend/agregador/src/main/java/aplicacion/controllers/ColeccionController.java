@@ -157,9 +157,12 @@ public class ColeccionController {
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
     public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
-        // logica de eliminar una coleccion del repositorio
-        coleccionService.eliminarColeccion(idColeccion);
-        System.out.println("Coleccion: " + idColeccion + " eliminada");
-        return ResponseEntity.ok().build();
+        try {
+            coleccionService.eliminarColeccion(idColeccion);
+            System.out.println("Coleccion: " + idColeccion + " eliminada");
+            return ResponseEntity.ok().build();
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

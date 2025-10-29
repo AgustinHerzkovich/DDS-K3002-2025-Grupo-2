@@ -135,9 +135,9 @@ public class ColeccionService {
         return hechosCurados.map(hechoOutputMapper::map);
     }
 
-    public void eliminarColeccion(String idColeccion) {
+    public void eliminarColeccion(String idColeccion) throws ColeccionNoEncontradaException{
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
-                .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+                .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + idColeccion));
         hechoService.borrarHechosPorColeccion(coleccion);
         repositorioDeColecciones.delete(coleccion);
         System.out.println("Colección eliminada: " + idColeccion);
@@ -150,16 +150,6 @@ public class ColeccionService {
         Coleccion coleccionPersistida = repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
         return coleccionOutputMapper.map(coleccionPersistida);
     }
-
-    /*private AlgoritmoConsenso crearAlgoritmoDesdeNombre(String nombre) {
-        return switch (nombre) {
-            case "irrestricto" -> new AlgoritmoConsensoIrrestricto();
-            case "absoluto" -> new AlgoritmoConsensoAbsoluto();
-            case "mayoriaSimple" -> new AlgoritmoConsensoMayoriaSimple();
-            case "multiplesMenciones" -> new AlgoritmoConsensoMultiplesMenciones();
-            default -> throw new IllegalArgumentException("Algoritmo desconocido: " + nombre);
-        };
-    }*/
 
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
         Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
