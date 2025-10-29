@@ -31,9 +31,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="right-section">
-                        <div class="edit-icon">
-                            <i class="fa fa-edit"></i>
+                    <div class="right-section-wrapper" th:if="${isAdmin}">
+                        <div class="coleccion-actions">
+                            <div th:replace="~{fragments/button :: botonEditarColeccion(coleccion=${coleccion})}"></div>
+                            <div th:replace="~{fragments/button :: botonEliminarColeccion(coleccionId=${coleccion.id})}"></div>
                         </div>
                     </div>
                 </div>
