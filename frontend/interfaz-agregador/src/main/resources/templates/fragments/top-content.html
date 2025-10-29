@@ -9,10 +9,10 @@
 
 <div th:fragment="searchBar">
     <div class="flex justify-center items-center w-full">
-        <form class="relative w-full" role="search" onsubmit="return handleSearch(event)">
+        <form class="relative w-full max-w-md" role="search" onsubmit="return handleSearch(event)">
             <input
                     id="search-input"
-                    class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-14 text-base text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-12 text-base text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     type="search"
                     name="search"
                     th:value="${search}"
@@ -21,8 +21,8 @@
                     style="background-color: white;"
             />
             <!-- Ícono de lupa -->
-            <button type="submit" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-0 border-0 bg-transparent hover:opacity-70 transition-opacity">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-6 h-6">
+            <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-10 w-10 flex items-center justify-center p-0 border-0 bg-transparent hover:opacity-70 transition-opacity">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
             </button>
