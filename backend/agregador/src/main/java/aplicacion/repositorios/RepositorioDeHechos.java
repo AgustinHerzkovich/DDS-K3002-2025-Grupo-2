@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional; // Importar Optional
+import java.util.Optional;
 
 @Repository
 public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
 
-    Optional<Hecho> findById(String id); // Devuelve Optional<Hecho>
+    Optional<Hecho> findById(String id);
 
     @Query(
             value = "SELECT * FROM hecho h WHERE MD5(CONCAT_WS('|', " +
@@ -57,8 +57,10 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     );
 
     @Query(value = """
-    SELECT * FROM hecho h
-    WHERE (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
@@ -73,7 +75,8 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     """,
             countQuery = """
     SELECT COUNT(*) FROM hecho h
-    WHERE (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
@@ -100,10 +103,12 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     );
 
     @Query(value = """
-    SELECT h.* FROM hecho h
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    JOIN categoria c ON c.id = h.categoria_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
@@ -111,12 +116,13 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:latitud IS NULL OR h.latitud = :latitud)
       AND (:longitud IS NULL OR h.longitud = :longitud)
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
-    """,
+   \s""",
             countQuery = """
     SELECT count(h.id) FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
@@ -142,9 +148,10 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     @Query("""
     SELECT h
     FROM Hecho h
+    JOIN h.categoria c
     JOIN HechoXColeccion hc ON h.id = hc.hecho.id
     WHERE hc.coleccion.id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
@@ -168,9 +175,10 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     @Query("""
     SELECT h
     FROM Hecho h
+    JOIN h.categoria c
     JOIN HechoXColeccion hc ON h.id = hc.hecho.id
     WHERE hc.coleccion.id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
@@ -192,10 +200,12 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     );
 
     @Query(value = """
-    SELECT h.* FROM hecho h
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
@@ -209,7 +219,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     SELECT count(h.id) FROM hecho h
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(h.categoria_nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
