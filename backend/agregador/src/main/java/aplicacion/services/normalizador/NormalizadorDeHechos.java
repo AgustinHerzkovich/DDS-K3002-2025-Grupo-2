@@ -170,6 +170,9 @@ public class NormalizadorDeHechos {
     public String normalizarCategoria(String categoria) {
         return aplicarNormalizador(categoria, normalizadorDeCategorias);
     }
+    public String normalizarEtiqueta(String etiqueta) {
+        return aplicarNormalizador(etiqueta, normalizadorDeEtiquetas);
+    }
 
     public void agregarEtiqueta(String etiqueta) {
         normalizadorDeEtiquetas.agregarTermino(etiqueta);

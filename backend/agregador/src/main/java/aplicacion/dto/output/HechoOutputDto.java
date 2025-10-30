@@ -27,4 +27,5 @@ public class HechoOutputDto {
     private List<MultimediaOutputDto> contenidoMultimedia;
     private Boolean anonimato;
     private ContribuyenteOutputDto autor;
+    private List<EtiquetaOutputDTO> etiquetas;
 }

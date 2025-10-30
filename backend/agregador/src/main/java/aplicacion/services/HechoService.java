@@ -3,13 +3,17 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.excepciones.CategoriaYaPresenteException;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
+import aplicacion.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.repositorios.RepositorioDeEtiquetas;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
@@ -33,14 +37,15 @@ public class HechoService {
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
-
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService) {
+    private final EtiquetaService etiquetaService;
+    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
         this.repositorioDeHechos = repositorioDeHechos;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.hechoInputMapper = hechoInputMapper;
         this.contribuyenteService = contribuyenteService;
+        this.etiquetaService = etiquetaService;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -214,5 +219,39 @@ public class HechoService {
             }
         }
         return hechosDuplicados;
+    }
+    @Transactional
+    public Etiqueta agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
+        Etiqueta etiqueta;
+        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        if(hecho.isEmpty())
+            throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
+        //etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
+        String finalEtiquetaName = etiquetaName;
+        if(hecho.get().getEtiquetas().stream().anyMatch(etiqueta1 -> Objects.equals(etiqueta1.getNombre(), finalEtiquetaName))){
+            throw new CategoriaYaPresenteException(hecho.get(), etiquetaName);
+        }
+        try {
+            etiqueta = etiquetaService.obtenerEtiquetaPorNombre(etiquetaName);
+        } catch (EtiquetaNoEncontradaException e) {
+            etiqueta = etiquetaService.agregarEtiqueta(etiquetaName);
+        }
+        hecho.get().getEtiquetas().add(etiqueta);
+        repositorioDeHechos.save(hecho.get());
+        return etiqueta;
+    }
+
+    public HechoOutputDto eliminarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
+        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        if(hecho.isEmpty())
+            throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
+        List<Etiqueta> etiquetas = hecho.get().getEtiquetas();
+        if(etiquetas.stream().anyMatch(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName))) {
+            etiquetas.removeIf(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName));
+            repositorioDeHechos.save(hecho.get());
+            return hechoOutputMapper.map(hecho.get());
+        }
+        throw new EtiquetaNoEncontradaException("No se encontro la etiqeuta" + etiquetaName);
+
     }
 }
