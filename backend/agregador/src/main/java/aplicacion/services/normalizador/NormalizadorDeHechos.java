@@ -1,6 +1,7 @@
 package aplicacion.services.normalizador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
@@ -9,6 +10,8 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.utils.ProgressBar;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ public class NormalizadorDeHechos {
     private final NormalizadorDeTerminos normalizadorDeEtiquetas;
     private final CategoriaService categoriaService;
     private final EtiquetaService etiquetaService;
+    Cache<String, Categoria> categoriaCache = Caffeine.newBuilder().maximumSize(5000).expireAfterWrite(10, TimeUnit.MINUTES).build();
+    Cache<String, Etiqueta> etiquetaCache = Caffeine.newBuilder().maximumSize(10000).expireAfterWrite(10, TimeUnit.MINUTES).build();
 
     public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
         Integer umbralLevenshtein = 1;
@@ -131,10 +136,14 @@ public class NormalizadorDeHechos {
         List<Etiqueta> etiquetasAInyectar = new ArrayList<>();
         long inicioCat = System.nanoTime();
         String categoria = aplicarNormalizador(hecho.getCategoria().getNombre(), normalizadorDeCategorias);
-        try{
-            categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
-        }catch (CategoriaNoEncontradaException e){
-            categoriaAInyectar = categoriaService.agregarCategoria(categoria);
+        categoriaAInyectar = categoriaCache.getIfPresent(categoria);
+        if(categoriaAInyectar == null){
+            try{
+                categoriaAInyectar = categoriaService.obtenerCategoriaPorNombre(categoria);
+            }catch (CategoriaNoEncontradaException e){
+                categoriaAInyectar = categoriaService.agregarCategoria(categoria);
+            }
+            categoriaCache.put(categoria, categoriaAInyectar);
         }
         hecho.setCategoria(categoriaAInyectar);
         long finCat = System.nanoTime();
@@ -142,10 +151,14 @@ public class NormalizadorDeHechos {
         List<String> etiquetas = hecho.getEtiquetas().stream().map(Etiqueta::getNombre).map(n->aplicarNormalizador(n, normalizadorDeEtiquetas)).toList();
         Etiqueta etiquetaAInyectar;
         for(String nombre : etiquetas){
-            try{
-                etiquetaAInyectar = etiquetaService.obtenerEtiquetaPorNombre(nombre);
-            } catch (EtiquetaNoEncontradaException e){
-                etiquetaAInyectar = etiquetaService.agregarEtiqueta(nombre);
+            etiquetaAInyectar = etiquetaCache.getIfPresent(nombre);
+            if(etiquetaAInyectar == null){
+                try{
+                    etiquetaAInyectar = etiquetaService.obtenerEtiquetaPorNombre(nombre);
+                } catch (EtiquetaNoEncontradaException e){
+                    etiquetaAInyectar = etiquetaService.agregarEtiqueta(nombre);
+                }
+                etiquetaCache.put(nombre, etiquetaAInyectar);
             }
             etiquetasAInyectar.add(etiquetaAInyectar);
         }
