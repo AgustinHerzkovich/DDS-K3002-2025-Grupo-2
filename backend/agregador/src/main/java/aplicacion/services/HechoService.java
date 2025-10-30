@@ -226,7 +226,7 @@ public class HechoService {
         Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
-        //etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
+        etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
         String finalEtiquetaName = etiquetaName;
         if(hecho.get().getEtiquetas().stream().anyMatch(etiqueta1 -> Objects.equals(etiqueta1.getNombre(), finalEtiquetaName))){
             throw new CategoriaYaPresenteException(hecho.get(), etiquetaName);
