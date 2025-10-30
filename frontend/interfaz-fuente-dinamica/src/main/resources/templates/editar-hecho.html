@@ -10,9 +10,6 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/layout :: mainHeader}"></div>
-<div th:replace="~{fragments/layout :: sidebar}"></div>
-
 <div class="modal-fact">
     <div class="modal-header">
         <h2>Editar Hecho ID: <span th:text="${hecho.id}"></span></h2>
@@ -35,17 +32,20 @@
 
         <div class="form-group">
             <label for="categoria">Categoría</label>
-            <input type="text" id="categoria" name="categoria" th:value="${hecho.categoria != null ? hecho.categoria.nombre : ''}">
+            <input type="text" id="categoria" name="categoria"
+                   th:value="${hecho.categoria != null ? hecho.categoria.nombre : ''}">
         </div>
 
         <div class="form-group">
             <label for="latitud">Latitud</label>
-            <input type="number" step="any" id="latitud" name="latitud" th:value="${hecho.ubicacion != null ? hecho.ubicacion.latitud : ''}">
+            <input type="number" step="any" id="latitud" name="latitud"
+                   th:value="${hecho.ubicacion != null ? hecho.ubicacion.latitud : ''}">
         </div>
 
         <div class="form-group">
             <label for="longitud">Longitud</label>
-            <input type="number" step="any" id="longitud" name="longitud" th:value="${hecho.ubicacion != null ? hecho.ubicacion.longitud : ''}">
+            <input type="number" step="any" id="longitud" name="longitud"
+                   th:value="${hecho.ubicacion != null ? hecho.ubicacion.longitud : ''}">
         </div>
 
         <div class="form-group">
@@ -64,6 +64,17 @@
             <label for="anonimato">Publicar de forma anónima</label>
         </div>
 
+        <fieldset class="multimedia-container">
+            <legend>Contenido Multimedia (URLs)</legend>
+
+            <div id="multimedia-list">
+            </div>
+
+            <button type="button" class="btn upload-btn" id="addMultimediaBtn"
+                    style="width: 100%; margin-top: 15px;">
+                + Agregar URL Multimedia
+            </button>
+        </fieldset>
         <div class="button-container">
             <button type="button" class="btn btn-cancel" onclick="window.location.href='/mis-hechos';">Cancelar</button>
             <button type="submit" class="btn btn-publish">Guardar Cambios</button>
@@ -71,38 +82,115 @@
     </form>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('edit-fact-form');
         const hechoId = document.getElementById('hechoId').value;
+        const multimediaListContainer = document.getElementById('multimedia-list');
+        const addMultimediaBtn = document.getElementById('addMultimediaBtn');
 
-        form.addEventListener('submit', function(event) {
+        // Datos de multimedia existentes inyectados desde Thymeleaf
+        // Usamos [[${hecho.contenidoMultimedia}]] para precargar las URLs existentes
+        const contenidoMultimediaInicial = /*[[${hecho.contenidoMultimedia}]]*/ [];
+
+        // ===============================================
+        // FUNCIONES DINÁMICAS PARA AGREGAR/QUITAR MULTIMEDIA
+        // ===============================================
+
+        /**
+         * Agrega un nuevo campo de URL al formulario.
+         * @param {string} initialUrl - URL inicial a precargar (opcional).
+         */
+        window.addMultimediaField = function (initialUrl = '') {
+            const multimediaItem = document.createElement('div');
+            multimediaItem.className = 'multimedia-item-group';
+            multimediaItem.innerHTML = `
+                <div class="form-group" style="display: flex; gap: 10px; align-items: flex-end;">
+                    <div style="flex: 1;">
+                        <label class="sr-only">URL Multimedia</label>
+                        <input type="url" name="multimediaUrl" class="multimedia-url-input"
+                               placeholder="URL (ej: http://ejemplo.com/imagen.jpg)"
+                               value="${initialUrl}" required>
+                    </div>
+                    <div>
+                        <button type="button" class="delete-btn" onclick="removeMultimediaField(this)"
+                                style="padding: 12px; margin-bottom: 0;">&times;</button>
+                    </div>
+                </div>
+            `;
+            multimediaListContainer.appendChild(multimediaItem);
+        };
+
+        // Función para eliminar el grupo de campos
+        window.removeMultimediaField = function (button) {
+            button.closest('.multimedia-item-group').remove();
+        };
+
+        // Inicializar campos con datos existentes
+        function initializeMultimediaFields() {
+            if (contenidoMultimediaInicial && contenidoMultimediaInicial.length > 0) {
+                contenidoMultimediaInicial.forEach(media => {
+
+                    const urlValue = media.url || media;
+                    window.addMultimediaField(urlValue);
+                });
+            }
+        }
+
+        // ===============================================
+        // MANEJO DE EVENTOS
+        // ===============================================
+
+        // 1. Inicializar la sección de multimedia al cargar
+        initializeMultimediaFields();
+
+        // 2. Asignar el listener al botón de agregar
+        addMultimediaBtn.addEventListener('click', () => window.addMultimediaField());
+
+
+        // 3. Listener del formulario de edición
+        form.addEventListener('submit', function (event) {
             event.preventDefault();
 
-
+            // --- Recolección de Datos Estándar ---
             const categoriaNombre = document.getElementById('categoria').value.trim();
             const latitudValue = document.getElementById('latitud').value;
             const longitudValue = document.getElementById('longitud').value;
 
-
-            const categoriaData = categoriaNombre ? { nombre: categoriaNombre } : null;
-
+            const categoriaData = categoriaNombre ? {nombre: categoriaNombre} : null;
             const ubicacionData = (latitudValue || longitudValue) ? {
                 latitud: parseFloat(latitudValue) || 0,
                 longitud: parseFloat(longitudValue) || 0
             } : null;
 
+            // --- Recolección de URLs de Multimedia ---
+            const contenidoMultimedia = [];
+            const multimediaGroups = multimediaListContainer.querySelectorAll('.multimedia-item-group');
+
+            multimediaGroups.forEach(group => {
+                const urlInput = group.querySelector('.multimedia-url-input');
+
+                // Solo si la URL existe y tiene valor, la agregamos
+                if (urlInput && urlInput.value.trim() !== '') {
+                    // ¡IMPORTANTE! Solo enviamos el objeto con la URL, sin el campo 'tipo'.
+                    contenidoMultimedia.push({
+                        url: urlInput.value.trim()
+                    });
+                }
+            });
+            // ----------------------------------------
 
             const dataEdicion = {
                 titulo: document.getElementById('titulo').value,
                 descripcion: document.getElementById('descripcion').value,
                 contenidoTexto: document.getElementById('contenidoTexto').value,
+                // Formato requerido: YYYY-MM-DDTHH:MM:00 (se agrega :00 para segundos)
                 fechaAcontecimiento: form.fechaAcontecimiento.value ? form.fechaAcontecimiento.value + ':00' : null,
                 anonimato: document.getElementById('anonimato').checked,
 
                 categoria: categoriaData,
                 ubicacion: ubicacionData,
-                contenidoMultimedia: null //TODO
+                contenidoMultimedia: contenidoMultimedia
             };
 
             fetch(`/guardar-edicion/${hechoId}`, {
@@ -117,13 +205,13 @@
                         alert('¡Cambios guardados con éxito!');
                         window.location.href = '/mis-hechos';
                     } else if (response.status === 403 || response.status === 404) {
-                        // --- Mostrar el mensaje de error del Backend (Mejora 3) ---
                         return response.text().then(errorMessageText => {
-                            // Intentar mostrar el mensaje específico de la excepción del backend
                             alert(`Error ${response.status}: ${errorMessageText}`);
                         });
                     } else {
-                        return response.text().then(text => { throw new Error(text) });
+                        return response.text().then(text => {
+                            throw new Error(text)
+                        });
                     }
                 })
                 .catch(error => {
