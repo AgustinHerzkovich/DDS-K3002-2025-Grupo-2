@@ -88,7 +88,15 @@
                     </div>
                     <div class="info-value" style="color: black" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
                 </div>
-
+                <!-- Etiquetas -->
+                <div class="info-item" th:if="*{etiquetas != null and !etiquetas.isEmpty()}">
+                    <div class="info-label">Etiquetas</div>
+                    <div class="info-value" style="color: black">
+                    <span th:each="etiqueta, iterStat : *{etiquetas}">
+                        <span th:text="${etiqueta.nombre}">NombreEtiqueta</span> <span th:if="${!iterStat.last}">, </span>
+                    </span>
+                    </div>
+                </div>
                 <!-- Origen -->
                 <div class="info-item">
                     <div class="info-label">Origen</div>

@@ -25,5 +25,6 @@ public class HechoOutputDto {
     private List<MultimediaOutputDto> contenidoMultimedia;
     private Boolean anonimato;
     private ContribuyenteOutputDto autor;
+    private List<EtiquetaOutputDto> etiquetas;
     private String direccion; // Dirección completa calculada con geocoding
 }
