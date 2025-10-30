@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Solicitudes Pendientes</title>
     <link rel="stylesheet" th:href="@{/css/homepage.css}" />
+    <link rel="stylesheet" th:href="@{/css/solicitudes-pendientes.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .solicitudes-container { max-width: 1000px; margin: 50px auto; }
@@ -54,13 +55,81 @@
     </div>
 </div>
 
+<div id="detalleModal" class="detalle-modal" style="display: none;">
+    <div class="detalle-modal-content">
+        <span class="close-detalle-modal" onclick="document.getElementById('detalleModal').style.display='none';">&times;</span>
+
+        <div id="detalleContenido">
+            <h2>Detalle del Hecho</h2>
+            <p><strong>ID:</strong> <span id="detalleId"></span></p>
+            <p><strong>Título:</strong> <span id="detalleTitulo"></span></p>
+            <p><strong>Descripción:</strong> <span id="detalleDescripcion"></span></p>
+            <p><strong>Contenido:</strong> <span id="detalleContenidoTexto"></span></p>
+            <p><strong>Fecha Acontecimiento:</strong> <span id="detalleFecha"></span></p>
+            <p><strong>Ubicación:</strong> Lat: <span id="detalleLatitud"></span>, Lon: <span id="detalleLongitud"></span></p>
+            <p><strong>Categoría:</strong> <span id="detalleCategoria"></span></p>
+            <p><strong>Autor Anónimo:</strong> <span id="detalleAnonimato"></span></p>
+            <div id="detalleMultimedia">
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="~{fragments/layout :: authModals}"></div>
 <div th:replace="~{fragments/layout :: pageScripts}"></div>
 
 <script th:inline="javascript">
+    // --- LÍNEA CLAVE: INYECCIÓN DE LA LISTA DE THYMELEAF PARA BÚSQUEDA LOCAL ---
+    const hechosPendientes = /*[[${solicitudes}]]*/ [];
 
     function visualizarHecho(id) {
-        alert(`Visualizando detalles del hecho ID: ${id}`);
+        const modal = document.getElementById('detalleModal');
+        const contenidoDiv = document.getElementById('detalleContenido');
+
+        // 1. Buscar el hecho en la lista inyectada globalmente
+        const hecho = hechosPendientes.find(h => h.id === id);
+
+        // Si no se encuentra el hecho, mostrar un error.
+        if (!hecho) {
+            modal.style.display = 'flex';
+            contenidoDiv.innerHTML = '<p style="color: red; text-align:center;">Error: Hecho no encontrado en la lista local.</p>';
+            return;
+        }
+
+        // Mostrar la modal
+        modal.style.display = 'flex';
+
+        // 2. Formatear la Fecha
+        const fechaAcontecimiento = hecho.fechaAcontecimiento
+            ? new Date(hecho.fechaAcontecimiento).toLocaleDateString('es-ES', {
+                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            })
+            : 'No especificada';
+
+        // 3. Generar HTML para el contenido multimedia (si existe)
+        let multimediaHTML = '';
+        if (hecho.contenidoMultimedia && hecho.contenidoMultimedia.length > 0) {
+            multimediaHTML = '<h4>Contenido Multimedia:</h4><ul>';
+            hecho.contenidoMultimedia.forEach(media => {
+                multimediaHTML += ` <a href="${media.url}" target="_blank">Ver Enlace</a>`;
+            });
+            multimediaHTML += '</ul>';
+        } else {
+            multimediaHTML = '<p>No hay contenido multimedia.</p>';
+        }
+
+        // 4. Rellenar la modal con la información obtenida
+        document.getElementById('detalleId').textContent = hecho.id || 'N/A';
+        document.getElementById('detalleTitulo').textContent = hecho.titulo || 'N/A';
+        document.getElementById('detalleDescripcion').textContent = hecho.descripcion || 'N/A';
+        document.getElementById('detalleContenidoTexto').textContent = hecho.contenidoTexto || 'N/A';
+        document.getElementById('detalleFecha').textContent = fechaAcontecimiento;
+        document.getElementById('detalleLatitud').textContent = hecho.ubicacion ? hecho.ubicacion.latitud : 'N/A';
+        document.getElementById('detalleLongitud').textContent = hecho.ubicacion ? hecho.ubicacion.longitud : 'N/A';
+        document.getElementById('detalleCategoria').textContent = hecho.categoria ? hecho.categoria.nombre : 'N/A';
+        document.getElementById('detalleAnonimato').textContent = hecho.anonimato ? 'Sí' : 'No';
+        document.getElementById('detalleMultimedia').innerHTML = multimediaHTML;
+
     }
 
     function aprobarHecho(id, esAceptado) {
@@ -70,25 +139,22 @@
             return;
         }
 
-        // 1. Determinar el estado para el DTO
         const estadoRevision = esAceptado ? "ACEPTADO" : "RECHAZADO";
-
-        // 2 Solicitar la sugerencia (es opcional, pero damos la opción de escribir)
         let sugerencia = null;
+
+        // El prompt es una forma de solicitar el comentario/sugerencia
         const comentario = prompt(`Acción: ${accion}.\n\nOpcional: Introduzca una sugerencia o comentario:`);
 
-        // Asignar null si el usuario cancela (sugerencia === null) o deja vacío
         if (comentario !== null && comentario.trim() !== "") {
             sugerencia = comentario.trim();
         }
-
 
         const dataRevisada = {
             estado: estadoRevision,
             sugerencia: sugerencia
         };
 
-        // 4. Enviar POST al endpoint LOCAL del HomeController
+        // Enviar POST al endpoint
         fetch("/gestionar-solicitud/" + id, {
             method: 'POST',
             headers: {
