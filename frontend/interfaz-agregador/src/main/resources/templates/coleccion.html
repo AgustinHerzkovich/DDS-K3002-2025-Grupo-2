@@ -97,78 +97,146 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
 
+        // Obtener tokens CSRF y validar que existan
         const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
         const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
 
+        if (!csrfHeaderName || !csrfToken) {
+            console.error('CSRF tokens no encontrados');
+        }
+
+        // Headers comunes para todas las peticiones
+        const getHeaders = () => ({
+            'Content-Type': 'application/json',
+            [csrfHeaderName]: csrfToken
+        });
+
+        // Base URL para las APIs
+        const API_BASE = '/apiAdministrativa';
+
         async function eliminarFuente(coleccionId, fuenteId) {
+            if (!coleccionId || !fuenteId) {
+                console.error('IDs inválidos');
+                return;
+            }
+
             if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
+
             try {
-                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/fuentes/${encodeURIComponent(fuenteId)}`, {
+                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes/${encodeURIComponent(fuenteId)}`, {
                     method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken }
+                    headers: getHeaders()
                 });
-                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
-                alert('Fuente eliminada exitosamente.');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Error al eliminar la fuente');
+                }
+
+                alert('Fuente eliminada exitosamente');
                 window.location.reload();
-            } catch (e) {
-                console.error(e);
-                alert('Error al eliminar fuente: ' + e.message);
+            } catch (error) {
+                console.error('Error en eliminarFuente:', error);
+                alert(`Error al eliminar fuente: ${error.message}`);
             }
         }
 
         async function cambiarAlgoritmo(coleccionId) {
-            const nuevoAlgoritmo = document.getElementById('algoritmoSelect').value;
+            if (!coleccionId) {
+                console.error('ID de colección inválido');
+                return;
+            }
+
+            const select = document.getElementById('algoritmoSelect');
+            const nuevoAlgoritmo = select.value;
+
             try {
-                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
+                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/algoritmo`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+                    headers: getHeaders(),
                     body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
                 });
-                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
-                alert('Algoritmo cambiado exitosamente.');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Error al cambiar el algoritmo');
+                }
+
+                alert('Algoritmo actualizado exitosamente');
                 window.location.reload();
-            } catch (e) {
-                console.error(e);
-                alert('Error al cambiar algoritmo: ' + e.message);
+            } catch (error) {
+                console.error('Error en cambiarAlgoritmo:', error);
+                alert(`Error al cambiar algoritmo: ${error.message}`);
             }
         }
 
         async function agregarFuente(coleccionId) {
-            const tipo = document.getElementById('newFuenteTipo').value;
-            const id = document.getElementById('newFuenteId').value.trim();
-            const ip = document.getElementById('newFuenteIp').value.trim();
-            const puerto = document.getElementById('newFuentePuerto').value.trim();
+            if (!coleccionId) {
+                console.error('ID de colección inválido');
+                return;
+            }
 
-            if (!id || !ip || !puerto) {
+            const tipo = document.getElementById('newFuenteTipo')?.value;
+            const id = document.getElementById('newFuenteId')?.value?.trim();
+            const ip = document.getElementById('newFuenteIp')?.value?.trim();
+            const puerto = document.getElementById('newFuentePuerto')?.value?.trim();
+
+            if (!tipo || !id || !ip || !puerto) {
                 alert('Todos los campos son obligatorios');
                 return;
             }
 
             const puertoNum = parseInt(puerto, 10);
-            if (isNaN(puertoNum)) {
-                alert('Puerto debe ser número');
+            if (isNaN(puertoNum) || puertoNum <= 0) {
+                alert('El puerto debe ser un número válido mayor a 0');
                 return;
             }
 
             const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
 
             try {
-                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/fuentes`, {
+                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+                    headers: getHeaders(),
                     body: JSON.stringify(nuevaFuente)
                 });
-                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
-                alert('Fuente agregada exitosamente.');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Error al agregar la fuente');
+                }
+
+                alert('Fuente agregada exitosamente');
+
+                // Limpiar campos
                 document.getElementById('newFuenteId').value = '';
                 document.getElementById('newFuenteIp').value = '';
                 document.getElementById('newFuentePuerto').value = '';
+
                 window.location.reload();
-            } catch (e) {
-                console.error(e);
-                alert('Error al agregar fuente: ' + e.message);
+            } catch (error) {
+                console.error('Error en agregarFuente:', error);
+                alert(`Error al agregar fuente: ${error.message}`);
             }
         }
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar que los elementos necesarios existen
+            const requiredElements = [
+                'algoritmoSelect',
+                'newFuenteTipo',
+                'newFuenteId',
+                'newFuenteIp',
+                'newFuentePuerto'
+            ];
+
+            requiredElements.forEach(id => {
+                if (!document.getElementById(id)) {
+                    console.error(`Elemento ${id} no encontrado`);
+                }
+            });
+        });
 
         /*]]>*/
     </script>
