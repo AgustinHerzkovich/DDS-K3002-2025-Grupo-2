@@ -14,9 +14,9 @@ public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColec
     @Modifying
     @Transactional
     @Query(value = """
-    DELETE FROM hecho_x_coleccion 
+    DELETE FROM hecho_coleccion 
     WHERE hecho_id IN (
-        SELECT hecho_id FROM hecho_x_fuente WHERE fuente_id = :fuenteId
+        SELECT hecho_id FROM hecho_fuente WHERE fuente_id = :fuenteId
     )
 """, nativeQuery = true)
     void deleteAllByFuenteId(@Param("fuenteId") String fuenteId);
