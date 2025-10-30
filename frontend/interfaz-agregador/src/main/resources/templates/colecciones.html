@@ -50,21 +50,19 @@
                 <!-- Controles de Paginación -->
                 <div class="pagination-controls">
                     <a th:if="${hasPrevious}"
-                       th:href="@{/solicitudes(page=${currentPage - 1}, size=${pageSize})}"
+                       th:href="@{/colecciones(page=${currentPage - 1}, size=${pageSize})}"
                        class="pagination-btn">
                         ← Anterior
                     </a>
-                    <!-- Enlace deshabilitado si no hay página anterior -->
                     <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
 
                     <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
 
                     <a th:if="${hasNext}"
-                       th:href="@{/solicitudes(page=${currentPage + 1}, size=${pageSize})}"
+                       th:href="@{/colecciones(page=${currentPage + 1}, size=${pageSize})}"
                        class="pagination-btn">
                         Siguiente →
                     </a>
-                    <!-- Enlace deshabilitado si no hay página siguiente -->
                     <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
                 </div>
             </div>
