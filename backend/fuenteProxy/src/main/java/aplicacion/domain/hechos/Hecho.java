@@ -1,6 +1,5 @@
 package aplicacion.domain.hechos;
 
-import aplicacion.domain.hechos.multimedias.Multimedia;
 import jakarta.persistence.*;
 import lombok.*;
 
