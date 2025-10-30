@@ -4,7 +4,7 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
-import aplicacion.domain.hechos.multimedias.Multimedia;
+import aplicacion.domain.hechos.Multimedia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

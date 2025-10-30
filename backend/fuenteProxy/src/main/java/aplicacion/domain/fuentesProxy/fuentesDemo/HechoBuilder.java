@@ -4,8 +4,7 @@ import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.hechos.Origen;
 import aplicacion.domain.hechos.Ubicacion;
-import aplicacion.domain.hechos.multimedias.Multimedia;
-import jakarta.persistence.Embeddable;
+import aplicacion.domain.hechos.Multimedia;
 
 import java.time.LocalDateTime;
 import java.util.List;

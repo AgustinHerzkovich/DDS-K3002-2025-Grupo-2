@@ -1,7 +1,7 @@
 package aplicacion.domain.fuentesProxy.fuentesDemo;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Origen;
-import aplicacion.domain.hechos.multimedias.Multimedia;
+import aplicacion.domain.hechos.Multimedia;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
