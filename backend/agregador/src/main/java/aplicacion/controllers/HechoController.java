@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
@@ -78,6 +79,19 @@ public class HechoController {
         System.out.println("Hecho creado: " + hecho.getId());
         return ResponseEntity.ok(hecho);
     }
+    @PostMapping("/hechos/{id}/tags")
+    public ResponseEntity<HechoOutputDto> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) throws HechoNoEncontradoException {
+        HechoOutputDto hecho = hechoService.agregarEtiqueta(hechoId, etiquetaName);
+        System.out.println("Se agrego el tag: " + etiquetaName);
+        return ResponseEntity.ok(hecho);
+    }
+    @DeleteMapping("/hechos/{hechoId}/tags/{tag}")
+    public ResponseEntity<HechoOutputDto> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
+        HechoOutputDto hecho = hechoService.eliminarEtiqueta(hechoId, etiquetaName);
+        System.out.println("Se elimino el tag: " + etiquetaName);
+        return ResponseEntity.ok(hecho);
+    }
+
 
     @PostMapping("/cargarHechos")
     public ResponseEntity<Void> cargarHechos() { // Endpoint para disparar la carga de hechos manualmente (si es necesario)
