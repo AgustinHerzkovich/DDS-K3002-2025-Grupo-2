@@ -6,7 +6,7 @@
 
 function openLoginModal() {
     const modal = document.getElementById('loginModal');
-    // Si tienes otras modales (registro, reset), asegúrate de cerrarlas aquí:
+
     // closeRegisterModal();
     // closeForgotPasswordModal();
 

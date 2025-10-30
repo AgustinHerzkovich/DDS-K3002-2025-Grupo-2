@@ -10,7 +10,6 @@ public class AppConfig {
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
 
-        // Configuración para permitir PATCH usando Apache HTTP Client
         HttpComponentsClientHttpRequestFactory requestFactory =
                 new HttpComponentsClientHttpRequestFactory();
 

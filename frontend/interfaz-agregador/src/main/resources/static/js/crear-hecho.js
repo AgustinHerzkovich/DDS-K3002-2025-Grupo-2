@@ -21,7 +21,6 @@ function toggleModalHecho() {
     }
 }
 
-// --- FUNCIONES MULTIMEDIA SIMPLIFICADAS ---
 
 // Función para agregar un nuevo campo de URL de multimedia
 function agregarMultimedia() {
@@ -48,7 +47,7 @@ function agregarMultimedia() {
     container.appendChild(multimediaDiv);
 }
 
-// Función para eliminar un multimedia (sin cambios)
+// Función para eliminar un multimedia
 function eliminarMultimedia(id) {
     const elemento = document.getElementById(`multimedia-${id}`);
     if (elemento) {
@@ -73,8 +72,6 @@ function recopilarMultimedias() {
     return urls; // Devuelve un array de strings (URLs)
 }
 
-// --- FIN FUNCIONES MULTIMEDIA SIMPLIFICADAS ---
-
 // Función para publicar el hecho (actualizada para usar array de URLs)
 function publicarHecho() {
     // Obtener valores del formulario
@@ -96,7 +93,6 @@ function publicarHecho() {
     // Convertir la fecha de datetime-local a formato ISO
     const fechaAcontecimiento = fechaInput + ':00'; // Agregar segundos
 
-    // Recopilar multimedias (ahora es un array de URLs)
     const urlsMultimedia = recopilarMultimedias();
 
     // Crear objeto de hecho
@@ -104,7 +100,7 @@ function publicarHecho() {
         titulo: titulo,
         descripcion: descripcion,
         categoria: {
-            nombre: categoria // Asumiendo que el backend espera un objeto Categoria con nombre
+            nombre: categoria
         },
         ubicacion: {
             latitud: latitud,
@@ -113,14 +109,14 @@ function publicarHecho() {
         fechaAcontecimiento: fechaAcontecimiento,
         origen: 'CONTRIBUYENTE',
         contenidoTexto: contenidoTexto,
-        contenidoMultimedia: urlsMultimedia, // Ahora es un array de strings
+        contenidoMultimedia: urlsMultimedia,
         anonimato: anonimato
     };
 
-    // Agregar autor solo si no es anónimo y tenemos los datos
+
     if (!anonimato && window.autorData) {
-        // Asegúrate de que window.autorData tenga el formato correcto que espera tu backend
-        hecho.autor = { id: window.autorData.id }; // Ejemplo: si solo necesita el ID
+
+        hecho.autor = { id: window.autorData.id };
     }
 
     console.log('Hecho a publicar:', hecho);
@@ -131,8 +127,6 @@ function publicarHecho() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // Si tu API requiere autenticación, añade el token aquí
-            // 'Authorization': 'Bearer ' + tuTokenJWT
         },
         body: JSON.stringify(hecho)
     })
@@ -155,7 +149,7 @@ function publicarHecho() {
         });
 }
 
-// Función para limpiar el formulario (sin cambios)
+// Función para limpiar el formulario
 function limpiarFormulario() {
     document.getElementById('formCrearHecho').reset();
     document.getElementById('multimediaContainer').innerHTML = '';

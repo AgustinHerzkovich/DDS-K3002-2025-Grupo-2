@@ -48,7 +48,6 @@ public class ContribuyenteController {
             this.contribuyenteService.actualizarIdentidad(contribuyenteId, identidadContribuyenteInputDto, principal);
 
             // La lógica de éxito (invalidación de sesión y 204) permanece aquí.
-            // Esto es correcto ya que es lógica de la capa web/seguridad, no de negocio.
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
