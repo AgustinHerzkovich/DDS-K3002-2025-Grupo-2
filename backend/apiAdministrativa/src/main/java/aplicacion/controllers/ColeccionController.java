@@ -39,11 +39,10 @@ public class ColeccionController {
         return solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
     }
 
-    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}/{fuenteTipo}")
+    @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
     public ResponseEntity<Void> quitarFuente(@PathVariable String id,
-                                             @PathVariable String fuenteId,
-                                             @PathVariable String fuenteTipo) {
-        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId + "/" + fuenteTipo, Void.class);
+                                             @PathVariable String fuenteId) {
+        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId, Void.class);
     }
 
     // --- DELETE ---

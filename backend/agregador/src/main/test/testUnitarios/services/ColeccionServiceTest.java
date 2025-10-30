@@ -8,6 +8,7 @@ import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
@@ -140,7 +141,7 @@ class ColeccionServiceTest {
         when(repositorioDeColecciones.save(coleccion)).thenReturn(coleccion);
         when(coleccionOutputMapper.map(coleccion)).thenReturn(outputDto);
 
-        ColeccionOutputDto resultado = coleccionService.modificarAlgoritmoDeColeccion("123", TipoAlgoritmoConsenso.MAYORIA_SIMPLE);
+        ColeccionOutputDto resultado = coleccionService.modificarAlgoritmoDeColeccion("123", new ModificacionAlgoritmoInputDto(TipoAlgoritmoConsenso.MAYORIA_SIMPLE));
 
         assertNotNull(resultado);
         verify(repositorioDeColecciones).save(coleccion);
