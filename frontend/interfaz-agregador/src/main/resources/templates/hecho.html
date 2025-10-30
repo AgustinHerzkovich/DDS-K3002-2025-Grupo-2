@@ -87,38 +87,36 @@
                         Ubicación
                     </div>
                     <div class="info-value" style="color: black" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
-                </div>
-                <!-- Etiquetas -->
+                </div><!-- Etiquetas -->
                 <div class="info-item" th:if="*{etiquetas != null}">
                     <div class="info-label">Etiquetas</div>
 
                     <!-- Vista para Admin -->
-                    <!-- atributos data-* sirven para acceder a ellos desde el bloque que los llama en el JS y en el onClick sin tener que estar pasando variables de thymeleaf-->
                     <div class="info-value" th:if="${isAdmin}" style="color: black">
-                        <ul id="lista-etiquetas" style="padding-left: 0; list-style-type: none;">
+                        <ul id="lista-etiquetas" class="tag-list">
                             <li th:each="etiqueta : *{etiquetas}"
                                 th:attr="data-nombre=${etiqueta.nombre}"
-                                style="margin-bottom: 4px;">
+                                class="tag-item">
                                 <span th:text="${etiqueta.nombre}">NombreEtiqueta</span>
                                 <button type="button"
-                                        style="margin-left: 8px;"
                                         th:attr="data-nombre=${etiqueta.nombre}"
-                                        onclick="eliminarEtiqueta(this.dataset.nombre)">
+                                        onclick="eliminarEtiqueta(this.dataset.nombre)"
+                                        class="btn-eliminar">
                                     Eliminar
                                 </button>
                             </li>
                         </ul>
 
-                        <div style="margin-top: 8px;">
-                            <input type="text" placeholder="Agregar nueva etiqueta" id="nuevaEtiqueta" />
-                            <button type="button" onclick="agregarEtiqueta()">Agregar</button>
+                        <div class="agregar-tag">
+                            <input type="text" placeholder="Agregar nueva etiqueta" id="nuevaEtiqueta" class="input-tag" />
+                            <button type="button" onclick="agregarEtiqueta()" class="btn-agregar">Agregar</button>
                         </div>
                     </div>
 
                     <!-- Vista para No Admin -->
                     <div class="info-value" th:if="${!isAdmin}" style="color: black">
-                        <span th:each="etiqueta, iterStat : *{etiquetas}">
-                            <span th:text="${etiqueta.nombre}">NombreEtiqueta</span><span th:if="${!iterStat.last}">, </span>
+                        <span th:each="etiqueta : *{etiquetas}">
+                            <span class="tag-item" th:text="${etiqueta.nombre}">NombreEtiqueta</span>
                         </span>
                     </div>
                 </div>
@@ -179,82 +177,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/editarHecho.js}" th:attr="data-id-hecho=${hecho.id}"></script>
     <script th:inline="javascript">
-        const idHecho = /*[[${hecho.id}]]*/ 0;
-
-function eliminarEtiqueta(nombreEtiqueta) {
-    if (!confirm(`¿Seguro que quieres eliminar la etiqueta "${nombreEtiqueta}"?`))
-        return;
-
-    const nombreCodificado = encodeURIComponent(nombreEtiqueta);
-
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${idHecho}/tags/${nombreCodificado}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.ok) {
-            // Buscar el <li> por data-nombre y eliminarlo
-            const li = document.querySelector(`li[data-nombre="${CSS.escape(nombreEtiqueta)}"]`);
-            if (li) li.remove();
-        } else {
-            alert("Error al eliminar la etiqueta");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al eliminar la etiqueta");
-    });
-}
-
-function agregarEtiqueta() {
-    const input = document.getElementById("nuevaEtiqueta");
-    const nombre = input.value.trim();
-    if (!nombre) {
-        alert("Ingrese un nombre para la etiqueta");
-        return;
-    }
-
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${idHecho}/tags`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nombre)
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Error al agregar etiqueta. Puede que este repetida");
-        return response.json();
-    })
-    .then(data => {
-        if (data && data.nombre) {
-            // Crea el nuevo <li> con su nombre y atributo data-nombre para que se lo pueda eliminar despues
-            const ul = document.getElementById("lista-etiquetas");
-            const li = document.createElement("li");
-            li.style.marginBottom = "4px";
-            li.dataset.nombre = data.nombre;
-
-            const span = document.createElement("span");
-            span.textContent = data.nombre;
-
-            const btnEliminar = document.createElement("button");
-            btnEliminar.textContent = "Eliminar";
-            btnEliminar.style.marginLeft = "8px";
-            btnEliminar.dataset.nombre = data.nombre;
-            btnEliminar.onclick = () => eliminarEtiqueta(data.nombre);
-
-            li.appendChild(span);
-            li.appendChild(btnEliminar);
-            ul.appendChild(li);
-
-            input.value = ""; // limpiar input
-        } else {
-            alert("Error: respuesta inesperada del servidor");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error al agregar la etiqueta");
-    });
-}
-
             function toggleModalSolicitud() {
                 const modal = document.getElementById('modalSolicitud');
                 if (modal.style.display === 'none' || modal.style.display === '') {
