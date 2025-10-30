@@ -24,4 +24,5 @@ public class HechoInputDto {
     private Boolean anonimato;
     private List<MultimediaInputDto> contenidoMultimedia;
     private ContribuyenteInputDto autor;
+    private List<EtiquetaInputDto> etiquetas;
 }
