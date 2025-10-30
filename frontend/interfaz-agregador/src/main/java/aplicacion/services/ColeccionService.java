@@ -106,4 +106,15 @@ public class ColeccionService {
         uriBuilder.queryParam("size", size);
         return uriBuilder.build(idColeccion);
     }
+
+    public ColeccionOutputDto obtenerColeccion(String idColeccion) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/colecciones/{idColeccion}")
+                        .build(idColeccion))
+                .retrieve()
+                .bodyToMono(ColeccionOutputDto.class)
+                .doOnError(e -> System.err.println("Error al obtener la colección de la API Pública: " + e.getMessage()))
+                .block();
+    }
 }

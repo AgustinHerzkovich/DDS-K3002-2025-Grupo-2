@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{fragments/top-content :: coleccion}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
+
+<th:block th:fragment="pageStyles">
+    <!-- CSS específico de esta página -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />
+</th:block>
+
+<body>
+<main class="container mx-auto p-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
+
+    <header class="mb-6 pb-4 border-b">
+        <h1 class="text-3xl font-bold text-indigo-800" th:text="${coleccion.titulo}">Título de la Colección</h1>
+        <p class="text-md text-gray-600 mt-1" th:text="${coleccion.descripcion}">Descripción de la colección.</p>
+    </header>
+
+    <!-- 1) Cambiar algoritmo -->
+    <section class="mb-6 p-4 border rounded-md bg-gray-50">
+        <label for="algoritmoSelect" class="text-lg font-semibold mb-3 text-gray-800 block">
+            Algoritmo de Consenso: <span th:text="${coleccion.tipoAlgoritmoConsenso}"></span>
+        </label>
+        <div class="flex items-center gap-3">
+            <select id="algoritmoSelect" class="form-select flex-grow border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="IRRESTRICTO">IRRESTRICTO</option>
+                <option value="ABSOLUTO">ABSOLUTO</option>
+                <option value="MULTIPLES_MENCIONES">MULTIPLES_MENCIONES</option>
+                <option value="MAYORIA_SIMPLE">MAYORIA_SIMPLE</option>
+            </select>
+            <button type="button" class="btn-primary"
+                    th:onclick="|cambiarAlgoritmo('${coleccion.id}')|">
+                Guardar Cambio
+            </button>
+        </div>
+    </section>
+
+    <!-- 2) Listado de fuentes con eliminar -->
+    <section class="mb-6 p-4 border rounded-md bg-gray-50">
+        <h2 class="text-lg font-semibold mb-3 text-gray-800">Fuentes Actuales</h2>
+        <ul th:if="${not #lists.isEmpty(coleccion.fuentes)}" class="space-y-2">
+            <li th:each="f : ${coleccion.fuentes}" class="flex items-center justify-between p-2 bg-white border rounded-md shadow-sm">
+                <div class="text-sm">
+                    <strong class="text-gray-900" th:text="${f.id}">ID_FUENTE_EJEMPLO</strong>
+                    <span class="text-gray-600" th:if="${f.ip}"> — IP: <span class="font-mono" th:text="${f.ip}">127.0.0.1</span></span>
+                    <span class="text-gray-600" th:if="${f.puerto}"> — Puerto: <span class="font-mono" th:text="${f.puerto}">8080</span></span>
+                </div>
+                <button type="button" class="btn-danger-small btn-eliminar-fuente"
+                        th:data-coleccion-id="${coleccion.id}"
+                        th:data-fuente-id="${f.id}"
+                        th:onclick="|eliminarFuente('${coleccion.id}', '${f.id}')|">
+                    ✕ Eliminar
+                </button>
+            </li>
+        </ul>
+        <p th:if="${#lists.isEmpty(coleccion.fuentes)}" class="text-sm text-gray-500 italic">Esta colección no tiene fuentes asignadas.</p>
+    </section>
+
+    <!-- 3) Agregar fuente -->
+    <section class="mb-6 p-4 border rounded-md bg-gray-50">
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">Agregar Nueva Fuente</h3>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+            <div>
+                <label for="newFuenteTipo" class="block text-xs font-medium text-gray-700 mb-1">Tipo <span class="text-red-500">*</span></label>
+                <select id="newFuenteTipo" class="form-select w-full text-sm border-gray-300 rounded-md shadow-sm">
+                    <option value="ESTATICA">Estática</option>
+                    <option value="DINAMICA">Dinámica</option>
+                    <option value="PROXY">Proxy</option>
+                </select>
+            </div>
+            <div>
+                <label for="newFuenteId" class="block text-xs font-medium text-gray-700 mb-1">ID Fuente <span class="text-red-500">*</span></label>
+                <input id="newFuenteId" type="text" placeholder="ID único de la fuente" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <div>
+                <label for="newFuenteIp" class="block text-xs font-medium text-gray-700 mb-1">IP <span class="text-red-500">*</span></label>
+                <input id="newFuenteIp" type="text" placeholder="Ej: 127.0.0.1" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <div>
+                <label for="newFuentePuerto" class="block text-xs font-medium text-gray-700 mb-1">Puerto <span class="text-red-500">*</span></label>
+                <input id="newFuentePuerto" type="number" placeholder="Ej: 8081" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <button type="button" class="btn-primary"
+                    th:data-coleccion-id="${coleccion.id}"
+                    th:onclick="|agregarFuente('${coleccion.id}')|">
+                Agregar Fuente
+            </button>
+        </div>
+    </section>
+
+    <section class="mt-8 flex justify-start">
+        <a th:href="@{/colecciones}" class="btn-cancel">← Volver al Listado</a>
+    </section>
+
+</main>
+
+<th:block th:fragment="pageScripts">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+
+        async function eliminarFuente(coleccionId, fuenteId) {
+            if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
+            try {
+                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/fuentes/${encodeURIComponent(fuenteId)}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken }
+                });
+                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
+                alert('Fuente eliminada exitosamente.');
+                window.location.reload();
+            } catch (e) {
+                console.error(e);
+                alert('Error al eliminar fuente: ' + e.message);
+            }
+        }
+
+        async function cambiarAlgoritmo(coleccionId) {
+            const nuevoAlgoritmo = document.getElementById('algoritmoSelect').value;
+            try {
+                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+                    body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
+                });
+                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
+                alert('Algoritmo cambiado exitosamente.');
+                window.location.reload();
+            } catch (e) {
+                console.error(e);
+                alert('Error al cambiar algoritmo: ' + e.message);
+            }
+        }
+
+        async function agregarFuente(coleccionId) {
+            const tipo = document.getElementById('newFuenteTipo').value;
+            const id = document.getElementById('newFuenteId').value.trim();
+            const ip = document.getElementById('newFuenteIp').value.trim();
+            const puerto = document.getElementById('newFuentePuerto').value.trim();
+
+            if (!id || !ip || !puerto) {
+                alert('Todos los campos son obligatorios');
+                return;
+            }
+
+            const puertoNum = parseInt(puerto, 10);
+            if (isNaN(puertoNum)) {
+                alert('Puerto debe ser número');
+                return;
+            }
+
+            const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
+
+            try {
+                const res = await fetch(`/apiAdministrativa/colecciones/${coleccionId}/fuentes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', [csrfHeaderName]: csrfToken },
+                    body: JSON.stringify(nuevaFuente)
+                });
+                if (!res.ok) throw new Error(await res.text() || 'Error desconocido');
+                alert('Fuente agregada exitosamente.');
+                document.getElementById('newFuenteId').value = '';
+                document.getElementById('newFuenteIp').value = '';
+                document.getElementById('newFuentePuerto').value = '';
+                window.location.reload();
+            } catch (e) {
+                console.error(e);
+                alert('Error al agregar fuente: ' + e.message);
+            }
+        }
+
+        /*]]>*/
+    </script>
+</th:block>
+
+</body>
+</html>

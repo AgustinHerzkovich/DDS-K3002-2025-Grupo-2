@@ -1,0 +1,87 @@
+/* Estilos generales para botones (puedes ajustar colores) */
+.btn-primary {
+    padding: 0.5rem 1rem;
+    background-color: #4f46e5; /* indigo-600 */
+    color: white;
+    border: none;
+    border-radius: 0.375rem; /* rounded-md */
+    font-weight: 500;
+    font-size: 0.875rem; /* text-sm */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca; /* indigo-700 */
+}
+
+.btn-danger {
+    padding: 0.5rem 1rem;
+    background-color: #ef4444; /* red-500 */
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626; /* red-600 */
+}
+
+.btn-danger-small {
+    padding: 0.25rem 0.5rem; /* Más pequeño */
+    background-color: #fee2e2; /* red-100 */
+    color: #b91c1c; /* red-700 */
+    border: 1px solid #fecaca; /* red-200 */
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.75rem; /* text-xs */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger-small:hover {
+    background-color: #fecaca; /* red-200 */
+    color: #991b1b; /* red-800 */
+}
+
+
+.btn-cancel {
+    padding: 0.5rem 1rem;
+    background-color: #e5e7eb; /* gray-200 */
+    color: #374151; /* gray-700 */
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: none; /* Para enlaces <a> */
+    display: inline-block; /* Para enlaces <a> */
+    transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+    background-color: #d1d5db; /* gray-300 */
+}
+
+/* Clases para inputs y selects (similares a Tailwind forms) */
+.form-input, .form-select {
+    border-width: 1px;
+    border-color: #d1d5db; /* gray-300 */
+    border-radius: 0.375rem; /* rounded-md */
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem; /* text-sm */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s; /* Añadir transición */
+}
+
+.form-input:focus, .form-select:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-color: #6366f1; /* indigo-500 */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* Sombra difuminada color índigo */
+}

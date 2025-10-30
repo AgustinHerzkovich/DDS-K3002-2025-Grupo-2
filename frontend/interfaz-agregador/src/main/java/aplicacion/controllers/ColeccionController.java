@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.dto.PageWrapper;
+import aplicacion.dto.TipoAlgoritmoConsenso;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import org.springframework.ui.Model;
 import aplicacion.dto.output.ColeccionOutputDto;
@@ -166,5 +167,16 @@ public class ColeccionController {
         model.addAttribute("search", search != null ? search : "");
 
         return "mapa";
+    }
+
+    @GetMapping("/colecciones/{id}")
+    public String paginaColeccion(@PathVariable("id") String id, Model model) {
+        ColeccionOutputDto coleccion = coleccionService.obtenerColeccion(id);
+        if (coleccion == null) {
+            return "error/404"; // Ver si está bien tirar esto o capaz convenga otra cosa
+        }
+        model.addAttribute("coleccion", coleccion);
+        model.addAttribute("algoritmosDisponibles", TipoAlgoritmoConsenso.values());
+        return "coleccion";
     }
 }
