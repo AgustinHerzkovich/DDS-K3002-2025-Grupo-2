@@ -25,6 +25,10 @@
     <!-- (Solo si el fragmento 'pageStyles' está definido) -->
     <th:block th:replace="~{::pageStyles}" />
     <!-- ============================================== -->
+    <!-- INCLUYE LOS SCRIPTS ESPECÍFICOS DE LA PÁGINA   -->
+    <!-- (Solo si el fragmento 'pageScripts' está definido) -->
+    <th:block th:replace="~{::pageScripts}" />
+    <!-- ============================================== -->
 </head>
 <body class="bodyHome bg-gray-50">
 
@@ -39,6 +43,8 @@
 
 <!-- Script para el menú de perfil -->
 <div th:replace="~{fragments/button :: profileScript}"></div>
+
+
 
 </body>
 </html>

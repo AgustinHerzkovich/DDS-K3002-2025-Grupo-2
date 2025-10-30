@@ -3,6 +3,7 @@ package aplicacion.controllers;
 import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
@@ -123,7 +124,7 @@ public class ColeccionController {
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody TipoAlgoritmoConsenso nuevoAlgoritmo) {
+                                                   @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
         return ResponseEntity.ok(coleccion);
