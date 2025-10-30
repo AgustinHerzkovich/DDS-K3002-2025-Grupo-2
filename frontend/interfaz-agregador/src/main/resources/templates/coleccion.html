@@ -1,11 +1,160 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{fragments/layout :: layout(~{fragments/top-content :: coleccion}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
+<head>
+    <th:block th:fragment="pageStyles">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />
+    </th:block>
 
-<th:block th:fragment="pageStyles">
-    <!-- CSS específico de esta página -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />
-</th:block>
+    <th:block th:fragment="pageScripts">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            // Obtener tokens CSRF y validar que existan
+            const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+            const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+
+            if (!csrfHeaderName || !csrfToken) {
+                console.error('CSRF tokens no encontrados');
+            }
+
+            // Headers comunes para todas las peticiones
+            const getHeaders = () => ({
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            });
+
+            // Base URL para las APIs
+            const API_BASE = '/apiAdministrativa';
+
+            async function eliminarFuente(coleccionId, fuenteId) {
+                if (!coleccionId || !fuenteId) {
+                    console.error('IDs inválidos');
+                    return;
+                }
+
+                if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
+
+                try {
+                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes/${encodeURIComponent(fuenteId)}`, {
+                        method: 'DELETE',
+                        headers: getHeaders()
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Error al eliminar la fuente');
+                    }
+
+                    alert('Fuente eliminada exitosamente');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error en eliminarFuente:', error);
+                    alert(`Error al eliminar fuente: ${error.message}`);
+                }
+            }
+
+            async function cambiarAlgoritmo(coleccionId) {
+                if (!coleccionId) {
+                    console.error('ID de colección inválido');
+                    return;
+                }
+
+                const select = document.getElementById('algoritmoSelect');
+                const nuevoAlgoritmo = select.value;
+
+                try {
+                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/algoritmo`, {
+                        method: 'PATCH',
+                        headers: getHeaders(),
+                        body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Error al cambiar el algoritmo');
+                    }
+
+                    alert('Algoritmo actualizado exitosamente');
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error en cambiarAlgoritmo:', error);
+                    alert(`Error al cambiar algoritmo: ${error.message}`);
+                }
+            }
+
+            async function agregarFuente(coleccionId) {
+                if (!coleccionId) {
+                    console.error('ID de colección inválido');
+                    return;
+                }
+
+                const tipo = document.getElementById('newFuenteTipo')?.value;
+                const id = document.getElementById('newFuenteId')?.value?.trim();
+                const ip = document.getElementById('newFuenteIp')?.value?.trim();
+                const puerto = document.getElementById('newFuentePuerto')?.value?.trim();
+
+                if (!tipo || !id || !ip || !puerto) {
+                    alert('Todos los campos son obligatorios');
+                    return;
+                }
+
+                const puertoNum = parseInt(puerto, 10);
+                if (isNaN(puertoNum) || puertoNum <= 0) {
+                    alert('El puerto debe ser un número válido mayor a 0');
+                    return;
+                }
+
+                const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
+
+                try {
+                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes`, {
+                        method: 'POST',
+                        headers: getHeaders(),
+                        body: JSON.stringify(nuevaFuente)
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || 'Error al agregar la fuente');
+                    }
+
+                    alert('Fuente agregada exitosamente');
+
+                    // Limpiar campos
+                    document.getElementById('newFuenteId').value = '';
+                    document.getElementById('newFuenteIp').value = '';
+                    document.getElementById('newFuentePuerto').value = '';
+
+                    window.location.reload();
+                } catch (error) {
+                    console.error('Error en agregarFuente:', error);
+                    alert(`Error al agregar fuente: ${error.message}`);
+                }
+            }
+
+            // Inicialización cuando el DOM está listo
+            document.addEventListener('DOMContentLoaded', () => {
+                // Verificar que los elementos necesarios existen
+                const requiredElements = [
+                    'algoritmoSelect',
+                    'newFuenteTipo',
+                    'newFuenteId',
+                    'newFuenteIp',
+                    'newFuentePuerto'
+                ];
+
+                requiredElements.forEach(id => {
+                    if (!document.getElementById(id)) {
+                        console.error(`Elemento ${id} no encontrado`);
+                    }
+                });
+            });
+
+            /*]]>*/
+        </script>
+    </th:block>
+</head>
 
 <body>
 <main class="container mx-auto p-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
@@ -92,155 +241,5 @@
     </section>
 
 </main>
-
-<th:block th:fragment="pageScripts">
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-
-        // Obtener tokens CSRF y validar que existan
-        const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-
-        if (!csrfHeaderName || !csrfToken) {
-            console.error('CSRF tokens no encontrados');
-        }
-
-        // Headers comunes para todas las peticiones
-        const getHeaders = () => ({
-            'Content-Type': 'application/json',
-            [csrfHeaderName]: csrfToken
-        });
-
-        // Base URL para las APIs
-        const API_BASE = '/apiAdministrativa';
-
-        async function eliminarFuente(coleccionId, fuenteId) {
-            if (!coleccionId || !fuenteId) {
-                console.error('IDs inválidos');
-                return;
-            }
-
-            if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
-
-            try {
-                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes/${encodeURIComponent(fuenteId)}`, {
-                    method: 'DELETE',
-                    headers: getHeaders()
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText || 'Error al eliminar la fuente');
-                }
-
-                alert('Fuente eliminada exitosamente');
-                window.location.reload();
-            } catch (error) {
-                console.error('Error en eliminarFuente:', error);
-                alert(`Error al eliminar fuente: ${error.message}`);
-            }
-        }
-
-        async function cambiarAlgoritmo(coleccionId) {
-            if (!coleccionId) {
-                console.error('ID de colección inválido');
-                return;
-            }
-
-            const select = document.getElementById('algoritmoSelect');
-            const nuevoAlgoritmo = select.value;
-
-            try {
-                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/algoritmo`, {
-                    method: 'PATCH',
-                    headers: getHeaders(),
-                    body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText || 'Error al cambiar el algoritmo');
-                }
-
-                alert('Algoritmo actualizado exitosamente');
-                window.location.reload();
-            } catch (error) {
-                console.error('Error en cambiarAlgoritmo:', error);
-                alert(`Error al cambiar algoritmo: ${error.message}`);
-            }
-        }
-
-        async function agregarFuente(coleccionId) {
-            if (!coleccionId) {
-                console.error('ID de colección inválido');
-                return;
-            }
-
-            const tipo = document.getElementById('newFuenteTipo')?.value;
-            const id = document.getElementById('newFuenteId')?.value?.trim();
-            const ip = document.getElementById('newFuenteIp')?.value?.trim();
-            const puerto = document.getElementById('newFuentePuerto')?.value?.trim();
-
-            if (!tipo || !id || !ip || !puerto) {
-                alert('Todos los campos son obligatorios');
-                return;
-            }
-
-            const puertoNum = parseInt(puerto, 10);
-            if (isNaN(puertoNum) || puertoNum <= 0) {
-                alert('El puerto debe ser un número válido mayor a 0');
-                return;
-            }
-
-            const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
-
-            try {
-                const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes`, {
-                    method: 'POST',
-                    headers: getHeaders(),
-                    body: JSON.stringify(nuevaFuente)
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText || 'Error al agregar la fuente');
-                }
-
-                alert('Fuente agregada exitosamente');
-
-                // Limpiar campos
-                document.getElementById('newFuenteId').value = '';
-                document.getElementById('newFuenteIp').value = '';
-                document.getElementById('newFuentePuerto').value = '';
-
-                window.location.reload();
-            } catch (error) {
-                console.error('Error en agregarFuente:', error);
-                alert(`Error al agregar fuente: ${error.message}`);
-            }
-        }
-
-        // Inicialización cuando el DOM está listo
-        document.addEventListener('DOMContentLoaded', () => {
-            // Verificar que los elementos necesarios existen
-            const requiredElements = [
-                'algoritmoSelect',
-                'newFuenteTipo',
-                'newFuenteId',
-                'newFuenteIp',
-                'newFuentePuerto'
-            ];
-
-            requiredElements.forEach(id => {
-                if (!document.getElementById(id)) {
-                    console.error(`Elemento ${id} no encontrado`);
-                }
-            });
-        });
-
-        /*]]>*/
-    </script>
-</th:block>
-
 </body>
 </html>
