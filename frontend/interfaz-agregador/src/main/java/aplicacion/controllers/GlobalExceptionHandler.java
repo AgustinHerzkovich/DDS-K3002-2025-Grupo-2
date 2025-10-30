@@ -18,9 +18,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WebClientResponseException.class)
     public String handleWebClientResponseException(WebClientResponseException ex) {
-        if(ex.getStatusCode() == HttpStatus.BAD_GATEWAY) // 502, no se pudo conectar a agregador
-            return "error/502";
-        else
-            return "error/500";
+        return "error/" + ex.getStatusCode().value();
     }
 }
