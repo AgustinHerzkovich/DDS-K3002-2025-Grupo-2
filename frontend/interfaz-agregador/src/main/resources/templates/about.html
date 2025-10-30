@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: about}, ~{::main}, ~{fragments/right-menu :: about})}">
+
+<head>
+    <th:block th:fragment="pageStyles">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/about.css}" />
+    </th:block>
+</head>
+
 <body>
 
 <!-- Contenido Principal -->
@@ -170,11 +177,6 @@
         <div class="flex justify-center gap-4">
             <a href="/" class="bg-indigo-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition">
                 Volver al Inicio
-            </a>
-            <a href="https://github.com/AgustinHerzkovich/DDS-K3002-2025-Grupo-2"
-               target="_blank"
-               class="bg-gray-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-gray-700 transition">
-                Ver en GitHub
             </a>
         </div>
     </section>
