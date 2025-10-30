@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpHostConnectException.class)
     public ResponseEntity<?> handleWebClientException(HttpHostConnectException ex) {
-        return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).build();
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
     }
 }

@@ -12,15 +12,15 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(WebClientRequestException.class)
-    public String handleWebClientException(WebClientRequestException ex) {
-        return "error/error-server-offline";
+    public String handleWebClientRequestException(WebClientRequestException ex) {
+        return "error/502";
     }
 
     @ExceptionHandler(WebClientResponseException.class)
-    public String handleWebClientException(WebClientResponseException ex) {
-        if(ex.getStatusCode() == HttpStatus.GATEWAY_TIMEOUT) // 504, no se pudo conectar a agregador
-            return "error/error-server-offline";
+    public String handleWebClientResponseException(WebClientResponseException ex) {
+        if(ex.getStatusCode() == HttpStatus.BAD_GATEWAY) // 502, no se pudo conectar a agregador
+            return "error/502";
         else
-            return "error/500.html";
+            return "error/500";
     }
 }
