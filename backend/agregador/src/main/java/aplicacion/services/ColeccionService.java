@@ -7,6 +7,7 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
@@ -143,10 +144,10 @@ public class ColeccionService {
         System.out.println("Colección eliminada: " + idColeccion);
     }
 
-    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, TipoAlgoritmoConsenso nuevoAlgoritmo) {
+    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         Coleccion coleccion = repositorioDeColecciones.findById(idColeccion)
                 .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
-        coleccion.setTipoAlgoritmoConsenso(nuevoAlgoritmo);
+        coleccion.setTipoAlgoritmoConsenso(nuevoAlgoritmo.getAlgoritmoConsenso());
         Coleccion coleccionPersistida = repositorioDeColecciones.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
         return coleccionOutputMapper.map(coleccionPersistida);
     }
