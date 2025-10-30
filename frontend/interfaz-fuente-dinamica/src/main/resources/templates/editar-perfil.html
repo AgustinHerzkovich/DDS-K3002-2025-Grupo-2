@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/editar-perfil.css}" />
     <link rel="stylesheet" th:href="@{/css/homepage.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -13,21 +14,29 @@
 
 <div th:replace="~{fragments/layout :: sidebar}"></div>
 
-<div style="padding: 20px;">
-    <h1>Editar Perfil</h1>
-    <form id="perfil-form" th:action="@{/editarIdentidad}" method="post">
+<div class="perfil-content">
+    <div class="perfil-card">
+        <h1>Editar Perfil</h1>
+        <form id="perfil-form" th:action="@{/editarIdentidad}" method="post">
 
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required><br><br>
+            <div class="form-group-perfil">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" th:value="${usuario.nombre}" required>
+            </div>
 
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" th:value="${usuario.apellido}" required><br><br>
+            <div class="form-group-perfil">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" th:value="${usuario.apellido}" required>
+            </div>
 
-        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}" required><br><br>
+            <div class="form-group-perfil">
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}" required>
+            </div>
 
-        <button type="submit">Guardar Cambios</button>
-    </form>
+            <button type="submit" class="btn-guardar-perfil">Guardar Cambios</button>
+        </form>
+    </div>
 </div>
 
 <div th:replace="~{fragments/layout :: authModals}"></div>
