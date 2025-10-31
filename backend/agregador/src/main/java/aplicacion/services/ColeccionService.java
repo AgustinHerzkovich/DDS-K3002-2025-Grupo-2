@@ -48,8 +48,8 @@ public class ColeccionService {
 
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
-        this.asociarHechosPreexistentes(coleccionLocal);
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
+        this.asociarHechosPreexistentes(coleccionGuardada);
         return coleccionOutputMapper.map(coleccionGuardada);
     }
     @Transactional
@@ -62,7 +62,7 @@ public class ColeccionService {
     }
     @Transactional
     public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
-
+        System.out.println("Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + fuente.getHechos().size() + " hechos");
         List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
         List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
                 .filter(coleccion::cumpleCriterios)
@@ -70,6 +70,7 @@ public class ColeccionService {
         List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
                 .map(hecho -> new HechoXColeccion(hecho, coleccion))
                 .collect(Collectors.toList());
+        hechosXColeccion.subList(0, 7).forEach(ha -> System.out.println(" Hecho " + ha.getHecho().getTitulo() + " Coleccion " + ha.getColeccion().getTitulo() + ha.getColeccion().getId()));
         repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
     }
 
