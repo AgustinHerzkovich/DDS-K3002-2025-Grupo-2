@@ -70,7 +70,6 @@ public class ColeccionService {
         List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
                 .map(hecho -> new HechoXColeccion(hecho, coleccion))
                 .collect(Collectors.toList());
-        hechosXColeccion.subList(0, 7).forEach(ha -> System.out.println(" Hecho " + ha.getHecho().getTitulo() + " Coleccion " + ha.getColeccion().getTitulo() + ha.getColeccion().getId()));
         repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
     }
 
