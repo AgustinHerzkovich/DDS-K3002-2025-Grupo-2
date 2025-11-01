@@ -116,4 +116,22 @@ public class AwsS3FileServerService {
                 .build()
         );
     }
+    public List<String> listarFuentes() {
+        List<String> fuentes = new ArrayList<>();
+
+        ListObjectsV2Request request = ListObjectsV2Request.builder()
+                .bucket("fuentes-estaticas")
+                .delimiter("/")
+                .build();
+
+        s3.listObjectsV2Paginator(request)
+                .stream()
+                .flatMap(response -> response.commonPrefixes().stream())
+                .map(CommonPrefix::prefix)
+                .map(prefix -> prefix.replaceAll("/$", "")) // Quita la barra final
+                .map(fuente -> fuente.substring(6)) // Saca "fuente"
+                .forEach(fuentes::add);
+
+        return fuentes;
+    }
 }
