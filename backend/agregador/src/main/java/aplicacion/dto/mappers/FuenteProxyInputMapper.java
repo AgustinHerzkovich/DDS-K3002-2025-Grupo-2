@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 public class FuenteProxyInputMapper implements Mapper<FuenteProxyInputDto, FuenteProxy>{
     public FuenteProxy map(FuenteProxyInputDto fuenteInputDto) {
         return new FuenteProxy(
-                fuenteInputDto.getId(),
-                fuenteInputDto.getIp(),
-                fuenteInputDto.getPuerto()
+                fuenteInputDto.getId()
         );
     }
 }

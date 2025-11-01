@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 public class FuenteEstaticaInputMapper implements Mapper<FuenteEstaticaInputDto, FuenteEstatica> {
     public FuenteEstatica map(FuenteEstaticaInputDto fuenteInputDto){
         return new FuenteEstatica(
-                fuenteInputDto.getId(),
-                fuenteInputDto.getIp(),
-                fuenteInputDto.getPuerto()
+                fuenteInputDto.getId()
         );
     }
 }

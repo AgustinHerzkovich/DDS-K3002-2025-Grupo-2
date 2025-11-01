@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.dto.input.FuenteProxyInputDto;
+import aplicacion.dto.output.FuenteDisponibleOutputDto;
 import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
@@ -39,5 +40,10 @@ public class FuenteProxyController {
     public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@RequestBody FuenteProxyInputDto fuenteProxyInputDto){
         FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
         return ResponseEntity.ok(fuenteProxy);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FuenteDisponibleOutputDto>> obtenerFuentesDisponibles(){
+        return ResponseEntity.ok(fuenteProxyService.obtenerFuentesDisponibles());
     }
 }
