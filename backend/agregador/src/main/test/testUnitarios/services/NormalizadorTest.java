@@ -1,14 +1,43 @@
 package testUnitarios.services;
 
+import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
+import aplicacion.domain.hechos.Etiqueta;
+import aplicacion.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.repositorios.RepositorioDeCategorias;
+import aplicacion.repositorios.RepositorioDeEtiquetas;
+import aplicacion.services.CategoriaService;
+import aplicacion.services.EtiquetaService;
+import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeTerminos;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import testUtils.CategoriaFactory;
+import testUtils.HechoFactory;
+import testUtils.RandomThingsGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class NormalizadorTest {
+
+
+    @Mock
+    private EtiquetaService etiquetaService;
+
+    @Mock
+    private CategoriaService categoriaService;
+
+    @InjectMocks
+    private NormalizadorDeHechos normalizadorDeHechos;
+
     @Test
     @DisplayName("Debe normalizar terminos correctamente")
     public void testNormalizadorDeTerminos(){
@@ -40,6 +69,15 @@ public class NormalizadorTest {
         assert (Objects.equals(terminosNormalizados.get(7), "Uva"));
         assert (Objects.equals(terminosNormalizados.getLast(), "Uy"));
 
+
+    }
+    @Test
+    @DisplayName("Debe normalizar hechos correctamente")
+    public void testNormalizadorDeHechos() throws EtiquetaNoEncontradaException {
+        when(categoriaService.obtenerCategoriaPorNombre(anyString())).thenReturn(CategoriaFactory.obtenerCategoriaAleatoria());
+
+
+        normalizadorDeHechos.normalizarTodos(Map.of(new FuenteEstatica(), HechoFactory.crearHechosAleatorios(5000)));
 
     }
 }
