@@ -45,9 +45,11 @@ public class ColeccionService {
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
     }
-
+    @Transactional
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
+        List<Fuente> fuentes = coleccion.getFuentes().stream().map(fuente -> fuenteService.obtenerFuentePorId(fuente.getId())).toList(); // Verifica que existan o tira fuenteNotFound
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
+        coleccionLocal.setFuentes(fuentes);
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
         this.asociarHechosPreexistentes(coleccionGuardada);
         return coleccionOutputMapper.map(coleccionGuardada);

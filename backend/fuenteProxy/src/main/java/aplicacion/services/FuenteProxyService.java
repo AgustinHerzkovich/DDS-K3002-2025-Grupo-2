@@ -5,6 +5,7 @@ import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.mappers.FuenteProxyInputMapper;
 import aplicacion.dto.mappers.FuenteProxyOutputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.output.FuenteDisponibleOutputDto;
 import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositorios.RepositorioDeFuentesProxy;
@@ -57,5 +58,9 @@ public class FuenteProxyService {
     public FuenteProxyOutputDto guardarFuente(FuenteProxyInputDto fuenteProxyInputDto) {
         FuenteProxy fuenteProxy = repositorioDeFuentesProxy.save(fuenteProxyInputMapper.map(fuenteProxyInputDto));
         return fuenteProxyOutputMapper.map(fuenteProxy);
+    }
+
+    public List<FuenteDisponibleOutputDto> obtenerFuentesDisponibles() {
+        return repositorioDeFuentesProxy.findAll().stream().map(fp -> new FuenteDisponibleOutputDto(fp.getId())).toList();
     }
 }

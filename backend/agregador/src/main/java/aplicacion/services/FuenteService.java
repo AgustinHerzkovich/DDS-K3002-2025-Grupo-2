@@ -35,6 +35,22 @@ public class FuenteService {
     public Fuente guardarFuente(Fuente fuente) {
         return repositorioDeFuentes.save(fuente);
     }
+    /**
+     * Recibe una Fuente
+     * Busca en la BD si la fuente existe por su ID
+     * Si existe, modifica su campo conexion por la conexion de la fuente recibida
+     * Si no existe, la crea
+     * */
+
+    @Transactional
+    public Fuente guardarOActualizarConexion(Fuente fuente) {
+        Optional<Fuente> optFuente = repositorioDeFuentes.findById(fuente.getId());
+        if(optFuente.isEmpty())
+            return repositorioDeFuentes.save(fuente);
+        optFuente.get().setConexion(fuente.getConexion());
+        return repositorioDeFuentes.save(optFuente.get());
+
+    }
 
     // Busca si una fuente ya existe segun su id. Si no existe la guarda y la devuelve, si ya existe la devuelve.
     @Transactional
@@ -52,7 +68,7 @@ public class FuenteService {
     }
 
     @Transactional
-    public void guardarFuentesSiNoExisten(List<FuenteInputDto> fuentesDto) {
+    public void guardarFuentesSiNoExisten(List< ? extends FuenteInputDto> fuentesDto) {
         List<Fuente> fuentes = fuentesDto.stream().map(fuenteInputMapper::map).toList();
         for (Fuente fuente: fuentes) {
             guardarFuenteSiNoExiste(fuente); // Las fuentes que ya existen no se guardan
@@ -88,5 +104,9 @@ public class FuenteService {
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
         return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
+    }
+
+    public List<Fuente> obtenerTodasLasFuentes(){
+        return repositorioDeFuentes.findAll();
     }
 }
