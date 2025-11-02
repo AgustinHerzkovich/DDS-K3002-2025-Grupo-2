@@ -27,6 +27,7 @@ import testUtils.HechoFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -80,7 +81,7 @@ class HechoServiceTest
     @Test
     @DisplayName("Debe obtener hecho por ID")
     void obtenerHechoPorIdDevolvuelveHechoExistente() throws HechoNoEncontradoException {
-        when(repositorioDeHechos.findById("abcd")).thenReturn(hecho);
+        when(repositorioDeHechos.findById("abcd")).thenReturn(Optional.of(hecho));
 
         Hecho resultado = hechoService.obtenerHechoPorId("abcd");
 
@@ -90,7 +91,7 @@ class HechoServiceTest
     @Test
     @DisplayName("Debe tirar excepcion si no existe el hecho buscado")
     void obtenerHechoPorIdTiraExcepcionSiNoExiste() {
-        when(repositorioDeHechos.findById("inexistente")).thenThrow(new RuntimeException());
+        when(repositorioDeHechos.findById("inexistente")).thenReturn(Optional.empty());
 
         assertThrows(HechoNoEncontradoException.class, () -> hechoService.obtenerHechoPorId("inexistente"));
     }

@@ -5,6 +5,8 @@ import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
+import aplicacion.domain.conexiones.Conexion;
+import aplicacion.domain.conexiones.ConexionFuenteEstatica;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
@@ -22,6 +24,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
+import testUtils.HechoFactory;
+import testUtils.RandomThingsGenerator;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,7 +55,7 @@ class ColeccionServiceTest {
     void setUp() {
         coleccion = new Coleccion("123", "Coleccion test", new ArrayList<>(), new ArrayList<>(), TipoAlgoritmoConsenso.IRRESTRICTO);
 
-        fuente = new FuenteEstatica("f1", "localhost", 8082);
+        fuente = new FuenteEstatica("f1", new ConexionFuenteEstatica( "asdasda" , "localhost", 8082));
         coleccion.agregarFuente(fuente);
 
         inputDto = new ColeccionInputDto();
@@ -62,8 +67,9 @@ class ColeccionServiceTest {
     void guardarColeccionGuardaColeccion() {
         when(coleccionInputMapper.map(inputDto)).thenReturn(coleccion);
         when(repositorioDeColecciones.save(coleccion)).thenReturn(coleccion);
+        outputDto.setFuentes(new ArrayList<>());
+        inputDto.setFuentes(new ArrayList<>());
         when(coleccionOutputMapper.map(coleccion)).thenReturn(outputDto);
-
         ColeccionOutputDto resultado = coleccionService.guardarColeccion(inputDto);
 
         assertNotNull(resultado);
@@ -75,6 +81,7 @@ class ColeccionServiceTest {
     @DisplayName("Debe asociar hechos preexistentes de todas las fuentes")
     void asociarHechosPreexistentesLlamaAsociacionPorFuente() {
         Fuente f2 = new FuenteEstatica(); f2.setId("f2");
+        f2.setHechos(HechoFactory.crearHechosAleatorios(50));
         coleccion.setFuentes(List.of(fuente, f2));
         when(repositorioDeHechosXColeccion.saveAll(anyList())).thenReturn(List.of());
         when(fuenteService.obtenerHechosPorFuente(anyString())).thenReturn(List.of());

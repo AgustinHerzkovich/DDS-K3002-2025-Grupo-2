@@ -18,7 +18,7 @@ public class HechoTest {
     @Test
     @DisplayName("Debe poderse instanciar")
     public void sePuedeInstanciarUnHecho(){
-        Assert.notNull(new Hecho("titulo", "descripcion", new Categoria("categoria"), new Ubicacion(2d, 2d), LocalDateTime.now(), Origen.DATASET, "contenidoTexto", List.of(new Video("mp4", 100, RandomThingsGenerator.generarLinkYoutubeAleatorio(), "720x1280", 2)), true, new Contribuyente(true, null, "mail")), "El hecho no se pudo crear");
+        new Hecho("titulo", "descripcion", new Categoria("categoria"), new Ubicacion(2d, 2d), LocalDateTime.now(), Origen.DATASET, "contenidoTexto", List.of(new Multimedia(RandomThingsGenerator.generarLinkYoutubeAleatorio())), true, new Contribuyente(true, null, "mail"));
     }
     @Test
     @DisplayName("Debe generar una clave unica")

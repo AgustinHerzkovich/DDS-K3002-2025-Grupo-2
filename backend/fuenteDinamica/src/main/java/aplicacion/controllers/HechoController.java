@@ -28,7 +28,7 @@ public class HechoController {
     public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA,
-            @RequestParam(value = "pendiente", required = false) Boolean pendiente
+            @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente
     ) {
         List<HechoOutputDto> hechos;
         if (fechaMayorA != null) {

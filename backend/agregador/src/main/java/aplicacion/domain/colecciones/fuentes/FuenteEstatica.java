@@ -1,5 +1,6 @@
 package aplicacion.domain.colecciones.fuentes;
 
+import aplicacion.domain.conexiones.Conexion;
 import aplicacion.dto.input.HechoInputDto;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -16,9 +17,12 @@ import java.util.List;
 public class FuenteEstatica extends Fuente {
     private Boolean fueConsultada;
 
-    public FuenteEstatica(String id, String ip, Integer puerto) {
-        super(id, ip, puerto);
+    public FuenteEstatica(String id, Conexion conexion) {
+        super(id, conexion);
         this.fueConsultada = false;
+    }
+
+    public FuenteEstatica(String id) {
     }
 
     @Override

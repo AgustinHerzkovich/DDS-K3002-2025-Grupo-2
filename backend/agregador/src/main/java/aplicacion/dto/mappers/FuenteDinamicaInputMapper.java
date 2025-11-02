@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 public class FuenteDinamicaInputMapper implements Mapper<FuenteDinamicaInputDto, FuenteDinamica>{
     public FuenteDinamica map(FuenteDinamicaInputDto fuenteInputDto) {
         return new FuenteDinamica(
-                fuenteInputDto.getId(),
-                fuenteInputDto.getIp(),
-                fuenteInputDto.getPuerto()
+                fuenteInputDto.getId()
         );
     }
 }

@@ -155,9 +155,7 @@ Body:
   "fuentes": [
     {
       "tipo": "estatica",
-      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
-      "ip": "localhost",
-      "puerto": 8081
+      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0"
     }
   ],
   "tipoAlgoritmoConsenso": "ABSOLUTO"
@@ -264,15 +262,11 @@ Body:
   "fuentes": [
     {
       "tipo": "estatica",
-      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
-      "ip": "localhost",
-      "puerto": 8081
+      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0"
     },
     {
       "tipo": "dinamica",
-      "id": "e359660d-9459-4312-9db6-59e4f9c935d4",
-      "ip": "localhost",
-      "puerto": 8082
+      "id": "e359660d-9459-4312-9db6-59e4f9c935d4"
     }
   ],
   "tipoAlgoritmoConsenso": "ABSOLUTO"
@@ -302,9 +296,7 @@ Body:
     },
     {
       "tipo": "proxy",
-      "id": uuid_fuente_metamapa,
-      "ip": "localhost",
-      "puerto": 8083
+      "id": uuid_fuente_metamapa
     }
   ],
   "tipoAlgoritmoConsenso": "MULTIPLES_MENCIONES"
@@ -353,38 +345,32 @@ Testear que funcione junto a Lucas
 
 // Test rapido pàra importar hechos
 
-{
-  "titulo": "Desastres estaticos",
-  "descripcion": "Coleccion de colecciones jijo",
-  "criteriosDePertenencia": [
     {
-      "tipo": "fecha",
-      "fechaInicial": "2010-01-01T20:44:13.170",
-      "fechaFinal": "2020-12-20T20:44:13.170"
+      "titulo": "Desastres estaticos",
+      "descripcion": "Coleccion de colecciones jijo",
+      "criteriosDePertenencia": [
+        {
+          "tipo": "fecha",
+          "fechaInicial": "2010-01-01T20:44:13.170",
+          "fechaFinal": "2020-12-20T20:44:13.170"
+        }
+      ],
+      "fuentes": [
+        {
+          "tipo": "estatica",
+          "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0"
+        },
+        {
+          "tipo": "estatica",
+          "id": "2dab6961-20f3-4fb3-89f4-a28aba9f212c"
+        },
+        {
+          "tipo": "estatica",
+          "id": "56149622-24e1-4b7e-8364-02ed6e08d1e0"
+        }
+      ],
+      "tipoAlgoritmoConsenso": "ABSOLUTO"
     }
-  ],
-  "fuentes": [
-    {
-      "tipo": "estatica",
-      "id": "522c567c-8825-4a4c-bcfc-bffa390fcba0",
-      "ip": "localhost",
-      "puerto": 8081
-    },
-    {
-      "tipo": "estatica",
-      "id": "2dab6961-20f3-4fb3-89f4-a28aba9f212c",
-      "ip": "localhost",
-      "puerto": 8081
-    },
-    {
-      "tipo": "estatica",
-      "id": "56149622-24e1-4b7e-8364-02ed6e08d1e0",
-      "ip": "localhost",
-      "puerto": 8081
-    }
-  ],
-  "tipoAlgoritmoConsenso": "ABSOLUTO"
-}
 
 
 

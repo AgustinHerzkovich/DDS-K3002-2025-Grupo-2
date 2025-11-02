@@ -23,6 +23,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FuenteInputDto {
     private String id;
-    private String ip;
-    private Integer puerto;
 }
