@@ -5,21 +5,23 @@ import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.ColeccionService;
+import aplicacion.services.DescubrirFuentesService;
+import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
-import aplicacion.services.FuenteService;
 import aplicacion.utils.ProgressBar;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class CargarHechosScheduler {
@@ -28,24 +30,38 @@ public class CargarHechosScheduler {
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final DepuradorDeHechos depuradorDeHechos;
     private final HechoService hechoService;
+    private final DescubrirFuentesService descubrirFuentesService;
 
-    public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos, HechoService hechoService) {
+    @Value("${hechos.lazy-loading}")
+    boolean hechosSeCarganSoloSiEstanEnUnaColeccion;
+    public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos, HechoService hechoService, DescubrirFuentesService descubrirFuentesService) {
         this.fuenteService = fuenteService;
         this.coleccionService = coleccionService;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.depuradorDeHechos = depuradorDeHechos;
         this.hechoService = hechoService;
+        this.descubrirFuentesService = descubrirFuentesService;
     }
 
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     @Transactional
     public void cargarHechos() {
+
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
+
+        descubrirFuentesService.descubrirConexionesFuentes();
+        descubrirFuentesService.cargarFuentes();
+
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         Set<Fuente> fuenteSet = new HashSet<>();
+        if(hechosSeCarganSoloSiEstanEnUnaColeccion){
         for (Coleccion coleccion : colecciones){
             fuenteSet.addAll(coleccion.getFuentes());
         }
+        }else{
+            fuenteSet.addAll(fuenteService.obtenerTodasLasFuentes());
+        }
+        fuenteSet = fuenteSet.stream().filter(fuente -> fuente.getConexion().isOnlineUltimaVez()).collect(Collectors.toSet());
         System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
 
         Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet.stream().toList());

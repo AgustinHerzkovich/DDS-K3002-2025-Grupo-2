@@ -9,8 +9,6 @@ public class FuenteOutputMapper implements Mapper<Fuente, FuenteOutputDto>{
     public FuenteOutputDto map(Fuente fuente){
         FuenteOutputDto retVal = new FuenteOutputDto();
         retVal.setId(fuente.getId());
-        retVal.setIp(fuente.getIp());
-        retVal.setPuerto(fuente.getPuerto());
         return retVal;
     }
 }

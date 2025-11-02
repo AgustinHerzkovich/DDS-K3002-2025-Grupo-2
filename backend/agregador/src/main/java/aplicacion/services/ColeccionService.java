@@ -45,9 +45,11 @@ public class ColeccionService {
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
     }
-
+    @Transactional
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
+        List<Fuente> fuentes = coleccion.getFuentes().stream().map(fuente -> fuenteService.obtenerFuentePorId(fuente.getId())).toList(); // Verifica que existan o tira fuenteNotFound
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
+        coleccionLocal.setFuentes(fuentes);
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
         this.asociarHechosPreexistentes(coleccionGuardada);
         return coleccionOutputMapper.map(coleccionGuardada);
@@ -70,7 +72,6 @@ public class ColeccionService {
         List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
                 .map(hecho -> new HechoXColeccion(hecho, coleccion))
                 .collect(Collectors.toList());
-        hechosXColeccion.subList(0, 7).forEach(ha -> System.out.println(" Hecho " + ha.getHecho().getTitulo() + " Coleccion " + ha.getColeccion().getTitulo() + ha.getColeccion().getId()));
         repositorioDeHechosXColeccion.saveAll(hechosXColeccion);
     }
 

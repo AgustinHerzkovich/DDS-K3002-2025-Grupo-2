@@ -1,9 +1,6 @@
 package testUtils;
 
-import aplicacion.domain.hechos.Categoria;
-import aplicacion.domain.hechos.Hecho;
-import aplicacion.domain.hechos.Origen;
-import aplicacion.domain.hechos.Ubicacion;
+import aplicacion.domain.hechos.*;
 import aplicacion.domain.usuarios.Contribuyente;
 
 import java.time.LocalDateTime;
@@ -32,7 +29,7 @@ public class HechoFactory {
                 fechaAcontecimiento,
                 origen,
                 contenidoTexto,
-                List.of(new Video("mp4", 100, RandomThingsGenerator.generarLinkYoutubeAleatorio(), "720x1280", 2)),
+                List.of(new Multimedia(RandomThingsGenerator.generarLinkYoutubeAleatorio())),
                 anonimato,
                 autor
         );

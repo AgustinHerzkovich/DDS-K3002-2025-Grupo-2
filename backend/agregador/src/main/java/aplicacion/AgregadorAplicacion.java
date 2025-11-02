@@ -10,5 +10,6 @@ public class AgregadorAplicacion {
 
   public static void main(String[] args) {
     SpringApplication.run(AgregadorAplicacion.class, args);
+    System.out.println("Agregador iniciado");
   }
 }

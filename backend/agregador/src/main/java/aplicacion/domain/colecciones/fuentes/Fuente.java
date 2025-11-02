@@ -2,6 +2,7 @@ package aplicacion.domain.colecciones.fuentes;
 
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.HechoInputDto;
+import aplicacion.domain.conexiones.Conexion;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -27,20 +28,26 @@ import java.util.List;
 public abstract class Fuente{
     @Id
     private String id;
+    private String alias;
     private LocalDateTime ultimaPeticion;
-    @Column(length = 25)
-    private String ip;
-    private Integer puerto;
+    @ManyToOne // Una conexion puede dar lugar a multiples fuentes
+    private Conexion conexion;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "hecho_fuente", joinColumns = @JoinColumn(name = "fuente_id"), inverseJoinColumns = @JoinColumn(name = "hecho_id"))
     private List<Hecho> hechos;
 
-    public Fuente(String id, String ip, Integer puerto) {
+    public Fuente(String id, Conexion conexion) {
         this.id = id;
         this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
-        this.ip = ip;
-        this.puerto = puerto;
+        this.conexion = conexion;
         this.hechos = new ArrayList<>();
+        this.alias = "Fuente sin titulo";
+    }
+    public Fuente(String id){
+        this.id = id;
+        this.ultimaPeticion = null;
+        this.hechos = new ArrayList<>();
+        this.alias = "Fuente sin titulo";
     }
 
     public List<HechoInputDto> getHechosUltimaPeticion() {
@@ -78,7 +85,7 @@ public abstract class Fuente{
     }
 
     private String getUrl() {
-        return "http://" + this.getIp() + ":" + this.getPuerto() + "/" + this.pathIntermedio() + "/hechos";
+        return conexion.construirURI() + "/" + this.pathIntermedio() + "/hechos";
     }
 
     public abstract String pathIntermedio();
