@@ -2,6 +2,9 @@ package aplicacion.repositorios;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +17,7 @@ import java.util.List;
 public interface RepositorioDeFuentes extends JpaRepository<Fuente, String> {
     @Query("SELECT f.hechos FROM Fuente f WHERE f.id = :fuenteId")
     List<Hecho> findHechosByFuenteId(@Param("fuenteId") String fuenteId);
+
+    @Query("SELECT f FROM Fuente f WHERE TYPE(f) = :tipoClass")
+    Page<Fuente> findByTipo(@Param("tipoClass") Class<? extends Fuente> tipoClass, PageRequest pageable);
 }

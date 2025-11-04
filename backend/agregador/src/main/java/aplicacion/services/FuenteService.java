@@ -1,15 +1,20 @@
 package aplicacion.services;
 
 import aplicacion.domain.colecciones.fuentes.*;
+import aplicacion.dto.input.FuenteAliasDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.excepciones.TipoDeFuenteErroneoException;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +34,19 @@ public class FuenteService {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
+    }
+
+    public Page<Fuente> findByTipo(Integer page, Integer limit, String tipo){
+        if(tipo == null)
+            return repositorioDeFuentes.findAll(PageRequest.of(page, limit));
+        Class<? extends  Fuente> tipoClass = switch (tipo.toLowerCase()) {
+            case "estatica", "estática", "e" -> FuenteEstatica.class;
+            case "dinamica", "dinámica", "d" -> FuenteDinamica.class;
+            case "proxy", "p" -> FuenteProxy.class;
+            default -> throw new TipoDeFuenteErroneoException("Tipo de fuente no reconocido: '"+tipo+"'.Se acepta estatica, dinamica y proxy");
+        };
+
+        return repositorioDeFuentes.findByTipo(tipoClass, PageRequest.of(page, limit));
     }
 
     @Transactional
@@ -108,5 +126,12 @@ public class FuenteService {
 
     public List<Fuente> obtenerTodasLasFuentes(){
         return repositorioDeFuentes.findAll();
+    }
+    @Transactional
+    public Fuente cambiarAlias(String id, FuenteAliasDto fuenteAliasDto) {
+        Fuente fuente = obtenerFuentePorId(id);
+        fuente.setAlias(fuenteAliasDto.getAlias());
+        repositorioDeFuentes.save(fuente);
+        return fuente;
     }
 }
