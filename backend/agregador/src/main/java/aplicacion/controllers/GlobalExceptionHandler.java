@@ -1,6 +1,8 @@
 package aplicacion.controllers;
 
 import aplicacion.excepciones.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,50 +13,76 @@ import javax.naming.CommunicationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    public ResponseEntity<?> error(HttpStatus status, String detail){
+        return ResponseEntity.status(status).body(ProblemDetail.forStatusAndDetail(status, detail));
+    }
+    public ResponseEntity<?> error(HttpStatus status, Exception exception){
+        return error(status, exception.getMessage());
+    }
+    public ResponseEntity<?> notFound(String detail){
+        return error(HttpStatus.NOT_FOUND, detail);
+    }
+    public ResponseEntity<?> notFound(Exception e){
+        return notFound(e.getMessage());
+    }
+    public ResponseEntity<?> badRequest(String detail){
+        return error(HttpStatus.BAD_REQUEST, detail);
+    }
+    public ResponseEntity<?> badRequest(Exception e){
+        return badRequest(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception ex) {
         ex.printStackTrace(System.err);
-        return ResponseEntity.internalServerError().build();
+        return error(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno en el servidor");
     }
     @ExceptionHandler(HechoNoEncontradoException.class)
     public ResponseEntity<?> handleHechoNotFound(HechoNoEncontradoException ex) {
-        return ResponseEntity.notFound().build();
+        return notFound(ex);
     }
     @ExceptionHandler(CategoriaNoEncontradaException.class)
     public ResponseEntity<?> handleCategoryNotFound(CategoriaNoEncontradaException ex) {
-        return ResponseEntity.notFound().build();
+        return notFound(ex);
     }
     @ExceptionHandler(ColeccionNoEncontradaException.class)
     public ResponseEntity<?> handleColeccionNoEncontradaException(ColeccionNoEncontradaException ex) {
-        return ResponseEntity.notFound().build();
+        return notFound(ex);
     }
     @ExceptionHandler(ContribuyenteNoConfiguradoException.class)
     public ResponseEntity<?> handleContribuyenteNoConfiguradoException(ContribuyenteNoConfiguradoException ex) {
-        return ResponseEntity.badRequest().build();
+        return notFound(ex);
     }
     @ExceptionHandler(EtiquetaNoEncontradaException.class)
-    public ResponseEntity<?> handleWebClientRequestException(EtiquetaNoEncontradaException ex) {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> handleEtiquetaNoEncontradaException(EtiquetaNoEncontradaException ex) {
+        return notFound(ex);
     }
     @ExceptionHandler(FuenteNoEncontradaException.class)
     public ResponseEntity<?> handleFuenteNoEncontradaException(FuenteNoEncontradaException ex) {
-        return ResponseEntity.notFound().build();
+        return notFound(ex);
     }
     @ExceptionHandler(MailYaExisteException.class)
     public ResponseEntity<?> handleMailYaExisteException(MailYaExisteException ex) {
-        return ResponseEntity.badRequest().build();
+        return badRequest(ex);
     }
     @ExceptionHandler(MotivoSolicitudException.class)
     public ResponseEntity<?> handleMotivoSolicitudException(MotivoSolicitudException ex) {
-        return ResponseEntity.badRequest().build();
+        return badRequest(ex);
     }
     @ExceptionHandler(UbicacionNoEncontradaException.class)
     public ResponseEntity<?> handleUbicacionNotFoundException(UbicacionNoEncontradaException ex) {
-        return ResponseEntity.notFound().build();
+        return notFound(ex);
     }
     @ExceptionHandler(CategoriaYaPresenteException.class)
     public ResponseEntity<?> handleUbicacionNotFoundException(CategoriaYaPresenteException ex) {
-        return ResponseEntity.badRequest().build();
+        return badRequest(ex);
     }
-
+    @ExceptionHandler(TipoDeFuenteErroneoException.class)
+    public ResponseEntity<?> handleTipoDeFuenteErroneaException(TipoDeFuenteErroneoException ex) {
+        return badRequest(ex);
+    }
+    @ExceptionHandler(InvalidPageException.class)
+    public ResponseEntity<?> handleInvalidPages(InvalidPageException ex) {
+        return badRequest(ex);
+    }
 }
