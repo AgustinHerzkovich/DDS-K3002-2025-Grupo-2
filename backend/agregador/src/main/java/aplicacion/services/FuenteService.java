@@ -1,6 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.domain.colecciones.fuentes.*;
+import aplicacion.dto.input.FuenteAliasDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
@@ -125,5 +126,12 @@ public class FuenteService {
 
     public List<Fuente> obtenerTodasLasFuentes(){
         return repositorioDeFuentes.findAll();
+    }
+    @Transactional
+    public Fuente cambiarAlias(String id, FuenteAliasDto fuenteAliasDto) {
+        Fuente fuente = obtenerFuentePorId(id);
+        fuente.setAlias(fuenteAliasDto.getAlias());
+        repositorioDeFuentes.save(fuente);
+        return fuente;
     }
 }
