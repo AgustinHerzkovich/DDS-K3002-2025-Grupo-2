@@ -290,9 +290,7 @@ Body:
   "fuentes": [
     {
       "tipo": "proxy",
-      "id": uuid_fuente_demo,
-      "ip": "localhost",
-      "puerto": 8083
+      "id": uuid_fuente_demo
     },
     {
       "tipo": "proxy",
