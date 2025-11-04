@@ -86,7 +86,7 @@ public class CargarHechosScheduler {
             indiceColeccion++;
             System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
 
-            for(Fuente fuente : coleccion.getFuentes()){
+            for(Fuente fuente : coleccion.getFuentes().stream().filter(fuente -> fuente.getConexion().isOnlineUltimaVez()).toList()){
                 indiceFuente++;
                 List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
                 ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
