@@ -85,4 +85,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleInvalidPages(InvalidPageException ex) {
         return badRequest(ex);
     }
+    @ExceptionHandler(TooHighLimitException.class)
+    public ResponseEntity<?> handleTooHighLimit(TooHighLimitException ex) {
+        return badRequest(ex);
+    }
 }

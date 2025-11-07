@@ -251,4 +251,31 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             @Param("textoLibre") String textoLibre,
             Pageable pageable
     );
+
+    @Query(value = """
+        SELECT h.titulo
+        FROM hecho h
+        WHERE (:textoLibre IS NULL
+               OR MATCH(h.titulo) AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE))
+        ORDER BY MATCH(h.titulo) AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE) DESC
+        LIMIT :limit
+        """,
+            nativeQuery = true)
+    List<String> findAutocompletado(
+            @Param("textoLibre") String textoLibre,
+            @Param("limit") int limit
+    );
+
+    @Query(value = """
+        SELECT
+            h.titulo
+        FROM hecho h
+        WHERE h.titulo LIKE CONCAT(:textoLibre, '%')
+        ORDER BY h.titulo
+        LIMIT :limit
+        """, nativeQuery = true)
+    List<String> findAutocompletadoLike(
+            @Param("textoLibre") String textoLibre,
+            @Param("limit") int limit
+    );
 }
