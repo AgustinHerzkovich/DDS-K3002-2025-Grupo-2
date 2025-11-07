@@ -18,6 +18,11 @@ import java.util.Objects;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true) // Solo se incluyen los minimos para diferenciar a dos hechos. Fechas de cargas, solicitudes de eliminacion y otras cosas no
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        indexes = {
+                @Index(name = "idx_hecho_titulo", columnList = "titulo")
+        }
+)
 public class Hecho {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
