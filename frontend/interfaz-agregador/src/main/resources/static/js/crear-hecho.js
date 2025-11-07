@@ -73,7 +73,7 @@ function recopilarMultimedias() {
 }
 
 // Función para publicar el hecho (actualizada para usar array de URLs)
-function publicarHecho() {
+function publicarHecho(isAdmin = false) {
     // Obtener valores del formulario
     const titulo = document.getElementById('titulo').value;
     const descripcion = document.getElementById('descripcion').value;
@@ -107,7 +107,7 @@ function publicarHecho() {
             longitud: longitud
         },
         fechaAcontecimiento: fechaAcontecimiento,
-        origen: 'CONTRIBUYENTE',
+        origen: isAdmin ? 'CARGA_MANUAL': 'CONTRIBUYENTE',
         contenidoTexto: contenidoTexto,
         contenidoMultimedia: urlsMultimedia,
         anonimato: anonimato
