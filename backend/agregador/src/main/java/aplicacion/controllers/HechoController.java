@@ -7,6 +7,8 @@ import aplicacion.dto.output.EtiquetaOutputDTO;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.excepciones.HechoNoEncontradoException;
+import aplicacion.excepciones.InvalidPageException;
+import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/agregador")
@@ -99,5 +102,13 @@ public class HechoController {
     public ResponseEntity<Void> cargarHechos() { // Endpoint para disparar la carga de hechos manualmente (si es necesario)
         cargarHechosScheduler.cargarHechos();
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/hechos/index")
+    public ResponseEntity<List<String>> autoCompletar(@RequestParam(name = "search") String currentSearch, @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit){
+        if(limit>100 || limit<0)
+            throw new TooHighLimitException(limit);
+        List<String> recomendaciones = hechoService.obtenerAutocompletado(currentSearch, limit);
+        return ResponseEntity.ok(recomendaciones);
     }
 }
