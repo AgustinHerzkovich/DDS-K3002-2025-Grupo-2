@@ -26,10 +26,10 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
 
     @Query(value = "SELECT * FROM hecho " +
             "WHERE MATCH(titulo, descripcion, contenido_texto) " +
-            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE) AND (hecho.visible > 0)",
             countQuery = "SELECT COUNT(*) FROM hecho " + // Corregido countQuery
                     "WHERE MATCH(titulo, descripcion, contenido_texto) " +
-                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
+                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE) AND (hecho.visible > 0)",
             nativeQuery = true)
     Page<Hecho> findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
 
@@ -44,6 +44,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
           AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento < :fechaAcontecimientoHasta)
           AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
           AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+             AND (h.visible = true )
     """)
     Page<Hecho> filtrarHechos(
             @Param("categoria") String categoria,
@@ -72,6 +73,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
            AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)
       )
+      AND (h.visible > 0)
     """,
             countQuery = """
     SELECT COUNT(*) FROM hecho h
@@ -88,6 +90,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
            AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)
       )
+      AND (h.visible > 0)
     """,
             nativeQuery = true)
     Page<Hecho> filtrarHechosPorTextoLibre(
@@ -116,6 +119,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:latitud IS NULL OR h.latitud = :latitud)
       AND (:longitud IS NULL OR h.longitud = :longitud)
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
+       AND (h.visible > 0)
    \s""",
             countQuery = """
     SELECT count(h.id) FROM hecho h
@@ -130,7 +134,8 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:latitud IS NULL OR h.latitud = :latitud)
       AND (:longitud IS NULL OR h.longitud = :longitud)
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
-    """,
+        AND (h.visible > 0)
+        """,
             nativeQuery = true)
     Page<Hecho> findByFiltrosYColeccionYTextoLibre(
             @Param("idColeccion") String idColeccion,
@@ -158,7 +163,8 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
       AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
       AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
-    """)
+        AND (h.visible = true)
+        """)
     Page<Hecho> findByFiltrosYColeccion(
             @Param("idColeccion") String idColeccion,
             @Param("categoria") String categoria,
@@ -186,6 +192,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
       AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
       AND hc.consensuado = true
+         AND (h.visible = true)
     """)
     Page<Hecho> findByFiltrosYColeccionCurados(
             @Param("idColeccion") String idColeccion,
@@ -214,6 +221,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:longitud IS NULL OR h.longitud = :longitud)
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
+        AND (h.visible > 0)
     """,
             countQuery = """
     SELECT count(h.id) FROM hecho h
@@ -228,6 +236,7 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
       AND (:longitud IS NULL OR h.longitud = :longitud)
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
+        AND (h.visible > 0)
     """,
             nativeQuery = true)
     Page<Hecho> findByFiltrosYColeccionYTextoLibreCurados(
