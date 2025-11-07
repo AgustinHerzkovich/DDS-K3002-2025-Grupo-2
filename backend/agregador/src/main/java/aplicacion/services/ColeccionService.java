@@ -185,4 +185,13 @@ public class ColeccionService {
 
         return coleccionOutputDto;
     }
+
+    public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
+        List<String> encontrados = currentSearch.length() >= 3 ? repositorioDeColecciones.findAutocompletado(currentSearch, limit) : repositorioDeColecciones.findAutocompletadoLike(currentSearch, limit);
+        if(encontrados.isEmpty() && currentSearch.length() >= 3){
+            return repositorioDeColecciones.findAutocompletadoLike(currentSearch, limit);
+        }
+        else
+            return encontrados;
+    }
 }

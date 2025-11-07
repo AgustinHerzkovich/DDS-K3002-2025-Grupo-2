@@ -7,6 +7,7 @@ import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
+import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import org.springframework.data.domain.Page;
@@ -164,5 +165,12 @@ public class ColeccionController {
         } catch (ColeccionNoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/colecciones/index")
+    public ResponseEntity<List<String>> autoCompletar(@RequestParam(name = "search") String currentSearch, @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit){
+        if(limit>100 || limit<0)
+            throw new TooHighLimitException(limit);
+        List<String> recomendaciones = coleccionService.obtenerAutocompletado(currentSearch, limit);
+        return ResponseEntity.ok(recomendaciones);
     }
 }

@@ -251,7 +251,10 @@ public class HechoService {
             repositorioDeHechos.save(hecho.get());
             return hechoOutputMapper.map(hecho.get());
         }
-        throw new EtiquetaNoEncontradaException("No se encontro la etiqeuta" + etiquetaName);
+        throw new EtiquetaNoEncontradaException("No se encontró la etiqueta" + etiquetaName);
+    }
 
+    public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
+        return currentSearch.length() >= 3 ? repositorioDeHechos.findAutocompletado(currentSearch, limit) : repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
     }
 }
