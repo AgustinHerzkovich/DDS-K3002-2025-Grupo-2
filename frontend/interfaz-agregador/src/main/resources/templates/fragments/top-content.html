@@ -46,6 +46,7 @@
 
                 if (!query) {
                     suggestionsContainer.innerHTML = "";
+                    suggestionsContainer.style.display = "none";
                     return;
                 }
 
@@ -59,7 +60,11 @@
                         const data = await response.json();
 
                         suggestionsContainer.innerHTML = "";
-                        if (data.length === 0) return;
+                        if (data.length === 0) {
+                            suggestionsContainer.style.display = "none";
+                            return;
+                        }
+                        suggestionsContainer.style.display = "block";
                         data.forEach(item => {
                             const li = document.createElement("li");
                             li.textContent = item;
@@ -67,6 +72,7 @@
                             li.onclick = () => {
                                 input.value = item;
                                 suggestionsContainer.innerHTML = "";
+                                handleSearch(new Event("submit")); // dispara la función de búsqueda
                             };
                             suggestionsContainer.appendChild(li);
                         });
