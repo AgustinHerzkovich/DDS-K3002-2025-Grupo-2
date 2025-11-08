@@ -1,6 +1,5 @@
 package aplicacion.controllers;
 
-import aplicacion.dto.output.FuenteOutputDTO;
 import aplicacion.services.ArchivoService;
 import aplicacion.services.AwsS3FileServerService;
 import org.springframework.http.ResponseEntity;
@@ -21,28 +20,26 @@ public class ArchivoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuenteOutputDTO>> getFuentesEstaticas(){
-        return ResponseEntity.ok(awsS3FileServerService.listarFuentes().stream().map(f -> new FuenteOutputDTO(f, awsS3FileServerService.listarArchivos("fuente" + f))).toList());
+    public ResponseEntity<List<String>> getFuentesEstaticas(){
+        return ResponseEntity.ok(awsS3FileServerService.listarFuentes());
     }
 
-    @PostMapping("/{id}/archivos/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url,
-                                                     @PathVariable("id") String id) {
+    @PostMapping("/archivos/por-url")
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url) {
         try {
             url = url.replaceAll("^\"|\"$", "");
-            archivoService.subirArchivoDesdeUrl(id, url);
+            archivoService.subirArchivoDesdeUrl(url);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
         }
         return ResponseEntity.ok("Archivo subido correctamente desde URL al FileServer");
     }
 
-    @PostMapping("/{id}/archivos")
-    public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files,
-                                                @PathVariable("id") String id) {
+    @PostMapping("/archivos")
+    public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files) {
         try {
             for (MultipartFile file : files) {
-                archivoService.subirArchivo(id, file);
+                archivoService.subirArchivo(file);
             }
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivos: " + e.getMessage());

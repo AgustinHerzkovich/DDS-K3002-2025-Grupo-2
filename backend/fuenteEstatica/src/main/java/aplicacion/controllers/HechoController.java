@@ -17,14 +17,14 @@ public class HechoController {
         this.archivoService = archivoService;
     }
 
-    @GetMapping("/{id}/hechos")
-    public List<HechoOutputDto> obtenerHechos(@PathVariable("id") String id,
+    @GetMapping("/{fuente}/hechos")
+    public List<HechoOutputDto> obtenerHechos(@PathVariable("fuente") String fuente,
                                               @RequestParam(value = "fechaMayorA", required = false)
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
         if (fechaMayorA == null) {
-            return archivoService.leerHechos(id);
+            return archivoService.leerHechos(fuente);
         } else {
-            return archivoService.leerHechosConFechaMayorA(id, fechaMayorA);
+            return archivoService.leerHechosConFechaMayorA(fuente, fechaMayorA);
         }
     }
 }

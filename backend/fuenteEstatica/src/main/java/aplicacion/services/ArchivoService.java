@@ -27,11 +27,11 @@ public class ArchivoService {
     }
 
     // Subir archivo al fileserver
-    public void subirArchivo(String fuenteId, MultipartFile file) throws Exception {
-        fileServerService.cargarArchivo("fuente" + fuenteId, file);
+    public void subirArchivo(MultipartFile file) throws Exception {
+        fileServerService.cargarArchivo(file);
     }
 
-    public void subirArchivoDesdeUrl(String fuenteId, String urlString) throws Exception {
+    public void subirArchivoDesdeUrl(String urlString) throws Exception {
         urlString = urlString.trim().replaceAll("^\"|\"$", "");
 
         URL url = new URL(urlString);
@@ -50,7 +50,6 @@ public class ArchivoService {
 
             // Subir a S3 usando FileServerService
             fileServerService.cargarArchivoDesdeInputStream(
-                    "fuente" + fuenteId,
                     new ByteArrayInputStream(data),
                     fileName,
                     "application/octet-stream"
@@ -62,24 +61,17 @@ public class ArchivoService {
         }
     }
 
-    public List<HechoOutputDto> leerHechosConFechaMayorA(String fuenteId, LocalDateTime fecha) {
-        return this.leerHechos(fuenteId).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
+    public List<HechoOutputDto> leerHechosConFechaMayorA(String fuente, LocalDateTime fecha) {
+        return this.leerHechos(fuente).stream().filter(hecho -> hecho.getFechaCarga().isAfter(fecha)).collect(Collectors.toList());
     }
 
-    // Leer todos los archivos y generar hechos
-    public List<HechoOutputDto> leerHechos(String fuenteId) {
+    // Leer la fuente y generar hechos
+    public List<HechoOutputDto> leerHechos(String fuente) {
         List<Hecho> hechos = new ArrayList<>();
-        String carpeta = "fuente" + fuenteId;
         try {
-            List<String> archivos = fileServerService.listarArchivos(carpeta);
-
-            for (String archivo : archivos) {
-                try (InputStream is = fileServerService.obtenerArchivo(carpeta, archivo)) {
-                    String extension = obtenerExtension(archivo);
-                    lectorParaExtension(extension)
-                            .ifPresent(lector -> hechos.addAll(lector.leerHechos(is)));
-                }
-            }
+            InputStream is = fileServerService.obtenerArchivo(fuente);
+            String extension = obtenerExtension(fuente);
+            lectorParaExtension(extension).ifPresent(lector -> hechos.addAll(lector.leerHechos(is)));
         } catch (Exception e) {
             throw new RuntimeException("Error leyendo archivos: " + e.getMessage());
         }

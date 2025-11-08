@@ -40,9 +40,14 @@ public class AwsS3FileServerService {
     }
 
     // Subir archivo desde MultipartFile
-    public void cargarArchivo(String carpeta, MultipartFile file) throws Exception {
+    public void cargarArchivo(MultipartFile file) throws Exception {
         crearBucketSiNoExiste();
-        String key = carpeta + "/" + file.getOriginalFilename();
+        String key = file.getOriginalFilename();
+
+        if (existeArchivo(key)) {
+            throw new IllegalStateException("Ya existe un archivo con el nombre: " + key);
+        }
+
         s3.putObject(PutObjectRequest.builder()
                         .bucket(bucketName)
                         .key(key)
@@ -53,85 +58,62 @@ public class AwsS3FileServerService {
     }
 
     // Subir archivo desde InputStream
-    public void cargarArchivoDesdeInputStream(String carpeta, InputStream inputStream,
+    public void cargarArchivoDesdeInputStream(InputStream inputStream,
                                               String nombreArchivo, String contentType) throws Exception {
         crearBucketSiNoExiste();
-        String key = carpeta + "/" + nombreArchivo;
+
+        if (existeArchivo(nombreArchivo)) {
+            throw new IllegalStateException("Ya existe un archivo con el nombre: " + nombreArchivo);
+        }
+
         s3.putObject(PutObjectRequest.builder()
                         .bucket(bucketName)
-                        .key(key)
+                        .key(nombreArchivo)
                         .contentType(contentType)
                         .build(),
                 RequestBody.fromInputStream(inputStream, inputStream.available()) // Usa available() para el tamaño, pero depende de que el mismo venga en el header de Content-Length
         );
     }
 
-    // Listar archivos en una "carpeta" (prefijo)
-    public List<String> listarArchivos(String carpeta) {
-        ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket(bucketName)
-                .prefix(carpeta + "/")
-                .build();
-
-        List<String> archivos = new ArrayList<>();
-        // Usa `listObjectsV2Paginator` para manejar la paginación automáticamente
-        s3.listObjectsV2Paginator(request).stream()
-                .flatMap(response -> response.contents().stream())
-                .map(S3Object::key)
-                .filter(key -> !key.endsWith("/")) // Excluye las "carpetas"
-                .forEach(key -> archivos.add(key.substring(carpeta.length() + 1)));
-
-        return archivos;
-    }
-
     // Obtener archivo como InputStream
-    public InputStream obtenerArchivo(String carpeta, String nombreArchivo) {
+    public InputStream obtenerArchivo(String nombreArchivo) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
-                .key(carpeta + "/" + nombreArchivo)
+                .key(nombreArchivo)
                 .build();
         return s3.getObject(getObjectRequest);
     }
 
-    // Mover archivo entre "carpetas"
-    public void moverArchivo(String carpetaOrigen, String nombreArchivo,
-                             String carpetaDestino, String nombreDestino) {
-        String sourceKey = carpetaOrigen + "/" + nombreArchivo;
-        String destKey = carpetaDestino + "/" + nombreDestino;
-
-        String copySource = bucketName + "/" + sourceKey;
-
-        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
-                .copySource(copySource)
-                .destinationBucket(bucketName)
-                .destinationKey(destKey)
-                .build();
-
-        s3.copyObject(copyRequest);
-
-        // Borra el objeto original
-        s3.deleteObject(DeleteObjectRequest.builder()
-                .bucket(bucketName)
-                .key(sourceKey)
-                .build()
-        );
-    }
     public List<String> listarFuentes() {
         List<String> fuentes = new ArrayList<>();
 
         ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket("fuentes-estaticas")
-                .delimiter("/")
+                .bucket(bucketName)
                 .build();
 
         s3.listObjectsV2Paginator(request)
                 .stream()
-                .flatMap(response -> response.commonPrefixes().stream())
-                .map(CommonPrefix::prefix)
-                .map(prefix -> prefix.replaceAll("/$", "")) // Quita la barra final
-                .map(fuente -> fuente.substring(6)) // Saca "fuente"
+                .flatMap(response -> response.contents().stream())
+                .map(S3Object::key)
+                .filter(key -> !key.endsWith("/")) // evita carpetas "vacías"
                 .forEach(fuentes::add);
 
         return fuentes;
+    }
+
+    // Verifica si un archivo ya existe en el bucket
+    private boolean existeArchivo(String key) {
+        try {
+            s3.headObject(HeadObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build());
+            return true; // Si no lanza excepción, el archivo existe
+        } catch (S3Exception e) {
+            if (e.statusCode() == 404) {
+                return false; // No existe
+            }
+            throw e; // Otro error (permisos, etc.)
+        }
     }
 }
