@@ -23,10 +23,10 @@ public interface RepositorioDeColecciones extends JpaRepository<Coleccion, Strin
 
     @Query(value = "SELECT * FROM coleccion " +
             "WHERE MATCH(titulo, descripcion) " +
-            "AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE)",
+            "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             countQuery = "SELECT COUNT(*) FROM coleccion " +
                     "WHERE MATCH(titulo, descripcion) " +
-                    "AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE)",
+                    "AGAINST(:textoLibre IN NATURAL LANGUAGE MODE)",
             nativeQuery = true)
     Page<Coleccion> findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
 
