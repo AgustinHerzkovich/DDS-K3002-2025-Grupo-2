@@ -9,7 +9,7 @@
 
     <body>
         <main>
-            <div th:replace="~{fragments/top-content :: searchBar}"></div>
+            <div th:replace="~{fragments/top-content :: searchBar()}"></div>
 
             <div class="colecciones-container">
                 <div th:each="coleccion : ${colecciones}"  class="coleccion-card">
