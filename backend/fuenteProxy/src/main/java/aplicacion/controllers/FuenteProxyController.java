@@ -43,7 +43,7 @@ public class FuenteProxyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuenteDisponibleOutputDto>> obtenerFuentesDisponibles(){
+    public ResponseEntity<List<String>> obtenerFuentesDisponibles(){
         return ResponseEntity.ok(fuenteProxyService.obtenerFuentesDisponibles());
     }
 }
