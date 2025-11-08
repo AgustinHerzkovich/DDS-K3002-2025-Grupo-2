@@ -60,7 +60,7 @@ public class FuenteProxyService {
         return fuenteProxyOutputMapper.map(fuenteProxy);
     }
 
-    public List<FuenteDisponibleOutputDto> obtenerFuentesDisponibles() {
-        return repositorioDeFuentesProxy.findAll().stream().map(fp -> new FuenteDisponibleOutputDto(fp.getId())).toList();
+    public List<String> obtenerFuentesDisponibles() {
+        return repositorioDeFuentesProxy.findAll().stream().map(fp -> fp.getId()).toList();
     }
 }
