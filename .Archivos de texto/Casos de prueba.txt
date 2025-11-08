@@ -242,7 +242,7 @@ POST http://localhost:8083/fuentesProxy -> body:
 Fuente metamapa:
 POST http://localhost:8083/fuentesProxy -> body:
 {
-  "url": "http://localhost:8074/agregador/hechos"
+  "url": "http://localhost:8074/agregador/hechosSinPaginar"
 }
 -> ver el uuid que genera
 
