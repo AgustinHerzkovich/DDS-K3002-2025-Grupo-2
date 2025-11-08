@@ -94,4 +94,12 @@ public class ColeccionController {
     public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
         return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
     }
+
+    @GetMapping("/colecciones/index")
+    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto, @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
+        UrlHelper.appendQueryParam(url, "search", texto);
+        UrlHelper.appendQueryParam(url, "limit", limite);
+        return solicitudesHttp.get(url.toString(), Object.class);
+    }
 }
