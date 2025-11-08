@@ -7,7 +7,7 @@
     <h1 class="text-5xl font-semibold text-white">METAMAPA</h1>
 </div>
 
-<div th:fragment="searchBar(tipo)">
+<div th:fragment="searchBar(tipo)"
     class="flex justify-center items-center w-full" th:data-tipo="${tipo}">
         <form class="relative w-full max-w-md" role="search" onsubmit="return handleSearch(event)">
             <input
