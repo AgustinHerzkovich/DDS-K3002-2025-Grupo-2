@@ -100,7 +100,9 @@
 
 <div th:fragment="botonCrearHecho" class="z-10">
     <!-- Script para pasar datos del usuario al JavaScript -->
-    <button class="hover:opacity-80 text-black" onClick="toggleModalHecho()">
+    <button class="bg-white text-black hover:bg-gray-100 hover:scale-105 transition-transform shadow-md rounded-full p-3 flex items-center justify-center"
+            onClick="toggleModalHecho()"
+            title="Crear nuevo hecho">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
@@ -135,14 +137,51 @@
                     <input type="text" class="form-control" id="categoria" placeholder="Ej: Desastre Natural, Tecnológico, etc." required>
                 </div>
 
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <label for="latitud" class="form-label">Latitud</label>
-                        <input type="number" step="any" class="form-control" id="latitud" placeholder="-34.603722" required>
+                <!-- Sección de Ubicación -->
+                <div class="mb-3 mt-3">
+                    <label class="form-label">Ubicación</label>
+
+                    <div class="form-check mb-2">
+                        <input type="checkbox" id="usarCoordenadas" class="form-check-input" onchange="toggleUbicacionInputs()">
+                        <label for="usarCoordenadas" class="form-check-label" style="color:black">
+                            Ingresar manualmente latitud y longitud
+                        </label>
                     </div>
-                    <div class="col-md-6">
-                        <label for="longitud" class="form-label">Longitud</label>
-                        <input type="number" step="any" class="form-control" id="longitud" placeholder="-58.381592" required>
+
+                    <!-- Campos de dirección -->
+                    <div id="direccionContainer" class="row g-2">
+                        <div class="col-md-6">
+                            <label for="pais" class="form-label">País</label>
+                            <input type="text" class="form-control" id="pais" placeholder="Ej: Argentina" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="provincia" class="form-label">Provincia</label>
+                            <input type="text" class="form-control" id="provincia" placeholder="Ej: Buenos Aires" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ciudad" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="ciudad" placeholder="Ej: La Plata" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="calle" class="form-label">Calle</label>
+                            <input type="text" class="form-control" id="calle" placeholder="Ej: Calle 7" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="altura" class="form-label">Altura</label>
+                            <input type="text" class="form-control" id="altura" placeholder="Ej: 1234" required>
+                        </div>
+                    </div>
+
+                    <!-- Campos de coordenadas -->
+                    <div id="coordenadasContainer" class="row g-2" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="latitud" class="form-label">Latitud</label>
+                            <input type="number" step="any" class="form-control" id="latitud" placeholder="-34.603722">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="longitud" class="form-label">Longitud</label>
+                            <input type="number" step="any" class="form-control" id="longitud" placeholder="-58.381592">
+                        </div>
                     </div>
                 </div>
 

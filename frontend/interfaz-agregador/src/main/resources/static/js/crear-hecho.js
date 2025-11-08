@@ -73,19 +73,69 @@ function recopilarMultimedias() {
 }
 
 // Función para publicar el hecho (actualizada para usar array de URLs)
-function publicarHecho(isAdmin = false) {
+async function publicarHecho(isAdmin = false) {
     // Obtener valores del formulario
     const titulo = document.getElementById('titulo').value;
     const descripcion = document.getElementById('descripcion').value;
     const categoria = document.getElementById('categoria').value;
-    const latitud = parseFloat(document.getElementById('latitud').value);
-    const longitud = parseFloat(document.getElementById('longitud').value);
+    const usarCoordenadas = document.getElementById('usarCoordenadas').checked;
+    let ubicacion = {};
+
+    if (usarCoordenadas) {
+        // Caso manual
+        const latitud = parseFloat(document.getElementById('latitud').value);
+        const longitud = parseFloat(document.getElementById('longitud').value);
+
+        if (isNaN(latitud) || isNaN(longitud)) {
+            alert('Debe ingresar latitud y longitud válidas.');
+            return;
+        }
+
+        ubicacion = { latitud, longitud };
+    } else {
+        // Caso dirección -> geocoding
+        const pais = document.getElementById('pais').value.trim();
+        const provincia = document.getElementById('provincia').value.trim();
+        const ciudad = document.getElementById('ciudad').value.trim();
+        const calle = document.getElementById('calle').value.trim();
+        const altura = document.getElementById('altura').value.trim();
+
+        if (!pais || !provincia || !ciudad || !calle || !altura) {
+            alert('Por favor complete todos los campos de dirección.');
+            return;
+        }
+
+        const direccionCompleta = `${calle} ${altura}, ${ciudad}, ${provincia}, ${pais}`;
+        console.log('Buscando coordenadas para:', direccionCompleta);
+
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`
+            );
+            const data = await response.json();
+
+            if (!data || data.length === 0) {
+                alert('No se pudo obtener la ubicación geográfica. Verifique la dirección ingresada.');
+                return;
+            }
+
+            const latitud = parseFloat(data[0].lat);
+            const longitud = parseFloat(data[0].lon);
+            ubicacion = { latitud, longitud };
+            console.log('Ubicación geocodificada:', ubicacion);
+
+        } catch (error) {
+            console.error('Error al obtener coordenadas:', error);
+            alert('Hubo un error al obtener la ubicación. Intente nuevamente.');
+            return;
+        }
+    }
+
     const fechaInput = document.getElementById('fecha').value;
     const contenidoTexto = document.getElementById('contenidoTexto').value;
     const anonimato = document.getElementById('anonimato').checked;
 
-    // Validar campos básicos
-    if (!titulo || !descripcion || !categoria || isNaN(latitud) || isNaN(longitud) || !fechaInput || !contenidoTexto) {
+    if (!titulo || !descripcion || !categoria || !ubicacion.latitud || !ubicacion.longitud || !fechaInput || !contenidoTexto) {
         alert('Por favor complete todos los campos obligatorios (*)');
         return;
     }
@@ -102,10 +152,7 @@ function publicarHecho(isAdmin = false) {
         categoria: {
             nombre: categoria
         },
-        ubicacion: {
-            latitud: latitud,
-            longitud: longitud
-        },
+        ubicacion,
         fechaAcontecimiento: fechaAcontecimiento,
         origen: isAdmin ? 'CARGA_MANUAL': 'CONTRIBUYENTE',
         contenidoTexto: contenidoTexto,
@@ -147,6 +194,43 @@ function publicarHecho(isAdmin = false) {
             console.error('Error:', error);
             alert('Error al publicar el hecho.\nDetalle: ' + error.message);
         });
+}
+
+// Mostrar u ocultar inputs según el modo de ubicación
+function toggleUbicacionInputs() {
+  const usarCoordenadas = document.getElementById("usarCoordenadas").checked;
+  const direccionContainer = document.getElementById("direccionContainer");
+  const coordenadasContainer = document.getElementById("coordenadasContainer");
+
+  if (usarCoordenadas) {
+    direccionContainer.style.display = "none";
+    coordenadasContainer.style.display = "flex";
+
+    // Hacer requeridas las coordenadas
+    document.getElementById("latitud").required = true;
+    document.getElementById("longitud").required = true;
+
+    // Quitar required de dirección
+    document.getElementById("pais").required = false;
+    document.getElementById("provincia").required = false;
+    document.getElementById("ciudad").required = false;
+    document.getElementById("calle").required = false;
+    document.getElementById("altura").required = false;
+  } else {
+    direccionContainer.style.display = "flex";
+    coordenadasContainer.style.display = "none";
+
+    // Hacer requeridos los campos de dirección
+    document.getElementById("pais").required = true;
+    document.getElementById("provincia").required = true;
+    document.getElementById("ciudad").required = true;
+    document.getElementById("calle").required = true;
+    document.getElementById("altura").required = true;
+
+    // Quitar required de coordenadas
+    document.getElementById("latitud").required = false;
+    document.getElementById("longitud").required = false;
+  }
 }
 
 // Función para limpiar el formulario
