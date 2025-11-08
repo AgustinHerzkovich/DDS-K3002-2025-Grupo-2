@@ -24,6 +24,7 @@
         <module>apiPublica</module>
         <module>apiAdministrativa</module>
         <module>dashboard</module>
+        <module>EurekaServer</module>
     </modules>
 
     <dependencies>
