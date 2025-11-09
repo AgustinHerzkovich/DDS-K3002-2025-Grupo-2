@@ -39,6 +39,16 @@
 
 <!-- Script para el menú de perfil -->
 <div th:replace="~{fragments/button :: profileScript}"></div>
-
-</body>
+<!-- Agregar antes del cierre del body -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.autorData = {
+        id: [[${userId}]],
+        email: [[${email}]],
+        nombre: [[${firstName}]],
+        apellido: [[${lastName}]]
+    };
+    console.log('Datos del autor:', window.autorData);
+    /*]]>*/
+</script>
 </html>

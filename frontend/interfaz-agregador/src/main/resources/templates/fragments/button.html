@@ -116,7 +116,7 @@
             </div>
             <div class="bg-white p-4 rounded-md shadow-md flex flex-col gap-2">
                 <button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
-                <button type="button" class="btn btn-danger-hecho" onclick="publicarHecho()">Publicar</button>
+                <button type="button" class="btn btn-danger-hecho" th:onclick="|publicarHecho(${isAdmin})|">Publicar</button>
             </div>
         </div>
 

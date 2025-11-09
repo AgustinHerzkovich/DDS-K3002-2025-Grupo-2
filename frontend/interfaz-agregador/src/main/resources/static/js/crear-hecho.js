@@ -73,8 +73,9 @@ function recopilarMultimedias() {
 }
 
 // Función para publicar el hecho (actualizada para usar array de URLs)
-async function publicarHecho(isAdmin = false) {
+async function publicarHecho(isAdmin=false) {
     // Obtener valores del formulario
+    console.log(isAdmin);
     const titulo = document.getElementById('titulo').value;
     const descripcion = document.getElementById('descripcion').value;
     const categoria = document.getElementById('categoria').value;
@@ -161,15 +162,16 @@ async function publicarHecho(isAdmin = false) {
     };
 
 
+    // console.log("anonimato:", anonimato);
+    // console.log("window.autorData:", window.autorData);
     if (!anonimato && window.autorData) {
-
-        hecho.autor = { id: window.autorData.id };
+        console.log("id es:", window.autorData.id);
+        hecho.contribuyenteId = window.autorData.id;
     }
 
     console.log('Hecho a publicar:', hecho);
     console.log('JSON del hecho:', JSON.stringify(hecho, null, 2));
-
-    const endpoint = isAdmin ? 'http://localhost:8086/apiAdministrativa/hechos' : 'http://localhost:8082/fuenteDinamica/hechos';
+    const endpoint = isAdmin ? 'http://localhost:8086/apiAdministrativa/hechos' : 'http://localhost:8082/fuentesDinamicas/hechos';
 
     // Enviar al backend
     fetch(endpoint, {

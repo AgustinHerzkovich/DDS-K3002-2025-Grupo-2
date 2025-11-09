@@ -3,6 +3,8 @@ package aplicacion.config;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.services.ContribuyenteService;
 import aplicacion.services.UsuarioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
@@ -15,7 +17,7 @@ import java.util.Collection;
 public class GlobalModelAttributes {
 
     private final ContribuyenteService contribuyenteService;
-
+    private static final Logger log = LoggerFactory.getLogger(GlobalModelAttributes.class);
     public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
         this.contribuyenteService = contribuyenteService;
     }
@@ -58,6 +60,9 @@ public class GlobalModelAttributes {
             model.addAttribute("lastName", null);
             model.addAttribute("birthDate", null);
         }
+        log.info("Global model attributes set: isLoggedIn=" + model.getAttribute("isLoggedIn") +
+                ", isAdmin=" + model.getAttribute("isAdmin") +
+                ", userId=" + model.getAttribute("userId"));
     }
 }
 
