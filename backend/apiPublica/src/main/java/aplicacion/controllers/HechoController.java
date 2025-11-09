@@ -23,11 +23,6 @@ public class HechoController {
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
-    @PostMapping("/hechos")
-    public ResponseEntity<Object> reportarHecho(@RequestBody Object body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/hechos", body, Object.class);
-    }
-
     @GetMapping("/hechos")
     public ResponseEntity<Object> obtenerHechos(
             @RequestParam(name = "categoria", required = false) String categoria,

@@ -169,8 +169,10 @@ async function publicarHecho(isAdmin = false) {
     console.log('Hecho a publicar:', hecho);
     console.log('JSON del hecho:', JSON.stringify(hecho, null, 2));
 
+    const endpoint = isAdmin ? 'http://localhost:8086/apiAdministrativa/hechos' : 'http://localhost:8082/fuenteDinamica/hechos';
+
     // Enviar al backend
-    fetch('http://localhost:8085/apiPublica/hechos', {
+    fetch(endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
