@@ -20,6 +20,163 @@ function toggleModalHecho() {
         limpiarFormulario();
     }
 }
+async function verMisHechos(isAdmin=false) {
+    try {
+        const autorId = window.autorData.id;
+        const endpoint = isAdmin ?
+            `http://localhost:8086/apiAdministrativa/contribuyentes/${autorId}/hechos` :
+            `http://localhost:8082/fuentesDinamicas/contribuyentes/${autorId}/hechos`;
+        const response = await fetch(endpoint);
+        const hechos = await response.json();
+
+        const contenido = `
+            <div class="modal fade" id="misHechosModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Mis Hechos</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="list-group">
+                                ${hechos.map(hecho => `
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>${hecho.titulo}</h6>
+                                            <button onclick="editarHecho(${JSON.stringify(hecho).replace(/"/g, '&quot;')})" 
+                                                    class="btn btn-primary btn-sm">
+                                                Editar
+                                            </button>
+                                        </div>
+                                        <p>${hecho.descripcion}</p>
+                                        <small>Fecha: ${new Date(hecho.fechaAcontecimiento).toLocaleDateString()}</small>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', contenido);
+        const modal = new bootstrap.Modal(document.getElementById('misHechosModal'));
+        modal.show();
+
+        document.getElementById('misHechosModal').addEventListener('hidden.bs.modal', function() {
+            this.remove();
+        });
+
+    } catch (error) {
+        console.error('Error al obtener los hechos:', error);
+        alert('Error al cargar los hechos');
+    }
+}
+
+function editarHecho(hecho) {
+    // Cerrar el modal de mis hechos
+    const misHechosModal = bootstrap.Modal.getInstance(document.getElementById('misHechosModal'));
+    misHechosModal.hide();
+
+    // Abrir el modal de crear/editar hecho
+    toggleModalHecho();
+
+    // Rellenar el formulario con los datos del hecho
+    document.getElementById('titulo').value = hecho.titulo;
+    document.getElementById('descripcion').value = hecho.descripcion;
+    document.getElementById('categoria').value = hecho.categoria.nombre;
+    document.getElementById('contenidoTexto').value = hecho.contenidoTexto;
+    document.getElementById('fecha').value = hecho.fechaAcontecimiento.slice(0, 16);
+    document.getElementById('anonimato').checked = hecho.anonimato;
+
+    // Coordenadas
+    document.getElementById('usarCoordenadas').checked = true;
+    toggleUbicacionInputs();
+    document.getElementById('latitud').value = hecho.ubicacion.latitud;
+    document.getElementById('longitud').value = hecho.ubicacion.longitud;
+
+    // Multimedias
+    if (hecho.contenidoMultimedia && hecho.contenidoMultimedia.length > 0) {
+        hecho.contenidoMultimedia.forEach(url => {
+            multimediaCount++;
+            const container = document.getElementById('multimediaContainer');
+            const multimediaDiv = document.createElement('div');
+            multimediaDiv.className = 'multimedia-item flex items-center gap-2';
+            multimediaDiv.id = `multimedia-${multimediaCount}`;
+            multimediaDiv.innerHTML = `
+                <input type="text" style="color:black"
+                       class="form-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
+                       id="url-${multimediaCount}"
+                       value="${url}" required>
+                <button type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200" 
+                        onclick="eliminarMultimedia(${multimediaCount})">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" 
+                         stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            container.appendChild(multimediaDiv);
+        });
+    }
+
+    // Cambiar el botón de "Publicar" a "Guardar Edición"
+    const botonPublicar = document.querySelector('button[onclick="publicarHecho(false)"]');
+    botonPublicar.textContent = 'Guardar Edición';
+    botonPublicar.onclick = () => guardarEdicion(hecho.id);
+}
+
+async function guardarEdicion(hechoId) {
+    // Obtener todos los valores del formulario igual que en publicarHecho
+    const titulo = document.getElementById('titulo').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const categoria = document.getElementById('categoria').value;
+    const contenidoTexto = document.getElementById('contenidoTexto').value;
+    const fechaInput = document.getElementById('fecha').value;
+    const anonimato = document.getElementById('anonimato').checked;
+    const urlsMultimedia = recopilarMultimedias();
+
+    let ubicacion = {};
+    if (document.getElementById('usarCoordenadas').checked) {
+        ubicacion = {
+            latitud: parseFloat(document.getElementById('latitud').value),
+            longitud: parseFloat(document.getElementById('longitud').value)
+        };
+    }
+
+    const hechoEditado = {
+        titulo,
+        descripcion,
+        categoria: { nombre: categoria },
+        ubicacion,
+        fechaAcontecimiento: fechaInput + ':00',
+        contenidoTexto,
+        contenidoMultimedia: urlsMultimedia,
+        anonimato
+    };
+
+
+    try {
+        const response = await fetch(`http://localhost:8082/fuentesDinamicas/hechos/${hechoId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(hechoEditado)
+        });
+
+        if (response.ok) {
+            alert('Hecho actualizado exitosamente');
+            toggleModalHecho();
+            location.reload();
+        } else {
+            throw new Error('Error al actualizar el hecho');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al actualizar el hecho');
+    }
+}
 
 
 // Función para agregar un nuevo campo de URL de multimedia
