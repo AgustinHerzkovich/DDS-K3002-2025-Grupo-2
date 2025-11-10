@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,17 +25,27 @@ public class FuenteEstatica extends Fuente {
         this.fueConsultada = false;
     }
 
+    public FuenteEstatica(String fuenteId, String serviceId) {
+        super(fuenteId, serviceId);
+        this.fueConsultada = false;
+    }
+
     @Override
-    public List<HechoInputDto> getHechosUltimaPeticion(String url) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
         if (this.fueConsultada) {
             return new ArrayList<>();
         }
         this.fueConsultada = true;
-        return super.getHechosUltimaPeticion(url);
+        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
     }
 
     @Override
     public String pathIntermedio() {
         return "fuentesEstaticas/" + this.getId();
+    }
+
+    @Override
+    protected String hechosPathParam() {
+        return "fuentesEstaticas/" + this.getId() + "/hechos";
     }
 }

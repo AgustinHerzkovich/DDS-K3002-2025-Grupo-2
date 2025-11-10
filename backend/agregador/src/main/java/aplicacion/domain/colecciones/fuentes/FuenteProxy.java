@@ -1,10 +1,10 @@
 package aplicacion.domain.colecciones.fuentes;
 
-import aplicacion.domain.conexiones.Conexion;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
 @Entity
 @NoArgsConstructor
@@ -24,15 +24,23 @@ public class FuenteProxy extends Fuente {
         return "fuentesProxy/" + this.getId();
     }
 
-    public String resolverUrlProxy(DiscoveryClient discoveryClient) {
-        String targetService = "cargador-fuente-proxy";
 
-        ServiceInstance instance = discoveryClient.getInstances(targetService).stream()
-                .filter(i -> i.getInstanceId().equals(instanceID))
+
+    @Override
+    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+        return discoveryClient.getInstances(this.getNombreServicio()).stream()
+                .filter(instance -> instance.getInstanceId().equals(instanceID))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException(
-                        "No se encontró la instancia del proxy con id " + instanceID));
-
-        return instance.getUri() + "/" + this.pathIntermedio() + "/hechos";
+                        "No se encontró la instancia " + instanceID + " para el servicio " + this.getNombreServicio()
+                ))
+                .getUri()
+                .toString();
     }
+
+    @Override
+    protected String hechosPathParam() {
+        return "fuentesProxy/" + this.getId() + "/hechos";
+    }
+
 }

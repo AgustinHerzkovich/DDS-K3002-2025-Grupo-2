@@ -10,10 +10,18 @@ public class FuenteDinamica extends Fuente {
     public FuenteDinamica(String id) {
         super(id);
     }
+    public FuenteDinamica(String id, String serviceName) {
+        super(id, serviceName);
+    }
 
 
     @Override
     public String pathIntermedio() {
         return "fuentesDinamicas";
+    }
+
+    @Override
+    protected String hechosPathParam() {
+        return "fuentesDinamicas/" + this.getId() + "/hechos";
     }
 }

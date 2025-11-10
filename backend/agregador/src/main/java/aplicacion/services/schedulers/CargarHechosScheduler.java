@@ -19,6 +19,7 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
@@ -47,7 +48,7 @@ public class CargarHechosScheduler {
         this.discoveryClient = discoveryClient;
     }
 
-    @Scheduled(initialDelay = 1000L,fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Scheduled(initialDelay = 60000L,fixedRate = 3600000) // Se ejecuta cada 1 hora
     @Transactional
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
@@ -55,9 +56,13 @@ public class CargarHechosScheduler {
         List<ServiceInstance> proxyInstances = discoveryClient.getInstances("fuenteProxy");
         List<ServiceInstance> estaticaInstances = discoveryClient.getInstances("fuenteEstatica");
         List<ServiceInstance> dinamicaInstances = discoveryClient.getInstances("fuenteDinamica");
+        List<ServiceInstance> services = new ArrayList<>();
+        services.addAll(proxyInstances);
+        services.addAll(estaticaInstances);
+        services.addAll(dinamicaInstances);
         // A cada instancia le pedimos las fuentes
         // URI = http://ipServicio:puertoServicio/(tipoDeFuente)
-        List<String> proxyURIs = proxyInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesProxy").toList();
+        /*List<String> proxyURIs = proxyInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesProxy").toList();
         List<String> estaticaURIS = estaticaInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesEstaticas").toList();
         List<String> dinamicaURIS = dinamicaInstances.stream().map(ServiceInstance::getUri).map(s->s.toString() + "/fuentesDinamicas").toList();
         List<String> allUris = new ArrayList<>();
@@ -68,34 +73,47 @@ public class CargarHechosScheduler {
         // Asociamos temporalmente las fuentes a las instancias halladas
         Map<Fuente, String> URIxFuente = new HashMap<>();
         System.out.println("Instancias: " + allUris.size());
-        System.out.println(allUris.getFirst().toString());
+        if(allUris.isEmpty()){
+            return;
+        }
+        System.out.println(allUris.getFirst().toString());*/
+        //Map<Fuente, String> URIxFuente = new HashMap<>();
         RestTemplate restTemplate = new RestTemplate();
-        for(String uri : allUris) {
+        for(ServiceInstance instance : services) {
+            String serviceName = switch (instance.getServiceId()) {
+                case "fuenteProxy" -> "/fuentesProxy";
+                case "FUENTEESTATICA" -> "/fuentesEstaticas";
+                case "fuenteDinamica" -> "/fuentesDinamicas";
+                default -> throw new RuntimeException("ServiceId desconocido: " + instance.getServiceId());
+            };
+
+            String uri = instance.getUri().toString() + serviceName;
+
             List<String> fuentesIds = List.of(Objects.requireNonNull(restTemplate.getForEntity(uri, String[].class).getBody()));
             System.out.println(fuentesIds);
             fuentesIds.forEach(fuenteId->{
-                Fuente fuente;
-                try{
-                    fuente = fuenteService.obtenerFuentePorId(fuenteId);
-                } catch (FuenteNoEncontradaException e) {
-                    Fuente fuenteCreada;
-                    if(uri.endsWith("Proxy")){
-                        fuenteCreada = new FuenteProxy(fuenteId);
+
+                        try{
+                            fuenteService.obtenerFuentePorId(fuenteId);
+                        } catch (FuenteNoEncontradaException e) {
+                            Fuente fuente;
+                            if(uri.endsWith("Proxy")){
+                                fuente = new FuenteProxy(fuenteId, instance.getServiceId(), instance.getInstanceId());
+                            }
+                            else if (uri.endsWith("Estaticas")){
+                                fuente = new FuenteEstatica(fuenteId, instance.getServiceId());
+                            }
+                            else if (uri.endsWith("Dinamicas")){
+                                fuente = new FuenteDinamica(fuenteId, instance.getServiceId());
+                            }
+                            else{
+                                throw new RuntimeException("Anduvo mal lo de reconcocer la fuente");
+                            }
+                            // Persistimos las fuentes que no esten guardadas
+                            fuenteService.guardarFuente(fuente);
+                        }
+                        //URIxFuente.put(fuente, uri + "/" + fuenteId);
                     }
-                    else if (uri.endsWith("Estaticas")){
-                        fuenteCreada = new FuenteEstatica(fuenteId);
-                    }
-                    else if (uri.endsWith("Dinamicas")){
-                        fuenteCreada = new FuenteDinamica(fuenteId);
-                    }
-                    else{
-                        throw new RuntimeException("Anduvo mal lo de reconcocer la fuente");
-                    }
-                    // Persistimos las fuentes que no esten guardadas
-                    fuente = fuenteService.guardarFuente(fuenteCreada);
-                }
-                URIxFuente.put(fuente, uri + "/" + fuenteId);
-            }
             );
         }
 
@@ -104,23 +122,26 @@ public class CargarHechosScheduler {
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         Set<Fuente> fuenteSet = new HashSet<>();
         if(hechosSeCarganSoloSiEstanEnUnaColeccion){
+            System.out.println("esta en coleccion");
             for (Coleccion coleccion : colecciones){
                 fuenteSet.addAll(coleccion.getFuentes());
             }
         }else{
+            System.out.println("no estsa en coleccion");
             fuenteSet.addAll(fuenteService.obtenerTodasLasFuentes());
         }
 
-        Map<Fuente, String> fuentesRelevantesMap = new HashMap<>();
+        //Map<Fuente, String> fuentesRelevantesMap = new HashMap<>();
 
-        for(Fuente fuenteRelevante : fuenteSet){
+        /*for(Fuente fuenteRelevante : fuenteSet){
             fuentesRelevantesMap.put(fuenteRelevante, URIxFuente.get(fuenteRelevante));
-        }
-        System.out.println("Se pediran hechos de  " + fuentesRelevantesMap.size() + " fuentes");
+        }*/
+        System.out.println("Se pediran hechos de " + fuenteSet.size() + " fuentes");
 
 
         // Pedimos los hechos a cada fuente
-        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuentesRelevantesMap);
+        Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet);
+        System.out.println("luego de pedir hechos");
 
 
         normalizadorDeHechos.normalizarTodos(hechosPorFuente);

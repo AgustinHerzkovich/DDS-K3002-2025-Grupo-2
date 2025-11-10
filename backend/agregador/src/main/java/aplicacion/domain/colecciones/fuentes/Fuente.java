@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +36,8 @@ public abstract class Fuente {
     private String id;
     private String alias;
     private LocalDateTime ultimaPeticion;
+    private String nombreServicio;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "hecho_fuente",
@@ -48,6 +51,7 @@ public abstract class Fuente {
         this.id = id;
         this.ultimaPeticion = null;
         this.alias = "Fuente sin título";
+        this.nombreServicio = nombreServicio;
     }
 
     public Fuente(String id) {
@@ -55,19 +59,20 @@ public abstract class Fuente {
         this.ultimaPeticion = null;
         this.alias = "Fuente sin título";
     }
-    public Fuente(String id, String nombreServicio, String instanceID){
-        this.id = id;
-        this.ultimaPeticion = null;
-        this.alias = "Fuente sin titulo";
-    }
 
-    public List<HechoInputDto> getHechosUltimaPeticion(String url) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+
+        System.out.print("hola en getHechosUltimaPeticion");
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+
         LocalDateTime fechaAnterior = this.getUltimaPeticion();
         List<HechoInputDto> hechos = new ArrayList<>();
+
+        String url = obtenerURL(discoveryClient, loadBalancerClient);
+
 
         if (fechaAnterior != null) {
             url += "?fechaMayorA=" + fechaAnterior;
@@ -80,7 +85,8 @@ public abstract class Fuente {
         try {
             ResponseEntity<String> response;
             String json;
-            response = restTemplate.getForEntity(url + "/hechos", String.class);
+            System.out.println(url);
+            response = restTemplate.getForEntity(url, String.class);
             json = response.getBody();
             hechos = mapper.readValue(json, new TypeReference<>() {});
             System.out.println("Se recibieron correctamente los hechos de la fuente " + this.getId() + " " + this.getAlias());
@@ -101,4 +107,11 @@ public abstract class Fuente {
     public void eliminarTodosLosHechos() {
         this.hechos.clear();
     }
+
+    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+
+        return loadBalancerClient.choose(nombreServicio).getUri().toString() + hechosPathParam();
+
+    }
+    protected abstract String hechosPathParam();
 }
