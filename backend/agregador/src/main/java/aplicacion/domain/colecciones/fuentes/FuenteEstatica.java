@@ -17,8 +17,8 @@ import java.util.List;
 public class FuenteEstatica extends Fuente {
     private Boolean fueConsultada;
 
-    public FuenteEstatica(String id, Conexion conexion) {
-        super(id, conexion);
+    public FuenteEstatica(String id, String nombreServicio) {
+        super(id, nombreServicio);
         this.fueConsultada = false;
     }
 

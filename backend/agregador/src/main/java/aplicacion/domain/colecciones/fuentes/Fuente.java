@@ -12,6 +12,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,45 +28,63 @@ import java.util.List;
 @EqualsAndHashCode
 @Getter
 @Setter
-public abstract class Fuente{
+public abstract class Fuente {
+
     @Id
     private String id;
     private String alias;
     private LocalDateTime ultimaPeticion;
-    @ManyToOne // Una conexion puede dar lugar a multiples fuentes
-    private Conexion conexion;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "hecho_fuente", joinColumns = @JoinColumn(name = "fuente_id"), inverseJoinColumns = @JoinColumn(name = "hecho_id"))
-    private List<Hecho> hechos;
 
-    public Fuente(String id, Conexion conexion) {
-        this.id = id;
-        this.ultimaPeticion = null; // Arranca en null para que si es la primera petición, traer todos los hechos
-        this.conexion = conexion;
-        this.hechos = new ArrayList<>();
-        this.alias = "Fuente sin titulo";
-    }
-    public Fuente(String id){
+    private String nombreServicio;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "hecho_fuente",
+            joinColumns = @JoinColumn(name = "fuente_id"),
+            inverseJoinColumns = @JoinColumn(name = "hecho_id"))
+    private List<Hecho> hechos = new ArrayList<>();
+
+    @Autowired
+    @Qualifier("eurekaRestTemplate")
+    private RestTemplate eurekaRestTemplate;
+
+    @Autowired
+    @Qualifier("plainRestTemplate")
+    private RestTemplate plainRestTemplate;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    public Fuente(String id, String nombreServicio) {
         this.id = id;
         this.ultimaPeticion = null;
-        this.hechos = new ArrayList<>();
+        this.nombreServicio = nombreServicio;
+        this.alias = "Fuente sin título";
+    }
+
+    public Fuente(String id) {
+        this.id = id;
+        this.ultimaPeticion = null;
+        this.alias = "Fuente sin título";
+    }
+    public Fuente(String id, String nombreServicio, String instanceID){
+        this.id = id;
+        this.ultimaPeticion = null;
+        this.nombreServicio = nombreServicio;
         this.alias = "Fuente sin titulo";
     }
 
     public List<HechoInputDto> getHechosUltimaPeticion() {
-        ObjectMapper mapper = new ObjectMapper(); // Creo un object mapper para mappear el resultado del json a un objeto Hecho
+        ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        RestTemplate restTemplate = new RestTemplate();
 
-        LocalDateTime fecha = this.getUltimaPeticion();
+        LocalDateTime fechaAnterior = this.getUltimaPeticion();
         List<HechoInputDto> hechos = new ArrayList<>();
-
         String url = this.getUrl();
-        if (this.getUltimaPeticion() != null) {
-            url += "?fechaMayorA=" + this.getUltimaPeticion();
-        }
 
+        if (fechaAnterior != null) {
+            url += "?fechaMayorA=" + fechaAnterior;
+        }
 
         this.setUltimaPeticion(LocalDateTime.now());
 
@@ -71,29 +92,36 @@ public abstract class Fuente{
             ResponseEntity<String> response;
             String json;
 
-            response = restTemplate.getForEntity(url, String.class);
-            json = response.getBody();
-            hechos = mapper.readValue(json, new TypeReference<>() {
-            });
+            if (this instanceof FuenteProxy proxy) {
+                // 🔸 FuenteProxy → instancia específica vía DiscoveryClient
+                String resolvedUrl = proxy.resolverUrlProxy(discoveryClient);
+                response = plainRestTemplate.getForEntity(resolvedUrl, String.class);
+            } else {
+                // 🔸 FuenteEstatica o FuenteDinamica → Eureka (service discovery)
+                response = eurekaRestTemplate.getForEntity(url, String.class);
+            }
 
+            json = response.getBody();
+            hechos = mapper.readValue(json, new TypeReference<>() {});
         } catch (Exception e) {
-            this.setUltimaPeticion(fecha); // Si hubo un error, no actualizo la fecha de la ultima peticion
-            System.err.println("Error al consumir la API en " + this.getId() + ": " + e.getMessage());
+            this.setUltimaPeticion(fechaAnterior); // rollback si falla
+            System.err.println("⚠️ Error al consumir la API en fuente " + this.getId() + ": " + e.getMessage());
         }
 
         return hechos;
     }
 
     private String getUrl() {
-        return conexion.construirURI() + "/" + this.pathIntermedio() + "/hechos";
+        return "http://" + nombreServicio + "/" + this.pathIntermedio() + "/hechos";
     }
 
     public abstract String pathIntermedio();
 
-    public void agregarHechos(List<Hecho> hechosAAgregar){
-        hechos.addAll(hechosAAgregar);
+    public void agregarHechos(List<Hecho> hechosAAgregar) {
+        this.hechos.addAll(hechosAAgregar);
     }
-    public void eliminarTodosLosHechos(){
-        hechos.clear();
+
+    public void eliminarTodosLosHechos() {
+        this.hechos.clear();
     }
 }

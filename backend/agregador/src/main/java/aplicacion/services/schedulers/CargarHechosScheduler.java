@@ -43,7 +43,7 @@ public class CargarHechosScheduler {
         this.descubrirFuentesService = descubrirFuentesService;
     }
 
-    @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    @Scheduled(initialDelay = 30000L,fixedRate = 3600000) // Se ejecuta cada 1 hora
     @Transactional
     public void cargarHechos() {
 
