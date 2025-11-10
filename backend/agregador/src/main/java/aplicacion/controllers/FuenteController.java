@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/agregador")
+@RestController
+@RequestMapping("/agregador")
 public class FuenteController {
     private final FuenteService fuenteService;
     private final FuenteOutputMapper fuenteOutputMapper = new FuenteOutputMapper();
@@ -21,7 +22,7 @@ public class FuenteController {
     }
 
     @GetMapping("/fuentes")
-    public ResponseEntity<Page<FuenteOutputDto>> getFuentes(@RequestParam(value = "tipo", required = false) String tipoFuente, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit){
+    public ResponseEntity<Page<FuenteOutputDto>> getFuentes(@RequestParam(value = "tipo", required = false) String tipoFuente, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit){
         InvalidPageException.validate(page, limit);
         return ResponseEntity.ok(fuenteService.findByTipo(page, limit, tipoFuente).map(fuenteOutputMapper::map));
     }

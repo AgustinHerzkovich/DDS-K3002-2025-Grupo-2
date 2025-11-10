@@ -11,8 +11,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class FuenteDinamicaAplicacion {
-  @Value("${interfaz.fuente.dinamica.port}")
-  private Integer interfazFuenteDinamicaPort;
+  @Value("8094")
+  private Integer interfazAgregadorPort;
 
   public static void main(String[] args) {
     SpringApplication.run(FuenteDinamicaAplicacion.class, args);
@@ -23,7 +23,7 @@ public class FuenteDinamicaAplicacion {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:"+interfazFuenteDinamicaPort).allowedMethods("*").allowedHeaders("*"); //establece que front puede hacer peticiones al back, donde puede definir los metodos y headers permitidos
+        registry.addMapping("/**").allowedOrigins("http://localhost:"+interfazAgregadorPort).allowedMethods("*").allowedHeaders("*"); //establece que front puede hacer peticiones al back, donde puede definir los metodos y headers permitidos
       }
     };
   }

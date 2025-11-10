@@ -1,11 +1,15 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import domain.helpers.UrlHelper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/apiPublica")
@@ -13,6 +17,7 @@ public class ColeccionController {
     private ConfigService configService;
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
+    private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public ColeccionController(ConfigService configService) {
         this.configService = configService;
@@ -93,5 +98,20 @@ public class ColeccionController {
     @GetMapping("/colecciones/{id}")
     public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
         return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
+    }
+
+    @GetMapping("/colecciones/index")
+    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto, @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/index");
+        UrlHelper.appendQueryParam(url, "search", texto);
+        UrlHelper.appendQueryParam(url, "limit", limite);
+        String key = texto + "|" + limite;
+        ResponseEntity<Object> rta = cache.getIfPresent(key);
+        if(rta == null){
+            ResponseEntity<Object> respuesta = solicitudesHttp.get(url.toString(), Object.class);
+            cache.put(key, respuesta);
+            return respuesta;
+        }
+        return rta;
     }
 }
