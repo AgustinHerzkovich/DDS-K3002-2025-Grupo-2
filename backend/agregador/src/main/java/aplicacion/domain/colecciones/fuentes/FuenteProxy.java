@@ -11,10 +11,6 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 public class FuenteProxy extends Fuente {
     private String instanceID;
 
-    public FuenteProxy(String id, String nombreServicio) {
-        super(id, nombreServicio);
-    }
-
     public FuenteProxy(String id) {
         super(id);
     }

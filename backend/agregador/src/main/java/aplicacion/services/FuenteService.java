@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.*;
 
 @Service
@@ -60,15 +61,6 @@ public class FuenteService {
      * Si no existe, la crea
      * */
 
-    @Transactional
-    public Fuente guardarOActualizarConexion(Fuente fuente) {
-        Optional<Fuente> optFuente = repositorioDeFuentes.findById(fuente.getId());
-        if(optFuente.isEmpty())
-            return repositorioDeFuentes.save(fuente);
-        optFuente.get().setConexion(fuente.getConexion());
-        return repositorioDeFuentes.save(optFuente.get());
-
-    }
 
     // Busca si una fuente ya existe segun su id. Si no existe la guarda y la devuelve, si ya existe la devuelve.
     @Transactional
@@ -94,12 +86,12 @@ public class FuenteService {
     }
 
     @Transactional
-    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(List<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
+    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Map<Fuente, String> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
 
-        for (Fuente fuente : fuentes) {
+        for (Fuente fuente : fuentes.keySet()) {
             //List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
-            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion();
+            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(fuentes.get(fuente));
 
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
