@@ -111,4 +111,9 @@ public class HechoController {
         List<String> recomendaciones = hechoService.obtenerAutocompletado(currentSearch, limit);
         return ResponseEntity.ok(recomendaciones);
     }
+
+    @GetMapping("/hechosSinPaginar")
+    public ResponseEntity<List<HechoOutputDto>> obtenerHechosSinPaginar() {
+        return ResponseEntity.ok(hechoService.obtenerHechosSinPaginar());
+    }
 }

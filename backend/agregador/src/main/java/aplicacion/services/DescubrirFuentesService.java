@@ -75,9 +75,9 @@ public class DescubrirFuentesService {
                 System.out.println("Tipo: Fuente estática");
                 System.out.println("FUENTES:");
                 try {
-                    List<FuenteEstaticaDisponibleInputDto> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexionFuenteEstatica.construirURI() + "/fuentesEstaticas", FuenteEstaticaDisponibleInputDto[].class).getBody()));
-                    fuentes.forEach(f -> System.out.println("ID: " + f.getId() + "   -   " + f.getArchivos()));
-                    fuentes.forEach(f -> fuenteService.guardarOActualizarConexion(new FuenteEstatica(f.getId(), nombreServicio)));
+                    List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexionFuenteEstatica.construirURI() + "/fuentesEstaticas", String[].class).getBody()));
+                    fuentes.forEach(f -> System.out.println("ID: " + f));
+                    fuentes.forEach(f -> fuenteService.guardarOActualizarConexion(new FuenteEstatica(f, conexion)));
                 } catch (Exception e) {
                     System.err.println("Error al descubrir nuevas fuentes en fuente estatica " + conexionFuenteEstatica.construirURI() + ": " + e.getMessage());
                     e.printStackTrace(System.err);
@@ -88,7 +88,7 @@ public class DescubrirFuentesService {
                 try {
                     String id = restTemplate.getForEntity(conexionFuenteDinamica.construirURI() + "/fuenteDinamicaId", String.class).getBody();
                     System.out.println("ID: " + id);
-                    fuenteService.guardarOActualizarConexion(new FuenteDinamica(id, nombreDeServicioFuenteDinamica));
+                    fuenteService.guardarOActualizarConexion(new FuenteDinamica(id, conexion));
                 } catch (Exception e) {
                     System.err.println("Error al descubrir nuevas fuentes en fuente dinamica " + conexionFuenteDinamica.construirURI() + ": " + e.getMessage());
                 }
@@ -96,9 +96,9 @@ public class DescubrirFuentesService {
             if(conexion instanceof ConexionFuenteProxy conexionFuenteProxy) {
                 System.out.println("Tipo: Fuente proxy");
                 try {
-                    List<FuenteProxyDisponibleInputDto> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexionFuenteProxy.construirURI() + "/fuentesProxy", FuenteProxyDisponibleInputDto[].class).getBody()));
-                    fuentes.forEach(f -> System.out.println("ID: " + f.getId()));
-                    fuentes.forEach(f -> fuenteService.guardarOActualizarConexion(new FuenteProxy(f.getId(), nombreServicio, instanceID)));
+                    List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexionFuenteProxy.construirURI() + "/fuentesProxy", String[].class).getBody()));
+                    fuentes.forEach(f -> System.out.println("ID: " + f));
+                    fuentes.forEach(f -> fuenteService.guardarOActualizarConexion(new FuenteProxy(f, conexion)));
                 } catch (Exception e) {
                     System.err.println("Error al descubrir nuevas fuentes en fuente proxy " + conexionFuenteProxy.construirURI() + ": " + e.getMessage());
                 }

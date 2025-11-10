@@ -45,7 +45,7 @@
         });
 
         // Grupo de marcadores para poder borrarlos fácilmente si se implementara AJAX en el futuro
-        const markersLayer = L.layerGroup().addTo(map);
+        const markersLayer = L.featureGroup().addTo(map);
 
         // Agregamos un marker por cada hecho
         hechos.forEach(h => {

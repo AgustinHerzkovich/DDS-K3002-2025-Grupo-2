@@ -29,6 +29,11 @@ public class HechoController {
                                              @PathVariable(name="nombreTag") String nombreTag) {
         return solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, Void.class);
     }
+
+    @PostMapping("/hechos")
+    public ResponseEntity<Object> reportarHecho(@RequestBody Object body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/hechos", body, Object.class);
+    }
 }
 
 

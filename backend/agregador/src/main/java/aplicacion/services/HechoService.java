@@ -59,6 +59,10 @@ public class HechoService {
         return repositorioDeHechos.findAll();
     }
 
+    public List<HechoOutputDto> obtenerHechosSinPaginar() {
+        return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
+    }
+
     public Page<HechoOutputDto> obtenerHechosPorTextoLibreDto(String categoria,
                                                               LocalDateTime fechaReporteDesde,
                                                               LocalDateTime fechaReporteHasta,
