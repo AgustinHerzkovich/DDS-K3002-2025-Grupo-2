@@ -5,12 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class fuenteDinamicaIdController {
     @Value("${fuente.id}")
     private String idFuente;
-    @GetMapping("/fuenteDinamicaId")
-    public ResponseEntity<String> obtenerId(){
-        return ResponseEntity.ok(idFuente);
+    @GetMapping("/fuentesDinamicas")
+    public ResponseEntity<List<String>> obtenerId(){
+        return ResponseEntity.ok(List.of(idFuente));
     }
 }
