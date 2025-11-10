@@ -12,6 +12,8 @@ import aplicacion.excepciones.TipoDeFuenteErroneoException;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +28,21 @@ public class FuenteService {
     private final RepositorioDeFuentes repositorioDeFuentes;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
+    private final DiscoveryClient discoveryClient;
+    private final LoadBalancerClient loadBalancerClient;
     //@PersistenceContext
     //private EntityManager entityManager;
 
     public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
                          FuenteInputMapper fuenteInputMapper,
-                         HechoInputMapper hechoInputMapper) {
+                         HechoInputMapper hechoInputMapper,
+                         DiscoveryClient discoveryClient,
+                         LoadBalancerClient loadBalancerClient) {
         this.repositorioDeFuentes = repositorioDeFuentes;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
+        this.discoveryClient = discoveryClient;
+        this.loadBalancerClient = loadBalancerClient;
     }
 
     public Page<Fuente> findByTipo(Integer page, Integer limit, String tipo){
@@ -86,12 +94,14 @@ public class FuenteService {
     }
 
     @Transactional
-    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Map<Fuente, String> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
+    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Set<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
+        System.out.println("cantidad de fuentes" + fuentes.size());
 
-        for (Fuente fuente : fuentes.keySet()) {
+        for (Fuente fuente : fuentes) {
             //List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
-            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(fuentes.get(fuente));
+            System.out.println("capo en FuenteService");
+            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
 
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
