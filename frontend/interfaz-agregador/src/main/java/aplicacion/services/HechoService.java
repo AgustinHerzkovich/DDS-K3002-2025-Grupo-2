@@ -4,22 +4,36 @@ import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.SolicitudOutputDto;
+import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class HechoService {
+    @Value("8082")
+    private String fuenteDinamicaPort;
 
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
+    private final String FUENTE_DINAMICA_URL = "http://localhost:8082/fuentesDinamicas/hechos";
 
     private WebClient webClient;
+    private WebClient fuentesDinamicasWebClient;
 
     private final GeocodingService geocodingService;
 
@@ -38,6 +52,7 @@ public class HechoService {
                         )
                         .build())
                 .build();
+        this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
     // Metodo que devuelve un Flux de hechos con direcciones calculadas
@@ -112,5 +127,59 @@ public class HechoService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
+    }
+
+
+
+    public List<HechoOutputDto> obtenerSolicitudesPendientes() {
+        try {
+            List<HechoOutputDto> lista = fuentesDinamicasWebClient.get()
+                    .uri("/hechos?pendiente=true")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .onStatus(status -> status.is4xxClientError(), resp ->
+                            resp.bodyToMono(String.class).flatMap(msg -> {
+                                System.err.println("Error 4xx en solicitudes pendientes: " + msg);
+                                return Mono.error(new RuntimeException(msg));
+                            })
+                    )
+                    .bodyToFlux(HechoOutputDto.class)
+                    .collectList()
+                    .block(Duration.ofSeconds(10));
+
+            if (lista == null) {
+                return Collections.emptyList();
+            }
+            System.out.println("Servicio: Cargadas " + lista.size() + " solicitudes pendientes.");
+            return lista;
+        } catch (WebClientResponseException e) {
+            System.err.println("ERROR WebClient al obtener solicitudes pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+        } catch (Exception e) {
+            System.err.println("ERROR al obtener solicitudes pendientes: " + e.getMessage());
+        }
+
+        return Collections.emptyList();
+    }
+
+
+    public ResponseEntity<String> gestionarRevision(String hechoId, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HttpClientErrorException {
+
+        try {
+            ResponseEntity<String> response = fuentesDinamicasWebClient.patch() // USAR fuentesDinamicasWebClient
+                    .uri("/hechos/{hechoId}/estadoRevision", hechoId) // URI relativo
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(cambioEstadoRevisionInputDto)
+                    .retrieve()
+                    .toEntity(String.class)
+                    .block(Duration.ofSeconds(10));
+
+            return response != null ? response : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Sin respuesta\"}");
+        } catch (WebClientResponseException e) {
+
+            throw new HttpClientErrorException(e.getStatusCode(), e.getResponseBodyAsString());
+        } catch (Exception e) {
+            System.err.println("ERROR al gestionar revision para ID " + hechoId + ": " + e.getMessage());
+            throw e;
+        }
     }
 }

@@ -17,9 +17,6 @@
     </th:block>
     <div th:replace="~{fragments/button :: botonColecciones}"></div>
     <div th:replace="~{fragments/button :: botonCrearHecho}"></div>
-    <th:block th:if="${isLoggedIn}">
-        <div th:replace="~{fragments/button :: botonMisHechos}"></div>
-    </th:block>
     <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
 </div>
 

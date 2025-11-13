@@ -1,0 +1,254 @@
+body {
+    color: #ffffff;
+}
+
+/* Contenedor principal - (Aseguramos que el texto principal sea blanco) */
+.solicitudes-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    color: inherit; /* Hereda el blanco del body */
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff; /* El título debe ser blanco */
+    margin-bottom: 2rem;
+    text-align: center;
+}
+/* Grilla de solicitudes - (Tomado de solicitudes.css) */
+.solicitudes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Tarjeta de solicitud - FONDO OSCURO */
+.solicitud-card {
+    background-color: #1f2937;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.solicitud-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Título de la tarjeta - (Ya es blanco) */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #4b5563;
+}
+
+/* Botón Ver Detalle (btn-ver) - Aseguramos estilo para que sea visible */
+.btn-ver {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #10b981; /* Un color distintivo, como verde esmeralda */
+    color: #1f2937; /* Texto oscuro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-ver:hover {
+    background-color: #059669;
+}
+
+
+/* Contenido de la tarjeta y texto (Aseguramos color blanco/gris claro) */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.info-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #9ca3af; /* Gris claro para etiquetas */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: #ffffff; /* Blanco para valores */
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* --- Botones de Revisión y Gestión --- */
+.botones-revision {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+.gestion-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.btn-aceptar, .btn-rechazar {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-aceptar {
+    background-color: #10b981; /* Verde */
+}
+.btn-aceptar:hover {
+    background-color: #059669;
+}
+.btn-rechazar {
+    background-color: #ef4444; /* Rojo */
+}
+.btn-rechazar:hover {
+    background-color: #dc2626;
+}
+
+/* --- ESTILOS DEL MODAL (ESTA ES LA CLAVE) --- */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente y oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Asegura que esté por encima de todo */
+    overflow-y: auto; /* Permite scroll si el contenido es grande */
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none; /* Regla de ocultamiento */
+}
+
+.modal-content {
+    background-color: #1f2937; /* Fondo oscuro de la tarjeta */
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 95%;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #ffffff;
+}
+
+#modalTitulo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #f3f4f6;
+}
+
+#modalDescripcion {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    color: #d1d5db;
+}
+
+.modal-meta {
+    border-top: 1px solid #4b5563;
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.modal-meta strong {
+    color: #9ca3af;
+}
+
+.gestion label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #f3f4f6;
+}
+
+#sugerencia {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #4b5563;
+    background-color: #374151;
+    color: #ffffff;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+#sugerencia:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* --- Estilos para la sección "No hay solicitudes" --- */
+.no-solicitudes {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #1f2937;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 3rem auto;
+    color: #d1d5db;
+}
+
+.no-solicitudes .icon-large {
+    width: 60px;
+    height: 60px;
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+.no-solicitudes p {
+    font-size: 1.25rem;
+    font-weight: 500;
+}

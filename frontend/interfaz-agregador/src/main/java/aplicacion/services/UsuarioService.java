@@ -15,13 +15,16 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private WebClient webClient;
-
+    private WebClient fuentesDinamicasWebClient;
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
-
+    @Value("8082")
+    private String fuenteDinamicaPort;
     @PostConstruct
     public void init() {
+
         this.webClient = WebClient.create("http://localhost:" + apiPublicaPort + "/apiPublica");
+        this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
     public void registrarUsuarioSiNoExiste(OidcUser oidcUser) {
@@ -47,6 +50,17 @@ public class UsuarioService {
         // Llamamos a un endpoint POST en nuestro backend para crear/verificar el usuario
         try {
             webClient.post()
+                    .uri("/contribuyentes")
+                    .bodyValue(contribuyente)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .block(); // Usamos block() para simplicidad
+        } catch (Exception e) {
+            System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
+        }
+
+        try {
+            fuentesDinamicasWebClient.post()
                     .uri("/contribuyentes")
                     .bodyValue(contribuyente)
                     .retrieve()
