@@ -33,12 +33,10 @@ public class FuenteEstatica extends Fuente {
 
     @Override
     public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
-        if (!this.fueConsultada) {
-            System.out.print("ya fue consultada, no hago nada \n\n\n");
+        if (this.fueConsultada) {
             return new ArrayList<>();
         }
         this.fueConsultada = true;
-        System.out.printf("hola estoy en fuente estatica \n\n\n");
         return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient, instance);
     }
 

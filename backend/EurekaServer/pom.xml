@@ -10,7 +10,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>EurekaServer</artifactId>
+    <artifactId>eurekaServer</artifactId>
 
     <properties>
         <java.version>21</java.version>
