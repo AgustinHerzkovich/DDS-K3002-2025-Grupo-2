@@ -26,7 +26,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(csrf -> csrf
+                        // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
+                        .ignoringRequestMatchers("/gestionar-solicitud/{id}"))
                 .authorizeHttpRequests(authorize -> authorize
                         // Declaramos explícitamente todas las rutas públicas
                         .requestMatchers(
