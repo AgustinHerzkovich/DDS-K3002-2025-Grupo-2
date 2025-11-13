@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
@@ -18,10 +19,10 @@ import java.util.List;
 @Getter
 @Setter
 public class FuenteEstatica extends Fuente {
-    private Boolean fueConsultada;
+    private Boolean fueConsultada = false;
 
     public FuenteEstatica(String id) {
-        super(id);
+        super(id,"FUENTEESTATICA");
         this.fueConsultada = false;
     }
 
@@ -31,12 +32,14 @@ public class FuenteEstatica extends Fuente {
     }
 
     @Override
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-        if (this.fueConsultada) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
+        if (!this.fueConsultada) {
+            System.out.print("ya fue consultada, no hago nada \n\n\n");
             return new ArrayList<>();
         }
         this.fueConsultada = true;
-        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
+        System.out.printf("hola estoy en fuente estatica \n\n\n");
+        return super.getHechosUltimaPeticion(discoveryClient, loadBalancerClient, instance);
     }
 
     @Override
@@ -46,6 +49,6 @@ public class FuenteEstatica extends Fuente {
 
     @Override
     protected String hechosPathParam() {
-        return "fuentesEstaticas/" + this.getId() + "/hechos";
+        return "/fuentesEstaticas/" + this.getId() + "/hechos";
     }
 }

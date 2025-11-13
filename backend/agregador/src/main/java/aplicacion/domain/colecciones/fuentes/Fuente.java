@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,7 @@ public abstract class Fuente {
         this.alias = "Fuente sin título";
     }
 
-    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
+    public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance instance) {
 
         System.out.print("hola en getHechosUltimaPeticion");
         ObjectMapper mapper = new ObjectMapper();
@@ -71,7 +72,7 @@ public abstract class Fuente {
         LocalDateTime fechaAnterior = this.getUltimaPeticion();
         List<HechoInputDto> hechos = new ArrayList<>();
 
-        String url = obtenerURL(discoveryClient, loadBalancerClient);
+        String url = obtenerURL(discoveryClient, loadBalancerClient, instance);
 
 
         if (fechaAnterior != null) {
@@ -108,8 +109,10 @@ public abstract class Fuente {
         this.hechos.clear();
     }
 
-    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-
+    protected String obtenerURL(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient, ServiceInstance _instance) {
+        if (_instance != null) {
+            return _instance.getUri().toString() + hechosPathParam();
+        }
         return loadBalancerClient.choose(nombreServicio).getUri().toString() + hechosPathParam();
 
     }

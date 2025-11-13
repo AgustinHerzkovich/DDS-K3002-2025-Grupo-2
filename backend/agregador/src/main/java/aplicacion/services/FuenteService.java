@@ -12,6 +12,7 @@ import aplicacion.excepciones.TipoDeFuenteErroneoException;
 import aplicacion.repositorios.RepositorioDeFuentes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.data.domain.Page;
@@ -94,15 +95,27 @@ public class FuenteService {
     }
 
     @Transactional
-    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Set<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
+    public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Set<Fuente> fuentes, Map<Fuente, ServiceInstance> fuenteProxyInstanceMap) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
         System.out.println("cantidad de fuentes" + fuentes.size());
 
         for (Fuente fuente : fuentes) {
             //List<Hecho> hechos = new ArrayList<>(); // Lista de hechos que se van a retornar
             System.out.println("capo en FuenteService");
-            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
 
+            if (fuente instanceof FuenteProxy) {
+                ServiceInstance instance = fuenteProxyInstanceMap.get(fuente);
+                System.out.println("ACA DEBERIA EXPLOTAR SI NO SE EJECUTA"+fuente);
+                List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient, instance);
+                System.out.println(hechosDto);
+                List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
+                guardarFuente(fuente);
+                hashMap.put(fuente, hechos);
+                continue;
+            }
+            System.out.println("ACA DEBERIA EXPLOTAR SI NO SE EJECUTA"+fuente);
+            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient, null);
+            System.out.println(hechosDto);
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
             //entityManager.flush(); // En teoria fuerza la actualizacion
