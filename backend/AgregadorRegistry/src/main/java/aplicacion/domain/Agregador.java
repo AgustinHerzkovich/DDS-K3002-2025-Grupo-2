@@ -12,18 +12,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Agregador {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String agregadorID;
-
-    private boolean tieneApiAdministrativa;
-
-    private boolean tieneApiPublica;
-
-    public Agregador() {
-        this.tieneApiAdministrativa = false;
-        this.tieneApiPublica = false;
-    }
 
 }

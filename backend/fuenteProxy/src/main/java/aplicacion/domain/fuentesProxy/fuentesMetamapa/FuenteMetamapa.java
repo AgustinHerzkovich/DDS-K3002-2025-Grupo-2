@@ -5,9 +5,13 @@ import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
+
 import aplicacion.domain.fuentesProxy.FuenteProxy;
 
 @Entity
@@ -16,19 +20,44 @@ import aplicacion.domain.fuentesProxy.FuenteProxy;
 @Setter
 public class FuenteMetamapa extends FuenteProxy {
 
-    private String endpointHechos;
+    private String agregadorID;
 
-    public FuenteMetamapa(String endpointHechos) {
-        this.endpointHechos = endpointHechos;
+
+
+
+    public FuenteMetamapa(String agregadorID) {
+        this.agregadorID =agregadorID;
     }
     //private String endpointColecciones = "https://7239874289/agregador/coleccion/1";
     //private String endpointSolicitudes = "https://7239874289/agregador/solicitud";
 
-    public List<Hecho> importarHechos() {
+
+
+    @Override
+    public List<Hecho> importarHechos(DiscoveryClient discoveryClient) {
+
         RestTemplate restTemplate = new RestTemplate();
         //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
-        List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
-        return hechos;
+        try {
+            String endpointHechos = endpointHechos(discoveryClient);
+            List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
+            System.out.println(hechos.isEmpty());
+            return hechos;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("Error al obtener hechos desde el agregador con ID: " + agregadorID);
+            return List.of();
+        }
+    }
+
+    public String endpointHechos(DiscoveryClient discoveryClient) {
+        String baseURL = discoveryClient.getInstances("AGREGADOR")
+                .stream()
+                .filter(instance -> instance.getMetadata().get("agregadorID").equals(agregadorID))
+                .findFirst()
+                .map(instance -> instance.getUri().toString())
+                .orElseThrow(() -> new RuntimeException(" No se encontraron instancias para el servicio: " + agregadorID));
+        return baseURL + "/agregador/hechos";
     }
 
    /* public List<Hecho> obtenerHechosColeccion(Long identificador) {
@@ -53,4 +82,6 @@ public class FuenteMetamapa extends FuenteProxy {
     public void pedirHechos() {
         // No hace nada en Fuente Metamapa, ya que solo está para asegurar el polimorfismo en FuenteProxyService
     }
+
+
 }

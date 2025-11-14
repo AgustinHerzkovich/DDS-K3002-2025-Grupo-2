@@ -21,6 +21,7 @@ public class AgregadorService {
     public String crearAgregador() {
         Agregador agregador = new Agregador();
         agregadorRepository.save(agregador);
+        System.out.println("Agregador creado con ID: " + agregador.getAgregadorID());
         return agregador.getAgregadorID();
     }
 }

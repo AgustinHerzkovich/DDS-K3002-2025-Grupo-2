@@ -5,6 +5,7 @@ import aplicacion.domain.hechos.Hecho;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class FuenteDemo extends FuenteProxy {
     }
 
     @Override
-    public List<Hecho> importarHechos() {
+    public List<Hecho> importarHechos(DiscoveryClient discoveryClient) {
         return hechos;
     }
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public abstract class FuenteProxy{
     private String id;
 
     public abstract void pedirHechos();
-    public abstract List<Hecho> importarHechos();
+    public abstract List<Hecho> importarHechos(DiscoveryClient discoveryClient);
 }

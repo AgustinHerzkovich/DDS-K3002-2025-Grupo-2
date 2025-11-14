@@ -14,7 +14,7 @@ public class TestFuenteDemo {
 
         fuente.pedirHechos();
 
-        System.out.println("Hechos importados:");
+        /*System.out.println("Hechos importados:");
         for (Hecho h : fuente.importarHechos()) {
             System.out.println(h.getTitulo() + " - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
         }
@@ -23,7 +23,7 @@ public class TestFuenteDemo {
         System.out.println("Hechos importados:");
         for (Hecho h : fuenteMetamapa.importarHechos()) {
             System.out.println(h.getTitulo() + " - "+ h.getOrigen() +" - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
-        }
+        }*/
     }
 }
 

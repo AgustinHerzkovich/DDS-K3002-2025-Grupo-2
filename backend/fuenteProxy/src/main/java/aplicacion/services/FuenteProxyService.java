@@ -1,6 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.domain.fuentesProxy.FuenteProxy;
+import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.mappers.FuenteProxyInputMapper;
 import aplicacion.dto.mappers.FuenteProxyOutputMapper;
@@ -10,6 +11,7 @@ import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositorios.RepositorioDeFuentesProxy;
 import aplicacion.services.excepciones.FuenteNoEncontradaException;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +25,14 @@ public class FuenteProxyService {
     private final FuenteProxyInputMapper fuenteProxyInputMapper;
     private final FuenteProxyOutputMapper fuenteProxyOutputMapper;
     private final HechoOutputMapper hechoOutputMapper;
+    private final DiscoveryClient discoveryClient;
 
-    public FuenteProxyService(RepositorioDeFuentesProxy repositorioDeFuentesProxy, FuenteProxyInputMapper fuenteProxyInputMapper, FuenteProxyOutputMapper fuenteProxyOutputMapper, HechoOutputMapper hechoOutputMapper) {
+    public FuenteProxyService(RepositorioDeFuentesProxy repositorioDeFuentesProxy, FuenteProxyInputMapper fuenteProxyInputMapper, FuenteProxyOutputMapper fuenteProxyOutputMapper, HechoOutputMapper hechoOutputMapper, DiscoveryClient discoveryClient) {
         this.repositorioDeFuentesProxy = repositorioDeFuentesProxy;
         this.fuenteProxyInputMapper = fuenteProxyInputMapper;
         this.fuenteProxyOutputMapper = fuenteProxyOutputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
+        this.discoveryClient = discoveryClient;
     }
 
     public void pedirHechos() {
@@ -44,7 +48,7 @@ public class FuenteProxyService {
         List<Hecho> listaDeHechosADevolver = new ArrayList<>();
 
         for (FuenteProxy fuente : fuentesProxy) {
-            listaDeHechosADevolver.addAll(fuente.importarHechos());
+            listaDeHechosADevolver.addAll(fuente.importarHechos(discoveryClient));
         }
        return listaDeHechosADevolver.stream().map(hechoOutputMapper::map).toList();
     }
@@ -52,7 +56,7 @@ public class FuenteProxyService {
     @Transactional
     public List<HechoOutputDto> importarHechosDeFuente(String id) throws FuenteNoEncontradaException {
         FuenteProxy fuente = repositorioDeFuentesProxy.findById(id).orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + id + "no encontrada"));
-        return fuente.importarHechos().stream().map(hechoOutputMapper::map).toList();
+        return fuente.importarHechos(discoveryClient).stream().map(hechoOutputMapper::map).toList();
     }
 
     public FuenteProxyOutputDto guardarFuente(FuenteProxyInputDto fuenteProxyInputDto) {
@@ -62,5 +66,10 @@ public class FuenteProxyService {
 
     public List<String> obtenerFuentesDisponibles() {
         return repositorioDeFuentesProxy.findAll().stream().map(fp -> fp.getId()).toList();
+    }
+
+    public FuenteMetamapa guardarFuenteMetamapa(String agregadorID) {
+        FuenteMetamapa fuenteMetamapa = new FuenteMetamapa(agregadorID);
+        return repositorioDeFuentesProxy.save(fuenteMetamapa);
     }
 }

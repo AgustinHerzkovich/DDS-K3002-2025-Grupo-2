@@ -1,5 +1,6 @@
 package aplicacion.controllers;
 
+import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.output.FuenteDisponibleOutputDto;
 import aplicacion.dto.output.FuenteProxyOutputDto;
@@ -36,10 +37,16 @@ public class FuenteProxyController {
         }
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@RequestBody FuenteProxyInputDto fuenteProxyInputDto){
         FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
         return ResponseEntity.ok(fuenteProxy);
+    }
+
+    @PostMapping("/fuentesMetamapa")
+    public ResponseEntity<FuenteMetamapa> guardarFuenteMetamapa(@RequestBody String agregadorID){
+        FuenteMetamapa fuenteMetamapa = fuenteProxyService.guardarFuenteMetamapa(agregadorID);
+        return ResponseEntity.ok(fuenteMetamapa);
     }
 
     @GetMapping
