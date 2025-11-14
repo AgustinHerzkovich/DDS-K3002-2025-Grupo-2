@@ -36,10 +36,12 @@ public class FuenteMetamapa extends FuenteProxy {
     @Override
     public List<Hecho> importarHechos(DiscoveryClient discoveryClient) {
 
+
         RestTemplate restTemplate = new RestTemplate();
         //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
         try {
             String endpointHechos = endpointHechos(discoveryClient);
+            System.out.println("\n\n" + endpointHechos + "\n\n");
             List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
             System.out.println(hechos.isEmpty());
             return hechos;
@@ -57,7 +59,7 @@ public class FuenteMetamapa extends FuenteProxy {
                 .findFirst()
                 .map(instance -> instance.getUri().toString())
                 .orElseThrow(() -> new RuntimeException(" No se encontraron instancias para el servicio: " + agregadorID));
-        return baseURL + "/agregador/hechos";
+        return baseURL + "/agregador/hechosSinPaginar";
     }
 
    /* public List<Hecho> obtenerHechosColeccion(Long identificador) {
