@@ -2,7 +2,9 @@ package aplicacion.services;
 
 import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
+import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -27,7 +29,7 @@ public class UsuarioService {
         this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
-    public void registrarUsuarioSiNoExiste(OidcUser oidcUser) {
+    public void registrarUsuarioSiNoExiste(OidcUser oidcUser, HttpServletRequest request) {
         Optional<LocalDate> fechaNacimiento;
         try{
             fechaNacimiento = Optional.of(LocalDate.parse(oidcUser.getClaimAsString("birthdate")));
@@ -35,8 +37,8 @@ public class UsuarioService {
             fechaNacimiento = Optional.empty();
         }
         IdentidadContribuyenteInputDto identidad = new IdentidadContribuyenteInputDto(oidcUser.getClaimAsString("given_name"),
-                                                                                      oidcUser.getClaimAsString("family_name"),
-                                                                                      fechaNacimiento.orElse(null));
+                oidcUser.getClaimAsString("family_name"),
+                fechaNacimiento.orElse(null));
         boolean esAdmin = false;
         Object rolesClaim = oidcUser.getClaim("realm_roles");
         if (rolesClaim instanceof Collection<?> roles) {
@@ -47,27 +49,43 @@ public class UsuarioService {
 
         ContribuyenteInputDto contribuyente = new ContribuyenteInputDto(esAdmin, identidad, oidcUser.getEmail());
 
-        // Llamamos a un endpoint POST en nuestro backend para crear/verificar el usuario
+        // Variable para almacenar el ID después del registro
+        Long contribuyenteId = null;
+
+        // 1. LLAMADA A API PÚBLICA (webClient)
         try {
-            webClient.post()
+            // CAMBIO CLAVE: Esperamos que el backend devuelva el objeto ContribuyenteOutputDto
+            ContribuyenteOutputDto contribuyenteRegistrado = webClient.post()
                     .uri("/contribuyentes")
                     .bodyValue(contribuyente)
                     .retrieve()
-                    .toBodilessEntity()
-                    .block(); // Usamos block() para simplicidad
+                    .bodyToMono(ContribuyenteOutputDto.class) // <--- Coge el cuerpo de la respuesta
+                    .block();
+
+            // 2. EXTRAEMOS EL ID Y LO GUARDAMOS EN LA SESIÓN
+            if (contribuyenteRegistrado != null && contribuyenteRegistrado.getId() != null) {
+                contribuyenteId = contribuyenteRegistrado.getId();
+                // ¡Guardamos el ID en la sesión HTTP!
+                request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteId);
+                System.out.println("✅ Contribuyente registrado y ID guardado en sesión: " + contribuyenteId);
+            } else {
+                System.err.println("Advertencia: Backend registró el usuario, pero no devolvió un ID de contribuyente válido.");
+            }
+
         } catch (Exception e) {
             System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
         }
 
+        // 3. LLAMADA A FUENTES DINÁMICAS (usando el mismo DTO de entrada)
         try {
             fuentesDinamicasWebClient.post()
                     .uri("/contribuyentes")
-                    .bodyValue(contribuyente)
+                    .bodyValue(contribuyente) // Usamos el mismo DTO de entrada (ContribuyenteInputDto)
                     .retrieve()
                     .toBodilessEntity()
-                    .block(); // Usamos block() para simplicidad
+                    .block();
         } catch (Exception e) {
-            System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
+            System.err.println("Error al registrar el usuario en Fuentes Dinámicas: " + e.getMessage());
         }
     }
 }

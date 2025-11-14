@@ -13,3 +13,5 @@ public class ContribuyenteOutputDto {
     private IdentidadContribuyenteOutputDto identidad;
     private String mail;
 }
+
+

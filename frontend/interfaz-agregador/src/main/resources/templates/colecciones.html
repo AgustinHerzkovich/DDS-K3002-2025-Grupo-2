@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-    <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: colecciones}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
+    <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
 
     <!-- Fragmento para los estilos específicos de esta página -->
     <th:block th:fragment="pageStyles">
@@ -8,7 +8,8 @@
     </th:block>
 
     <body>
-        <main>
+        <main class="my-10">
+            <div th:replace="~{fragments/titles :: colecciones}"></div>
             <div th:replace="~{fragments/top-content :: searchBar('colecciones')}"></div>
 
             <div class="colecciones-container">

@@ -14,7 +14,7 @@
 }
 .pagination-btn {
     padding: 4px 12px;
-    background-color: #4f46e5;
+    background-color: black;
     color: white;
     border-radius: 4px;
     text-decoration: none;
@@ -22,7 +22,7 @@
     transition: background-color 0.2s;
 }
 .pagination-btn:hover {
-    background-color: #4338ca;
+    opacity: 0.9;
 }
 .pagination-btn[disabled] {
     opacity: 0.5;
