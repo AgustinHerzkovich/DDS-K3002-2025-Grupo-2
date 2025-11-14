@@ -3,126 +3,107 @@
 
 <body>
 
-<div th:fragment="bienvenido">
-    <h1 class="text-5xl font-semibold text-white">METAMAPA</h1>
-</div>
+    <div th:fragment="metamapa">
+        <h1 class="text-5xl font-semibold text-white text-center">METAMAPA</h1>
+    </div>
 
-<div th:fragment="searchBar(tipo)"
-    class="flex justify-center items-center w-full" th:data-tipo="${tipo}">
-        <form class="relative w-full max-w-md" role="search" onsubmit="return handleSearch(event)">
-            <input
-                    id="search-input"
-                    class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-12 text-base text-black focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    type="search"
-                    name="search"
-                    th:value="${search}"
-                    placeholder="Búsqueda"
-                    aria-label="Búsqueda"
-                    style="background-color: white;"
-            />
-            <!-- Ícono de lupa -->
-            <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-10 w-10 flex items-center justify-center p-0 border-0 bg-transparent hover:opacity-70 transition-opacity">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-            </button>
-        </form>
+    <div th:fragment="searchBar(tipo)"
+        class="flex justify-center items-center w-full" th:data-tipo="${tipo}">
+            <form class="relative w-full max-w-md border-0" role="search" onsubmit="return handleSearch(event)">
+                <input
+                        id="search-input"
+                        class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-12 text-base text-black focus:outline-none focus:ring-2 focus:ring-grey-200"
+                        type="search"
+                        name="search"
+                        th:value="${search}"
+                        placeholder="Búsqueda"
+                        aria-label="Búsqueda"
+                        style="background-color: white;"
+                />
+                <!-- Ícono de lupa -->
+                <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-10 w-10 flex items-center justify-center p-0 border-0 bg-transparent hover:opacity-70 transition-opacity">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="black" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                </button>
+            </form>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const input = document.getElementById("search-input");
-            const tipo = input.closest("[data-tipo]").dataset.tipo; // "hechos" o "colecciones"
-            const suggestionsContainer = document.createElement("ul");
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const input = document.getElementById("search-input");
+                const tipo = input.closest("[data-tipo]").dataset.tipo; // "hechos" o "colecciones"
+                const suggestionsContainer = document.createElement("ul");
 
-            suggestionsContainer.id = "suggestions-list";
-            suggestionsContainer.className = "absolute bg-white border border-gray-300 rounded-md mt-1 w-full z-50 shadow-lg text-black";
-            input.parentNode.appendChild(suggestionsContainer);
+                suggestionsContainer.id = "suggestions-list";
+                suggestionsContainer.className = "absolute bg-white border border-gray-300 rounded-md mt-1 w-full z-50 shadow-lg text-black";
+                input.parentNode.appendChild(suggestionsContainer);
+                suggestionsContainer.style.display = "none";
 
-            let debounceTimer;
+                let debounceTimer;
 
-            input.addEventListener("input", () => {
-                clearTimeout(debounceTimer);
-                const query = input.value.trim();
+                input.addEventListener("input", () => {
+                    clearTimeout(debounceTimer);
+                    const query = input.value.trim();
 
-                if (!query) {
-                    suggestionsContainer.innerHTML = "";
-                    suggestionsContainer.style.display = "none";
-                    return;
-                }
-
-                debounceTimer = setTimeout(async () => {
-                    const endpoint = tipo === "colecciones"
-                        ? "http://localhost:8085/apiPublica/colecciones/index"
-                        : "http://localhost:8085/apiPublica/hechos/index";
-                    console.log(endpoint)
-                    try {
-                        const response = await fetch(`${endpoint}?search=${encodeURIComponent(query)}&limit=5`);
-                        const data = await response.json();
-
+                    if (!query) {
                         suggestionsContainer.innerHTML = "";
-                        if (data.length === 0) {
-                            suggestionsContainer.style.display = "none";
-                            return;
-                        }
-                        suggestionsContainer.style.display = "block";
-                        data.forEach(item => {
-                            const li = document.createElement("li");
-                            li.textContent = item;
-                            li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
-                            li.onclick = () => {
-                                input.value = item;
-                                suggestionsContainer.innerHTML = "";
-                                handleSearch(new Event("submit")); // dispara la función de búsqueda
-                            };
-                            suggestionsContainer.appendChild(li);
-                        });
-                    } catch (err) {
-                        console.error("Error obteniendo sugerencias:", err);
+                        suggestionsContainer.style.display = "none";
+                        return;
                     }
-                }, 300); // debounce 300ms
+
+                    debounceTimer = setTimeout(async () => {
+                        const endpoint = tipo === "colecciones"
+                            ? "http://localhost:8085/apiPublica/colecciones/index"
+                            : "http://localhost:8085/apiPublica/hechos/index";
+                        console.log(endpoint)
+                        try {
+                            const response = await fetch(`${endpoint}?search=${encodeURIComponent(query)}&limit=5`);
+                            const data = await response.json();
+
+                            suggestionsContainer.innerHTML = "";
+                            if (data.length === 0) {
+                                suggestionsContainer.style.display = "none";
+                                return;
+                            }
+                            suggestionsContainer.style.display = "block";
+                            data.forEach(item => {
+                                const li = document.createElement("li");
+                                li.textContent = item;
+                                li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
+                                li.onclick = () => {
+                                    input.value = item;
+                                    suggestionsContainer.innerHTML = "";
+                                    handleSearch(new Event("submit")); // dispara la función de búsqueda
+                                };
+                                suggestionsContainer.appendChild(li);
+                            });
+                        } catch (err) {
+                            console.error("Error obteniendo sugerencias:", err);
+                        }
+                    }, 300); // debounce 300ms
+                });
+
+                // Cerrar sugerencias al hacer clic fuera
+                document.addEventListener("click", (e) => {
+                    if (!e.target.closest("#search-input")) {
+                        suggestionsContainer.innerHTML = "";
+                        suggestionsContainer.style.display = "none";
+                    }
+                });
             });
 
-            // Cerrar sugerencias al hacer clic fuera
-            document.addEventListener("click", (e) => {
-                if (!e.target.closest("#search-input")) {
-                    suggestionsContainer.innerHTML = "";
-                }
-            });
-        });
+            function handleSearch(event) {
+                event.preventDefault();
 
-        function handleSearch(event) {
-            event.preventDefault();
+                const searchValue = document.getElementById('search-input').value.trim();
+                const currentUrl = new URL(window.location.href);
 
-            const searchValue = document.getElementById('search-input').value.trim();
-            const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('search', searchValue);
+                window.location.href = currentUrl.toString();
 
-            currentUrl.searchParams.set('search', searchValue);
-            window.location.href = currentUrl.toString();
-
-            return false;
-        }
-    </script>
-</div>
-
-<div th:fragment="about">
-    <h1 class="text-5xl font-semibold text-black">Acerca del Proyecto</h1>
-</div>
-
-<div th:fragment="hecho">
-    <h1 class="text-5xl font-semibold text-black">Hecho</h1>
-</div>
-
-<div th:fragment="colecciones">
-    <h1 class="text-5xl font-semibold text-black">Colecciones</h1>
-</div>
-
-<div th:fragment="solicitudes">
-    <h1 class="text-5xl font-semibold text-black">Solicitudes</h1>
-</div>
-
-<div th:fragment="coleccion">
-    <h1 class="text-5xl font-semibold text-black">Colección</h1>
-</div>
-
+                return false;
+            }
+        </script>
+    </div>
 </body>
 </html>

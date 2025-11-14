@@ -11,11 +11,12 @@
 
 <!-- Fragment: Header de navegación -->
 <header th:fragment="navbar(contenidoSuperior, menuDerecho)" class="bg-black ">
-    <nav class="px-6 py-4 flex justify-between items-center relative">
-        <!-- Izquierda: Logo -->
+    <nav class="px-8 py-4 grid grid-cols-3 items-center relative">
+
+    <!-- Izquierda: Logo -->
         <a href="/" class="flex items-center space-x-2 z-10">
             <div class="flex flex-col align-items-center">
-                <img th:src="@{/images/logo-metamapa.png}" class="w-24 h-24">
+                <img th:src="@{/images/logo-metamapa.png}" class="w-20 h-20">
                 <p class="text-white">METAMAPA</p>
             </div>
         </a>

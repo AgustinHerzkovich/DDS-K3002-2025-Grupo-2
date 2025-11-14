@@ -21,7 +21,7 @@ import java.util.List;
 public class ContribuyenteController {
     private final ContribuyenteService contribuyenteService;
     private final HechoService hechoService;
- ;
+    ;
 
     public ContribuyenteController(ContribuyenteService contribuyenteService, HechoService hechoService) {
         this.contribuyenteService = contribuyenteService;
@@ -57,7 +57,7 @@ public class ContribuyenteController {
 
     @PatchMapping("/contribuyentes/{id}/identidad")
     public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
-                                                                                 @PathVariable("id") Long id) {
+                                                              @PathVariable("id") Long id) {
         try {
             Validaciones.validarId(id);
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);

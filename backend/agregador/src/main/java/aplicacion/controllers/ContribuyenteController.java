@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.dto.input.ContribuyenteInputDto;
+import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.MailYaExisteException;
@@ -26,8 +27,6 @@ public class ContribuyenteController {
     public ContribuyenteController(ContribuyenteService contribuyenteService, HechoService hechoService) {
         this.contribuyenteService = contribuyenteService;
         this.hechoService = hechoService;
-
-
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
@@ -71,6 +70,21 @@ public class ContribuyenteController {
             } catch (ContribuyenteNoConfiguradoException e) {
                 return ResponseEntity.notFound().build();
             }
+        }
+    }
+
+    @PatchMapping("/contribuyentes/{id}/identidad")
+    public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto, @PathVariable("id") Long id) {
+        try {
+            Validaciones.validarId(id);
+            ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
+            System.out.println("Se ha modificado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
+            return ResponseEntity.ok(contribuyenteProcesado);
+        } catch (IdInvalidoException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        catch (ContribuyenteNoConfiguradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

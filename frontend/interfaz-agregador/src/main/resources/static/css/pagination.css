@@ -24,7 +24,7 @@
     align-items: center;
     gap: 0.3rem;
     padding: 0.3rem 0.7rem;
-    background-color: #4f46e5;
+    background-color: black;
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -34,7 +34,7 @@
 }
 
 .pagination-btn:hover {
-    background-color: #4338ca;
+    opacity: 0.9;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
 }

@@ -35,7 +35,7 @@
         const customIcon = L.icon({
             iconUrl: 'data:image/svg+xml;base64,' + btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="41" viewBox="0 0 25 41">
-                    <path fill="#4f46e5" stroke="#ffffff" stroke-width="1.5" d="M12.5 0C5.596 0 0 5.596 0 12.5c0 1.933.439 3.761 1.217 5.394L12.5 41l11.283-23.106A12.42 12.42 0 0 0 25 12.5C25 5.596 19.404 0 12.5 0z"/>
+                    <path fill="red" stroke="#ffffff" stroke-width="1.5" d="M12.5 0C5.596 0 0 5.596 0 12.5c0 1.933.439 3.761 1.217 5.394L12.5 41l11.283-23.106A12.42 12.42 0 0 0 25 12.5C25 5.596 19.404 0 12.5 0z"/>
                     <circle fill="#ffffff" cx="12.5" cy="12.5" r="5"/>
                 </svg>
             `),
@@ -180,8 +180,7 @@
         <div class="flex justify-between items-center p-4 pb-3">
             <h3 class="text-lg font-bold">Filtros</h3>
             <div class="flex items-center gap-1">
-                <button id="btn-aplicar-filtros" class="px-3 py-1 text-xs text-white font-semibold rounded-lg"
-                        style="background-color: #4f46e5; hover:opacity-90;">
+                <button id="btn-aplicar-filtros" class="px-3 py-1 text-xs text-white font-semibold rounded-lg bg-red-700 hover:bg-red-800">
                     Aplicar
                 </button>
                 <button id="toggle-filtros-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">

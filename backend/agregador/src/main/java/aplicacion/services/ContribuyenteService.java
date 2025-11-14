@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.mappers.ContribuyenteInputMapper;
 import aplicacion.dto.mappers.ContribuyenteOutputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
@@ -88,5 +89,13 @@ public class ContribuyenteService {
     public List<ContribuyenteOutputDto> obtenerContribuyentes() {
         List<Contribuyente> contribuyentes = repositorioDeContribuyentes.findAll();
         return contribuyentes.stream().map(contribuyenteOutputMapper::map).toList();
+    }
+
+    public ContribuyenteOutputDto modificarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
+        IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(identidadContribuyenteInputDto);
+        Contribuyente contribuyente = obtenerContribuyente(id);
+        contribuyente.setIdentidad(identidad);
+        contribuyente = repositorioDeContribuyentes.save(contribuyente);
+        return contribuyenteOutputMapper.map(contribuyente);
     }
 }

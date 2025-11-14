@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -22,7 +23,7 @@ public class CustomOidcUserService extends OidcUserService {
     }
 
     @Override
-    public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+    public OidcUser loadUser(OidcUserRequest userRequest ) throws OAuth2AuthenticationException {
         // 1. Obtenemos el usuario de Keycloak como lo haría Spring por defecto
         OidcUser oidcUser = super.loadUser(userRequest);
 
@@ -36,9 +37,6 @@ public class CustomOidcUserService extends OidcUserService {
                 oidcUser.getUserInfo(),
                 "sub" // nombre del claim que identifica al usuario
         );
-
-        // 4. Ejecutamos nuestra lógica personalizada de registro "Just-In-Time"
-        usuarioService.registrarUsuarioSiNoExiste(enrichedUser);
 
         // 5. Devolvemos el usuario enriquecido con los roles
         return enrichedUser;
