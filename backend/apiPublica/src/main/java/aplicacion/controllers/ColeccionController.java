@@ -37,8 +37,8 @@ public class ColeccionController {
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String textoLibre,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "100") Integer size
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "100") Integer size
     )
     {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
@@ -66,8 +66,8 @@ public class ColeccionController {
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String textoLibre,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "100") Integer size
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "100") Integer size
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
         UrlHelper.appendQueryParam(url, "categoria", categoria);
@@ -86,8 +86,8 @@ public class ColeccionController {
     // --- READ ---
     @GetMapping("/colecciones")
     public ResponseEntity<Object> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
-                                                     @RequestParam(defaultValue = "0") Integer page,
-                                                     @RequestParam(defaultValue = "10") Integer size) {
+                                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                     @RequestParam(name = "size", defaultValue = "10") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
         UrlHelper.appendQueryParam(url, "search", textoBuscado);
         UrlHelper.appendQueryParam(url, "page", page);

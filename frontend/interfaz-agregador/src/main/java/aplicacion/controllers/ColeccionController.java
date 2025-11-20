@@ -23,8 +23,8 @@ public class ColeccionController {
 
     @GetMapping("/colecciones")
     public String paginaColecciones(@RequestParam(name = "search", required = false) String search,
-                                    @RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                    @RequestParam(name = "size", defaultValue = "10") Integer size,
                                     Model model) {
         PageWrapper<ColeccionOutputDto> pageWrapper = coleccionService
                 .obtenerColecciones(page, size, search)
@@ -62,8 +62,8 @@ public class ColeccionController {
                                                       @RequestParam(name = "latitud", required = false) Double latitud,
                                                       @RequestParam(name = "longitud", required = false) Double longitud,
                                                       @RequestParam(name = "search", required = false) String search,
-                                                      @RequestParam(defaultValue = "0") Integer page,
-                                                      @RequestParam(defaultValue = "10") Integer size,
+                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                       Model model) {
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosIrrestrictosDeColeccion(
@@ -120,8 +120,8 @@ public class ColeccionController {
                                                  @RequestParam(name = "latitud", required = false) Double latitud,
                                                  @RequestParam(name = "longitud", required = false) Double longitud,
                                                  @RequestParam(name = "search", required = false) String search,
-                                                 @RequestParam(defaultValue = "0") Integer page,
-                                                 @RequestParam(defaultValue = "10") Integer size,
+                                                 @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                  Model model) {
 
         // Obtener hechos desde la API Pública

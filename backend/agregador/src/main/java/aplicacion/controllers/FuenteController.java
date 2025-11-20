@@ -1,7 +1,6 @@
 package aplicacion.controllers;
 
 import aplicacion.dto.input.FuenteAliasDto;
-import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.mappers.FuenteOutputMapper;
 import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.InvalidPageException;
@@ -9,8 +8,6 @@ import aplicacion.services.FuenteService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/agregador")
@@ -22,7 +19,7 @@ public class FuenteController {
     }
 
     @GetMapping("/fuentes")
-    public ResponseEntity<Page<FuenteOutputDto>> getFuentes(@RequestParam(value = "tipo", required = false) String tipoFuente, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit){
+    public ResponseEntity<Page<FuenteOutputDto>> getFuentes(@RequestParam(value = "tipo", required = false) String tipoFuente, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "limit", defaultValue = "10") Integer limit){
         InvalidPageException.validate(page, limit);
         return ResponseEntity.ok(fuenteService.findByTipo(page, limit, tipoFuente).map(fuenteOutputMapper::map));
     }

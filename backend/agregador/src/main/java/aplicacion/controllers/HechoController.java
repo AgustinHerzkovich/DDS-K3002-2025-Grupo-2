@@ -7,7 +7,6 @@ import aplicacion.dto.output.EtiquetaOutputDTO;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.excepciones.HechoNoEncontradoException;
-import aplicacion.excepciones.InvalidPageException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
@@ -42,8 +41,8 @@ public class HechoController {
                                                @RequestParam(name = "latitud", required = false) Double latitud,
                                                @RequestParam(name = "longitud", required = false) Double longitud,
                                                @RequestParam(name = "search", required = false) String textoBuscado,
-                                              @RequestParam(defaultValue = "0") Integer page,
-                                              @RequestParam(defaultValue = "100") Integer size) {
+                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                              @RequestParam(name = "size", defaultValue = "100") Integer size) {
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -106,7 +105,7 @@ public class HechoController {
 
     @GetMapping("/hechos/index")
     public ResponseEntity<List<String>> autoCompletar(@RequestParam(name = "search") String currentSearch, @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit){
-        if(limit>100 || limit<0)
+        if(limit >100 || limit <0)
             throw new TooHighLimitException(limit);
         List<String> recomendaciones = hechoService.obtenerAutocompletado(currentSearch, limit);
         return ResponseEntity.ok(recomendaciones);

@@ -25,8 +25,8 @@ public class SolicitudController {
     @GetMapping("/solicitudes")
     @PreAuthorize("hasRole('ADMIN')")
     public String paginaSolicitudes(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "3") Integer size,
             Model model) {
 
         PageWrapper<SolicitudOutputDto> pageWrapper = solicitudService.obtenerSolicitudes(page, size)

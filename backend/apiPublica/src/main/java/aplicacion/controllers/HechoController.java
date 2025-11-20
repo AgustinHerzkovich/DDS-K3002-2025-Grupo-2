@@ -33,8 +33,8 @@ public class HechoController {
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String textoLibre,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "100") Integer size
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "100") Integer size
     ) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos");
         UrlHelper.appendQueryParam(url, "categoria", categoria);
