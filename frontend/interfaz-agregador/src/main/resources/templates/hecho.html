@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
 
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/hecho.css}" />
@@ -12,7 +12,7 @@
             <!-- Sección Izquierda -->
             <div class="left-section">
                 <!-- Categoría -->
-                <div class="categoria-badge" th:text="*{categoria.nombre}">Categoría</div>
+                <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">Categoría</div>
 
                 <!-- Carousel de Contenido Multimedia -->
                 <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel"

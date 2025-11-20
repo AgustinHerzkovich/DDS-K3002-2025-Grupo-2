@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn})})}">
+      th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
 <head>
     <th:block th:fragment="pageStyles">
         <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />

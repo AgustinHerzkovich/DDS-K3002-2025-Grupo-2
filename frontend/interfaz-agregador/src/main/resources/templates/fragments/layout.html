@@ -20,19 +20,48 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
+    <!-- Estilos globales para eliminar espacios en blanco -->
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        html {
+            overflow-y: scroll;
+        }
+
+        /* Estilos mínimos para los modales - solo lo necesario */
+        #modalCrearColeccion {
+            z-index: 9999;
+        }
+
+        #modalCrearColeccion.hidden {
+            display: none;
+        }
+
+        #modalCrearHecho {
+            z-index: 9999;
+        }
+
+        #modalOverlay {
+            z-index: 9998;
+        }
+    </style>
+
     <!-- ============================================== -->
     <!-- INCLUYE LOS ESTILOS ESPECÍFICOS DE LA PÁGINA   -->
     <!-- (Solo si el fragmento 'pageStyles' está definido) -->
     <th:block th:replace="~{::pageStyles}" />
     <!-- ============================================== -->
 </head>
-<body class="bodyHome bg-gray-50">
+<body class="bodyHome bg-gray-50 min-h-screen flex flex-col">
 
 <!-- Header -->
 <div th:replace="~{fragments/header :: navbar(${contenidoSuperior}, ${menuDerecho})}"></div>
 
 <!-- Contenido Principal (variable) -->
-<div th:replace="${contenido}"></div>
+<div class="flex-grow" th:replace="${contenido}"></div>
 
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
@@ -41,6 +70,19 @@
 <div th:replace="~{fragments/button :: modalEditarPerfil}"></div>
 <div th:replace="~{fragments/button ::botonPerfilScript}"></div>
 <div th:replace="~{fragments/button :: profileScript}"></div>
+
+<!-- Modales globales -->
+<div th:replace="~{fragments/button :: modalCrearHecho}"></div>
+<div th:replace="~{fragments/button :: modalCrearColeccion}"></div>
+
+<!-- Scripts de los modales -->
+<script th:src="@{/js/crear-hecho.js}"></script>
+<link th:href="@{/css/crear-hecho.css}" rel="stylesheet">
+
+<!-- Estilos y scripts del menú hamburguesa -->
+<div th:replace="~{fragments/hamburger-menu :: hamburgerMenuStyles}"></div>
+<div th:replace="~{fragments/hamburger-menu :: hamburgerMenuScript}"></div>
+
 <!-- Agregar antes del cierre del body -->
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -53,4 +95,5 @@
     console.log('Datos del autor:', window.autorData);
     /*]]>*/
 </script>
+</body>
 </html>
