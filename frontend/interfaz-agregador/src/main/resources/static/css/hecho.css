@@ -19,7 +19,7 @@
 }
 
 .categoria-badge {
-    color: #4f46e5;
+    color: black;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     font-weight: 600;
@@ -246,6 +246,7 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     z-index: 1000;
 }
+
 
 .btn-close-custom {
     background: none;

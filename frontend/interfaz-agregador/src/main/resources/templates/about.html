@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: about})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: about(${isLoggedIn}, ${isAdmin})})}">
 
 <head>
     <th:block th:fragment="pageStyles">
@@ -16,7 +16,7 @@
     <section class="mb-12">
 
 
-        <h2 class="text-4xl font-bold text-indigo-800 mb-6">¿Qué es MetaMapa?</h2>
+        <h2 class="text-4xl font-bold text mb-6">¿Qué es MetaMapa?</h2>
         <p class="text-lg text-gray-700 leading-relaxed mb-4">
             MetaMapa es una plataforma de código abierto diseñada para el mapeo colaborativo de información.
             Nuestro objetivo es maximizar la disponibilidad y veracidad de la información relevante,
@@ -31,12 +31,12 @@
 
     <!-- Sección: Características Principales -->
     <section class="mb-12">
-        <h2 class="text-4xl font-bold text-indigo-800 mb-6">Características Principales</h2>
+        <h2 class="text-4xl font-bold text mb-6">Características Principales</h2>
         <div class="grid md:grid-cols-2 gap-8">
 
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-indigo-600 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text mr-3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Protección de Identidad</h3>
@@ -49,7 +49,7 @@
 
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-indigo-600 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text mr-3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Colecciones Temáticas</h3>
@@ -62,7 +62,7 @@
 
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-indigo-600 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text mr-3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Mapeo Geográfico</h3>
@@ -75,7 +75,7 @@
 
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-indigo-600 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text mr-3">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-800">Fuentes Múltiples</h3>
@@ -91,30 +91,30 @@
 
     <!-- Sección: Arquitectura -->
     <section class="mb-12 bg-white p-8 rounded-lg shadow-md">
-        <h2 class="text-4xl font-bold text-indigo-800 mb-6">Arquitectura del Sistema</h2>
+        <h2 class="text-4xl font-bold text mb-6">Arquitectura del Sistema</h2>
         <p class="text-lg text-gray-700 leading-relaxed mb-4">
             MetaMapa está construido con una arquitectura de microservicios que garantiza escalabilidad,
             mantenibilidad y separación de responsabilidades:
         </p>
         <ul class="space-y-3 text-gray-700">
             <li class="flex items-start">
-                <span class="text-indigo-600 font-bold mr-2">•</span>
+                <span class="text font-bold mr-2">•</span>
                 <span><strong>Agregador:</strong> Núcleo central que gestiona colecciones, hechos y usuarios</span>
             </li>
             <li class="flex items-start">
-                <span class="text-indigo-600 font-bold mr-2">•</span>
+                <span class="text font-bold mr-2">•</span>
                 <span><strong>API Pública:</strong> Interfaz para consultas públicas sin autenticación</span>
             </li>
             <li class="flex items-start">
-                <span class="text-indigo-600 font-bold mr-2">•</span>
+                <span class="text font-bold mr-2">•</span>
                 <span><strong>API Administrativa:</strong> Gestión de usuarios, identidades y solicitudes</span>
             </li>
             <li class="flex items-start">
-                <span class="text-indigo-600 font-bold mr-2">•</span>
+                <span class="text font-bold mr-2">•</span>
                 <span><strong>Fuentes de Datos:</strong> Módulos especializados para diferentes tipos de fuentes</span>
             </li>
             <li class="flex items-start">
-                <span class="text-indigo-600 font-bold mr-2">•</span>
+                <span class="text font-bold mr-2">•</span>
                 <span><strong>Dashboard:</strong> Panel de visualización y estadísticas</span>
             </li>
         </ul>
@@ -122,7 +122,7 @@
 
     <!-- Sección: Tecnologías -->
     <section class="mb-12">
-        <h2 class="text-4xl font-bold text-indigo-800 mb-6">Tecnologías Utilizadas</h2>
+        <h2 class="text-4xl font-bold text mb-6">Tecnologías Utilizadas</h2>
         <div class="bg-white p-8 rounded-lg shadow-md">
             <div class="grid md:grid-cols-3 gap-6">
                 <div>
@@ -157,8 +157,8 @@
     </section>
 
     <!-- Sección: Equipo -->
-    <section class="mb-12 bg-indigo-50 p-8 rounded-lg">
-        <h2 class="text-4xl font-bold text-indigo-800 mb-6">Equipo de Desarrollo</h2>
+    <section class="mb-12 red p-8 rounded-lg">
+        <h2 class="text-4xl font-bold text mb-6">Equipo de Desarrollo</h2>
         <p class="text-lg text-gray-700 leading-relaxed mb-4">
             MetaMapa es desarrollado por el <strong>Grupo 2</strong> como parte del curso de
             <strong>Diseño de Sistemas (DDS)</strong> - K3002 en la Universidad Tecnológica Nacional (UTN),
@@ -175,7 +175,7 @@
         <h2 class="text-3xl font-bold text-gray-800 mb-4">¿Listo para explorar?</h2>
         <p class="text-gray-600 mb-6">Comienza a utilizar MetaMapa hoy mismo</p>
         <div class="flex justify-center gap-4">
-            <a href="/" class="bg-indigo-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-indigo-700 transition">
+            <a href="/" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold transition">
                 Volver al Inicio
             </a>
         </div>
