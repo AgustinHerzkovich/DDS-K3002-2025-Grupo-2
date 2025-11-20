@@ -93,11 +93,11 @@
 
 <!-- Fragment: Botón de Volver -->
 <div th:fragment="botonVolver" class="z-10">
-    <a href="/home" class="hover:opacity-80 hover:scale-105 transition-transform text-white">
+    <button onclick="window.history.back()" class="hover:opacity-80 hover:scale-105 transition-transform text-white bg-transparent border-none cursor-pointer p-0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
         </svg>
-    </a>
+    </button>
 </div>
 
 
@@ -127,7 +127,7 @@
     <div id="modalCrearHecho" class="custom-modal" style="display: none;">
         <div class="modal-header">
             <h5 class="modal-title">Crear Nuevo Hecho</h5>
-            <button type="button" class="close-button" onclick="toggleModalHecho()">
+            <button type="button" class="close-button" onclick="toggleModalHecho()" aria-label="Cerrar modal">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
@@ -541,9 +541,12 @@
                 })
                 .then(data => {
                     console.log('Colección creada:', data);
-                    alert('¡Colección creada con éxito!');
                     toggleModalColeccion();
-                    window.location.reload();
+                    alert('¡Colección creada con éxito!');
+                    // Usar setTimeout para que el alert se muestre antes del reload
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -554,6 +557,416 @@
         document.addEventListener('DOMContentLoaded', mostrarCamposCriterio);
     </script>
 </div>
+
+<!-- Fragmento solo con el modal de crear hecho (sin botón) -->
+<div th:fragment="modalCrearHecho">
+    <!-- Overlay oscuro -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+
+    <!-- Modal personalizado -->
+    <div id="modalCrearHecho" class="custom-modal" style="display: none;">
+        <div class="modal-header">
+            <h5 class="modal-title">Crear Nuevo Hecho</h5>
+            <button type="button" class="close-button" onclick="toggleModalHecho()" aria-label="Cerrar modal">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="formCrearHecho">
+                <!-- Fila 1: Título y Categoría -->
+                <div class="row g-2 mb-3">
+                    <div class="col-md-8">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" placeholder="Ingrese el título del hecho" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <input type="text" class="form-control" id="categoria" placeholder="Ej: Desastre Natural" required>
+                    </div>
+                </div>
+
+                <!-- Fila 2: Descripción -->
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <textarea class="form-control" id="descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
+                </div>
+
+                <!-- Sección de Ubicación -->
+                <div class="mb-3">
+                    <label class="form-label">Ubicación</label>
+                    <div class="form-check mb-2">
+                        <input type="checkbox" id="usarCoordenadas" class="form-check-input" onchange="toggleUbicacionInputs()">
+                        <label for="usarCoordenadas" class="form-check-label" style="color:black">
+                            Ingresar manualmente latitud y longitud
+                        </label>
+                    </div>
+
+                    <!-- Campos de dirección -->
+                    <div id="direccionContainer" class="row g-2">
+                        <div class="col-md-6">
+                            <label for="pais" class="form-label">País</label>
+                            <input type="text" class="form-control" id="pais" placeholder="Ej: Argentina" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="provincia" class="form-label">Provincia</label>
+                            <input type="text" class="form-control" id="provincia" placeholder="Ej: Buenos Aires" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ciudad" class="form-label">Ciudad</label>
+                            <input type="text" class="form-control" id="ciudad" placeholder="Ej: La Plata" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="calle" class="form-label">Calle</label>
+                            <input type="text" class="form-control" id="calle" placeholder="Ej: Calle 7" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="altura" class="form-label">Altura</label>
+                            <input type="text" class="form-control" id="altura" placeholder="Ej: 1234" required>
+                        </div>
+                    </div>
+
+                    <!-- Campos de coordenadas -->
+                    <div id="coordenadasContainer" class="row g-2" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="latitud" class="form-label">Latitud</label>
+                            <input type="number" step="any" class="form-control" id="latitud" placeholder="-34.603722">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="longitud" class="form-label">Longitud</label>
+                            <input type="number" step="any" class="form-control" id="longitud" placeholder="-58.381592">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 3: Fecha y Contenido Texto -->
+                <div class="row g-2 mb-3">
+                    <div class="col-md-5">
+                        <label for="fecha" class="form-label">Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fecha" required>
+                    </div>
+                    <div class="col-md-7">
+                        <label for="contenidoTexto" class="form-label">Contenido de Texto</label>
+                        <textarea class="form-control" id="contenidoTexto" rows="2" placeholder="Describa el hecho..." required></textarea>
+                    </div>
+                </div>
+
+                <!-- Sección de Multimedia -->
+                <div class="mb-3">
+                    <label class="form-label">Contenido Multimedia</label>
+                    <div id="multimediaContainer"></div>
+                    <button type="button" class="btn btn-sm btn-primary mt-2" onclick="agregarMultimedia()">
+                        + Añadir Multimedia
+                    </button>
+                </div>
+
+                <!-- Checkbox de anonimato -->
+                <div class="mb-3">
+                    <label class="d-flex align-items-center">
+                        <input type="checkbox" id="anonimato" name="anonimato" class="form-check-input">
+                        <span class="ms-2" style="color: black">Publicar de forma anónima</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
+            <button type="button" class="btn btn-danger-hecho" th:onclick="|publicarHecho(${isAdmin})|">Publicar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Fragmento solo con el modal de crear colección (sin botón) -->
+<div th:fragment="modalCrearColeccion">
+    <!-- Modal para Crear Colección -->
+    <div id="modalCrearColeccion" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <!-- Header del Modal -->
+            <div class="modal-header flex justify-between items-center p-4 border-b bg-black rounded-t-lg">
+                <h5 style="color: white" class="modal-title text-xl font-semibold">Crear Nueva Colección</h5>
+                <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalColeccion()">
+                    <svg style="color:black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body del Modal (con scroll) -->
+            <div class="modal-body p-6 space-y-4 overflow-y-auto">
+                <form id="formCrearColeccion" class="space-y-4">
+                    <!-- Título -->
+                    <div>
+                        <label for="tituloColeccion" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+                        <input type="text" id="tituloColeccion" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese el título de la colección" required>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div>
+                        <label for="descripcionColeccion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                        <textarea id="descripcionColeccion" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Describa la colección" required></textarea>
+                    </div>
+
+                    <!-- Criterio de Pertenencia -->
+                    <div>
+                        <label for="criterioTipo" class="block text-sm font-medium text-gray-700 mb-1">Criterio de Pertenencia</label>
+                        <select id="criterioTipo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="mostrarCamposCriterio()">
+                            <option value="">Seleccione un criterio</option>
+                            <option value="DISTANCIA">Distancia</option>
+                            <option value="FECHA">Fecha</option>
+                        </select>
+                    </div>
+
+                    <!-- Campos Distancia -->
+                    <div id="camposDistancia" style="display:none;" class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="criterioLatitud" class="block text-sm font-medium text-gray-700 mb-1">Latitud Base</label>
+                                <input type="number" step="any" id="criterioLatitud" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="-34.603722">
+                            </div>
+                            <div>
+                                <label for="criterioLongitud" class="block text-sm font-medium text-gray-700 mb-1">Longitud Base</label>
+                                <input type="number" step="any" id="criterioLongitud" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="-58.381592">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="criterioDistanciaMinima" class="block text-sm font-medium text-gray-700 mb-1">Distancia Mínima (km)</label>
+                            <input type="number" step="any" id="criterioDistanciaMinima" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="100">
+                        </div>
+                    </div>
+
+                    <!-- Campos Fecha -->
+                    <div id="camposFecha" style="display:none;" class="space-y-2">
+                        <div>
+                            <label for="criterioFechaInicial" class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicial</label>
+                            <input type="datetime-local" id="criterioFechaInicial" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="criterioFechaFinal" class="block text-sm font-medium text-gray-700 mb-1">Fecha Final</label>
+                            <input type="datetime-local" id="criterioFechaFinal" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <!-- Fuentes -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fuentes</label>
+                        <div id="fuentesContainer" class="space-y-2"></div>
+                        <button type="button" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm" onclick="agregarFuente()">+ Agregar Fuente</button>
+                    </div>
+
+                    <!-- Algoritmo de Consenso -->
+                    <div>
+                        <label for="algoritmoConsenso" class="block text-sm font-medium text-gray-700 mb-1">Algoritmo de Consenso</label>
+                        <select id="algoritmoConsenso" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="ABSOLUTO">Absoluto</option>
+                            <option value="MAYORIA">Mayoría</option>
+                            <option value="MINIMO_DOS">Mínimo Dos</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Footer del Modal -->
+            <div class="modal-footer flex justify-end gap-2 p-4 border-t">
+                <button type="button" class="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" aria-label="Cancelar">onclick="toggleModalColeccion()"Cancelar</button>
+                <button type="button" class="btn-primary px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-indigo-700" onclick="crearColeccion()">Crear Colección</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let contadorFuentes = 0;
+
+        function mostrarCamposCriterio() {
+            const tipo = document.getElementById('criterioTipo').value;
+            document.getElementById('camposDistancia').style.display = tipo === 'DISTANCIA' ? 'block' : 'none';
+            document.getElementById('camposFecha').style.display = tipo === 'FECHA' ? 'block' : 'none';
+        }
+
+        function agregarFuente() {
+            contadorFuentes++;
+            const container = document.getElementById('fuentesContainer');
+            const fuenteDiv = document.createElement('div');
+            fuenteDiv.className = 'fuente-item border border-gray-300 rounded-md p-3 bg-gray-50';
+            fuenteDiv.id = `fuente-${contadorFuentes}`;
+            fuenteDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">Fuente ${contadorFuentes}</span>
+                    <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="eliminarFuente(${contadorFuentes})">Eliminar</button>
+                </div>
+                <div class="space-y-2">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Tipo</label>
+                        <select id="fuenteTipo-${contadorFuentes}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="toggleNombreFuente(${contadorFuentes})">
+                            <option value="">Seleccione tipo</option>
+                            <option value="ESTATICA">Estática</option>
+                            <option value="DINAMICA">Dinámica</option>
+                            <option value="PROXY">Proxy</option>
+                        </select>
+                    </div>
+                    <div id="nombreContainer-${contadorFuentes}" style="display:none;">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Nombre</label>
+                        <input type="text" id="fuenteNombre-${contadorFuentes}" class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese el nombre">
+                    </div>
+                </div>
+            `;
+            container.appendChild(fuenteDiv);
+        }
+
+        function toggleNombreFuente(id) {
+            const tipo = document.getElementById(`fuenteTipo-${id}`).value;
+            const nombreContainer = document.getElementById(`nombreContainer-${id}`);
+            nombreContainer.style.display = (tipo === 'ESTATICA' || tipo === 'PROXY') ? 'block' : 'none';
+        }
+
+        function eliminarFuente(id) {
+            const elemento = document.getElementById(`fuente-${id}`);
+            if (elemento) {
+                elemento.remove();
+            }
+        }
+
+        function toggleModalColeccion() {
+            const modal = document.getElementById('modalCrearColeccion');
+            modal.classList.toggle('hidden');
+        }
+
+        // --- Función para Crear la Colección (CORREGIDA) ---
+        function crearColeccion() {
+            const titulo = document.getElementById('tituloColeccion').value.trim();
+            const descripcion = document.getElementById('descripcionColeccion').value.trim();
+            if (!titulo || !descripcion) {
+                alert('Por favor, complete el título y la descripción.');
+                return;
+            }
+
+            // Construir el objeto Criterio
+            const criterioTipoSelect = document.getElementById('criterioTipo').value;
+            let criterioObjeto = null;
+            if (criterioTipoSelect === 'DISTANCIA') {
+                const lat = document.getElementById('criterioLatitud').value;
+                const lon = document.getElementById('criterioLongitud').value;
+                const dist = document.getElementById('criterioDistanciaMinima').value;
+                if (!lat || !lon || !dist) {
+                    alert('Complete todos los campos del criterio de distancia.');
+                    return;
+                }
+                criterioObjeto = {
+                    tipo: 'distancia', // CORREGIDO: minúscula
+                    ubicacionBase: { latitud: parseFloat(lat), longitud: parseFloat(lon) },
+                    distanciaMinima: parseFloat(dist)
+                };
+            } else if (criterioTipoSelect === 'FECHA') {
+                const fechaIni = document.getElementById('criterioFechaInicial').value;
+                const fechaFin = document.getElementById('criterioFechaFinal').value;
+                if (!fechaIni || !fechaFin) {
+                    alert('Complete ambas fechas del criterio.');
+                    return;
+                }
+                // Formato esperado por backend: "YYYY-MM-DDTHH:mm:ss.SSS"
+                // Los inputs datetime-local devuelven "YYYY-MM-DDTHH:mm"
+                // Podemos añadir segundos y milisegundos si es necesario, o ajustar el backend
+                const fechaInicialFormatted = fechaIni + ":00.000"; // Añade segundos y milisegundos
+                const fechaFinalFormatted = fechaFin + ":00.000";
+
+                criterioObjeto = {
+                    tipo: 'fecha', // CORREGIDO: minúscula
+                    fechaInicial: fechaInicialFormatted,
+                    fechaFinal: fechaFinalFormatted
+                };
+            } else {
+                alert('Seleccione un criterio de pertenencia.');
+                return;
+            }
+
+            // CORREGIDO: Envolver el criterio en un array
+            const criteriosDePertenencia = [criterioObjeto];
+
+            // Recopilar las Fuentes
+            const fuentes = [];
+            const fuenteItems = document.querySelectorAll('#fuentesContainer .fuente-item');
+            if (fuenteItems.length === 0) {
+                alert('Debe agregar al menos una fuente.');
+                return;
+            }
+            try {
+                fuenteItems.forEach((item, index) => {
+                    const i = item.id.split('-')[1];
+                    const tipoSelect = item.querySelector(`#fuenteTipo-${i}`).value;
+                    if (!tipoSelect) {
+                        throw new Error(`Debe seleccionar un tipo para la Fuente ${index + 1}.`);
+                    }
+                    const nombreInput = item.querySelector(`#fuenteNombre-${i}`);
+                    const nombre = nombreInput ? nombreInput.value.trim() : null;
+
+                    // Validar: solo se requiere nombre si es estática o proxy
+                    if ((tipoSelect === 'ESTATICA' || tipoSelect === 'PROXY') && !nombre) {
+                        throw new Error(`Debe ingresar un nombre para la Fuente ${index + 1} (${tipoSelect}).`);
+                    }
+
+                    fuentes.push({
+                        tipo: tipoSelect.toLowerCase(),
+                        id: nombre || null
+                    });
+                });
+            } catch (error) {
+                alert(error.message);
+                return;
+            }
+
+            // Obtener Algoritmo de Consenso
+            const algoritmo = document.getElementById('algoritmoConsenso').value;
+
+            // Construir el Payload Final
+            const payload = {
+                titulo: titulo,
+                descripcion: descripcion,
+                criteriosDePertenencia: criteriosDePertenencia, // CORREGIDO: nombre y es un array
+                fuentes: fuentes,
+                tipoAlgoritmoConsenso: algoritmo // CORREGIDO: nombre
+            };
+
+            console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
+
+            // Enviar la Petición POST
+            fetch('http://localhost:8086/apiAdministrativa/colecciones', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text().then(text => {
+                            console.log('Respuesta del servidor (texto):', text);
+                            return text || {};
+                        });
+                    } else {
+                        return response.text().then(text => { throw new Error('Error al crear colección: ' + response.status + (text ? ' - ' + text : '')) });
+                    }
+                })
+                .then(data => {
+                    console.log('Colección creada:', data);
+                    toggleModalColeccion();
+                    alert('¡Colección creada con éxito!');
+                    // Usar setTimeout para que el alert se muestre antes del reload
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al crear la colección. Verifique los datos o consulte la consola.\nDetalle: ' + error.message);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', mostrarCamposCriterio);
+    </script>
+</div>
+
 <script th:fragment="botonPerfilScript">
 
     function toggleProfileMenu() {
@@ -653,8 +1066,8 @@
     <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
 
         <div class="modal-header flex justify-between items-center p-4 border-b border-gray-200">
-            <h5 style="color: black" class="modal-title text-xl font-semibold">Editar Perfil</h5>
-            <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalEditarPerfil()">
+            <h5 style="color: white" class="modal-title text-xl font-semibold">Editar Perfil</h5>
+            <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalEditarPerfil()" aria-label="Cerrar modal">
                 <svg style="color:black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>

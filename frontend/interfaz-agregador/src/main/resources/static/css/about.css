@@ -1,6 +1,4 @@
 :root{
-  --indigo-800: #4f46e5;
-  --indigo-600: #6366f1;
   --muted: #6b7280;
   --bg-card: #ffffff;
 }
@@ -17,11 +15,11 @@ main.container {
 }
 
 h2 {
-  color: var(--indigo-800);
+  color: red;
 }
 
-.text-indigo-800 {
-  color: var(--indigo-800) !important;
+.text {
+  color: red !important;
 }
 
 .bg-white {
@@ -44,7 +42,7 @@ h2 {
 }
 
 .button-primary, a.button-primary {
-  background: var(--indigo-800);
+  background: red;
   color: white;
   padding: 0.6rem 1.1rem;
   border-radius: 8px;

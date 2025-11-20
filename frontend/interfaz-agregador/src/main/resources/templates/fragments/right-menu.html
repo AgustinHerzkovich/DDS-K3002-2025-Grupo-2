@@ -1,33 +1,29 @@
-<div th:fragment="home(isLoggedIn)" class="flex justify-end">
-    <th:block th:if="${!isLoggedIn}">
-        <div th:replace="~{fragments/button :: botonLogin}"></div>
-    </th:block>
-    <th:block th:if="${isLoggedIn}">
-        <div th:replace="~{fragments/button :: botonPerfil}"></div>
-    </th:block>
+<!-- Todos los fragmentos ahora usan el menú hamburguesa -->
+<!-- Home: solo menú hamburguesa, sin botón volver -->
+<div th:fragment="home(isLoggedIn, isAdmin)" class="flex justify-end relative">
+    <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
-<div th:fragment="about">
+<!-- About: con botón volver -->
+<div th:fragment="about(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
     <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
-<div th:fragment="map(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end">
-    <th:block th:if="${isAdmin}">
-        <div th:replace="~{fragments/button :: botonSolicitudes}"></div>
-    </th:block>
-    <div th:replace="~{fragments/button :: botonColecciones}"></div>
-    <div th:replace="~{fragments/button :: botonCrearHecho}"></div>
-    <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
+<!-- Map: con botón volver -->
+<div th:fragment="map(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
+    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
-<div th:fragment="noMap(isLoggedIn)" class="flex gap-3 items-center justify-end">
-    <div th:replace="~{fragments/button :: botonMapa}"></div>
-    <div th:replace="~{fragments/right-menu :: home(${isLoggedIn})}"></div>
+<!-- NoMap: con botón volver -->
+<div th:fragment="noMap(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
+    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
-<div th:fragment="colecciones(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end">
-    <th:block th:if="${isAdmin}">
-        <div th:replace="~{fragments/button :: botonCrearColeccion}"></div>
-    </th:block>
-    <div th:replace="~{fragments/right-menu :: noMap(${isLoggedIn})}"></div>
+<!-- Colecciones: con botón volver -->
+<div th:fragment="colecciones(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
+    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>

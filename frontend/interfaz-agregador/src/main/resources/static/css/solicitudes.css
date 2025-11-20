@@ -8,7 +8,7 @@
 .page-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #1f2937;
+    color: black;
     margin-bottom: 2rem;
     text-align: center;
 }
@@ -185,19 +185,22 @@
     justify-content: center;
     padding: 4rem 2rem;
     text-align: center;
-    color: #6b7280;
+    color: #000000;
+    background: transparent;
 }
 
 .no-solicitudes .icon-large {
     width: 80px;
     height: 80px;
     margin-bottom: 1rem;
-    color: #d1d5db;
+    color: #000000;
+    stroke: #000000;
 }
 
 .no-solicitudes p {
     font-size: 1.25rem;
     margin: 0;
+    color: #000000;
 }
 
 /* Responsive */
