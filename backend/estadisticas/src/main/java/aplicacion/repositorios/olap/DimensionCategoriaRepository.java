@@ -3,6 +3,7 @@ package aplicacion.repositorios.olap;
 import aplicacion.domain.dimensiones.DimensionCategoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface DimensionCategoriaRepository extends JpaRepository<DimensionCat
                     WHERE dc.nombre IN (:categorias)""",
             nativeQuery = true
     )
-    List<DimensionCategoria> findByNombreCategoria(Set<String> categorias);
+    List<DimensionCategoria> findByNombreCategoria(@Param("categorias") Set<String> categorias);
 }
