@@ -28,8 +28,8 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<Object> obtenerSolicitudes(@RequestParam(defaultValue = "0") Integer page,
-                                                    @RequestParam(defaultValue = "3") Integer size) {
+    public ResponseEntity<Object> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                    @RequestParam(name = "size", defaultValue = "3") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/solicitudes");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);

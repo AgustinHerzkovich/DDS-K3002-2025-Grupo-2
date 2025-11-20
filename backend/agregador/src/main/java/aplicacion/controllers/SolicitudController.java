@@ -46,8 +46,8 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(defaultValue = "0") Integer page,
-                                                                       @RequestParam(defaultValue = "3") Integer size) {
+    public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                       @RequestParam(name = "size", defaultValue = "3") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO(pageable));
     }

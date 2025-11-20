@@ -1,6 +1,5 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
@@ -43,8 +42,8 @@ public class ColeccionController {
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
     public ResponseEntity<Page<ColeccionOutputDto>> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
+                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ColeccionOutputDto> colecciones;
 
@@ -73,8 +72,8 @@ public class ColeccionController {
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
                                                           @RequestParam(name = "longitud", required = false) Double longitud,
                                                           @RequestParam(name = "search", required = false) String textoLibre,
-                                                          @RequestParam(defaultValue = "0") Integer page,
-                                                          @RequestParam(defaultValue = "100") Integer size){
+                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                          @RequestParam(name = "size", defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -102,8 +101,8 @@ public class ColeccionController {
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
                                                      @RequestParam(name = "longitud", required = false) Double longitud,
                                                      @RequestParam(name = "search", required = false) String textoLibre,
-                                                     @RequestParam(defaultValue = "0") Integer page,
-                                                     @RequestParam(defaultValue = "100") Integer size){
+                                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                     @RequestParam(name = "size", defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -168,7 +167,7 @@ public class ColeccionController {
     }
     @GetMapping("/colecciones/index")
     public ResponseEntity<List<String>> autoCompletar(@RequestParam(name = "search") String currentSearch, @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit){
-        if(limit>100 || limit<0)
+        if(limit >100 || limit <0)
             throw new TooHighLimitException(limit);
         List<String> recomendaciones = coleccionService.obtenerAutocompletado(currentSearch, limit);
         return ResponseEntity.ok(recomendaciones);

@@ -35,8 +35,8 @@ public class MapaController {
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
             @RequestParam(name = "search", required = false) String search,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size,
             Model model
     ) {
 
