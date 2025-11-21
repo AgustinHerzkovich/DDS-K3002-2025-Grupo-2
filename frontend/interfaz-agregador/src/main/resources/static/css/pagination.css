@@ -1,13 +1,17 @@
 /* Controles de paginación */
-.pagination-container {
-    margin-top: auto;
-    padding-top: 1rem;
+.pagination-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     display: flex;
-    justify-content: center;
+    gap: 10px;
     align-items: center;
-    position: relative;
-    bottom: 0;
-    border: 1px solid black;
+    z-index: 1000;
 }
 
 .pagination-controls {
@@ -34,13 +38,17 @@
 }
 
 .pagination-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+    opacity: 0.8;
 }
 
 .pagination-btn:active {
     transform: translateY(0);
+}
+
+.pagination-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none; /* Evita clics en enlaces deshabilitados */
 }
 
 .pagination-icon {
