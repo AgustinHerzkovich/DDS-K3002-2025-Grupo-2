@@ -22,15 +22,6 @@
 
     <!-- Estilos globales para eliminar espacios en blanco -->
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        html {
-            overflow-y: scroll;
-        }
-
         /* Estilos mínimos para los modales - solo lo necesario */
         #modalCrearColeccion {
             z-index: 9999;
@@ -55,7 +46,7 @@
     <th:block th:replace="~{::pageStyles}" />
     <!-- ============================================== -->
 </head>
-<body class="bodyHome bg-gray-50 min-h-screen flex flex-col">
+<body class="bodyHome bg-gray-50 flex flex-col min-h-screen">
 
 <!-- Header -->
 <div th:replace="~{fragments/header :: navbar(${contenidoSuperior}, ${menuDerecho})}"></div>

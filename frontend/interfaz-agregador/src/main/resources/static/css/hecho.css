@@ -1,21 +1,18 @@
 .hecho-container {
-    max-width: 1400px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    margin: 7rem auto;
 }
 
-.hecho-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.hecho-components {
+    display: flex;
     gap: 2rem;
-    margin-bottom: 2rem;
+    justify-content: center;
 }
 
-.left-section {
+.hecho-left-section {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
     align-items: center;
+    gap: 1rem;
 }
 
 .categoria-badge {
@@ -89,17 +86,18 @@
 }
 
 .info-item {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 0.75rem;
-    align-items: center;
 }
 
-.info-label {
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.25rem;
+.hecho-info-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: black;
 }
 
-.info-value {
+.hecho-info-value {
     color: #6b7280;
 }
 

@@ -5,7 +5,7 @@
 
     <style>
         #map {
-            height: calc(100vh - 120px); /* Altura casi completa de la ventana menos el header */
+            height: 900px; /* Altura casi completa de la ventana menos el header */
             width: 100%;
             margin: 0;
             padding: 0;
@@ -23,7 +23,11 @@
         console.log("Hechos en JS:", hechos); // Para verificar que llegan correctamente
 
         // Inicializamos el mapa centrado en Buenos Aires
-        const map = L.map('map').setView([-34.6037, -58.3816], 5);
+        const map = L.map('map', {zoomControl: false}).setView([-34.6037, -58.3816], 5);
+
+        L.control.zoom({
+            position: 'topright' // ← cambiás la posición
+        }).addTo(map);
 
         // Capa de mapa de OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -84,7 +88,7 @@
     <div class="pagination-controls">
         <a th:if="${hasPrevious}"
            th:href="@{/mapa(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}"
-           class="pagination-btn">
+           class="pagination-btn w-[92px]">
             ← Anterior
         </a>
         <!-- Enlace deshabilitado si no hay página anterior -->
@@ -94,7 +98,7 @@
 
         <a th:if="${hasNext}"
            th:href="@{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}"
-           class="pagination-btn">
+           class="pagination-btn w-[92px]">
             Siguiente →
         </a>
         <!-- Enlace deshabilitado si no hay página siguiente -->
@@ -104,8 +108,7 @@
 
 <!-- Fragmento hechosRecientes -->
 <div th:fragment="hechosRecientes(hechos)">
-    <div id="hechos-recientes-panel" class="bg-white rounded-lg shadow-lg"
-         style="width: 100%; max-width: 300px;">
+    <div id="hechos-recientes-panel" class="bg-white rounded-lg shadow-lg w-[300px]">
         <div class="flex justify-between items-center p-4 pb-3">
             <h3 class="text-xl font-bold">Hechos Recientes</h3>
             <button id="toggle-hechos-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
@@ -174,9 +177,7 @@
 </div>
 
 <div th:fragment="filtros">
-    <div id="filtros-panel" class="bg-white rounded-lg shadow-lg"
-         style="width: 100%; max-width: 300px;">
-
+    <div id="filtros-panel" class="bg-white rounded-lg shadow-lg w-[300px]">
         <div class="flex justify-between items-center p-4 pb-3">
             <h3 class="text-lg font-bold">Filtros</h3>
             <div class="flex items-center gap-1">
@@ -184,7 +185,7 @@
                     Aplicar
                 </button>
                 <button id="toggle-filtros-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
-                    <svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
