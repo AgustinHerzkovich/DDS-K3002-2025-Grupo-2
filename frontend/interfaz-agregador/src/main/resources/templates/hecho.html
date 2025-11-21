@@ -8,9 +8,9 @@
 <body>
 <main>
     <div class="hecho-container" th:object="${hecho}">
-        <div class="hecho-grid">
+        <div class="hecho-components">
             <!-- Sección Izquierda -->
-            <div class="left-section">
+            <div class="hecho-left-section">
                 <!-- Categoría -->
                 <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">Categoría</div>
 
@@ -55,44 +55,44 @@
 
                 <!-- Fecha de Acontecimiento -->
                 <div class="info-item">
-                    <div class="info-label">Fecha de acontecimiento</div>
-                    <div class="info-value" style="color: black" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                    <div class="hecho-info-label">Fecha de acontecimiento</div>
+                    <div class="hecho-hecho-info-value" style="color: black" th:text="*{#temporals.format(fechaAcontecimiento, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
                 </div>
 
                 <!-- Autor -->
-                <div class="info-item">
-                    <div class="info-label">Autor</div>
-                    <div class="info-value" style="color: black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
+                <div class="info-item items-center">
+                    <div class="hecho-info-label">Autor</div>
+                    <div class="hecho-info-value" style="color: black" th:text="*{autor != null ? autor.identidad.nombre + autor.identidad.apellido : 'Anónimo'}">Anónimo</div>
                 </div>
             </div>
 
             <!-- Sección Derecha -->
-            <div class="right-section">
+            <div class="right-section  w-[800px]" >
                 <!-- Título -->
-                <h1 class="fw-bold mb-3" style="color: black" th:text="*{titulo}">Título</h1>
+                <h1 class="fw-bold mb-3 display-6" style="color: black" th:text="*{titulo}">Título</h1>
 
                 <!-- Descripción -->
                 <div class="info-item">
-                    <div class="info-label">Descripción</div>
-                    <div class="info-value" style="color: black" th:text="*{descripcion}">Descripción</div>
+                    <div class="hecho-info-label"style="font-weight:bold" >Descripción</div>
+                    <div class="hecho-info-value" style="color: black" th:text="*{descripcion}">Descripción</div>
                 </div>
 
                 <!-- Dirección Completa -->
-                <div class="info-item">
-                    <div class="info-label">
+                <div class="info-item" >
+                    <div class="hecho-info-label">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 16px; height: 16px; display: inline; margin-right: 4px;">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                         </svg>
                         Ubicación
                     </div>
-                    <div class="info-value" style="color: black" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
+                    <div class="hecho-info-value" style="color: black" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
                 </div><!-- Etiquetas -->
-                <div class="info-item" th:if="*{etiquetas != null}">
-                    <div class="info-label">Etiquetas</div>
+                <div class="info-item " th:if="*{etiquetas != null}">
+                    <div class="hecho-info-label"style="color:black;font-weight: bold">Etiquetas</div>
 
                     <!-- Vista para Admin -->
-                    <div class="info-value" th:if="${isAdmin}" style="color: black">
+                    <div class="hecho-info-value" th:if="${isAdmin}" style="color: black">
                         <ul id="lista-etiquetas" class="tag-list">
                             <li th:each="etiqueta : *{etiquetas}"
                                 th:attr="data-nombre=${etiqueta.nombre}"
@@ -108,13 +108,13 @@
                         </ul>
 
                         <div class="agregar-tag">
-                            <input type="text" placeholder="Agregar nueva etiqueta" id="nuevaEtiqueta" class="input-tag" />
+                            <input type="text" placeholder="Agregar nueva etiqueta" id="nuevaEtiqueta" class="input-tag"  style="max-width: 250px; width: 100%;" />
                             <button type="button" onclick="agregarEtiqueta()" class="btn-agregar">Agregar</button>
                         </div>
                     </div>
 
                     <!-- Vista para No Admin -->
-                    <div class="info-value" th:if="${!isAdmin}" style="color: black">
+                    <div class="hecho-info-value" th:if="${!isAdmin}" style="color: black">
                         <span th:each="etiqueta : *{etiquetas}">
                             <span class="tag-item" th:text="${etiqueta.nombre}">NombreEtiqueta</span>
                         </span>
@@ -122,14 +122,14 @@
                 </div>
                 <!-- Origen -->
                 <div class="info-item">
-                    <div class="info-label">Origen</div>
-                    <div class="info-value" style="color: black" th:text="*{origen}">Origen</div>
+                    <div class="hecho-info-label "style="color:black;font-weight: bold">Origen</div>
+                    <div class="hecho-info-value" style="color: black" th:text="*{origen}">Origen</div>
                 </div>
 
                 <!-- Fecha de Carga -->
                 <div class="info-item">
-                    <div class="info-label">Fecha de carga</div>
-                    <div class="info-value" style="color: black" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
+                    <div class="hecho-info-label"style="color:black;font-weight: bold">Fecha de carga</div>
+                    <div class="hecho-info-value" style="color: black" th:text="*{#temporals.format(fechaCarga, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</div>
                 </div>
                 <!-- Última Modificación -->
                 <div class="ultima-modificacion"

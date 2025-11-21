@@ -16,7 +16,7 @@
     justify-content: space-between;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1.5rem;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -32,13 +32,11 @@
 
 .left-section {
     display: flex;
-    margin-left: 1rem;
 }
 
 .coleccion-detalles {
     display: flex;
     flex-direction: column;
-    margin-left: 1.5rem;
     flex: 1;
     color: black;
     gap: 0.5rem;
@@ -54,6 +52,19 @@
 .coleccion-botones {
     display: flex;
     gap: 2rem;
+}
+
+.coleccion-btn-primary {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+}
+
+.coleccion-btn-primary:hover {
+    opacity: 0.8;
 }
 
 .coleccion-actions {
