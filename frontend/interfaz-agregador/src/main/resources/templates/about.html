@@ -4,8 +4,8 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: about(${isLoggedIn}, ${isAdmin})})}">
-    <main class="container mx-auto px-6 py-12 max-w-5xl">
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+    <main class="container mx-auto px-6 pt-[7rem] pb-[13rem] max-w-5xl">
         <!-- Sección: Introducción -->
         <section class="mb-12">
             <h2 class="text-4xl font-bold text mb-6">¿Qué es MetaMapa?</h2>
@@ -173,4 +173,4 @@
             </div>
         </section>
     </main>
-</div>
+</th:block>

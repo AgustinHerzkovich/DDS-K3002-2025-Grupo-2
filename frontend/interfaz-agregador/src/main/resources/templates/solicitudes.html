@@ -5,8 +5,8 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
-    <main th:inline="javascript">
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+    <main th:inline="javascript" class="pt-[7rem] pb-[13rem]">
         <div class="solicitudes-container">
             <h1 class="page-title">Solicitudes Pendientes</h1>
             <div class="solicitudes-grid">
@@ -129,4 +129,4 @@
             }
         </script>
     </main>
-</div>
+</th:block>

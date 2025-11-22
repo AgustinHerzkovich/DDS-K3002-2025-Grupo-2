@@ -1,4 +1,4 @@
-<header th:fragment="navbar(contenidoSuperior, menuDerecho)" class="bg-black">
+<header th:fragment="navbar" class="bg-black">
     <nav class="px-8 py-4 grid grid-cols-3 items-center relative">
 
     <!-- Izquierda: Logo -->
@@ -10,9 +10,14 @@
         </a>
 
         <!-- Centro: Puede ser título, barra de búsqueda, etc -->
-        <div th:replace="${contenidoSuperior}"></div>
+        <h1 class="text-5xl font-semibold text-white text-center">
+            METAMAPA
+        </h1>
 
         <!-- Derecha: Menú derecho -->
-        <div th:replace="${menuDerecho}"></div>
+        <div class="flex align-items-center justify-end">
+            <th:block th:replace="~{fragments/button :: returnButton}"></th:block>
+            <th:block th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></th:block>
+        </div>
     </nav>
 </header>

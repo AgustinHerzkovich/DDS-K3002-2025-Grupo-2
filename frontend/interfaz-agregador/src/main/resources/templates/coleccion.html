@@ -4,8 +4,8 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
-    <main th:inline="javascript" class="container mx-auto p-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+    <main th:inline="javascript" class="container mx-auto px-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl pt-[7rem] pb-[13rem]">
         <header class="mb-6 pb-4 border-b">
             <h1 class="text-3xl font-bold text-indigo-800" th:text="${coleccion.titulo}">Título de la Colección</h1>
             <p class="text-md text-gray-600 mt-1" th:text="${coleccion.descripcion}">Descripción de la colección.</p>
@@ -263,4 +263,4 @@
             /*]]>*/
         </script>
     </main>
-</div>
+</th:block>

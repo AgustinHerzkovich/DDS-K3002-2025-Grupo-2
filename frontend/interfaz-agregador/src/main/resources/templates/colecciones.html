@@ -4,10 +4,10 @@
 </th:block>
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
-    <main class="my-10">
-        <div th:replace="~{fragments/titles :: colecciones}"></div>
-        <div th:replace="~{fragments/top-content :: searchBar('colecciones')}"></div>
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+    <main class="pt-[7rem] pb-[13rem]">
+        <th:block th:replace="~{fragments/titles :: colecciones}" />
+        <th:block th:replace="~{fragments/search-bar :: searchBar('colecciones')}" />
 
         <div class="colecciones-container">
             <div th:each="coleccion : ${colecciones}"  class="coleccion-card">
@@ -65,4 +65,4 @@
             </div>
         </div>
     </main>
-</div>
+</th:block>

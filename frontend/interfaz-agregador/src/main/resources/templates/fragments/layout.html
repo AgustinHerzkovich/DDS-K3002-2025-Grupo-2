@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (contenidoSuperior, contenido, menuDerecho)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(contenido)">
     <head>
         <title>MetaMapa</title>
         <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}">
@@ -49,27 +49,28 @@
         <!-- (Solo si el fragmento 'pageStyles' está definido) -->
         <th:block th:replace="::pageStyles" />
         <!-- ============================================== -->
+        <th:block th:replace="~{fragments/hamburger-menu :: hamburgerMenuStyles}" />
+        <th:block th:replace="~{fragments/button :: buttonMenuStyles}" />
     </head>
 
     <body class="bodyHome bg-gray-50 min-h-screen">
 
         <!-- Header -->
-        <th:block th:replace="~{fragments/header :: navbar(${contenidoSuperior}, ${menuDerecho})}" />
+        <th:block th:replace="~{fragments/header :: navbar}" />
 
         <!-- Contenido Principal (variable) -->
-        <th:block class="flex-grow" th:replace="${contenido}" />
+        <th:block th:replace="${contenido}" />
 
         <!-- Footer -->
         <th:block th:replace="~{fragments/footer :: footer}" />
 
-        <!-- Modales globales -->
+        <!-- Modals globales -->
         <th:block th:replace="~{fragments/modals :: modalCrearHecho}" />
         <th:block th:replace="~{fragments/modals :: modalCrearColeccion}" />
 
-        <div th:replace="~{fragments/hamburger-menu :: hamburgerMenuStyles}"></div>
-
         <!-- Scripts -->
-        <div th:replace="~{fragments/hamburger-menu :: hamburgerMenuScripts}"></div>
+        <th:block th:replace="~{fragments/hamburger-menu :: hamburgerMenuScripts}" />
+        <th:block th:replace="~{fragments/search-bar :: searchBarScripts}" />
 
         <!-- Agregar antes del cierre del body -->
         <script th:inline="javascript">
