@@ -3,7 +3,7 @@
 </th:block>
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: home(${isLoggedIn}, ${isAdmin})})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
     <main>
         <div class="map-container">
             <!-- Botón centrado -->
@@ -74,4 +74,4 @@
             </div>
         </div>
     </main>
-</div>
+</th:block>

@@ -4,8 +4,8 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
-    <main>
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+    <main class="pt-[7rem] pb-[13rem]">
         <div class="hecho-container" th:object="${hecho}">
             <div class="hecho-components">
                 <!-- Sección Izquierda -->
@@ -247,4 +247,4 @@
 
         </script>
     </main>
-</div>
+</th:block>

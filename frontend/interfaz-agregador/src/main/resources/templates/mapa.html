@@ -6,14 +6,14 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar('hechos')}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
     <main class="relative h-[900px]">
-        <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
+        <th:block th:replace="~{fragments/mid-content :: mapa(${hechos})}" />
 
         <!-- Contenedor para los paneles laterales -->
         <div style="position: absolute; top:10px; left: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 16px; max-width: 380px;">
-            <div th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}"></div>
-            <div th:replace="~{fragments/mid-content :: filtros}"></div>
+            <th:block th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}" />
+            <th:block th:replace="~{fragments/mid-content :: filtros}" />
         </div>
     </main>
-</div>
+</th:block>

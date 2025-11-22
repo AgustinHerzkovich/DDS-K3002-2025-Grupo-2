@@ -4,8 +4,8 @@
 
 
 
-<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: noMap(${isLoggedIn}, ${isAdmin})})}">
-	<main>
+<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+	<main class="pt-[7rem] pb-[13rem]">
 		<div class="hechosPendientes-container">
 			<h1 class="page-title">Hechos Pendientes</h1>
 
@@ -150,4 +150,4 @@
 			});
 		</script>
 	</main>
-</div>
+</th:block>
