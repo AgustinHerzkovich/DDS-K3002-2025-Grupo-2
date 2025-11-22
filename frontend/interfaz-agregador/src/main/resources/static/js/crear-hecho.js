@@ -23,6 +23,7 @@ function toggleModalHecho() {
         limpiarFormulario();
     }
 }
+
 async function verMisHechos(isAdmin=false) {
     try {
         const autorId = window.autorData.id;

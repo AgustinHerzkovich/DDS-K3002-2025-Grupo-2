@@ -28,7 +28,7 @@ public class ColeccionController {
     // --- READ ---
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public ResponseEntity<Object> mostrarHechosIrrestrictos(
-            @PathVariable String id,
+            @PathVariable("id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -57,7 +57,7 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/{id}/hechosCurados")
     public ResponseEntity<Object> mostrarHechosCurados(
-            @PathVariable String id,
+            @PathVariable("id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -96,12 +96,13 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ResponseEntity<Object> mostrarColeccion(@PathVariable String id) {
+    public ResponseEntity<Object> mostrarColeccion(@PathVariable("id") String id) {
         return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
     }
 
     @GetMapping("/colecciones/index")
-    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto, @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
+    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto,
+                                                         @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);

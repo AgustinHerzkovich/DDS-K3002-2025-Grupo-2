@@ -1,21 +1,19 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar('hechos')}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
-
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapa.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/crear-hecho.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
 </th:block>
 
-<body>
-<main class="relative h-[900px]">
-    <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
 
-    <!-- Contenedor para los paneles laterales -->
-    <div style="position: absolute; top:10px; left: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 16px; max-width: 380px;">
-        <div th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}"></div>
-        <div th:replace="~{fragments/mid-content :: filtros}"></div>
-    </div>
-</main>
-</body>
-</html>
+
+<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar('hechos')}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
+    <main class="relative h-[900px]">
+        <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
+
+        <!-- Contenedor para los paneles laterales -->
+        <div style="position: absolute; top:10px; left: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 16px; max-width: 380px;">
+            <div th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}"></div>
+            <div th:replace="~{fragments/mid-content :: filtros}"></div>
+        </div>
+    </main>
+</div>

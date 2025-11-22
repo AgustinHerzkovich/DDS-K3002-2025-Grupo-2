@@ -25,7 +25,7 @@ public class HechoController {
     }
 
     @DeleteMapping("/hechos/{id}/tags/{nombreTag}")
-    public ResponseEntity<Void> quitarFuente(@PathVariable String id,
+    public ResponseEntity<Void> quitarFuente(@PathVariable("id") String id,
                                              @PathVariable(name="nombreTag") String nombreTag) {
         return solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, Void.class);
     }

@@ -1,72 +1,68 @@
-<!DOCTYPE html>
-    <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/colecciones.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
+</th:block>
 
-    <!-- Fragmento para los estilos específicos de esta página -->
-    <th:block th:fragment="pageStyles">
-        <link rel="stylesheet" type="text/css" th:href="@{/css/colecciones.css}" />
-        <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
-    </th:block>
 
-    <body>
-        <main class="my-10">
-            <div th:replace="~{fragments/titles :: colecciones}"></div>
-            <div th:replace="~{fragments/top-content :: searchBar('colecciones')}"></div>
+<div th:replace="~{fragments/layout :: layout(~{fragments/top-content :: metamapa}, ~{::main}, ~{fragments/right-menu :: colecciones(${isLoggedIn}, ${isAdmin})})}">
+    <main class="my-10">
+        <div th:replace="~{fragments/titles :: colecciones}"></div>
+        <div th:replace="~{fragments/top-content :: searchBar('colecciones')}"></div>
 
-            <div class="colecciones-container">
-                <div th:each="coleccion : ${colecciones}"  class="coleccion-card">
-                    <div class="left-section">
-                        <div class="coleccion-detalles">
-                            <h1 class="coleccion-titulo" th:text="${coleccion.titulo}"></h1>
-                            <h3 class="coleccion-decripcion" th:text="${coleccion.descripcion}"></h3>
-                            <div class="coleccion-botones">
-                                <div class="button-coleccion">
-                                    <form th:action="@{/colecciones/{id}/hechosIrrestrictos(id=${coleccion.id})}" method="get">
-                                        <button class="coleccion-btn-primary" type="submit">Hechos Irrestrictos</button>
-                                    </form>
-                                </div>
-                                <div class="button-coleccion">
-                                    <form th:action="@{/colecciones/{id}/hechosCurados(id=${coleccion.id})}" method="get">
-                                        <button class="coleccion-btn-primary" type="submit">Hechos Curados</button>
-                                    </form>
-                                </div>
+        <div class="colecciones-container">
+            <div th:each="coleccion : ${colecciones}"  class="coleccion-card">
+                <div class="left-section">
+                    <div class="coleccion-detalles">
+                        <h1 class="coleccion-titulo" th:text="${coleccion.titulo}"></h1>
+                        <h3 class="coleccion-decripcion" th:text="${coleccion.descripcion}"></h3>
+                        <div class="coleccion-botones">
+                            <div class="button-coleccion">
+                                <form th:action="@{/colecciones/{id}/hechosIrrestrictos(id=${coleccion.id})}" method="get">
+                                    <button class="coleccion-btn-primary" type="submit">Hechos Irrestrictos</button>
+                                </form>
+                            </div>
+                            <div class="button-coleccion">
+                                <form th:action="@{/colecciones/{id}/hechosCurados(id=${coleccion.id})}" method="get">
+                                    <button class="coleccion-btn-primary" type="submit">Hechos Curados</button>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <div class="right-section-wrapper" th:if="${isAdmin}">
-                        <div class="coleccion-actions">
-                            <div th:replace="~{fragments/button :: botonEditarColeccion(coleccion=${coleccion})}"></div>
-                            <div th:replace="~{fragments/button :: botonEliminarColeccion(coleccionId=${coleccion.id})}"></div>
-                        </div>
+                </div>
+                <div class="right-section-wrapper" th:if="${isAdmin}">
+                    <div class="coleccion-actions">
+                        <th:block th:replace="~{fragments/button :: botonEditarColeccion(coleccion=${coleccion})}" />
+                        <th:block th:replace="~{fragments/button :: botonEliminarColeccion(coleccionId=${coleccion.id})}" />
                     </div>
                 </div>
-
-                <!-- Mensaje cuando no hay colecciones -->
-                <div th:if="${colecciones == null || colecciones.isEmpty()}" class="no-colecciones">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-large">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-                    </svg>
-                    <p>No hay colecciones disponibles</p>
-                </div>
-
-                <!-- Controles de Paginación -->
-                <div class="pagination-controls">
-                    <a th:if="${hasPrevious}"
-                       th:href="@{/colecciones(page=${currentPage - 1}, size=${pageSize})}"
-                       class="pagination-btn">
-                        ← Anterior
-                    </a>
-                    <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
-
-                    <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
-
-                    <a th:if="${hasNext}"
-                       th:href="@{/colecciones(page=${currentPage + 1}, size=${pageSize})}"
-                       class="pagination-btn">
-                        Siguiente →
-                    </a>
-                    <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
-                </div>
             </div>
-        </main>
-    </body>
-</html>
+
+            <!-- Mensaje cuando no hay colecciones -->
+            <div th:if="${colecciones == null || colecciones.isEmpty()}" class="no-colecciones">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-large">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                </svg>
+                <p>No hay colecciones disponibles</p>
+            </div>
+
+            <!-- Controles de Paginación -->
+            <div class="pagination-controls">
+                <a th:if="${hasPrevious}"
+                   th:href="@{/colecciones(page=${currentPage - 1}, size=${pageSize})}"
+                   class="pagination-btn">
+                    ← Anterior
+                </a>
+                <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
+
+                <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
+
+                <a th:if="${hasNext}"
+                   th:href="@{/colecciones(page=${currentPage + 1}, size=${pageSize})}"
+                   class="pagination-btn">
+                    Siguiente →
+                </a>
+                <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
+            </div>
+        </div>
+    </main>
+</div>

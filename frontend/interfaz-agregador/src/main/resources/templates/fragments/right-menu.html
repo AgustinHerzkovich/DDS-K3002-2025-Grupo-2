@@ -6,24 +6,24 @@
 
 <!-- About: con botón volver -->
 <div th:fragment="about(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
-    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/button :: returnButton}"></div>
     <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
 <!-- Map: con botón volver -->
 <div th:fragment="map(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
-    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/button :: returnButton}"></div>
     <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
 <!-- NoMap: con botón volver -->
 <div th:fragment="noMap(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
-    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/button :: returnButton}"></div>
     <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>
 
 <!-- Colecciones: con botón volver -->
 <div th:fragment="colecciones(isLoggedIn, isAdmin)" class="flex gap-3 items-center justify-end relative">
-    <div th:replace="~{fragments/button :: botonVolver}"></div>
+    <div th:replace="~{fragments/button :: returnButton}"></div>
     <div th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}"></div>
 </div>

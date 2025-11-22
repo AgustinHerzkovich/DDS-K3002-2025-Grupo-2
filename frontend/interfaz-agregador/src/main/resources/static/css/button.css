@@ -1,0 +1,72 @@
+.btn-return {
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-return:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.btn-hamburger {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-hamburger:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.btn-editar-coleccion {
+    color: black;                 /* text-black */
+    padding: 0.5rem;              /* p-2 */
+    display: flex;                /* flex */
+    align-items: center;          /* items-center */
+    justify-content: center;      /* justify-center */
+    z-index: 10;                  /* z-10 */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;        /* transition-transform + hover:opacity */
+}
+
+.btn-editar-coleccion:hover {
+    opacity: 0.8;                 /* hover:opacity-80 */
+    transform: scale(1.05);       /* simulación de “hover:scale” */
+}
+
+.btn-eliminar-coleccion {
+    color: black;                      /* text-black */
+    padding: 0.5rem;                   /* p-2 */
+    display: flex;                     /* flex */
+    align-items: center;               /* items-center */
+    justify-content: center;           /* justify-center */
+    z-index: 10;                        /* z-10 */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition: transform 0.2s ease,
+    opacity 0.2s ease;     /* transition-transform */
+}
+
+.btn-eliminar-coleccion:hover {
+    opacity: 0.8;                      /* hover:opacity-80 */
+    transform: scale(1.05);            /* "hover" effect */
+}
