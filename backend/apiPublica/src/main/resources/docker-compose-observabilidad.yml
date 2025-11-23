@@ -1,0 +1,53 @@
+services:
+  # Base de datos de métricas
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  # Panel visual
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+
+  # Trazas distribuidas
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
+  api-publica:
+    image: apipublica:0.0.1-SNAPSHOT
+    ports:
+      - "8085:8085"
+
+    # 1. Política de reinicio ante fallos (Crashes)
+    # Si la app tira una excepción fatal y se cierra, Docker la levanta sola.
+    restart: on-failure
+
+    # 2. Monitoreo de Salud (Healthcheck Proactivo)
+    # Docker le pregunta a Spring cada 30s: "¿Estás bien?"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 30s  # Frecuencia de la pregunta
+      timeout: 10s   # Tiempo máximo para responder
+      retries: 3     # Si falla 3 veces seguidas...
+      start_period: 40s # Esperar 40s al inicio antes de empezar a preguntar
+
+    # Si el healthcheck falla 3 veces, Docker considera el contenedor "unhealthy"
+    # y (dependiendo del orquestador) lo reinicia automáticamente.
+
+# Para iniciarlo, brir una terminal en esta carpeta y ejecutar:
+# docker-compose -f docker-compose-observabilidad.yml up -d

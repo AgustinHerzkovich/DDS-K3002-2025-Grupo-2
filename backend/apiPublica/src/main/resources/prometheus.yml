@@ -1,8 +1,10 @@
 global:
-  scrape_interval: 15s  # cada cuánto recolecta métricas
+  scrape_interval: 5s # Leer métricas cada 5 segundos
 
 scrape_configs:
   - job_name: "spring-app"
     metrics_path: "/actuator/prometheus"
     static_configs:
-      - targets: ["localhost:8085"]
+      - targets: ['host.docker.internal:8085']
+        # 'host.docker.internal' permite a Docker ver la PC (donde corre Java).
+        # Si se utiliza Linux nativo, se debe cambiar esto por la IP local (ej: 192.168.1.X:8085).
