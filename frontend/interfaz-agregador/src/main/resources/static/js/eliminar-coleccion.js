@@ -1,9 +1,13 @@
-document.addEventListener("click", e => {
-    if (e.target.closest(".btn-eliminar-coleccion")) {
-        const id = e.target.closest(".btn-eliminar-coleccion").dataset.id;
-        eliminarColeccion(id);
-    }
-});
+if (!window.eliminarColeccionListenerAgregado) {
+    document.addEventListener("click", e => {
+        const btn = e.target.closest(".eliminar-coleccion");
+        if (btn) {
+            const id = btn.dataset.id;
+            eliminarColeccion(id);
+        }
+    });
+    window.eliminarColeccionListenerAgregado = true;
+}
 
 function eliminarColeccion(id) {
     if (!id && id !== 0) {
@@ -12,7 +16,7 @@ function eliminarColeccion(id) {
     }
     if (!confirm('¿Está seguro que desea eliminar esta colección? Esta acción no se puede deshacer.')) return;
 
-    fetch('http://localhost:8086/apiAdministrativa/colecciones/' + id, {
+    fetch('/apiAdministrativa/colecciones/' + id, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
     })

@@ -4,6 +4,7 @@
     grid-template-columns: 70%;
     justify-content: center;
     margin-top: 1rem;
+    gap: 1rem;
 }
 
 .coleccion-card {
