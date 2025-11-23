@@ -20,11 +20,11 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Esto permite peticiones desde Docker, Postman, Browser, etc.
-        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        // Esto permite peticiones únicamente desde el frontend
+        config.setAllowedOrigins(Arrays.asList("http://localhost:" + interfazAgregadorPort));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         // Permitir todos los headers
         config.setAllowedHeaders(Arrays.asList("*"));
@@ -32,8 +32,8 @@ public class CorsConfig {
         // Permitir credenciales (cookies, authorization headers, etc.)
         config.setAllowCredentials(true);
 
-        // Exponer headers útiles
-        config.setExposedHeaders(Arrays.asList("Authorization", "Link", "X-Total-Count"));
+        // Exponer todos los headers
+        config.setExposedHeaders(Arrays.asList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
