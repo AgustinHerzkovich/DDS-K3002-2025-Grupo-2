@@ -1,0 +1,18 @@
+<div th:fragment="paginationControls(previousPageUrl, nextPageUrl)" class="pagination-controls align-self-center">
+    <a th:if="${hasPrevious}"
+       th:href="${previousPageUrl}"
+       class="pagination-btn">
+        ← Anterior
+    </a>
+    <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
+
+    <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span
+            th:text="${totalPages}"></span></span>
+
+    <a th:if="${hasNext}"
+       th:href="${nextPageUrl}"
+       class="pagination-btn">
+        Siguiente →
+    </a>
+    <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
+</div>

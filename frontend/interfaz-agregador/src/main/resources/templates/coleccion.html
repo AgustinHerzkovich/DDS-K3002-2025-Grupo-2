@@ -1,3 +1,5 @@
+<th:block th:fragment="pageScripts" />
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />
 </th:block>
@@ -5,7 +7,7 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main th:inline="javascript" class="container mx-auto px-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl pt-[7rem] pb-[13rem]">
+    <main th:inline="javascript" class="container main-padding mx-auto px-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
         <header class="mb-6 pb-4 border-b">
             <h1 class="text-3xl font-bold text-indigo-800" th:text="${coleccion.titulo}">Título de la Colección</h1>
             <p class="text-md text-gray-600 mt-1" th:text="${coleccion.descripcion}">Descripción de la colección.</p>
