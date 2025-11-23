@@ -1,7 +1,6 @@
 package aplicacion.prometheus;
 
-import aplicacion.config.AgregadorConfig;
-import aplicacion.config.ConfigService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -15,14 +14,13 @@ import java.io.InputStream;
 public class PrometheusStarter {
 
     private Process prometheusProcess;
-    private final ConfigService configService;
-    public PrometheusStarter(ConfigService configService){
-        this.configService = configService;
-    }
+
+    @Value("${prometheus.habilitado:false}")
+    private boolean prometheusHabilitado;
 
     @EventListener(ApplicationReadyEvent.class)
     public void startPrometheus() throws IOException {
-        if (!configService.isPrometheusHabilitado())
+        if (!prometheusHabilitado)
             return;
 
         // Detectar sistema operativo
@@ -57,15 +55,16 @@ public class PrometheusStarter {
         pb.inheritIO(); // para ver logs de Prometheus en la consola
         prometheusProcess = pb.start();
 
-        System.out.println("Prometheus arrancado automáticamente al levantar apiPublica!");
+        System.out.println("Prometheus arrancado automáticamente al levantar agregador!");
     }
 
     @EventListener(org.springframework.context.event.ContextClosedEvent.class)
     public void stopPrometheus() {
-        if (!configService.isPrometheusHabilitado()) return;
+        if (!prometheusHabilitado) return;
         if (prometheusProcess != null) {
             prometheusProcess.destroy();
             System.out.println("Prometheus detenido.");
         }
     }
 }
+

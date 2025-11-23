@@ -1,4 +1,4 @@
-package aplicacion.clienteMedidorTrafico;
+package aplicacion.prometheus;
 
 import org.springframework.stereotype.Component;
 import java.io.IOException;

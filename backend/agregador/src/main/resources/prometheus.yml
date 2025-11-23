@@ -5,6 +5,7 @@ scrape_configs:
   - job_name: "spring-app"
     metrics_path: "/actuator/prometheus"
     static_configs:
-      - targets: ['host.docker.internal:8085']
+      - targets: ['host.docker.internal:8084']
         # 'host.docker.internal' permite a Docker ver la PC (donde corre Java).
-        # Si se utiliza Linux nativo, se debe cambiar esto por la IP local (ej: 192.168.1.X:8085).
+        # Si se utiliza Linux nativo, se debe cambiar esto por la IP local (ej: 192.168.1.X:8084).
+

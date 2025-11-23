@@ -1,5 +1,4 @@
 {
   "ip_agregador": "localhost",
-  "puerto_agregador": 8084,
-  "prometheus_habilitado": false
+  "puerto_agregador": 8084
 }
