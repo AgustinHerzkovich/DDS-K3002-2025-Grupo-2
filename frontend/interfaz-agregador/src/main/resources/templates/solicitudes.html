@@ -1,3 +1,45 @@
+<th:block th:fragment="pageScripts">
+    <script th:inline="javascript">
+        const userId = /*[[${userId}]]*/ null;
+
+        function aprobarSolicitud(solicitudId) {
+            if (!confirm('¿Estás seguro de que deseas aprobar esta solicitud?')) {
+                return;
+            }
+            modificarEstadoSolicitud(solicitudId, 'ACEPTADA');
+        }
+
+        function rechazarSolicitud(solicitudId) {
+            if (!confirm('¿Estás seguro de que deseas rechazar esta solicitud?')) {
+                return;
+            }
+            modificarEstadoSolicitud(solicitudId, 'RECHAZADA');
+        }
+
+        function modificarEstadoSolicitud(solicitudId, nuevoEstado) {
+            fetch(`http://localhost:8086/apiAdministrativa/solicitudes/${solicitudId}/estado`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nuevoEstado: nuevoEstado, adminId: userId }),
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            // Recargar la página para mostrar el estado actualizado
+                            window.location.reload();
+                        } else {
+                            alert('Error al actualizar el estado de la solicitud');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al actualizar el estado de la solicitud');
+                    });
+        }
+    </script>
+</th:block>
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/solicitudes.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
@@ -6,7 +48,7 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main th:inline="javascript" class="pt-[7rem] pb-[13rem]">
+    <main th:inline="javascript" class="main-padding flex flex-column">
         <div class="solicitudes-container">
             <h1 class="page-title">Solicitudes Pendientes</h1>
             <div class="solicitudes-grid">
@@ -67,66 +109,10 @@
                 <p>No hay solicitudes pendientes en este momento</p>
             </div>
 
-            <!-- Controles de Paginación -->
-            <div class="pagination-controls">
-                <a th:if="${hasPrevious}"
-                   th:href="@{/solicitudes(page=${currentPage - 1}, size=${pageSize})}"
-                   class="pagination-btn">
-                    ← Anterior
-                </a>
-                <!-- Enlace deshabilitado si no hay página anterior -->
-                <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
-
-                <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span th:text="${totalPages}"></span></span>
-
-                <a th:if="${hasNext}"
-                   th:href="@{/solicitudes(page=${currentPage + 1}, size=${pageSize})}"
-                   class="pagination-btn">
-                    Siguiente →
-                </a>
-                <!-- Enlace deshabilitado si no hay página siguiente -->
-                <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
-            </div>
+            <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
+                @{/solicitudes(page=${currentPage - 1}, size=${pageSize})},
+                @{/solicitudes(page=${currentPage + 1}, size=${pageSize})}
+            )}" />
         </div>
-
-        <script th:inline="javascript">
-            const userId = /*[[${userId}]]*/ null;
-
-            function aprobarSolicitud(solicitudId) {
-                if (!confirm('¿Estás seguro de que deseas aprobar esta solicitud?')) {
-                    return;
-                }
-                modificarEstadoSolicitud(solicitudId, 'ACEPTADA');
-            }
-
-            function rechazarSolicitud(solicitudId) {
-                if (!confirm('¿Estás seguro de que deseas rechazar esta solicitud?')) {
-                    return;
-                }
-                modificarEstadoSolicitud(solicitudId, 'RECHAZADA');
-            }
-
-            function modificarEstadoSolicitud(solicitudId, nuevoEstado) {
-                fetch(`http://localhost:8086/apiAdministrativa/solicitudes/${solicitudId}/estado`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ nuevoEstado: nuevoEstado, adminId: userId }),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Recargar la página para mostrar el estado actualizado
-                            window.location.reload();
-                        } else {
-                            alert('Error al actualizar el estado de la solicitud');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error al actualizar el estado de la solicitud');
-                    });
-            }
-        </script>
     </main>
 </th:block>

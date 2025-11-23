@@ -1,72 +1,108 @@
-.btn-return {
-    color: white;
-    background: transparent;
+.btn {
+    padding: 0.5rem 1rem;
     border: none;
+    border-radius: 6px;
+    font-weight: 500;
     cursor: pointer;
-    padding: 0;
-    z-index: 10;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.btn-return:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-}
-
-.btn-hamburger {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: opacity 0.2s, transform 0.2s;
-    display: flex;
+    transition: all 0.2s;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
 }
 
-.btn-hamburger:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+.btn-primary {
+    background-color: black;
+    color: white;
 }
 
-.btn-editar-coleccion {
-    color: black;                 /* text-black */
-    padding: 0.5rem;              /* p-2 */
-    display: flex;                /* flex */
-    align-items: center;          /* items-center */
-    justify-content: center;      /* justify-center */
-    z-index: 10;                  /* z-10 */
-    background: transparent;
+.btn-primary:hover {
+    background-color: #1f2937;
+}
+
+.btn-secondary {
+    background-color: red;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: darkred;
+}
+
+.btn-danger-hecho {
+    background-color: #000000;
+    color: white;
+}
+
+.btn-danger-hecho:hover {
+    background-color: #1f2937;
+    color: white;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.btn-return {
+    background-color: transparent;   /* bg-transparent */
+    border: 0;                       /* border-0 */
+    cursor: pointer;                 /* cursor-pointer */
+    padding: 0;                      /* p-0 */
+    z-index: 10;                     /* z-10 */
+    transition: all 0.2s ease-in-out; /* transition duration-200 ease-in-out */
+}
+
+.btn-coleccion {
+    color: #000000;                 /* text-black */
+    padding: 0.5rem;                /* p-2 */
+    display: flex;                   /* flex */
+    align-items: center;             /* items-center */
+    justify-content: center;         /* justify-center */
+    z-index: 10;                     /* z-10 */
+    background-color: transparent;   /* bg-transparent */
+    border: 0;                       /* border-0 */
+    cursor: pointer;                 /* cursor-pointer */
+    transition: all 0.2s ease-in-out; /* transition duration-200 ease-in-out */
+}
+
+.btn-coleccion:hover {
+    opacity: 0.8;                    /* hover:opacity-80 */
+    transform: scale(1.05);          /* hover:scale-105 */
+}
+
+.botones-revision {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+.gestion-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.btn-aceptar, .btn-rechazar {
+    padding: 0.75rem 1.5rem;
     border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
     cursor: pointer;
-
-    transition:
-            transform 0.2s ease,
-            opacity 0.2s ease;        /* transition-transform + hover:opacity */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.btn-editar-coleccion:hover {
-    opacity: 0.8;                 /* hover:opacity-80 */
-    transform: scale(1.05);       /* simulación de “hover:scale” */
+.btn-aceptar {
+    background-color: #10b981; /* Verde */
 }
-
-.btn-eliminar-coleccion {
-    color: black;                      /* text-black */
-    padding: 0.5rem;                   /* p-2 */
-    display: flex;                     /* flex */
-    align-items: center;               /* items-center */
-    justify-content: center;           /* justify-center */
-    z-index: 10;                        /* z-10 */
-    background: transparent;
-    border: none;
-    cursor: pointer;
-
-    transition: transform 0.2s ease,
-    opacity 0.2s ease;     /* transition-transform */
+.btn-aceptar:hover {
+    background-color: #059669;
 }
-
-.btn-eliminar-coleccion:hover {
-    opacity: 0.8;                      /* hover:opacity-80 */
-    transform: scale(1.05);            /* "hover" effect */
+.btn-rechazar {
+    background-color: #ef4444; /* Rojo */
+}
+.btn-rechazar:hover {
+    background-color: #dc2626;
 }
