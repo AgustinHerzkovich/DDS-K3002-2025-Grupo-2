@@ -1,0 +1,26 @@
+# Definición de Consultas (Queries)
+type Query {
+    # Obtener una colección por su ID
+    coleccionPorId(id: ID!): Coleccion
+
+    # Listar todas las colecciones
+    todasLasColecciones: [Coleccion]
+}
+
+# Definición del Objeto Colección
+type Coleccion {
+    id: ID
+    titulo: String
+    descripcion: String
+    # Mapeamos el Enum a String para simplificar
+    tipoAlgoritmoConsenso: String
+    fuentes: [Fuente]
+}
+
+# Definición del Objeto Fuente
+type Fuente {
+    id: ID
+    tipo: String
+}
+
+# TODO: Añadir queries y pensar bien esto
