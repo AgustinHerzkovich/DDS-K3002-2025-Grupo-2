@@ -1,0 +1,16 @@
+.main-padding {
+    padding-top: 7rem;
+    padding-bottom: 13rem;
+}
+
+.font-roboto {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 1rem;
+    text-align: center;
+}

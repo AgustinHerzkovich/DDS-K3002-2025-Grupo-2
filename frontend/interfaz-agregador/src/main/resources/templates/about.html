@@ -1,3 +1,5 @@
+<th:block th:fragment="pageScripts" />
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/about.css}" />
 </th:block>
@@ -5,7 +7,7 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main class="container mx-auto px-6 pt-[7rem] pb-[13rem] max-w-5xl">
+    <main class="container main-padding mx-auto px-6 pt-[7rem] pb-[13rem] max-w-5xl">
         <!-- Sección: Introducción -->
         <section class="mb-12">
             <h2 class="text-4xl font-bold text mb-6">¿Qué es MetaMapa?</h2>
@@ -167,7 +169,7 @@
             <h2 class="text-3xl font-bold text-gray-800 mb-4">¿Listo para explorar?</h2>
             <p class="text-gray-600 mb-6">Comienza a utilizar MetaMapa hoy mismo</p>
             <div class="flex justify-center gap-4">
-                <a href="/" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-bold transition">
+                <a href="/" class="bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-lg font-bold transition">
                     Volver al Inicio
                 </a>
             </div>

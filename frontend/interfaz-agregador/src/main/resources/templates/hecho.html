@@ -1,3 +1,5 @@
+<th:block th:fragment="pageScripts" />
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/hecho.css}" />
 </th:block>
@@ -5,7 +7,7 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main class="pt-[7rem] pb-[13rem]">
+    <main class="main-padding">
         <div class="hecho-container" th:object="${hecho}">
             <div class="hecho-components">
                 <!-- Sección Izquierda -->

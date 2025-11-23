@@ -1,6 +1,14 @@
+<th:block th:fragment="pageScripts" />
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
+    <style>
+        .btn-return {
+            display: none;
+        }
+    </style>
 </th:block>
+
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main})}">
