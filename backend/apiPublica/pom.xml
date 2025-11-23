@@ -31,21 +31,28 @@
         <artifactId>micrometer-registry-prometheus</artifactId>
     </dependency>
 
-        <!-- TRACING (ZIPKIN): Para seguir la pista de las peticiones -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
-        </dependency>
+    <!-- TRACING (ZIPKIN): Para seguir la pista de las peticiones -->
+    <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-tracing-bridge-brave</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.zipkin.reporter2</groupId>
+        <artifactId>zipkin-reporter-brave</artifactId>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
     <dependency>
         <groupId>com.github.ben-manes.caffeine</groupId>
         <artifactId>caffeine</artifactId>
         <version>3.2.3</version>
+    </dependency>
+
+    <!-- RATE LIMITING (bucket4j) -->
+    <dependency>
+        <groupId>com.bucket4j</groupId>
+        <artifactId>bucket4j-core</artifactId>
+        <version>8.7.0</version>
     </dependency>
 </dependencies>
 </project>
