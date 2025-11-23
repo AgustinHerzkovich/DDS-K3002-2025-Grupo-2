@@ -21,5 +21,4 @@ public class ConfigService {
     public String getUrl() {
         return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
     }
-    public Boolean isPrometheusHabilitado(){return config.isPrometheusHabilitado();}
 }
