@@ -39,7 +39,7 @@
 
             // Agregamos un marker por cada hecho
             hechos.forEach(h => {
-                if (h.ubicacion.latitud && h.ubicacion.longitud) {
+                if (h.latitud && h.longitud) {
                     const popupContent = `
                     <div style="text-align: center; max-width: 200px;">
                         <b style="word-wrap: break-word;">${h.titulo}</b>
@@ -51,7 +51,7 @@
                     </div>
                 `;
                     try {
-                        L.marker([h.ubicacion.latitud, h.ubicacion.longitud], {icon: customIcon})
+                        L.marker([h.latitud, h.longitud], {icon: customIcon})
                                 .addTo(markersLayer) // Añadir al grupo
                                 .bindPopup(popupContent);
                     } catch (e) {
