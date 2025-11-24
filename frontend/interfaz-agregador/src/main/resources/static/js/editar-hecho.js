@@ -1,4 +1,5 @@
 const idHecho = document.currentScript.dataset.idHecho;
+console.log("ID del hecho:", idHecho);
 
 function eliminarEtiqueta(nombreEtiqueta) {
     if (!confirm(`¿Seguro que quieres eliminar la etiqueta "${nombreEtiqueta}"?`))

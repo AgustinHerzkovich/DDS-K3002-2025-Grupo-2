@@ -14,7 +14,7 @@ function eliminarColeccion(id) {
     }
     if (!confirm('¿Está seguro que desea eliminar esta colección? Esta acción no se puede deshacer.')) return;
 
-    fetch('/apiAdministrativa/colecciones/' + id, {
+    fetch('http://localhost:8086/apiAdministrativa/colecciones/' + id, {
         method: 'DELETE',
         headers: getHeaders()
     })
