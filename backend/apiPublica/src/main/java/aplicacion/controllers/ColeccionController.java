@@ -41,18 +41,56 @@ public class ColeccionController {
             @RequestParam(name = "size", defaultValue = "100") Integer size
     )
     {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosIrrestrictos");
-        UrlHelper.appendQueryParam(url, "categoria", categoria);
-        UrlHelper.appendQueryParam(url, "fechaReporteDesde", fechaReporteDesde);
-        UrlHelper.appendQueryParam(url, "fechaReporteHasta", fechaReporteHasta);
-        UrlHelper.appendQueryParam(url, "fechaAcontecimientoDesde", fechaAcontecimientoDesde);
-        UrlHelper.appendQueryParam(url, "fechaAcontecimientoHasta", fechaAcontecimientoHasta);
-        UrlHelper.appendQueryParam(url, "latitud", latitud);
-        UrlHelper.appendQueryParam(url, "longitud", longitud);
-        UrlHelper.appendQueryParam(url, "search", textoLibre);
-        UrlHelper.appendQueryParam(url, "page", page);
-        UrlHelper.appendQueryParam(url, "size", size);
-        return solicitudesHttp.get(url.toString(), Object.class);
+        // Construir la query GraphQL
+        String query = """
+            query ObtenerHechosDeColeccionIrrestrictos($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
+                hechosPorColeccionIrrestrictos(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+                    content {
+                        id
+                        titulo
+                        latitud
+                        longitud
+                        categoria
+                        fechaCarga
+                    }
+                    pageInfo {
+                        totalElements
+                        totalPages
+                        number
+                        size
+                        hasNext
+                        hasPrevious
+                    }
+                }
+            }
+            """;
+
+        // Construir el mapa de filtros
+        java.util.Map<String, Object> filtros = new java.util.HashMap<>();
+        if (categoria != null) filtros.put("categoria", categoria);
+        if (fechaReporteDesde != null) filtros.put("fechaReporteDesde", fechaReporteDesde);
+        if (fechaReporteHasta != null) filtros.put("fechaReporteHasta", fechaReporteHasta);
+        if (fechaAcontecimientoDesde != null) filtros.put("fechaAcontecimientoDesde", fechaAcontecimientoDesde);
+        if (fechaAcontecimientoHasta != null) filtros.put("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        if (latitud != null) filtros.put("latitud", latitud);
+        if (longitud != null) filtros.put("longitud", longitud);
+        if (textoLibre != null) filtros.put("search", textoLibre);
+
+        // Construir el mapa de variables
+        java.util.Map<String, Object> variables = new java.util.HashMap<>();
+        variables.put("idColeccion", id);
+        variables.put("filtros", filtros.isEmpty() ? null : filtros);
+        variables.put("page", page);
+        variables.put("limit", size);
+
+        // Construir el body completo de la petición GraphQL
+        java.util.Map<String, Object> graphqlRequest = new java.util.HashMap<>();
+        graphqlRequest.put("query", query);
+        graphqlRequest.put("variables", variables);
+
+        // Hacer la petición POST al endpoint GraphQL
+        String graphqlUrl = urlBaseAgregador + "/graphql";
+        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
@@ -69,18 +107,56 @@ public class ColeccionController {
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "100") Integer size
     ) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/" + id + "/hechosCurados");
-        UrlHelper.appendQueryParam(url, "categoria", categoria);
-        UrlHelper.appendQueryParam(url, "fechaReporteDesde", fechaReporteDesde);
-        UrlHelper.appendQueryParam(url, "fechaReporteHasta", fechaReporteHasta);
-        UrlHelper.appendQueryParam(url, "fechaAcontecimientoDesde", fechaAcontecimientoDesde);
-        UrlHelper.appendQueryParam(url, "fechaAcontecimientoHasta", fechaAcontecimientoHasta);
-        UrlHelper.appendQueryParam(url, "latitud", latitud);
-        UrlHelper.appendQueryParam(url, "longitud", longitud);
-        UrlHelper.appendQueryParam(url, "search", textoLibre);
-        UrlHelper.appendQueryParam(url, "page", page);
-        UrlHelper.appendQueryParam(url, "size", size);
-        return solicitudesHttp.get(url.toString(), Object.class);
+        // Construir la query GraphQL
+        String query = """
+            query ObtenerHechosDeColeccionCurados($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
+                hechosPorColeccionCurados(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+                    content {
+                        id
+                        titulo
+                        latitud
+                        longitud
+                        categoria
+                        fechaCarga
+                    }
+                    pageInfo {
+                        totalElements
+                        totalPages
+                        number
+                        size
+                        hasNext
+                        hasPrevious
+                    }
+                }
+            }
+            """;
+
+        // Construir el mapa de filtros
+        java.util.Map<String, Object> filtros = new java.util.HashMap<>();
+        if (categoria != null) filtros.put("categoria", categoria);
+        if (fechaReporteDesde != null) filtros.put("fechaReporteDesde", fechaReporteDesde);
+        if (fechaReporteHasta != null) filtros.put("fechaReporteHasta", fechaReporteHasta);
+        if (fechaAcontecimientoDesde != null) filtros.put("fechaAcontecimientoDesde", fechaAcontecimientoDesde);
+        if (fechaAcontecimientoHasta != null) filtros.put("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        if (latitud != null) filtros.put("latitud", latitud);
+        if (longitud != null) filtros.put("longitud", longitud);
+        if (textoLibre != null) filtros.put("search", textoLibre);
+
+        // Construir el mapa de variables
+        java.util.Map<String, Object> variables = new java.util.HashMap<>();
+        variables.put("idColeccion", id);
+        variables.put("filtros", filtros.isEmpty() ? null : filtros);
+        variables.put("page", page);
+        variables.put("limit", size);
+
+        // Construir el body completo de la petición GraphQL
+        java.util.Map<String, Object> graphqlRequest = new java.util.HashMap<>();
+        graphqlRequest.put("query", query);
+        graphqlRequest.put("variables", variables);
+
+        // Hacer la petición POST al endpoint GraphQL
+        String graphqlUrl = urlBaseAgregador + "/graphql";
+        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
     }
 
     // --- READ ---
