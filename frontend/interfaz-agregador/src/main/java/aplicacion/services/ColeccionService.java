@@ -68,7 +68,30 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
+                .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
+                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                    if (graphqlResponse.getData() != null &&
+                        graphqlResponse.getData().getHechosPorColeccionIrrestrictos() != null) {
+
+                        aplicacion.dto.GraphQLColeccionHechosResponse.HechosWrapper wrapper =
+                            graphqlResponse.getData().getHechosPorColeccionIrrestrictos();
+                        aplicacion.dto.GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+
+                        PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
+                        pageWrapper.setContent(wrapper.getContent());
+                        pageWrapper.setNumber(pageInfo.getNumber());
+                        pageWrapper.setSize(pageInfo.getSize());
+                        pageWrapper.setTotalElements(pageInfo.getTotalElements());
+                        pageWrapper.setTotalPages(pageInfo.getTotalPages());
+                        pageWrapper.setFirst(pageInfo.getNumber() == 0);
+                        pageWrapper.setLast(!pageInfo.isHasNext());
+
+                        return pageWrapper;
+                    }
+                    PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
+                    emptyWrapper.setContent(new java.util.ArrayList<>());
+                    return emptyWrapper;
+                })
                 .doOnError(e -> System.err.println("Error al obtener hechos irrestrictos de la colección de la API Pública: " + e.getMessage()));
     }
 
@@ -89,8 +112,31 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
-                .doOnError(e -> System.err.println("Error al obtener hechos irrestrictos de la colección de la API Pública: " + e.getMessage()));
+                .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
+                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                    if (graphqlResponse.getData() != null &&
+                        graphqlResponse.getData().getHechosPorColeccionCurados() != null) {
+
+                        aplicacion.dto.GraphQLColeccionHechosResponse.HechosWrapper wrapper =
+                            graphqlResponse.getData().getHechosPorColeccionCurados();
+                        aplicacion.dto.GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+
+                        PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
+                        pageWrapper.setContent(wrapper.getContent());
+                        pageWrapper.setNumber(pageInfo.getNumber());
+                        pageWrapper.setSize(pageInfo.getSize());
+                        pageWrapper.setTotalElements(pageInfo.getTotalElements());
+                        pageWrapper.setTotalPages(pageInfo.getTotalPages());
+                        pageWrapper.setFirst(pageInfo.getNumber() == 0);
+                        pageWrapper.setLast(!pageInfo.isHasNext());
+
+                        return pageWrapper;
+                    }
+                    PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
+                    emptyWrapper.setContent(new java.util.ArrayList<>());
+                    return emptyWrapper;
+                })
+                .doOnError(e -> System.err.println("Error al obtener hechos curados de la colección de la API Pública: " + e.getMessage()));
     }
 
     private URI getUri(String idColeccion, String categoria, String fechaReporteDesde, String fechaReporteHasta, String fechaAcontecimientoDesde, String fechaAcontecimientoHasta, Double latitud, Double longitud, String search, Integer page, Integer size, UriBuilder uriBuilder) {

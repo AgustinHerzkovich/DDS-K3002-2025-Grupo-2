@@ -266,10 +266,11 @@ public class HechoService {
         else return opciones;
     }
 
-    public Page<HechoMapItem> obtenerHechosParaMapa(HechoFiltros filtros, Integer page, Integer limit) {
+    public Page<HechoMapItem> obtenerHechosParaMapaGraphql(HechoFiltros filtros, Integer page, Integer limit) {
         Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<HechoOutputDto> hechosPage;
         if (filtros == null) {
-            Page<HechoOutputDto> hechosPage = this.obtenerHechosAsDTO(null,
+             hechosPage = this.obtenerHechosAsDTO(null,
                     null,
                     null,
                     null,
@@ -277,23 +278,124 @@ public class HechoService {
                     null,
                     null,
                     pageable);
-            return hechosPage.map(hecho -> new HechoMapItem(
-                    hecho.getId(),
-                    hecho.getTitulo(),
-                    hecho.getUbicacion().getLatitud(),
-                    hecho.getUbicacion().getLongitud(),
-                    hecho.getCategoria().getNombre(),
-                    hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
-            ));
+        } else {
+            if (filtros != null && filtros.search() != null) {
+                hechosPage = this.obtenerHechosPorTextoLibreDto(filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        filtros.search(),
+                        pageable);
+            } else {
+                hechosPage = this.obtenerHechosAsDTO(filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        pageable);
+            }
         }
-        Page<HechoOutputDto> hechosPage = this.obtenerHechosAsDTO(filtros.categoria() != null ? filtros.categoria() : null,
-                filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
-                filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
-                filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
-                filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
-                filtros.latitud()!= null ? filtros.latitud() : null,
-                filtros.longitud() != null ? filtros.longitud() : null,
-                pageable);
+
+        return hechosPage.map(hecho -> new HechoMapItem(
+                hecho.getId(),
+                hecho.getTitulo(),
+                hecho.getUbicacion().getLatitud(),
+                hecho.getUbicacion().getLongitud(),
+                hecho.getCategoria().getNombre(),
+                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
+        ));
+    }
+
+    public Page<HechoMapItem> obtenerHechosDeColeccionIrrestrictosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit ){
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<Hecho> hechosPage;
+        if (filtros == null) {
+            hechosPage = this.obtenerHechosPorColeccion(idColeccion,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+        } else {
+            if (filtros.search() != null) {
+                hechosPage = this.obtenerHechosPorColeccionYTextoLibre(idColeccion,
+                        filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        filtros.search(),
+                        pageable);
+            } else {
+                hechosPage = this.obtenerHechosPorColeccion(idColeccion,
+                        filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        pageable);
+            }
+        }
+
+        return hechosPage.map(hecho -> new HechoMapItem(
+                hecho.getId(),
+                hecho.getTitulo(),
+                hecho.getUbicacion().getLatitud(),
+                hecho.getUbicacion().getLongitud(),
+                hecho.getCategoria().getNombre(),
+                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
+        ));
+    }
+
+    public Page<HechoMapItem> obtenerHechosDeColeccionCuradosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit){
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<Hecho> hechosPage;
+        if (filtros == null) {
+            hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+        } else {
+            if (filtros.search() != null) {
+                hechosPage = this.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion,
+                        filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        filtros.search(),
+                        pageable);
+            } else {
+                hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
+                        filtros.categoria() != null ? filtros.categoria() : null,
+                        filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                        filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                        filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                        filtros.latitud()!= null ? filtros.latitud() : null,
+                        filtros.longitud() != null ? filtros.longitud() : null,
+                        pageable);
+            }
+        }
 
         return hechosPage.map(hecho -> new HechoMapItem(
                 hecho.getId(),
