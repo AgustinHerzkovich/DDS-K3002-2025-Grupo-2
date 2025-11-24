@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class ColeccionController {
     private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
