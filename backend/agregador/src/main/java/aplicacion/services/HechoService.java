@@ -13,14 +13,14 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.CategoriaYaPresenteException;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeEtiquetas;
+import aplicacion.graphql.objects.HechoFiltros;
+import aplicacion.graphql.objects.HechoMapItem;
 import aplicacion.repositorios.RepositorioDeHechos;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -264,5 +264,44 @@ public class HechoService {
             return repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
         }
         else return opciones;
+    }
+
+    public Page<HechoMapItem> obtenerHechosParaMapa(HechoFiltros filtros, Integer page, Integer limit) {
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        if (filtros == null) {
+            Page<HechoOutputDto> hechosPage = this.obtenerHechosAsDTO(null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+            return hechosPage.map(hecho -> new HechoMapItem(
+                    hecho.getId(),
+                    hecho.getTitulo(),
+                    hecho.getUbicacion().getLatitud(),
+                    hecho.getUbicacion().getLongitud(),
+                    hecho.getCategoria().getNombre(),
+                    hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
+            ));
+        }
+        Page<HechoOutputDto> hechosPage = this.obtenerHechosAsDTO(filtros.categoria() != null ? filtros.categoria() : null,
+                filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                filtros.latitud()!= null ? filtros.latitud() : null,
+                filtros.longitud() != null ? filtros.longitud() : null,
+                pageable);
+
+        return hechosPage.map(hecho -> new HechoMapItem(
+                hecho.getId(),
+                hecho.getTitulo(),
+                hecho.getUbicacion().getLatitud(),
+                hecho.getUbicacion().getLongitud(),
+                hecho.getCategoria().getNombre(),
+                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
+        ));
     }
 }

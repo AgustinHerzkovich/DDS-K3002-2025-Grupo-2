@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class FuenteController {
     private final FuenteService fuenteService;
     private final FuenteOutputMapper fuenteOutputMapper = new FuenteOutputMapper();
