@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class ContribuyenteController {
     private final ContribuyenteService contribuyenteService;
     private final HechoService hechoService;
