@@ -6,7 +6,7 @@
     </a>
     <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
 
-    <span class="pagination-info">Página <span th:text="${currentPage + 1}"></span> de <span
+    <span class="pagination-info">Página <span th:text="${totalPages > 0 ? currentPage + 1 : 0}"></span> de <span
             th:text="${totalPages}"></span></span>
 
     <a th:if="${hasNext}"

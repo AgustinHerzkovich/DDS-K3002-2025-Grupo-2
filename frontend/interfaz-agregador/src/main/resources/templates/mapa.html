@@ -1,6 +1,10 @@
 <th:block th:fragment="pageScripts">
+    <script src="/js/filtrar-hechos-mapa.js" defer></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <th:block th:replace="~{fragments/search-bar :: searchBarScripts}" />
+    <script src="/js/search-bar.js" defer></script>
+    <script>
+        const header = document.getElementById()
+    </script>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
             /*<![CDATA[*/
@@ -21,7 +25,6 @@
                 noWrap: true
             }).addTo(map);
 
-            // Icono personalizado con color #4f46e5
             const customIcon = L.icon({
                 iconUrl: 'data:image/svg+xml;base64,' + btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="41" viewBox="0 0 25 41">
@@ -74,7 +77,6 @@
 
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/mapa.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/crear-hecho.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <style>
@@ -88,12 +90,12 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main class="relative h-[900px]">
-        <div id="map" class="h-[900px] w-full m-0 p-0 relative z-[1]"></div>
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, true)}">
+    <main class="relative h-[900px] w-full">
+        <div id="map" class="h-[900px] w-full m-0 p-0 z-[1] position-relative"></div>
 
         <!-- Contenedor para los paneles laterales -->
-        <div class="absolute top-2.5 left-2.5 z-[1000] flex flex-col gap-4 max-w-[380px]">
+        <div class="position-absolute top-2.5 left-2.5 z-[1000] flex flex-col gap-4 max-w-[380px]">
             <th:block th:replace="~{fragments/modals :: modalHechosRecientes(${hechosRecientes})}"/>
             <th:block th:replace="~{fragments/modals :: modalFiltros}"/>
         </div>

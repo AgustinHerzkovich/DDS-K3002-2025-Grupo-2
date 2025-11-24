@@ -1,25 +1,29 @@
-<header th:fragment="navbar" class="bg-black">
+<header th:fragment="navbar(isMapPage)" class="bg-black">
     <nav class="px-8 py-4 grid grid-cols-3 items-center relative">
+        <!-- Izquierda: Logo -->
 
-    <!-- Izquierda: Logo -->
-        <a href="/" class="flex items-center space-x-2 z-10">
-            <div class="flex flex-col align-items-center">
-                <img th:src="@{/images/logo-metamapa.png}" class="w-[4rem] h-[4rem]"  alt="Logo Metamapa"/>
+            <a href="/" class="flex flex-col w-[5rem] align-items-center">
+                <img th:src="@{/images/logo-metamapa.png}" class="w-[4rem] h-[4rem]" alt="Logo Metamapa"/>
                 <p class="text-white">METAMAPA</p>
-            </div>
-        </a>
+            </a>
+
 
         <!-- Centro: Puede ser título, barra de búsqueda, etc -->
-        <h1 class="text-5xl font-semibold text-white text-center">METAMAPA</h1>
+        <th:block th:if="${!isMapPage}">
+            <h1 class="text-5xl font-semibold text-white text-center">METAMAPA</h1>
+        </th:block>
+        <th:block th:if="${isMapPage}">
+            <th:block th:replace="~{fragments/search-bar :: searchBar('hechos')}" />
+        </th:block>
 
         <!-- Derecha: Menú derecho -->
         <div class="flex align-items-center justify-end">
-            <button th:fragment="returnButton" onclick="window.history.back()" class="btn-return text-white hover:opacity-80 hover:scale-105" aria-label="Volver">
+            <button id="btn-return" onclick="window.history.back()" class="btn-return text-white hover:opacity-80 hover:scale-105" aria-label="Volver">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                 </svg>
             </button>
-            <th:block th:replace="~{fragments/hamburger-menu :: menuHamburguesa(${isLoggedIn}, ${isAdmin})}" />
+            <th:block th:replace="~{fragments/menu :: menu}" />
         </div>
     </nav>
 </header>

@@ -3,7 +3,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: white; //
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     max-width: 1200px;
@@ -27,48 +27,47 @@
     }
 }
 
+.modal-page-format {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1),
+    0 10px 10px -5px rgba(0,0,0,0.04);
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .modal-header {
-    background-color: #000000;
     color: white;
-    border-radius: 12px 12px 0 0;
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
-    flex-shrink: 0;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: black;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
 
 .modal-title {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
 }
 
-.close-button {
-    background: rgba(255, 255, 255);
-    border: none;
-    color: black;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    border-radius: 6px;
-}
-
-.close-button:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.05);
-}
-
-.modal-body {
+.modal-page-body {
     background: white;
-    padding: 1.5rem 2rem;
+    padding: 1.5rem;
     overflow-y: auto;
     flex: 1;
 }
+
+ .modal-page-body > * + * {
+     margin-top: 1rem;
+ }
 
 .modal-footer {
     padding: 1rem 2rem;
@@ -79,32 +78,6 @@
     flex-shrink: 0;
     background: white;
     border-radius: 0 0 12px 12px;
-}
-
-
-/* Contenedor general del modal */
-#misHechosModal .modal-content {
-    border-radius: 12px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-    border: none;
-}
-
-/* Header del modal */
-#misHechosModal .modal-header {
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #e0e0e0;
-    border-radius: 12px 12px 0 0;
-}
-
-/* Título */
-#misHechosModal .modal-title {
-    font-weight: 600;
-    font-size: 1.2rem;
-}
-
-/* Body del modal */
-#misHechosModal .modal-body {
-    padding: 1.25rem 1.5rem;
 }
 
 /* Ítems de los hechos */
@@ -148,12 +121,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente y oscuro */
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999; /* Asegura que esté por encima de todo */
-    overflow-y: auto; /* Permite scroll si el contenido es grande */
+    z-index: 10000;
+    overflow-y: auto;
     padding: 20px;
 }
 
@@ -182,6 +155,28 @@
 
 .modal-close:hover {
     color: #ffffff;
+}
+
+.modal-page {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    display: flex;
+}
+
+.panel {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    width: 300px;
 }
 
 #modalTitulo {

@@ -1,4 +1,11 @@
-<th:block th:fragment="pageScripts" />
+<th:block th:fragment="pageScripts">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const returnBtn = document.getElementById("btn-return");
+            if (returnBtn) returnBtn.remove();
+        });
+    </script>
+</th:block>
 
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/homepage.css}" />
@@ -11,7 +18,7 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main>
         <div class="map-container">
             <!-- Botón centrado -->

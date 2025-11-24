@@ -1,35 +1,26 @@
-<th:block th:fragment="hamburgerMenuScripts">
-	<script src="/js/hamburger-menu.js" defer></script>
+<th:block th:fragment="menuScripts">
+	<script src="/js/menu.js" defer></script>
 	<script src="/js/profile.js" defer></script>
 	<script src="/js/crear-coleccion.js" defer></script>
 	<script src="/js/crear-hecho.js" defer></script>
-	<th:block th:replace="~{fragments/modals :: modalsScripts}"/>
-	<script th:inline="javascript">
-        // Función para ver mis hechos
-        function verMisHechos() {
-            const params = new URLSearchParams();
-            params.append('autorId', '[[${contribuyenteId}]]');
-            window.location.href = '/mapa?' + params.toString();
-        }
-	</script>
 </th:block>
 
 
-<!-- Menú Hamburguesa -->
-<th:block th:fragment="menuHamburguesa(isLoggedIn, isAdmin)">
-	<button th:fragment="hamburgerButton" id="hamburgerButton" onclick="toggleHamburgerMenu()"
+
+<th:block th:fragment="menu">
+	<button id="menu-button"
 			class="bg-transparent border-0 text-white cursor-pointer p-2 transition duration-200 ease-in-out flex items-center justify-center hover:opacity-80 hover:scale-105"
-			aria-label="Menú Hamburguesa">
+			aria-label="Menú DropDown">
 		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 			 class="w-12 h-12">
 			<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
 		</svg>
 	</button>
 	<!-- Menú Desplegable -->
-	<div id="hamburgerMenu" class="hamburger-menu hidden">
-		<div class="hamburger-menu-content">
+	<div id="dropdown-menu" class="menu-dropdown hidden">
+		<div class="dropdown-menu-content">
 			<!-- Header del menú con usuario si está logueado -->
-			<div th:if="${isLoggedIn}" class="hamburger-menu-header">
+			<div th:if="${isLoggedIn}" class="dropdown-menu-header">
 				<div class="flex items-center gap-2">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-6 h-6">
@@ -41,10 +32,10 @@
 			</div>
 
 			<!-- Navegación -->
-			<div class="hamburger-menu-section">
-				<h3 class="hamburger-menu-section-title">Navegación</h3>
+			<div class="dropdown-menu-section">
+				<h3 class="dropdown-menu-section-title">Navegación</h3>
 
-				<a href="/home" class="hamburger-menu-item">
+				<a href="/home" class="dropdown-menu-item">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -53,7 +44,7 @@
 					<span>Inicio</span>
 				</a>
 
-				<a href="/mapa" class="hamburger-menu-item">
+				<a href="/mapa" class="dropdown-menu-item">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -62,7 +53,7 @@
 					<span>Mapa Interactivo</span>
 				</a>
 
-				<a href="/colecciones" class="hamburger-menu-item">
+				<a href="/colecciones" class="dropdown-menu-item">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -71,7 +62,7 @@
 					<span>Colecciones</span>
 				</a>
 
-				<a th:if="${isAdmin}" href="/solicitudes" class="hamburger-menu-item">
+				<a th:if="${isAdmin}" href="/solicitudes" class="dropdown-menu-item">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -82,11 +73,11 @@
 			</div>
 
 			<!-- Acciones (solo si está logueado) -->
-			<div th:if="${isLoggedIn}" class="hamburger-menu-section">
-				<h3 class="hamburger-menu-section-title">Acciones</h3>
+			<div th:if="${isLoggedIn}" class="dropdown-menu-section">
+				<h3 class="dropdown-menu-section-title">Acciones</h3>
 
-				<button id="hamburgerMenuCrearHecho" onclick="toggleModalHecho(); toggleHamburgerMenu();"
-						class="hamburger-menu-item hamburger-menu-button">
+				<button id="menu-crear-hecho" onclick="toggleModalCrearHecho();"
+						class="dropdown-menu-item dropdown-menu-button">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -94,9 +85,8 @@
 					<span>Crear Hecho</span>
 				</button>
 
-				<button id="hamburgerMenuCrearColeccion" th:if="${isAdmin}"
-						onclick="toggleModalColeccion(); toggleHamburgerMenu();"
-						class="hamburger-menu-item hamburger-menu-button">
+				<button id="menu-crear-coleccion" th:if="${isAdmin}"
+						class="dropdown-menu-item dropdown-menu-button">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -104,8 +94,8 @@
 					<span>Crear Colección</span>
 				</button>
 
-				<button id="hamburgerMenuMisHechos" onclick="verMisHechos(); toggleHamburgerMenu();"
-						class="hamburger-menu-item hamburger-menu-button">
+				<button id="menu-mis-hechos" onclick="toggleModalMisHechos();"
+						class="dropdown-menu-item dropdown-menu-button" data-is-admin="${isAdmin}">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -114,7 +104,7 @@
 					<span>Mis Hechos</span>
 				</button>
 
-				<a th:if="${isAdmin}" href="/hechos-pendientes" class="hamburger-menu-item">
+				<a th:if="${isAdmin}" href="/hechos-pendientes" class="dropdown-menu-item">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -123,8 +113,8 @@
 					<span>Hechos Pendientes</span>
 				</a>
 
-				<button id="hamburgerMenuHechosPendientes" onclick="toggleModalEditarPerfil(); toggleHamburgerMenu();"
-						class="hamburger-menu-item hamburger-menu-button">
+				<button id="menu-hechos-pendientes" onclick="toggleModalEditarPerfil();"
+						class="dropdown-menu-item dropdown-menu-button">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -135,10 +125,10 @@
 			</div>
 
 			<!-- Autenticación -->
-			<div class="hamburger-menu-section border-t border-gray-200 pt-3">
+			<div class="dropdown-menu-section border-t border-gray-200 pt-3">
 
 				<a th:if="${!isLoggedIn}" th:href="@{/oauth2/authorization/keycloak}"
-				   class="hamburger-menu-item text-blue-600 font-semibold">
+				   class="dropdown-menu-item text-blue-600 font-semibold">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round"
@@ -148,7 +138,7 @@
 				</a>
 
 				<th:block th:if="${isLoggedIn}">
-					<a href="/logout" class="hamburger-menu-item text-red-600 font-semibold">
+					<a href="/logout" class="dropdown-menu-item text-red-600 font-semibold">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 							 stroke="currentColor" class="w-5 h-5">
 							<path stroke-linecap="round" stroke-linejoin="round"
@@ -162,4 +152,5 @@
 	</div>
 	<th:block th:replace="~{fragments/modals :: modalCrearHecho}"/>
 	<th:block th:replace="~{fragments/modals :: modalCrearColeccion}"/>
+	<th:block th:replace="~{fragments/modals :: modalEditarPerfil}"/>
 </th:block>

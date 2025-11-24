@@ -2,7 +2,7 @@
 let multimediaCount = 0;
 
 // Función para toggle del modal
-function toggleModalHecho() {
+function toggleModalCrearHecho() {
     const modal = document.getElementById('modalCrearHecho');
     const overlay = document.getElementById('modalOverlay');
 
@@ -24,66 +24,13 @@ function toggleModalHecho() {
     }
 }
 
-async function verMisHechos(isAdmin=false) {
-    try {
-        const autorId = window.autorData.id;
-        const endpoint = isAdmin ?
-            `http://localhost:8086/apiAdministrativa/contribuyentes/${autorId}/hechos` :
-            `http://localhost:8082/fuentesDinamicas/contribuyentes/${autorId}/hechos`;
-        const response = await fetch(endpoint);
-        const hechos = await response.json();
-
-        const contenido = `
-            <div class="modal fade" id="misHechosModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Mis Hechos</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="list-group">
-                                ${hechos.map(hecho => `
-                                    <div class="list-group-item">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6>${hecho.titulo}</h6>
-                                            <button onclick="editarHecho(${JSON.stringify(hecho).replace(/"/g, '&quot;')})" 
-                                                    class="btn btn-primary btn-sm">
-                                                Editar
-                                            </button>
-                                        </div>
-                                        <p>${hecho.descripcion}</p>
-                                        <small>Fecha: ${new Date(hecho.fechaAcontecimiento).toLocaleDateString()}</small>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', contenido);
-        const modal = new bootstrap.Modal(document.getElementById('misHechosModal'));
-        modal.show();
-
-        document.getElementById('misHechosModal').addEventListener('hidden.bs.modal', function() {
-            this.remove();
-        });
-
-    } catch (error) {
-        console.error('Error al obtener los hechos:', error);
-        alert('Error al cargar los hechos');
-    }
-}
-
 function editarHecho(hecho) {
     // Cerrar el modal de mis hechos
     const misHechosModal = bootstrap.Modal.getInstance(document.getElementById('misHechosModal'));
     misHechosModal.hide();
 
     // Abrir el modal de crear/editar hecho
-    toggleModalHecho();
+    toggleModalCrearHecho();
 
     // Rellenar el formulario con los datos del hecho
     document.getElementById('titulo').value = hecho.titulo;
@@ -171,7 +118,7 @@ async function guardarEdicion(hechoId) {
 
         if (response.ok) {
             alert('Hecho actualizado exitosamente');
-            toggleModalHecho();
+            toggleModalCrearHecho();
             location.reload();
         } else {
             throw new Error('Error al actualizar el hecho');
@@ -345,7 +292,7 @@ async function publicarHecho(isAdmin=false) {
         .then(response => {
             if (response.ok) {
                 alert('Hecho publicado exitosamente');
-                toggleModalHecho();
+                toggleModalCrearHecho();
                 // Opcional: Recargar la página o actualizar la lista de hechos dinámicamente
                 location.reload();
             } else {
