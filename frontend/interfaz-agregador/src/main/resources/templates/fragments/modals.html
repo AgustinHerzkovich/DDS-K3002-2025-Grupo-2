@@ -143,7 +143,7 @@
 					<label for="criterio-tipo" class="block text-sm font-medium text-gray-700 mb-1">Criterio de
 						Pertenencia</label>
 					<select id="criterio-tipo"
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
+							class="form-primary-select">
 						<option value="">Seleccione un criterio</option>
 						<option value="DISTANCIA">Distancia</option>
 						<option value="FECHA">Fecha</option>
@@ -208,7 +208,7 @@
 					<label for="algoritmo-consenso" class="block text-sm font-medium text-gray-700 mb-1">Algoritmo de
 						Consenso</label>
 					<select id="algoritmo-consenso"
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
+							class="form-primary-select">
 						<option value="ABSOLUTO">Absoluto</option>
 						<option value="IRRESTRICTO">Irrestricto</option>
 						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
@@ -223,12 +223,12 @@
 			<div id="salir-crear-coleccion">
 				<th:block th:replace="~{fragments/button :: botonCancelar}"/>
 			</div>
-			<button id="crear-coleccion" type="button" class="btn-crear" aria-label="Crear Coleccion">Crear Colección</button>
+			<button id="crear-coleccion" type="button" class="btn-confirmar" aria-label="Crear Coleccion">Crear Colección</button>
 		</div>
 	</div>
 </div>
 
-<div th:fragment="modalEditarPerfil" id="modalEditarPerfil" class="modal-page hidden">
+<div th:fragment="modalEditarPerfil" id="modal-editar-perfil" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-lg">
 
 		<div class="modal-header">
@@ -237,33 +237,35 @@
 
 		<div class="modal-page-body">
 			<form id="formEditarPerfil" class="space-y-4">
-
 				<div>
-					<label for="perfilNombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
-					<input type="text" style="color: black" class="form-input w-full border-gray-300 rounded-md shadow-sm" id="perfilNombre" required>
+					<label for="perfil-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
+					<input type="text" id="perfil-nombre"
+						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfilApellido" class="block text-sm font-medium text-gray-700 mb-1">Apellido <span class="text-red-500">*</span></label>
-					<input type="text" style="color: black" class="form-input w-full border-gray-300 rounded-md shadow-sm" id="perfilApellido" required>
+					<label for="perfil-apellido" class="block text-sm font-medium text-gray-700 mb-1">Apellido <span class="text-red-500">*</span></label>
+					<input type="text" id="perfil-apellido"
+						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfilEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-					<input type="email" style="color: black" class="form-input w-full border-gray-300 rounded-md shadow-sm bg-gray-100" id="perfilEmail" readonly>
+					<label for="perfil-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+					<input type="email" id="perfil-email"
+						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfilFechaNacimiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
-					<input type="date" style="color: black" class="form-input w-full border-gray-300 rounded-md shadow-sm" id="perfilFechaNacimiento">
+					<label for="perfil-fecha-nacimiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+					<input type="date" id="perfil-fecha-nacimiento"
+						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
-
 			</form>
 		</div>
 
 		<div class="modal-footer flex justify-end items-center p-4 border-t border-gray-200 space-x-3">
-			<button type="button" class="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200" onclick="toggleModalEditarPerfil()">Cancelar</button>
-			<button type="button" class="btn-primary px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 shadow-sm" onclick="guardarPerfil()">Guardar Cambios</button>
+			<button id="salir-editar-perfil" type="button" class="btn-cancelar">Cancelar</button>
+			<button id="editar-perfil" type="button" class="btn-confirmar">Guardar Cambios</button>
 		</div>
 	</div>
 </div>

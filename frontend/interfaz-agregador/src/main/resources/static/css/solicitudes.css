@@ -30,16 +30,6 @@
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Título de la tarjeta */
-.card-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #4b5563;
-}
-
 /* Botón Ver Hecho */
 .btn-hecho {
     display: inline-flex;
@@ -62,14 +52,6 @@
 .btn-hecho .icon {
     width: 16px;
     height: 16px;
-}
-
-/* Contenido de la tarjeta */
-.card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex-grow: 1;
 }
 
 /* Secciones de información */

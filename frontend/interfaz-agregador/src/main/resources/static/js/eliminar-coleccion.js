@@ -1,13 +1,11 @@
-if (!window.eliminarColeccionListenerAgregado) {
-    document.addEventListener("click", e => {
-        const btn = e.target.closest(".eliminar-coleccion");
-        if (btn) {
-            const id = btn.dataset.id;
-            eliminarColeccion(id);
-        }
-    });
-    window.eliminarColeccionListenerAgregado = true;
-}
+document.addEventListener('DOMContentLoaded', function () {
+    const borrarBtns = document.getElementsByClassName("eliminar-coleccion");
+
+    for (let i = 0; i < borrarBtns.length; i++) {
+        const borrarBtn = borrarBtns[i];
+        borrarBtn.addEventListener("click", () => eliminarColeccion(borrarBtn.dataset.id));
+    }
+});
 
 function eliminarColeccion(id) {
     if (!id && id !== 0) {
@@ -18,7 +16,7 @@ function eliminarColeccion(id) {
 
     fetch('/apiAdministrativa/colecciones/' + id, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
+        headers: getHeaders()
     })
         .then(response => {
             if (response.ok) {

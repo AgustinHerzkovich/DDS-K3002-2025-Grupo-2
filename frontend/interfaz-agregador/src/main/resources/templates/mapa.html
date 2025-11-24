@@ -2,9 +2,6 @@
     <script src="/js/filtrar-hechos-mapa.js" defer></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="/js/search-bar.js" defer></script>
-    <script>
-        const header = document.getElementById()
-    </script>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
             /*<![CDATA[*/
@@ -42,7 +39,7 @@
 
             // Agregamos un marker por cada hecho
             hechos.forEach(h => {
-                if (h.latitud && h.longitud) {
+                if (h.ubicacion.latitud && h.ubicacion.longitud) {
                     const popupContent = `
                     <div style="text-align: center; max-width: 200px;">
                         <b style="word-wrap: break-word;">${h.titulo}</b>
@@ -54,7 +51,7 @@
                     </div>
                 `;
                     try {
-                        L.marker([h.latitud, h.longitud], {icon: customIcon})
+                        L.marker([h.ubicacion.latitud, h.ubicacion.longitud], {icon: customIcon})
                                 .addTo(markersLayer) // Añadir al grupo
                                 .bindPopup(popupContent);
                     } catch (e) {
@@ -76,7 +73,6 @@
 </th:block>
 
 <th:block th:fragment="pageStyles">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/mapa.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <style>

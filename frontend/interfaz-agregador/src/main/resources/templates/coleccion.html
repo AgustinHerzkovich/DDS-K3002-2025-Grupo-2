@@ -1,268 +1,94 @@
-<th:block th:fragment="pageScripts" />
-
-<th:block th:fragment="pageStyles">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/coleccion.css}" />
+<th:block th:fragment="pageScripts">
+    <script src="/js/editar-coleccion.js" defer></script>
 </th:block>
+
+<th:block th:fragment="pageStyles" />
 
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
-    <main th:inline="javascript" class="container main-padding mx-auto px-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
-        <header class="mb-6 pb-4 border-b">
-            <h1 class="text-3xl font-bold text-indigo-800" th:text="${coleccion.titulo}">Título de la Colección</h1>
-            <p class="text-md text-gray-600 mt-1" th:text="${coleccion.descripcion}">Descripción de la colección.</p>
-        </header>
-
-        <!-- 1) Cambiar algoritmo -->
-        <section class="mb-6 p-4 border rounded-md bg-gray-50">
-            <label for="algoritmoSelect" class="text-lg font-semibold mb-3 text-gray-800 block">
-                Algoritmo de Consenso: <span th:text="${coleccion.tipoAlgoritmoConsenso}"></span>
-            </label>
-            <div class="flex items-center gap-3">
-                <select id="algoritmoSelect" class="form-select flex-grow border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <option value="IRRESTRICTO">IRRESTRICTO</option>
-                    <option value="ABSOLUTO">ABSOLUTO</option>
-                    <option value="MULTIPLES_MENCIONES">MULTIPLES_MENCIONES</option>
-                    <option value="MAYORIA_SIMPLE">MAYORIA_SIMPLE</option>
-                </select>
-                <!-- Usar data-attribute en lugar de th:onclick para evitar la restricción de Thymeleaf -->
-                <button id="btnCambiarAlgoritmo" type="button" class="btn-primary" th:data-coleccion-id="${coleccion.id}">
-                    Guardar Cambio
-                </button>
+    <main class="main-padding flex justify-center">
+        <div class="card w-[55rem] p-6">
+            <div class="mb-6 pb-3 border-b">
+                <h1 class="text-3xl font-bold" th:text="${coleccion.titulo}"></h1>
+                <p class="text-md text-gray-600 mt-1" th:text="${coleccion.descripcion}"></p>
             </div>
-        </section>
 
-        <!-- 2) Listado de fuentes con eliminar -->
-        <section class="mb-6 p-4 border rounded-md bg-gray-50">
-            <h2 class="text-lg font-semibold mb-3 text-gray-800">Fuentes Actuales</h2>
-            <ul th:if="${not #lists.isEmpty(coleccion.fuentes)}" class="space-y-2">
-                <li th:each="f : ${coleccion.fuentes}" class="flex items-center justify-between p-2 bg-white border rounded-md shadow-sm">
-                    <div class="text-sm">
-                        <strong class="text-gray-900" th:text="${f.id}">ID_FUENTE_EJEMPLO</strong>
-                        <span class="text-gray-600" th:if="${f.ip}"> — IP: <span class="font-mono" th:text="${f.ip}">127.0.0.1</span></span>
-                        <span class="text-gray-600" th:if="${f.puerto}"> — Puerto: <span class="font-mono" th:text="${f.puerto}">8080</span></span>
-                    </div>
-                    <!-- Quitar th:onclick y dejar data-attributes para los listeners -->
-                    <button type="button" class="btn-danger-small btn-eliminar-fuente"
-                            th:data-coleccion-id="${coleccion.id}"
-                            th:data-fuente-id="${f.id}">
-                        ✕ Eliminar
-                    </button>
-                </li>
-            </ul>
-            <p th:if="${#lists.isEmpty(coleccion.fuentes)}" class="text-sm text-gray-500 italic">Esta colección no tiene fuentes asignadas.</p>
-        </section>
-
-        <!-- 3) Agregar fuente -->
-        <section class="mb-6 p-4 border rounded-md bg-gray-50">
-            <h3 class="text-lg font-semibold mb-3 text-gray-800">Agregar Nueva Fuente</h3>
-            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-                <div>
-                    <label for="newFuenteTipo" class="block text-xs font-medium text-gray-700 mb-1">Tipo <span class="text-red-500">*</span></label>
-                    <select id="newFuenteTipo" class="form-select w-full text-sm border-gray-300 rounded-md shadow-sm">
-                        <option value="estatica">Estática</option>
-                        <option value="dinamica">Dinámica</option>
-                        <option value="proxy">Proxy</option>
+            <!-- 1) Cambiar algoritmo -->
+            <section class="form-container">
+                <label for="algoritmoSelect" class="form-container-title">
+                    Algoritmo de Consenso: <span th:text="${coleccion.tipoAlgoritmoConsenso}"></span>
+                </label>
+                <div class="flex items-center gap-3 justify-between">
+                    <select id="algoritmoSelect" class="form-primary-select w-[60%]">
+                        <option value="ABSOLUTO">Absoluto</option>
+                        <option value="IRRESTRICTO">Irrestricto</option>
+                        <option value="MAYORIA_SIMPLE">Mayoría simple</option>
+                        <option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
                     </select>
+                    <!-- Usar data-attribute en lugar de th:onclick para evitar la restricción de Thymeleaf -->
+                    <button id="btnCambiarAlgoritmo" type="button" class="btn-confirmar w-auto" th:data-coleccion-id="${coleccion.id}">
+                        Guardar Cambio
+                    </button>
                 </div>
-                <div>
-                    <label for="newFuenteId" class="block text-xs font-medium text-gray-700 mb-1">ID Fuente <span class="text-red-500">*</span></label>
-                    <input id="newFuenteId" type="text" placeholder="ID único de la fuente" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
+            </section>
+
+            <!-- 2) Listado de fuentes con eliminar -->
+            <section class="form-container">
+                <h2 class="form-container-title">Fuentes Actuales</h2>
+                <ul th:if="${not #lists.isEmpty(coleccion.fuentes)}" class="space-y-2">
+                    <li th:each="f : ${coleccion.fuentes}" class="flex items-center justify-between p-2 bg-white border rounded-md shadow-sm">
+                        <div class="text-sm">
+                            <strong class="text-gray-900" th:text="${f.id}">ID_FUENTE_EJEMPLO</strong>
+                            <span class="text-gray-600" th:if="${f.ip}"> — IP: <span class="font-mono" th:text="${f.ip}">127.0.0.1</span></span>
+                            <span class="text-gray-600" th:if="${f.puerto}"> — Puerto: <span class="font-mono" th:text="${f.puerto}">8080</span></span>
+                        </div>
+                        <!-- Quitar th:onclick y dejar data-attributes para los listeners -->
+                        <button type="button" class="btn-danger-small btn-eliminar-fuente"
+                                th:data-coleccion-id="${coleccion.id}"
+                                th:data-fuente-id="${f.id}">
+                            ✕ Eliminar
+                        </button>
+                    </li>
+                </ul>
+                <p th:if="${#lists.isEmpty(coleccion.fuentes)}" class="text-sm text-gray-500 italic">Esta colección no tiene fuentes asignadas.</p>
+            </section>
+
+            <!-- 3) Agregar fuente -->
+            <section class="form-container">
+                <h3 class="form-container-title">Agregar Nueva Fuente</h3>
+                <div class="flex items-end justify-between">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end w-[79%]">
+                        <div>
+                            <label for="newFuenteTipo" class="block text-xs font-medium text-gray-700 mb-1">Tipo <span class="text-red-500">*</span></label>
+                            <select id="newFuenteTipo" class="form-primary-select">
+                                <option value="ESTATICA">Estática</option>
+                                <option value="DINAMICA">Dinámica</option>
+                                <option value="PROXY">Proxy</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="newFuenteId" class="block text-xs font-medium text-gray-700 mb-1">ID Fuente <span class="text-red-500">*</span></label>
+                            <input id="newFuenteId" type="text" placeholder="ID único de la fuente" class="form-control" />
+                        </div>
+                        <div>
+                            <label for="newFuenteIp" class="block text-xs font-medium text-gray-700 mb-1">IP <span class="text-red-500">*</span></label>
+                            <input id="newFuenteIp" type="text" placeholder="Ej: 127.0.0.1" class="form-control" />
+                        </div>
+                        <div>
+                            <label for="newFuentePuerto" class="block text-xs font-medium text-gray-700 mb-1">Puerto <span class="text-red-500">*</span></label>
+                            <input id="newFuentePuerto" type="number" placeholder="Ej: 8081" class="form-control" />
+                        </div>
+                    </div>
+                    <button id="btnAgregarFuente" type="button" class="btn-confirmar h-[42px]" th:data-coleccion-id="${coleccion.id}">
+                        Agregar Fuente
+                    </button>
                 </div>
-                <div>
-                    <label for="newFuenteIp" class="block text-xs font-medium text-gray-700 mb-1">IP <span class="text-red-500">*</span></label>
-                    <input id="newFuenteIp" type="text" placeholder="Ej: 127.0.0.1" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
-                </div>
-                <div>
-                    <label for="newFuentePuerto" class="block text-xs font-medium text-gray-700 mb-1">Puerto <span class="text-red-500">*</span></label>
-                    <input id="newFuentePuerto" type="number" placeholder="Ej: 8081" class="form-input w-full text-sm border-gray-300 rounded-md shadow-sm" />
-                </div>
-                <button id="btnAgregarFuente" type="button" class="btn-primary" th:data-coleccion-id="${coleccion.id}">
-                    Agregar Fuente
-                </button>
-            </div>
-        </section>
+            </section>
 
-        <section class="mt-8 flex justify-start">
-            <a th:href="@{/colecciones}" class="btn-cancel">← Volver al Listado</a>
-        </section>
-
-        <script th:inline="javascript">
-            /*<![CDATA[*/
-            function initColeccionPage() {
-                const btnCambiar = document.getElementById('btnCambiarAlgoritmo');
-                if (btnCambiar) {
-                    btnCambiar.addEventListener('click', () => {
-                        const coleccionId = btnCambiar.dataset.coleccionId;
-                        if (coleccionId) cambiarAlgoritmo(coleccionId);
-                    });
-                }
-
-                document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const coleccionId = btn.dataset.coleccionId;
-                        const fuenteId = btn.dataset.fuenteId;
-                        if (coleccionId && fuenteId) eliminarFuente(coleccionId, fuenteId);
-                    });
-                });
-
-                const btnAgregar = document.getElementById('btnAgregarFuente');
-                if (btnAgregar) {
-                    btnAgregar.addEventListener('click', () => {
-                        const coleccionId = btnAgregar.dataset.coleccionId;
-                        if (coleccionId) agregarFuente(coleccionId);
-                    });
-                }
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initColeccionPage);
-            } else {
-                initColeccionPage();
-            }
-
-            // Obtener tokens CSRF y validar que existan
-            const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
-            const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-
-            if (!csrfHeaderName || !csrfToken) {
-                console.error('CSRF tokens no encontrados');
-            }
-
-            // Headers comunes para todas las peticiones
-            const getHeaders = () => ({
-                'Content-Type': 'application/json',
-                [csrfHeaderName]: csrfToken
-            });
-
-            // Base URL para las APIs
-            const API_BASE = 'http://localhost:8086/apiAdministrativa';
-
-            async function eliminarFuente(coleccionId, fuenteId) {
-                if (!coleccionId || !fuenteId) {
-                    console.error('IDs inválidos');
-                    return;
-                }
-
-                if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
-
-                try {
-                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes/${fuenteId}`, {
-                        method: 'DELETE',
-                        headers: getHeaders()
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(errorText || 'Error al eliminar la fuente');
-                    }
-
-                    alert('Fuente eliminada exitosamente');
-                    window.location.reload();
-                } catch (error) {
-                    console.error('Error en eliminarFuente:', error);
-                    alert(`Error al eliminar fuente: ${error.message}`);
-                }
-            }
-
-            async function cambiarAlgoritmo(coleccionId) {
-                if (!coleccionId) {
-                    console.error('ID de colección inválido');
-                    return;
-                }
-
-                const select = document.getElementById('algoritmoSelect');
-                const nuevoAlgoritmo = select.value;
-
-                try {
-                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/algoritmo`, {
-                        method: 'PATCH',
-                        headers: getHeaders(),
-                        body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(errorText || 'Error al cambiar el algoritmo');
-                    }
-
-                    alert('Algoritmo actualizado exitosamente');
-                    window.location.reload();
-                } catch (error) {
-                    console.error('Error en cambiarAlgoritmo:', error);
-                    alert(`Error al cambiar algoritmo: ${error.message}`);
-                }
-            }
-
-            async function agregarFuente(coleccionId) {
-                if (!coleccionId) {
-                    console.error('ID de colección inválido');
-                    return;
-                }
-
-                const tipo = document.getElementById('newFuenteTipo')?.value;
-                const id = document.getElementById('newFuenteId')?.value?.trim();
-                const ip = document.getElementById('newFuenteIp')?.value?.trim();
-                const puerto = document.getElementById('newFuentePuerto')?.value?.trim();
-
-                if (!tipo || !id || !ip || !puerto) {
-                    alert('Todos los campos son obligatorios');
-                    return;
-                }
-
-                const puertoNum = parseInt(puerto, 10);
-                if (isNaN(puertoNum) || puertoNum <= 0) {
-                    alert('El puerto debe ser un número válido mayor a 0');
-                    return;
-                }
-
-                const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
-
-                try {
-                    const response = await fetch(`${API_BASE}/colecciones/${coleccionId}/fuentes`, {
-                        method: 'POST',
-                        headers: getHeaders(),
-                        body: JSON.stringify(nuevaFuente)
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(errorText || 'Error al agregar la fuente');
-                    }
-
-                    alert('Fuente agregada exitosamente');
-
-                    // Limpiar campos
-                    document.getElementById('newFuenteId').value = '';
-                    document.getElementById('newFuenteIp').value = '';
-                    document.getElementById('newFuentePuerto').value = '';
-
-                    window.location.reload();
-                } catch (error) {
-                    console.error('Error en agregarFuente:', error);
-                    alert(`Error al agregar fuente: ${error.message}`);
-                }
-            }
-
-            // Inicialización cuando el DOM está listo
-            document.addEventListener('DOMContentLoaded', () => {
-                // Verificar que los elementos necesarios existen
-                const requiredElements = [
-                    'algoritmoSelect',
-                    'newFuenteTipo',
-                    'newFuenteId',
-                    'newFuenteIp',
-                    'newFuentePuerto'
-                ];
-
-                requiredElements.forEach(id => {
-                    if (!document.getElementById(id)) {
-                        console.error(`Elemento ${id} no encontrado`);
-                    }
-                });
-            });
-
-            /*]]>*/
-        </script>
+            <section class="mt-8 flex justify-start">
+                <a th:href="@{/colecciones}" class="btn-cancelar">← Volver al Listado</a>
+            </section>
+        </div>
     </main>
 </th:block>

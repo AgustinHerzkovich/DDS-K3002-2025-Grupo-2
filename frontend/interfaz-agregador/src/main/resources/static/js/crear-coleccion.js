@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let contadorFuentesObject = {contadorFuentes : 0};
 
     listenModalToggle(modal, openModalBtn, cancelarBtn, () => cerrarModalCrearColecciones(modal, contadorFuentesObject, tipoCriterio, container));
-    listenModalConfirm(crearBtn, crearColeccion);
+    crearBtn.addEventListener("click", crearColeccion)
     listenAgregarFuente(agregarFuenteBtn, contadorFuentesObject, container);
     listenMostrarCamposCriterio(tipoCriterio);
     listenMostrarCamposFuente();

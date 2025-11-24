@@ -15,14 +15,12 @@ function listenPanelToggle(toggleBtn, content, separator, chevron) {
     });
 }
 
-function listenModalConfirm(confirmBtn, action) {
-    confirmBtn.addEventListener('click', function () {action()});
-}
-
 function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null) {
     if (closeBtn) {
         // Modal normal
         openBtn.addEventListener('click', () => {
+            const menuBtn = document.getElementById("menu-button");
+            menuBtn.click()
             modal.classList.remove("hidden");
         });
 
