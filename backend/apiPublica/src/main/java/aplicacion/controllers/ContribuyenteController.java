@@ -1,8 +1,11 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import domain.excepciones.IdInvalidoException;
 import domain.helpers.UrlHelper;
+import domain.peticiones.Validaciones;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;
@@ -33,5 +36,9 @@ public class ContribuyenteController {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/contribuyentes");
         UrlHelper.appendQueryParam(url, "mail", mail);
         return solicitudesHttp.get(url.toString(), Object.class);
+    }
+    @PatchMapping("/contribuyentes/{id}/identidad")
+    public ResponseEntity<Object> modificarIdentidadAContribuyente(@RequestBody Object body , @PathVariable("id") Long id) {
+        return solicitudesHttp.patch(urlBaseAgregador + "/contribuyentes/" + id + "/identidad", body, Object.class);
     }
 }

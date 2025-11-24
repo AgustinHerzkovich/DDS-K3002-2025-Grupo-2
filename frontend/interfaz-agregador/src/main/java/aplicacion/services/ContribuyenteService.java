@@ -111,28 +111,26 @@ public class ContribuyenteService {
             throw new RuntimeException("Fallo de red o error inesperado al actualizar Keycloak.", e);
         }
 
-       /*
+
         try {
-            // Utilizamos webClient (configurado para localhost:apiPublicaPort/apiPublica)
-            // La URL completa es /apiPublica/contribuyentes/{id}/identidad
+
             this.webClient.patch() // Usamos PATCH
-                    .uri( "contribuyentes/{id}/identidad", contribuyenteId)
+                    .uri( "/contribuyentes/{id}/identidad", contribuyenteId)
                     .bodyValue(identidadDto)
                     .retrieve()
                     .toBodilessEntity()
                     .block();
 
         } catch (org.springframework.web.reactive.function.client.WebClientResponseException webClientEx) {
-            // Captura de errores 4xx/5xx del WebClient
+
             System.err.println("ERROR API de Identidad (" + webClientEx.getStatusCode() + "): " + webClientEx.getResponseBodyAsString());
-            // Lanza una excepción compatible con el manejo del controlador (HttpClientErrorException)
             throw new HttpClientErrorException(webClientEx.getStatusCode(), webClientEx.getResponseBodyAsString());
 
         } catch (Exception e) {
             System.err.println("ERROR al procesar identidad: " + e.getMessage());
             throw new RuntimeException("Fallo de comunicación interna al actualizar la identidad.", e);
         }
-        */ //TODO: agregar en apipublica el pathc de editar identidad
+
         try {
 
             this.fuenteDinamicaWebClient.patch() // Usamos PATCH
