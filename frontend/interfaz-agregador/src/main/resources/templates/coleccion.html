@@ -6,7 +6,7 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main th:inline="javascript" class="container main-padding mx-auto px-6 bg-white rounded-lg shadow-md mt-6 max-w-4xl">
         <header class="mb-6 pb-4 border-b">
             <h1 class="text-3xl font-bold text-indigo-800" th:text="${coleccion.titulo}">Título de la Colección</h1>

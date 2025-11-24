@@ -1,121 +1,11 @@
-<th:block th:fragment="modalsScripts">
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const btnAplicar = document.getElementById('btn-aplicar-filtros');
-            const btnLimpiar = document.getElementById('btn-limpiar-filtros');
-            const form = document.getElementById('form-filtros');
-            const toggleBtn = document.getElementById('toggle-filtros-btn');
-            const content = document.getElementById('filtros-content');
-            const separator = document.getElementById('filtros-separator');
-            const chevron = document.getElementById('chevron-filtros-icon');
-            const filtros = [
-                'categoria',
-                'fechaReporteDesde',
-                'fechaReporteHasta',
-                'fechaAcontecimientoDesde',
-                'fechaAcontecimientoHasta'
-            ];
-            let isExpanded = true;
-
-            // Toggle minimizar/expandir
-            toggleBtn.addEventListener('click', function() {
-                isExpanded = !isExpanded;
-
-                content.classList.toggle('hidden');
-                separator.classList.toggle('hidden');
-                chevron.classList.toggle('rotate-0', isExpanded);
-                chevron.classList.toggle('-rotate-90', !isExpanded);
-            });
-
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                btnAplicar.click();
-            });
-
-            // Aplicar filtros
-            btnAplicar.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const params = new URLSearchParams(window.location.search);
-
-                // Tomar directamente de los inputs
-                const acontecimientoDesde = document.getElementById('fechaAcontecimientoDesde').value;
-                const acontecimientoHasta = document.getElementById('fechaAcontecimientoHasta').value;
-                const reporteDesde = document.getElementById('fechaReporteDesde').value;
-                const reporteHasta = document.getElementById('fechaReporteHasta').value;
-
-                // Validaciones
-                if (acontecimientoDesde && acontecimientoHasta) {
-                    if (new Date(acontecimientoDesde) >= new Date(acontecimientoHasta)) {
-                        alert("La fecha de acontecimiento 'desde' no puede ser mayor o igual que 'hasta'.");
-                        return;
-                    }
-                }
-
-                if (reporteDesde && reporteHasta) {
-                    if (new Date(reporteDesde) >= new Date(reporteHasta)) {
-                        alert("La fecha de reporte 'desde' no puede ser mayor o igual que 'hasta'.");
-                        return;
-                    }
-                }
-
-                // Actualizar parámetros
-                filtros.forEach(f => {
-                    const valor = document.getElementById(f).value;
-                    if (valor) {
-                        params.set(f, valor);
-                    } else {
-                        params.delete(f);
-                    }
-                });
-
-                window.location.href = '/mapa?' + params.toString();
-            });
-
-            btnLimpiar.addEventListener("click", function() {
-                form.querySelectorAll('input, select, textarea').forEach(campo => {
-                    campo.value = "";
-                });
-			});
-        });
-	</script>
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('toggle-hechos-btn');
-            const content = document.getElementById('hechos-content');
-            const separator = document.getElementById('hechos-separator');
-            const chevron = document.getElementById('chevron-icon');
-            let isExpanded = true;
-
-            if (toggleBtn && content && separator && chevron) { // Verificar si los elementos existen
-                toggleBtn.addEventListener('click', function() {
-                    isExpanded = !isExpanded;
-                    content.style.display = isExpanded ? 'block' : 'none';
-                    separator.style.display = isExpanded ? 'block' : 'none';
-                    chevron.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)';
-                });
-            } else {
-                console.error("No se encontraron todos los elementos para el panel de hechos recientes.");
-            }
-        });
-	</script>
-</th:block>
-
-
-
-<div th:fragment="modalCrearHecho" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+<div th:fragment="modalCrearHecho" class="modal-page hidden">
 	<!-- Modal personalizado -->
-	<div id="modalCrearHecho" class="custom-modal" style="display: none;">
+	<div id="modalCrearHecho" class="modal-content modal-page-format">
 		<div class="modal-header">
 			<h5 class="modal-title">Crear Nuevo Hecho</h5>
-			<button type="button" class="close-button" onclick="toggleModalHecho()" aria-label="Cerrar modal">
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-				</svg>
-			</button>
 		</div>
 
-		<div class="modal-body">
+		<div class="modal-page-body">
 			<form id="formCrearHecho">
 				<!-- Fila 1: Título y Categoría -->
 				<div class="row g-2 mb-3">
@@ -214,53 +104,46 @@
 		</div>
 
 		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" onclick="toggleModalHecho()">Cancelar</button>
-			<button type="button" class="btn btn-danger-hecho" th:onclick="|publicarHecho(${isAdmin})|">Publicar</button>
+			<th:block th:replace="~{fragments/button :: botonCancelar}" onclick="toggleModalCrearHecho()" />
+			<button type="button" class="btn-crear" th:onclick="|publicarHecho(${isAdmin})|" aria-label="Publicar Hecho">Publicar</button>
 		</div>
 	</div>
 </div>
 
-<div th:fragment="modalCrearColeccion" id="modalCrearColeccion" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+<div th:fragment="modalCrearColeccion" id="modal-crear-coleccion" class="modal-page hidden">
 	<!-- Modal para Crear Colección -->
-	<div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+	<div class="modal-content modal-page-format max-w-2xl">
 		<!-- Header del Modal -->
-		<div class="modal-header flex justify-between items-center p-4 border-b bg-black rounded-t-lg">
-			<h5 style="color: white" class="modal-title text-xl font-semibold">Crear Nueva Colección</h5>
-			<button id="buttonCloseModal" type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalColeccion()">
-				<svg style="color:white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-					 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
-				</svg>
-			</button>
+		<div class="modal-header">
+			<h5 style="color: white" class="modal-title">Crear Nueva Colección</h5>
 		</div>
 
 		<!-- Body del Modal (con scroll) -->
-		<div class="modal-body p-6 space-y-4 overflow-y-auto">
-			<form id="formCrearColeccion" class="space-y-4">
+		<div class="modal-page-body">
+			<form id="form-crear-coleccion" class="space-y-4">
 				<!-- Título -->
 				<div>
-					<label for="tituloColeccion" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-					<input type="text" id="tituloColeccion"
+					<label for="titulo-coleccion" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
+					<input type="text" id="titulo-coleccion"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 						   placeholder="Ingrese el título de la colección" required>
 				</div>
 
 				<!-- Descripción -->
 				<div>
-					<label for="descripcionColeccion"
+					<label for="descripcion-coleccion"
 						   class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-					<textarea id="descripcionColeccion" rows="3"
+					<textarea id="descripcion-coleccion" rows="3"
 							  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 							  placeholder="Describa la colección" required></textarea>
 				</div>
 
 				<!-- Criterio de Pertenencia -->
 				<div>
-					<label for="criterioTipo" class="block text-sm font-medium text-gray-700 mb-1">Criterio de
+					<label for="criterio-tipo" class="block text-sm font-medium text-gray-700 mb-1">Criterio de
 						Pertenencia</label>
-					<select id="criterioTipo"
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
-							onchange="mostrarCamposCriterio()">
+					<select id="criterio-tipo"
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 						<option value="">Seleccione un criterio</option>
 						<option value="DISTANCIA">Distancia</option>
 						<option value="FECHA">Fecha</option>
@@ -268,44 +151,44 @@
 				</div>
 
 				<!-- Campos Distancia -->
-				<div id="camposDistancia" style="display:none;" class="space-y-2">
+				<div id="campos-distancia" class="space-y-2 hidden">
 					<div class="grid grid-cols-2 gap-2">
 						<div>
-							<label for="criterioLatitud" class="block text-sm font-medium text-gray-700 mb-1">Latitud
+							<label for="criterio-latitud" class="block text-sm font-medium text-gray-700 mb-1">Latitud
 								Base</label>
-							<input type="number" step="any" id="criterioLatitud"
+							<input type="number" step="any" id="criterio-latitud"
 								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 								   placeholder="-34.603722">
 						</div>
 						<div>
-							<label for="criterioLongitud" class="block text-sm font-medium text-gray-700 mb-1">Longitud
+							<label for="criterio-longitud" class="block text-sm font-medium text-gray-700 mb-1">Longitud
 								Base</label>
-							<input type="number" step="any" id="criterioLongitud"
+							<input type="number" step="any" id="criterio-longitud"
 								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 								   placeholder="-58.381592">
 						</div>
 					</div>
 					<div>
-						<label for="criterioDistanciaMinima" class="block text-sm font-medium text-gray-700 mb-1">Distancia
+						<label for="criterio-distancia-minima" class="block text-sm font-medium text-gray-700 mb-1">Distancia
 							Mínima (km)</label>
-						<input type="number" step="any" id="criterioDistanciaMinima"
+						<input type="number" step="any" id="criterio-distancia-minima"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 							   placeholder="100">
 					</div>
 				</div>
 
 				<!-- Campos Fecha -->
-				<div id="camposFecha" style="display:none;" class="space-y-2">
+				<div id="campos-fecha" class="space-y-2 hidden">
 					<div>
-						<label for="criterioFechaInicial" class="block text-sm font-medium text-gray-700 mb-1">Fecha
+						<label for="criterio-fecha-inicial" class="block text-sm font-medium text-gray-700 mb-1">Fecha
 							Inicial</label>
-						<input type="datetime-local" id="criterioFechaInicial"
+						<input type="datetime-local" id="criterio-fecha-inicial"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 					</div>
 					<div>
-						<label for="criterioFechaFinal" class="block text-sm font-medium text-gray-700 mb-1">Fecha
+						<label for="criterio-fecha-final" class="block text-sm font-medium text-gray-700 mb-1">Fecha
 							Final</label>
-						<input type="datetime-local" id="criterioFechaFinal"
+						<input type="datetime-local" id="criterio-fecha-final"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 					</div>
 				</div>
@@ -313,22 +196,23 @@
 				<!-- Fuentes -->
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-1">Fuentes</label>
-					<div id="fuentesContainer" class="space-y-2"></div>
-					<button type="button"
-							class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
-							onclick="agregarFuente()">+ Agregar Fuente
+					<div id="fuentes-container" class="space-y-2"></div>
+					<button id="crear-coleccion-agregar-fuente" type="button"
+							class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm">
+						+ Agregar Fuente
 					</button>
 				</div>
 
 				<!-- Algoritmo de Consenso -->
 				<div>
-					<label for="algoritmoConsenso" class="block text-sm font-medium text-gray-700 mb-1">Algoritmo de
+					<label for="algoritmo-consenso" class="block text-sm font-medium text-gray-700 mb-1">Algoritmo de
 						Consenso</label>
-					<select id="algoritmoConsenso"
+					<select id="algoritmo-consenso"
 							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 						<option value="ABSOLUTO">Absoluto</option>
-						<option value="MAYORIA">Mayoría</option>
-						<option value="MINIMO_DOS">Mínimo Dos</option>
+						<option value="IRRESTRICTO">Irrestricto</option>
+						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
+						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
 					</select>
 				</div>
 			</form>
@@ -336,31 +220,22 @@
 
 		<!-- Footer del Modal -->
 		<div class="modal-footer flex justify-end gap-2 p-4 border-t">
-			<button type="button"
-					class="btn-secondary px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200"
-					aria-label="Cancelar" onclick="toggleModalColeccion()">Cancelar
-			</button>
-			<button type="button"
-					class="btn-primary px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-indigo-700"
-					onclick="crearColeccion()">Crear Colección
-			</button>
+			<div id="salir-crear-coleccion">
+				<th:block th:replace="~{fragments/button :: botonCancelar}"/>
+			</div>
+			<button id="crear-coleccion" type="button" class="btn-crear" aria-label="Crear Coleccion">Crear Colección</button>
 		</div>
 	</div>
 </div>
 
-<div th:fragment="modalEditarPerfil" id="modalEditarPerfil" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-	<div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
+<div th:fragment="modalEditarPerfil" id="modalEditarPerfil" class="modal-page hidden">
+	<div class="modal-content modal-page-format max-w-lg">
 
-		<div class="modal-header flex justify-between items-center p-4 border-b border-gray-200">
-			<h5 style="color: white" class="modal-title text-xl font-semibold">Editar Perfil</h5>
-			<button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleModalEditarPerfil()" aria-label="Cerrar modal">
-				<svg style="color:black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-				</svg>
-			</button>
+		<div class="modal-header">
+			<h5 class="modal-title text-white">Editar Perfil</h5>
 		</div>
 
-		<div class="modal-body p-6 space-y-4 overflow-y-auto">
+		<div class="modal-page-body">
 			<form id="formEditarPerfil" class="space-y-4">
 
 				<div>
@@ -394,159 +269,165 @@
 </div>
 
 <!-- Fragmento hechosRecientes -->
-<div th:fragment="modalHechosRecientes(hechos)">
-	<div id="hechos-recientes-panel" class="bg-white rounded-lg shadow-lg w-[300px]">
-		<div class="flex justify-between items-center p-4 pb-3">
-			<h3 class="text-xl font-bold">Hechos Recientes</h3>
-			<button id="toggle-hechos-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
-				<svg id="chevron-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-				</svg>
-			</button>
-		</div>
-		<hr id="hechos-separator" class="mb-4">
+<div th:fragment="modalHechosRecientes(hechos)" id="hechos-recientes-modal" class="panel">
+	<div class="flex justify-between items-center p-4 pb-3">
+		<h3 class="text-xl font-bold">Hechos Recientes</h3>
+		<button id="btn-toggle-hechos"
+				class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
+			<svg id="chevron-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+				 stroke="currentColor" class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+			</svg>
+		</button>
+	</div>
+	<hr id="hechos-separator" class="mb-4">
 
-		<div id="hechos-content" class="px-4 pb-4 max-h-96 overflow-y-auto">
-			<div class="space-y-2">
-				<!-- Reducción de padding (p-2), font-size (text-xs) y margin (mb-0.5) -->
-				<a th:each="hecho : ${hechos}"
-				   th:href="@{/hechos/{id}(id=${hecho.id})}"
-				   class="block p-2 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
-					<div class="flex justify-between items-start">
-						<div class="flex-1 min-w-0">
-							<h5 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">Título del hecho</h5>
-							<p class="text-xs text-gray-600 truncate" th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
-								Dirección del hecho
-							</p>
-						</div>
-						<div class="text-right ml-3 flex-shrink-0">
-							<!-- Tamaño de fuente reducido a text-xs -->
-							<small class="text-xs text-gray-500 whitespace-nowrap">
-                                <span th:if="${hecho.fechaCarga != null}" th:with="ahora=${T(java.time.LocalDateTime).now()}, duracion=${T(java.time.Duration).between(hecho.fechaCarga, ahora)}">
-                                    <span th:if="${duracion.toDays() > 0}" th:text="${'Hace ' + duracion.toDays() + (duracion.toDays() == 1 ? ' día' : ' días')}"></span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() > 0}" th:text="${'Hace ' + duracion.toHours() + (duracion.toHours() == 1 ? ' hora' : ' horas')}"></span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() > 0}" th:text="${'Hace ' + duracion.toMinutes() + ' min'}"></span>
+	<div id="hechos-content" class="px-4 pb-4 max-h-96 overflow-y-auto">
+		<div class="space-y-2">
+			<!-- Reducción de padding (p-2), font-size (text-xs) y margin (mb-0.5) -->
+			<a th:each="hecho : ${hechos}"
+			   th:href="@{/hechos/{id}(id=${hecho.id})}"
+			   class="block p-2 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
+				<div class="flex justify-between items-start">
+					<div class="flex-1 min-w-0">
+						<h5 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">Título del
+							hecho</h5>
+						<p class="text-xs text-gray-600 truncate"
+						   th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
+							Dirección del hecho
+						</p>
+					</div>
+					<div class="text-right ml-3 flex-shrink-0">
+						<!-- Tamaño de fuente reducido a text-xs -->
+						<small class="text-xs text-gray-500 whitespace-nowrap">
+                                <span th:if="${hecho.fechaCarga != null}"
+									  th:with="ahora=${T(java.time.LocalDateTime).now()}, duracion=${T(java.time.Duration).between(hecho.fechaCarga, ahora)}">
+                                    <span th:if="${duracion.toDays() > 0}"
+										  th:text="${'Hace ' + duracion.toDays() + (duracion.toDays() == 1 ? ' día' : ' días')}"></span>
+                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() > 0}"
+										  th:text="${'Hace ' + duracion.toHours() + (duracion.toHours() == 1 ? ' hora' : ' horas')}"></span>
+                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() > 0}"
+										  th:text="${'Hace ' + duracion.toMinutes() + ' min'}"></span>
                                     <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() == 0}">Hace un momento</span>
                                 </span>
-								<span th:unless="${hecho.fechaCarga != null}">Fecha N/A</span>
-							</small>
-						</div>
+							<span th:unless="${hecho.fechaCarga != null}">Fecha N/A</span>
+						</small>
 					</div>
-				</a>
-			</div>
+				</div>
+			</a>
+		</div>
 
-			<div th:if="${hechos == null || hechos.isEmpty()}" class="text-center text-gray-500 py-4 text-sm"> <!-- Ajustado tamaño de fuente -->
-				No hay hechos recientes
-			</div>
+		<div th:if="${hechos == null || hechos.isEmpty()}" class="text-center text-gray-500 py-4 text-sm">
+			<!-- Ajustado tamaño de fuente -->
+			No hay hechos recientes
 		</div>
 	</div>
 </div>
 
-<th:block th:fragment="modalFiltros">
-	<div id="filtros-panel" class="bg-white rounded-lg shadow-lg w-[300px]">
-		<div class="flex justify-between items-center p-4 pb-3">
-			<h3 class="text-lg font-bold">Filtros</h3>
-			<div class="flex items-center gap-2.5">
-				<button id="btn-aplicar-filtros" class="px-3 py-1 text-xs text-white font-semibold rounded-lg bg-red-700 hover:bg-red-800">
-					Aplicar
-				</button>
-				<button id="toggle-filtros-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
-					<svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-					</svg>
-				</button>
-			</div>
-		</div>
-		<hr id="filtros-separator" class="mb-4">
-
-		<div id="filtros-content" class="px-4 pb-4">
-			<form id="form-filtros">
-				<!-- Categoría -->
-				<div class="mb-3">
-					<label for="categoria" class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
-					<input type="text"
-						   id="categoria"
-						   name="categoria"
-						   th:value="${categoria}"
-						   class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-full focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none"
-						   placeholder="Ingrese categoría...">
-				</div>
-
-				<!-- Fecha reporte -->
-				<div class="mb-3">
-					<label class="block text-xs font-medium text-gray-700 mb-1">Fecha reporte</label>
-					<div class="flex flex-col gap-1">
-						<div class="flex gap-1 items-center">
-							<p class="text-xs font-light w-[36px]">Desde</p>
-							<input type="datetime-local" id="fechaReporteDesde" name="fechaReporteDesde"
-								   th:value="${fechaReporteDesde}"
-								   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
-						</div>
-						<div class="flex gap-1 items-center">
-							<p class="text-xs font-light w-[36px]">Hasta</p>
-							<input type="datetime-local" id="fechaReporteHasta" name="fechaReporteHasta"
-								   th:value="${fechaReporteHasta}"
-								   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
-						</div>
-					</div>
-				</div>
-
-				<!-- Fecha acontecimiento -->
-				<div class="mb-3">
-					<label class="block text-xs font-medium text-gray-700 mb-1">Fecha acontecimiento</label>
-					<div class="flex flex-col gap-1">
-
-						<div class="flex gap-1 items-center">
-							<p class="text-xs font-light w-[36px]">Desde</p>
-							<input type="datetime-local"
-								   id="fechaAcontecimientoDesde"
-								   name="fechaAcontecimientoDesde"
-								   th:value="${fechaAcontecimientoDesde}"
-								   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
-						</div>
-						<div class="flex gap-1 items-center">
-							<p class="text-xs font-light w-[36px]">Hasta</p>
-							<input type="datetime-local"
-								   id="fechaAcontecimientoHasta"
-								   name="fechaAcontecimientoHasta"
-								   th:value="${fechaAcontecimientoHasta}"
-								   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
-						</div>
-					</div>
-				</div>
-
-				<!-- Botón limpiar filtros -->
-				<button type="button"
-						id="btn-limpiar-filtros"
-						class="w-full mt-2 px-3 py-1.5 text-xs text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-					Limpiar filtros
-				</button>
-			</form>
+<div th:fragment="modalFiltros" id="filtros-modal" class="panel">
+	<div class="flex justify-between items-center p-4 pb-3">
+		<h3 class="text-lg font-bold">Filtros</h3>
+		<div class="flex items-center gap-2.5">
+			<button id="btn-aplicar-filtros"
+					class="px-3 py-1 text-xs text-white font-semibold rounded-lg bg-red-700 hover:bg-red-800">
+				Aplicar
+			</button>
+			<button id="btn-toggle-filtros"
+					class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
+				<svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+					 stroke-width="2" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+				</svg>
+			</button>
 		</div>
 	</div>
-</th:block>
+	<hr id="filtros-separator" class="mb-4">
 
-<th:block th:fragment="modalHechosPendientes">
-	<div id="detalleModal" class="modal hidden">
-		<div class="modal-pendientes-content">
-			<button class="modal-close" onclick="closeDetalle()">×</button>
-			<h2 id="modalTitulo"></h2>
-			<p id="modalDescripcion"></p>
-			<div class="modal-meta">
-				<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
-				<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
-				<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
+	<div id="filtros-content" class="px-4 pb-4">
+		<form id="form-filtros">
+			<!-- Categoría -->
+			<div class="mb-3">
+				<label for="categoria" class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
+				<input type="text"
+					   id="categoria"
+					   name="categoria"
+					   th:value="${categoria}"
+					   class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-full focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none"
+					   placeholder="Ingrese categoría...">
 			</div>
 
-			<div class="gestion">
-				<label for="sugerencia">Sugerencia / Observación</label>
-				<textarea id="sugerencia" rows="3" placeholder="Opcional..."></textarea>
-
-				<div class="gestion-buttons">
-					<button id="aceptarBtn" class="btn-aceptar" onclick="gestionar('ACEPTADO')">Aceptar</button>
-					<button id="rechazarBtn" class="btn-rechazar" onclick="gestionar('RECHAZADO')">Rechazar</button>
+			<!-- Fecha reporte -->
+			<div class="mb-3">
+				<label class="block text-xs font-medium text-gray-700 mb-1">Fecha reporte</label>
+				<div class="flex flex-col gap-1">
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">Desde</p>
+						<input type="datetime-local" id="fechaReporteDesde" name="fechaReporteDesde"
+							   th:value="${fechaReporteDesde}"
+							   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
+					</div>
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">Hasta</p>
+						<input type="datetime-local" id="fechaReporteHasta" name="fechaReporteHasta"
+							   th:value="${fechaReporteHasta}"
+							   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
+					</div>
 				</div>
+			</div>
+
+			<!-- Fecha acontecimiento -->
+			<div class="mb-3">
+				<label class="block text-xs font-medium text-gray-700 mb-1">Fecha acontecimiento</label>
+				<div class="flex flex-col gap-1">
+
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">Desde</p>
+						<input type="datetime-local"
+							   id="fechaAcontecimientoDesde"
+							   name="fechaAcontecimientoDesde"
+							   th:value="${fechaAcontecimientoDesde}"
+							   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none">
+					</div>
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">Hasta</p>
+						<input type="datetime-local"
+							   id="fechaAcontecimientoHasta"
+							   name="fechaAcontecimientoHasta"
+							   th:value="${fechaAcontecimientoHasta}"
+							   class="w-full px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none">
+					</div>
+				</div>
+			</div>
+
+			<!-- Botón limpiar filtros -->
+			<button type="button"
+					id="btn-limpiar-filtros"
+					class="w-full mt-2 px-3 py-1.5 text-xs text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+				Limpiar filtros
+			</button>
+		</form>
+	</div>
+</div>
+
+<div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
+	<div class="modal-pendientes-content">
+		<button class="modal-close" onclick="closeDetalle()">×</button>
+		<h2 id="modalTitulo"></h2>
+		<p id="modalDescripcion"></p>
+		<div class="modal-meta">
+			<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
+			<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
+			<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
+		</div>
+
+		<div class="gestion">
+			<label for="sugerencia">Sugerencia / Observación</label>
+			<textarea id="sugerencia" rows="3" placeholder="Opcional..."></textarea>
+
+			<div class="gestion-buttons">
+				<button id="aceptarBtn" class="btn-aceptar" onclick="gestionar('ACEPTADO')">Aceptar</button>
+				<button id="rechazarBtn" class="btn-rechazar" onclick="gestionar('RECHAZADO')">Rechazar</button>
 			</div>
 		</div>
 	</div>
-</th:block>
+</div>

@@ -1,18 +1,13 @@
-<th:block th:fragment="searchBarScripts">
-	<script src="/js/search-bar.js" defer></script>
-</th:block>
-
 <div th:fragment="searchBar(tipo)" class="flex justify-center items-center w-full" th:data-tipo="${tipo}">
-	<form class="relative w-full max-w-md border-0" role="search" onsubmit="return handleSearch(event)">
+	<form class="relative w-full max-w-2xl" role="search" onsubmit="return handleSearch(event)">
 		<input
 				id="search-input"
-				class="w-full border-2 border-gray-800 rounded-full px-6 py-3 pr-12 text-base text-black focus:outline-none focus:ring-2 focus:ring-grey-200"
+				class="w-full border-2 border-gray-300 bg-white rounded-full px-6 py-3 pr-12 text-base text-black focus:outline-none focus:ring-2 focus:ring-gray-400"
 				type="search"
 				name="search"
 				th:value="${search}"
 				placeholder="Búsqueda"
-				aria-label="Búsqueda"
-				style="background-color: white;"
+				aria-label="Buscar Hechos"
 		/>
 		<!-- Ícono de lupa -->
 		<button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-10 w-10 flex items-center justify-center p-0 border-0 bg-transparent hover:opacity-70 transition-opacity">

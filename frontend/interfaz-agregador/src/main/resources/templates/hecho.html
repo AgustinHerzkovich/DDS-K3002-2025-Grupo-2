@@ -6,7 +6,7 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main class="main-padding">
         <div class="hecho-container" th:object="${hecho}">
             <div class="hecho-components">

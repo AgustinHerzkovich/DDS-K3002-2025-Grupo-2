@@ -47,9 +47,9 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
-    <main th:inline="javascript" class="main-padding flex flex-column">
-        <div class="solicitudes-container">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main th:inline="javascript" class="main-padding">
+        <div class="solicitudes-container flex flex-column">
             <h1 class="page-title">Solicitudes Pendientes</h1>
             <div class="solicitudes-grid">
                 <div th:each="solicitud : ${solicitudes}" class="solicitud-card">

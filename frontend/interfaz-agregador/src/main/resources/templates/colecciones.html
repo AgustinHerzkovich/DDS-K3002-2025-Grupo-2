@@ -1,6 +1,6 @@
 <th:block th:fragment="pageScripts">
     <script src="/js/eliminar-coleccion.js" defer></script>
-    <th:block th:replace="~{fragments/search-bar :: searchBarScripts}" />
+    <script src="/js/search-bar.js" defer></script>
 </th:block>
 
 <th:block th:fragment="pageStyles">
@@ -10,10 +10,10 @@
 
 
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main})}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main class="main-padding flex flex-column">
         <h1 class="page-title">Colecciones</h1>
-        <th:block th:replace="~{fragments/search-bar :: searchBar('colecciones')}" />
+        <div th:replace="~{fragments/search-bar :: searchBar('colecciones')}" class="justify-content-center"></div>
 
         <div class="colecciones-container">
             <div th:each="coleccion : ${colecciones}" class="coleccion-card">
