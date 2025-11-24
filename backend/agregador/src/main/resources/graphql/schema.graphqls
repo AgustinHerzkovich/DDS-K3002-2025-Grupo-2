@@ -36,4 +36,6 @@ input HechoFiltros {
 
 type Query {
     hechosEnMapa(filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
+    hechosPorColeccionIrrestrictos(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
+    hechosPorColeccionCurados(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
 }
