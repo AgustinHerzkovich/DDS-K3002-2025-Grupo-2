@@ -1,26 +1,41 @@
-# Definición de Consultas (Queries)
+scalar DateTime
+
+type HechoMapItem {
+    id: ID!
+    titulo: String!
+    latitud: Float!
+    longitud: Float!
+    categoria: String
+    fechaCarga: DateTime
+}
+
+type PageInfo {
+    totalElements: Int!
+    totalPages: Int!
+    number: Int!
+    size: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
+
+type HechoMapItemPage {
+    content: [HechoMapItem!]!
+    pageInfo: PageInfo!
+}
+
+input HechoFiltros {
+    categoria: String
+    fechaReporteDesde: DateTime
+    fechaReporteHasta: DateTime
+    fechaAcontecimientoDesde: DateTime
+    fechaAcontecimientoHasta: DateTime
+    latitud: Float
+    longitud: Float
+    search: String
+}
+
 type Query {
-    # Obtener una colección por su ID
-    coleccionPorId(id: ID!): Coleccion
-
-    # Listar todas las colecciones
-    todasLasColecciones: [Coleccion]
+    hechosEnMapa(filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
+    hechosPorColeccionIrrestrictos(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
+    hechosPorColeccionCurados(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoMapItemPage!
 }
-
-# Definición del Objeto Colección
-type Coleccion {
-    id: ID
-    titulo: String
-    descripcion: String
-    # Mapeamos el Enum a String para simplificar
-    tipoAlgoritmoConsenso: String
-    fuentes: [Fuente]
-}
-
-# Definición del Objeto Fuente
-type Fuente {
-    id: ID
-    tipo: String
-}
-
-# TODO: Añadir queries y pensar bien esto

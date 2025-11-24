@@ -59,8 +59,9 @@ public class MapaController {
                     .block(); // <--- recolecta el Flux en una lista
         }
 
-        if (pageWrapper == null) {
+        if (pageWrapper == null || pageWrapper.getContent() == null) {
             model.addAttribute("hechos", List.of());
+            model.addAttribute("hechosRecientes", List.of());
             model.addAttribute("currentPage", 0);
             model.addAttribute("pageSize", size);
             model.addAttribute("hasNext", false);
@@ -72,13 +73,12 @@ public class MapaController {
 
         List<HechoMapaOutputDto> hechos = Flux.fromIterable(pageWrapper.getContent())
                 .flatMap(hecho -> {
-                    if (hecho.getUbicacion() != null &&
-                            hecho.getUbicacion().getLatitud() != null &&
-                            hecho.getUbicacion().getLongitud() != null) {
+                    if (hecho.getLatitud() != null &&
+                            hecho.getLongitud() != null) {
 
                         return geocodingService.obtenerDireccionCorta(
-                                hecho.getUbicacion().getLatitud(),
-                                hecho.getUbicacion().getLongitud()
+                                hecho.getLatitud(),
+                                hecho.getLongitud()
                         ).map(direccion -> {
                             hecho.setDireccion(direccion);
                             return hecho;
