@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class SolicitudController {
     private final SolicitudService solicitudService;
     private final HechoService hechoService;

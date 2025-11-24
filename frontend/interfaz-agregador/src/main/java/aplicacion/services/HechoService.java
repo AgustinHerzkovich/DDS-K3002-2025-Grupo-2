@@ -62,7 +62,30 @@ public class HechoService {
                         .queryParam("size", size)
                         .build())
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
+                .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
+                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                    if (graphqlResponse.getData() != null &&
+                        graphqlResponse.getData().getHechosEnMapa() != null) {
+
+                        aplicacion.dto.GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
+                            graphqlResponse.getData().getHechosEnMapa();
+                        aplicacion.dto.GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+
+                        PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
+                        pageWrapper.setContent(wrapper.getContent());
+                        pageWrapper.setNumber(pageInfo.getNumber());
+                        pageWrapper.setSize(pageInfo.getSize());
+                        pageWrapper.setTotalElements(pageInfo.getTotalElements());
+                        pageWrapper.setTotalPages(pageInfo.getTotalPages());
+                        pageWrapper.setFirst(pageInfo.getNumber() == 0);
+                        pageWrapper.setLast(!pageInfo.isHasNext());
+
+                        return pageWrapper;
+                    }
+                    PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
+                    emptyWrapper.setContent(new java.util.ArrayList<>());
+                    return emptyWrapper;
+                })
                 .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
     }
 
@@ -123,7 +146,30 @@ public class HechoService {
                     return uriBuilder.build();
                 })
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoMapaOutputDto>>() {})
+                .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
+                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                    if (graphqlResponse.getData() != null &&
+                        graphqlResponse.getData().getHechosEnMapa() != null) {
+
+                        aplicacion.dto.GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
+                            graphqlResponse.getData().getHechosEnMapa();
+                        aplicacion.dto.GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+
+                        PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
+                        pageWrapper.setContent(wrapper.getContent());
+                        pageWrapper.setNumber(pageInfo.getNumber());
+                        pageWrapper.setSize(pageInfo.getSize());
+                        pageWrapper.setTotalElements(pageInfo.getTotalElements());
+                        pageWrapper.setTotalPages(pageInfo.getTotalPages());
+                        pageWrapper.setFirst(pageInfo.getNumber() == 0);
+                        pageWrapper.setLast(!pageInfo.isHasNext());
+
+                        return pageWrapper;
+                    }
+                    PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
+                    emptyWrapper.setContent(new java.util.ArrayList<>());
+                    return emptyWrapper;
+                })
                 .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
     }
 

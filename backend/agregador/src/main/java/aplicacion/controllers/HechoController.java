@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class HechoController {
     private final HechoService hechoService;
     private final CargarHechosScheduler cargarHechosScheduler;

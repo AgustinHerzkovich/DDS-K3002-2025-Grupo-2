@@ -13,7 +13,8 @@ public class HechoMapaOutputDto { // Esto es para no cargar los hechos con todos
     @EqualsAndHashCode.Include // Dos hechos son iguales si tienen el mismo id
     private String id;
     private String titulo;
-    private UbicacionOutputDto ubicacion;
+    private Double latitud;
+    private Double longitud;
     private LocalDateTime fechaCarga;
     private String direccion;
 }
