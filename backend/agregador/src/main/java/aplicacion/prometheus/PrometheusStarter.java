@@ -6,9 +6,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 @Component
 public class PrometheusStarter {
@@ -34,23 +32,28 @@ public class PrometheusStarter {
             prometheusBin = "/usr/bin/prometheus";
         }
 
-        // Copiar prometheus.yml de resources a un archivo temporal
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("prometheus.yml");
-        if (inputStream == null) {
-            throw new RuntimeException("No se encontró prometheus.yml en resources/");
+        // Leer prometheus.yml desde la carpeta observabilidad en la raíz del proyecto
+        // Navegamos desde user.dir (raíz del proyecto multi-módulo) hacia observabilidad/
+        String projectRoot = System.getProperty("user.dir");
+        // Si estamos en el módulo agregador, subimos un nivel
+        File prometheusYml = new File(projectRoot, "../../observabilidad/prometheus.yml");
+        if (!prometheusYml.exists()) {
+            // Intentar desde la raíz directamente (por si user.dir ya es la raíz)
+            prometheusYml = new File(projectRoot, "../observabilidad/prometheus.yml");
+            if (!prometheusYml.exists()) {
+                prometheusYml = new File(projectRoot, "observabilidad/prometheus.yml");
+                if (!prometheusYml.exists()) {
+                    throw new RuntimeException("No se encontró prometheus.yml. Buscado en: " + prometheusYml.getAbsolutePath());
+                }
+            }
         }
 
-        File tempConfig = File.createTempFile("prometheus-", ".yml");
-        tempConfig.deleteOnExit(); // se borra cuando termine la JVM
+        System.out.println("Usando configuración de Prometheus desde: " + prometheusYml.getAbsolutePath());
 
-        try (FileOutputStream out = new FileOutputStream(tempConfig)) {
-            inputStream.transferTo(out);
-        }
-
-        // Lanzar Prometheus con el archivo temporal como config
+        // Lanzar Prometheus con el archivo de configuración
         ProcessBuilder pb = new ProcessBuilder(
                 prometheusBin,
-                "--config.file=" + tempConfig.getAbsolutePath()
+                "--config.file=" + prometheusYml.getAbsolutePath()
         );
         pb.inheritIO(); // para ver logs de Prometheus en la consola
         prometheusProcess = pb.start();
