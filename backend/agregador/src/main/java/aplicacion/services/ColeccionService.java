@@ -1,7 +1,6 @@
 package aplicacion.services;
 
 import aplicacion.clasesIntermedias.HechoXColeccion;
-import aplicacion.domain.algoritmos.*;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
@@ -108,32 +107,22 @@ public class ColeccionService {
                                                                       String textoLibre,
                                                                       Pageable pageable) {
 
-        Page<Hecho> hechosIrrestrictos;
-        if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
-        } else{
-            hechosIrrestrictos = hechoService.obtenerHechosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
-        }
+        Page<Hecho> hechosIrrestrictos = hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
 
         return hechosIrrestrictos.map(hechoOutputMapper::map);
     }
 
-    public Page<HechoOutputDto> obtenerHechosCuradosPorColeccionDTO(String idColeccion,
-                                                                    String categoria,
-                                                                    LocalDateTime fechaReporteDesde,
-                                                                    LocalDateTime fechaReporteHasta,
-                                                                    LocalDateTime fechaAcontecimientoDesde,
-                                                                    LocalDateTime fechaAcontecimientoHasta,
-                                                                    Double latitud,
-                                                                    Double longitud,
-                                                                    String textoLibre,
-                                                                    Pageable pageable) {
-        Page<Hecho> hechosCurados;
-        if (textoLibre != null && !textoLibre.isBlank()) {
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
-        } else{
-            hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);;
-        }
+    public Page<HechoOutputDto> obtenerHechosCuradosPorColeccion(String idColeccion,
+                                                                 String categoria,
+                                                                 LocalDateTime fechaReporteDesde,
+                                                                 LocalDateTime fechaReporteHasta,
+                                                                 LocalDateTime fechaAcontecimientoDesde,
+                                                                 LocalDateTime fechaAcontecimientoHasta,
+                                                                 Double latitud,
+                                                                 Double longitud,
+                                                                 String textoLibre,
+                                                                 Pageable pageable) {
+        Page<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
 
         return hechosCurados.map(hechoOutputMapper::map);
     }

@@ -116,7 +116,7 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
+        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
         return ResponseEntity.ok(hechosCurados);
     }
 

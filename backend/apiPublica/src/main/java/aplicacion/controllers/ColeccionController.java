@@ -9,6 +9,12 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -66,25 +72,47 @@ public class ColeccionController {
             """;
 
         // Construir el mapa de filtros
-        java.util.Map<String, Object> filtros = new java.util.HashMap<>();
+        Map<String, Object> filtros = new HashMap<>();
         if (categoria != null) filtros.put("categoria", categoria);
-        if (fechaReporteDesde != null) filtros.put("fechaReporteDesde", fechaReporteDesde);
-        if (fechaReporteHasta != null) filtros.put("fechaReporteHasta", fechaReporteHasta);
-        if (fechaAcontecimientoDesde != null) filtros.put("fechaAcontecimientoDesde", fechaAcontecimientoDesde);
-        if (fechaAcontecimientoHasta != null) filtros.put("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        // Convertir las fechas a formato ISO-8601 con zona horaria
+        if (fechaReporteDesde != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteDesde, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaReporteDesde", fecha);
+        }
+        if (fechaReporteHasta != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteHasta, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaReporteHasta", fecha);
+        }
+        if (fechaAcontecimientoDesde != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoDesde, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaAcontecimientoDesde", fecha);
+        }
+        if (fechaAcontecimientoHasta != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaAcontecimientoHasta", fecha);
+        }
+
         if (latitud != null) filtros.put("latitud", latitud);
         if (longitud != null) filtros.put("longitud", longitud);
         if (textoLibre != null) filtros.put("search", textoLibre);
 
         // Construir el mapa de variables
-        java.util.Map<String, Object> variables = new java.util.HashMap<>();
+        Map<String, Object> variables = new HashMap<>();
         variables.put("idColeccion", id);
         variables.put("filtros", filtros.isEmpty() ? null : filtros);
         variables.put("page", page);
         variables.put("limit", size);
 
         // Construir el body completo de la petición GraphQL
-        java.util.Map<String, Object> graphqlRequest = new java.util.HashMap<>();
+        Map<String, Object> graphqlRequest = new HashMap<>();
         graphqlRequest.put("query", query);
         graphqlRequest.put("variables", variables);
 
@@ -132,25 +160,47 @@ public class ColeccionController {
             """;
 
         // Construir el mapa de filtros
-        java.util.Map<String, Object> filtros = new java.util.HashMap<>();
+        Map<String, Object> filtros = new HashMap<>();
         if (categoria != null) filtros.put("categoria", categoria);
-        if (fechaReporteDesde != null) filtros.put("fechaReporteDesde", fechaReporteDesde);
-        if (fechaReporteHasta != null) filtros.put("fechaReporteHasta", fechaReporteHasta);
-        if (fechaAcontecimientoDesde != null) filtros.put("fechaAcontecimientoDesde", fechaAcontecimientoDesde);
-        if (fechaAcontecimientoHasta != null) filtros.put("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
+        // Convertir las fechas a formato ISO-8601 con zona horaria
+        if (fechaReporteDesde != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteDesde, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaReporteDesde", fecha);
+        }
+        if (fechaReporteHasta != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteHasta, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaReporteHasta", fecha);
+        }
+        if (fechaAcontecimientoDesde != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoDesde, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaAcontecimientoDesde", fecha);
+        }
+        if (fechaAcontecimientoHasta != null) {
+            String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8))
+                    .atOffset(ZoneOffset.UTC)
+                    .toString();
+            filtros.put("fechaAcontecimientoHasta", fecha);
+        }
+
         if (latitud != null) filtros.put("latitud", latitud);
         if (longitud != null) filtros.put("longitud", longitud);
         if (textoLibre != null) filtros.put("search", textoLibre);
 
         // Construir el mapa de variables
-        java.util.Map<String, Object> variables = new java.util.HashMap<>();
+        Map<String, Object> variables = new HashMap<>();
         variables.put("idColeccion", id);
         variables.put("filtros", filtros.isEmpty() ? null : filtros);
         variables.put("page", page);
         variables.put("limit", size);
 
         // Construir el body completo de la petición GraphQL
-        java.util.Map<String, Object> graphqlRequest = new java.util.HashMap<>();
+        Map<String, Object> graphqlRequest = new HashMap<>();
         graphqlRequest.put("query", query);
         graphqlRequest.put("variables", variables);
 

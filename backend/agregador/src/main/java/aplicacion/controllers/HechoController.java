@@ -56,14 +56,8 @@ public class HechoController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechos;
-        if (textoBuscado == null) {
-            hechos = hechoService.obtenerHechosAsDTO(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, pageable);
-        }
-        else
-        {
-            hechos = hechoService.obtenerHechosPorTextoLibreDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado, pageable);
-        }
+        Page<HechoOutputDto> hechos = hechoService.obtenerHechosAsDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado, pageable);
+
         return ResponseEntity.ok(hechos);
     }
 

@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
+    // Hardcodeo deltas de distnacia como 0.0005 que equivale a 50 metros aprox, pero convendría recibirlo por parámetro
 
     Optional<Hecho> findById(String id);
 
@@ -35,15 +36,56 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
 
     List<Hecho> findByAutorId(Long autorId);
 
+    @Query(value = """
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND h.visible > 0
+    """,
+            countQuery = """
+    SELECT COUNT(*)
+    FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND h.visible > 0
+    """,
+            nativeQuery = true)
+    Page<Hecho> buscarPorTituloExacto(
+            @Param("textoLibre") String textoLibre,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
     @Query("""
         SELECT h FROM Hecho h
-        WHERE (:categoria IS NULL OR LOWER(h.categoria.nombre) = LOWER(:categoria))
+        WHERE (:categoria IS NULL OR LOWER(h.categoria.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
           AND (:fechaReporteDesde IS NULL OR h.fechaCarga > :fechaReporteDesde)
           AND (:fechaReporteHasta IS NULL OR h.fechaCarga < :fechaReporteHasta)
           AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento > :fechaAcontecimientoDesde)
           AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento < :fechaAcontecimientoHasta)
-          AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
-          AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+          AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+          AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
              AND (h.visible = true )
     """)
     Page<Hecho> filtrarHechos(
@@ -61,13 +103,13 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     SELECT h.*, c.id as cat_id
     FROM hecho h
     JOIN categoria c ON c.id = h.categoria_id
-    WHERE (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+    WHERE (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (
            :textoLibre IS NULL OR
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
@@ -78,13 +120,13 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             countQuery = """
     SELECT COUNT(*) FROM hecho h
     JOIN categoria c ON c.id = h.categoria_id
-    WHERE (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+    WHERE (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga > :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (
            :textoLibre IS NULL OR
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
@@ -105,19 +147,92 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
             Pageable pageable
     );
 
+    @Query("""
+    SELECT h
+    FROM Hecho h
+    JOIN h.categoria c
+    JOIN HechoXColeccion hc ON h.id = hc.hecho.id
+    WHERE hc.coleccion.id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+        AND (h.visible = true)
+        """)
+    Page<Hecho> findByFiltrosYColeccionIrrestrictos(
+            @Param("idColeccion") String idColeccion,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
     @Query(value = """
     SELECT h.*, c.id as cat_id
     FROM hecho h
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     JOIN categoria c ON c.id = h.categoria_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+      AND LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (h.visible > 0)
+    """,
+            countQuery = """
+    SELECT COUNT(h.id)
+    FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (h.visible > 0)
+    """,
+            nativeQuery = true)
+    Page<Hecho> findByFiltrosYColeccionIrrestrictos_TituloExacto(
+            @Param("idColeccion") String idColeccion,
+            @Param("textoLibre") String textoLibre,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
+    @Query(value = """
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
        AND (h.visible > 0)
    \s""",
@@ -126,18 +241,18 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     JOIN categoria c ON c.id = h.categoria_id
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
         AND (h.visible > 0)
         """,
             nativeQuery = true)
-    Page<Hecho> findByFiltrosYColeccionYTextoLibre(
+    Page<Hecho> findByFiltrosYColeccionIrrestrictosYTextoLibre(
             @Param("idColeccion") String idColeccion,
             @Param("categoria") String categoria,
             @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
@@ -156,41 +271,13 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     JOIN h.categoria c
     JOIN HechoXColeccion hc ON h.id = hc.hecho.id
     WHERE hc.coleccion.id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
-      AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
-        AND (h.visible = true)
-        """)
-    Page<Hecho> findByFiltrosYColeccion(
-            @Param("idColeccion") String idColeccion,
-            @Param("categoria") String categoria,
-            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
-            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
-            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
-            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
-            @Param("latitud") Double latitud,
-            @Param("longitud") Double longitud,
-            Pageable pageable
-    );
-
-
-    @Query("""
-    SELECT h
-    FROM Hecho h
-    JOIN h.categoria c
-    JOIN HechoXColeccion hc ON h.id = hc.hecho.id
-    WHERE hc.coleccion.id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
-      AND (:fechaReporteDesde IS NULL OR h.fechaCarga >= :fechaReporteDesde)
-      AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
-      AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
-      AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.ubicacion.latitud = :latitud)
-      AND (:longitud IS NULL OR h.ubicacion.longitud = :longitud)
+      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND hc.consensuado = true
          AND (h.visible = true)
     """)
@@ -209,37 +296,86 @@ public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
     @Query(value = """
     SELECT h.*, c.id as cat_id
     FROM hecho h
-    JOIN categoria c ON c.id = h.categoria_id
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    JOIN categoria c ON c.id = h.categoria_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+      AND hc.consensuado = true
+      AND LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (h.visible > 0)
+    """,
+            countQuery = """
+    SELECT COUNT(h.id)
+    FROM hecho h
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    JOIN categoria c ON c.id = h.categoria_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND hc.consensuado = true
+      AND LOWER(h.titulo) = LOWER(:textoLibre)
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (h.visible > 0)
+    """,
+            nativeQuery = true)
+    Page<Hecho> findByFiltrosYColeccionCurados_TituloExacto(
+            @Param("idColeccion") String idColeccion,
+            @Param("textoLibre") String textoLibre,
+            @Param("categoria") String categoria,
+            @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
+            @Param("fechaReporteHasta") LocalDateTime fechaReporteHasta,
+            @Param("fechaAcontecimientoDesde") LocalDateTime fechaAcontecimientoDesde,
+            @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
+            @Param("latitud") Double latitud,
+            @Param("longitud") Double longitud,
+            Pageable pageable
+    );
+
+    @Query(value = """
+    SELECT h.*, c.id as cat_id
+    FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
+    JOIN hecho_coleccion hc ON h.id = hc.hecho_id
+    WHERE hc.coleccion_id = :idColeccion
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
+      AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
+      AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
+      AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
+      AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
         AND (h.visible > 0)
     """,
             countQuery = """
     SELECT count(h.id) FROM hecho h
+    JOIN categoria c ON c.id = h.categoria_id
     JOIN hecho_coleccion hc ON h.id = hc.hecho_id
     WHERE hc.coleccion_id = :idColeccion
-      AND (:categoria IS NULL OR LOWER(c.nombre) = LOWER(:categoria))
+      AND (:categoria IS NULL OR LOWER(c.nombre) LIKE CONCAT('%', LOWER(:categoria), '%'))
       AND (:fechaReporteDesde IS NULL OR h.fecha_carga >= :fechaReporteDesde)
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud = :latitud)
-      AND (:longitud IS NULL OR h.longitud = :longitud)
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
         AND (h.visible > 0)
     """,
             nativeQuery = true)
-    Page<Hecho> findByFiltrosYColeccionYTextoLibreCurados(
+    Page<Hecho> findByFiltrosYColeccionCuradosYTextoLibre(
             @Param("idColeccion") String idColeccion,
             @Param("categoria") String categoria,
             @Param("fechaReporteDesde") LocalDateTime fechaReporteDesde,
