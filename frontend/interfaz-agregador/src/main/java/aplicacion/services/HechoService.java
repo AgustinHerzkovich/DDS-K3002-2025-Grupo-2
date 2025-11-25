@@ -6,7 +6,6 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +62,7 @@ public class HechoService {
                         .build())
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
-                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosEnMapa() != null) {
 
@@ -147,7 +146,7 @@ public class HechoService {
                 })
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
-                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosEnMapa() != null) {
 

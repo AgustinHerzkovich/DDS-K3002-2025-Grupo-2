@@ -1,10 +1,12 @@
 package aplicacion.dto.input;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class IdentidadContribuyenteInputDto {
     private String nombre;
     private String apellido;

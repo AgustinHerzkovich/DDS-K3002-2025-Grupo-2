@@ -1,6 +1,5 @@
 package aplicacion.dto.output;
 
-import aplicacion.dto.output.MultimediaOutputDto;
 import lombok.Getter;
 import lombok.Setter;
 

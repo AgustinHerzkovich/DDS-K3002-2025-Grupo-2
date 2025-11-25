@@ -3,7 +3,6 @@ package domain.menu.subMenu.estadisticas;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 import domain.dtos.estadisticasDTOs.CategoriaConMasHechosDTO;
-import domain.dtos.estadisticasDTOs.HoraConMasHechosDeCategoriaDTO;
 
 import java.util.List;
 import java.util.Scanner;

@@ -1,4 +1,4 @@
-package aplicacion.services.excepciones;
+package aplicacion.excepciones;
 
 public class FuenteNoEncontradaException extends Exception {
     public FuenteNoEncontradaException(String message) {

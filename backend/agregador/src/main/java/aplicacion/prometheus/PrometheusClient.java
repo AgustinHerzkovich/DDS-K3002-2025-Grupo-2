@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class PrometheusClient {
@@ -15,7 +16,7 @@ public class PrometheusClient {
 
     public String query(String promql) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
-        String url = prometheusUrl + "/api/v1/query?query=" + URLEncoder.encode(promql, "UTF-8");
+        String url = prometheusUrl + "/api/v1/query?query=" + URLEncoder.encode(promql, StandardCharsets.UTF_8);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

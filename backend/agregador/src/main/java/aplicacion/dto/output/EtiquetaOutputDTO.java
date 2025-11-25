@@ -1,7 +1,5 @@
 package aplicacion.dto.output;
 
-import aplicacion.domain.hechos.Etiqueta;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

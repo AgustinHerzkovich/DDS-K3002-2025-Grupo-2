@@ -31,6 +31,4 @@ public class Contribuyente {
         this.mail = mail;
         this.hechosContribuidos = new ArrayList<>();
     }
-
-    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

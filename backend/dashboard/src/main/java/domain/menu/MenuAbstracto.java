@@ -16,7 +16,6 @@ public abstract class MenuAbstracto {
                 System.out.println(e.getMessage());
             }
         }
-        return;
     }
     private int elegirOpcionMenuPrincipal() throws Exception {
         Scanner scanner = new Scanner(System.in);

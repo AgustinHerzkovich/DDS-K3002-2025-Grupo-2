@@ -1,11 +1,8 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
-import domain.excepciones.IdInvalidoException;
 import domain.helpers.UrlHelper;
-import domain.peticiones.Validaciones;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;

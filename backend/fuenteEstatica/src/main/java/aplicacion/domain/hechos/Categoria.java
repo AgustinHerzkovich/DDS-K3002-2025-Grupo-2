@@ -7,7 +7,7 @@ import lombok.Getter;
 //CATEGORIA
 public class Categoria {
     @Getter
-    private String nombre;
+    private final String nombre;
 
     @JsonCreator
     public Categoria(@JsonProperty("nombre") String nombre) {

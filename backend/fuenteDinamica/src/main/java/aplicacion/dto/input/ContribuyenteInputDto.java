@@ -2,8 +2,10 @@ package aplicacion.dto.input;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class ContribuyenteInputDto {
     private Boolean esAdministrador;
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -12,10 +12,10 @@ import java.util.List;
 @Service
 public class EstadisticasService {
     private final DimensionCategoriaRepository dimensionCategoriaRepository;
-    private FactHechoRepository factHechoRepository;
-    private FactColeccionRepository factColeccionRepository;
-    private FactSolicitudRepository factSolicitudRepository;
-    private DimensionColeccionRepository dimensionColeccionRepository;
+    private final FactHechoRepository factHechoRepository;
+    private final FactColeccionRepository factColeccionRepository;
+    private final FactSolicitudRepository factSolicitudRepository;
+    private final DimensionColeccionRepository dimensionColeccionRepository;
 
     public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository, DimensionColeccionRepository dimensionColeccionRepository, DimensionCategoriaRepository dimensionCategoriaRepository) {
         this.factSolicitudRepository = factSolicitudRepository;

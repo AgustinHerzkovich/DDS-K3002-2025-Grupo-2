@@ -39,6 +39,4 @@ public class Contribuyente {
     public void agregarSolicitudEliminacion(SolicitudEliminacion solicitud) {
         solicitudesEliminacion.add(solicitud);
     }
-
-    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }
