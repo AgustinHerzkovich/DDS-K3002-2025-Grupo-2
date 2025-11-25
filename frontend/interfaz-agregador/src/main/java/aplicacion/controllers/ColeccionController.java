@@ -61,6 +61,7 @@ public class ColeccionController {
                                                       @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                       @RequestParam(name = "latitud", required = false) Double latitud,
                                                       @RequestParam(name = "longitud", required = false) Double longitud,
+                                                      @RequestParam(name = "radio", required = false) Double radio,
                                                       @RequestParam(name = "search", required = false) String search,
                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -69,7 +70,7 @@ public class ColeccionController {
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosIrrestrictosDeColeccion(
                     id, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                    latitud, longitud, search, page, size
+                    latitud, longitud, radio, search, page, size
                     ).block();
 
         if (pageWrapper == null) {
@@ -119,6 +120,7 @@ public class ColeccionController {
                                                  @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                  @RequestParam(name = "latitud", required = false) Double latitud,
                                                  @RequestParam(name = "longitud", required = false) Double longitud,
+                                                 @RequestParam(name = "radio", required = false) Double radio,
                                                  @RequestParam(name = "search", required = false) String search,
                                                  @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                  @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -128,7 +130,7 @@ public class ColeccionController {
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosCuradosDeColeccion(
                 id, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, search, page, size
+                latitud, longitud, radio, search, page, size
         ).block();
 
         if (pageWrapper == null) {

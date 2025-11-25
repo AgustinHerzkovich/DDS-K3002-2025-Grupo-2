@@ -46,29 +46,7 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
     }
 }
 
-// Convierte una cadena de ubicación a lat/lon usando Nominatim
-async function geocodeUbicacion(pais, provincia, ciudad) {
-    const parts = [ciudad, provincia, pais].filter(Boolean);
-    if (parts.length === 0) return null;
-    const q = parts.join(', ');
-    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q);
 
-    // Nota: evite llamados masivos a Nominatim desde el cliente en producción.
-    const resp = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-            // No es posible setear User-Agent desde el navegador; Nominatim recibe el UA del navegador.
-        }
-    });
-
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    if (Array.isArray(data) && data.length > 0) {
-        return { lat: data[0].lat, lon: data[0].lon };
-    }
-    return null;
-}
 
 function listenAplicarFilter() {
     const aplicarBtn = document.getElementById('btn-aplicar-filtros');
@@ -85,31 +63,9 @@ function listenAplicarFilter() {
         const reporteDesde = document.getElementById('fechaReporteDesde').value;
         const reporteHasta = document.getElementById('fechaReporteHasta').value;
         const categoria = document.getElementById('categoria').value;
-        const pais = document.getElementById('filtroPais')?.value?.trim();
-        const provincia = document.getElementById('filtroProvincia')?.value?.trim();
-        const ciudad = document.getElementById('filtroCiudad')?.value?.trim();
-
-        // Limpiar posibles valores previos
-        const inputLat = document.getElementById('filtroLatitud');
-        const inputLon = document.getElementById('filtroLongitud');
-        if (inputLat) inputLat.value = '';
-        if (inputLon) inputLon.value = '';
-
-        // Si el usuario puso al menos un campo de ubicación, intentar geocodificar
-        if (pais || provincia || ciudad) {
-            try {
-                const geo = await geocodeUbicacion(pais, provincia, ciudad);
-                if (geo) {
-                    if (inputLat) inputLat.value = geo.lat;
-                    if (inputLon) inputLon.value = geo.lon;
-                    console.log('Geocodificado exitosamente:', geo);
-                } else {
-                    console.warn('Nominatim no devolvió coordenadas para la ubicación indicada.');
-                }
-            } catch (err) {
-                console.error('Error geocodificando la ubicación:', err);
-            }
-        }
+        const latitud = document.getElementById('filtroLatitud')?.value;
+        const longitud = document.getElementById('filtroLongitud')?.value;
+        const radio = document.getElementById('filtroRadio')?.value;
 
         // Validaciones
         if (acontecimientoDesde && acontecimientoHasta) {
@@ -142,12 +98,19 @@ function listenAplicarFilter() {
         if (reporteHasta) params.set('fechaReporteHasta', reporteHasta);
         else params.delete('fechaReporteHasta');
 
-        // Enviar latitud y longitud si fueron geocodificadas
-        if (inputLat && inputLat.value) params.set('latitud', inputLat.value);
-        else params.delete('latitud');
-
-        if (inputLon && inputLon.value) params.set('longitud', inputLon.value);
-        else params.delete('longitud');
+        // Enviar latitud, longitud y radio solo si hay coordenadas
+        if (latitud && longitud) {
+            params.set('latitud', latitud);
+            params.set('longitud', longitud);
+            // Convertir radio de km a grados (1 grado ≈ 111 km)
+            const radioKm = radio || 5;
+            const radioGrados = radioKm / 111.0;
+            params.set('radio', radioGrados.toString());
+        } else {
+            params.delete('latitud');
+            params.delete('longitud');
+            params.delete('radio');
+        }
 
         window.location.href = '/mapa?' + params.toString();
     });
@@ -163,9 +126,26 @@ function listenLimpiarFilter(inputsContainer) {
 
     limpiarBtn.addEventListener("click", function () {
         inputsContainer.querySelectorAll('input, select, textarea').forEach(input => {
-            input.value = "";
+            if (input.type === 'range') {
+                input.value = "5"; // Reset radio to default
+                const radioValue = document.getElementById('radio-value');
+                if (radioValue) radioValue.textContent = "5";
+            } else {
+                input.value = "";
+            }
         });
     });
+}
+
+function listenRadioSlider() {
+    const radioSlider = document.getElementById('filtroRadio');
+    const radioValue = document.getElementById('radio-value');
+
+    if (radioSlider && radioValue) {
+        radioSlider.addEventListener('input', function () {
+            radioValue.textContent = this.value;
+        });
+    }
 }
 
 function listenAgregarFuente(addBtn, object, containerElement) {

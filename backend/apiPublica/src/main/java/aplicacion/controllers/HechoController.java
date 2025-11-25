@@ -37,6 +37,7 @@ public class HechoController {
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
+            @RequestParam(name = "radio", required = false) Double radio,
             @RequestParam(name = "search", required = false) String textoLibre,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "100") Integer size
@@ -96,6 +97,7 @@ public class HechoController {
 
         if (latitud != null) filtros.put("latitud", latitud);
         if (longitud != null) filtros.put("longitud", longitud);
+        if (radio != null) filtros.put("radio", radio);
         if (textoLibre != null) filtros.put("search", textoLibre);
 
         // Construir el mapa de variables

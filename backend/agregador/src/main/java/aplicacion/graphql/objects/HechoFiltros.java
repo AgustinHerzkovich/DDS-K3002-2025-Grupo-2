@@ -8,6 +8,7 @@ public record HechoFiltros(OffsetDateTime fechaReporteDesde,
                            OffsetDateTime fechaAcontecimientoHasta,
                            Double latitud,
                            Double longitud,
+                           Double radio,
                            String categoria,
                            String search) {
 }

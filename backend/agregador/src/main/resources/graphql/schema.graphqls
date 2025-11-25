@@ -31,6 +31,7 @@ input HechoFiltros {
     fechaAcontecimientoHasta: DateTime
     latitud: Float
     longitud: Float
+    radio: Float
     search: String
 }
 

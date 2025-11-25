@@ -14,4 +14,5 @@ document.addEventListener('DOMContentLoaded', function () {
     listenPanelToggle(filtrosToggleBtn, filtrosContent, filtrosSeparator, filtrosChevron)
     listenAplicarFilter()
     listenLimpiarFilter(filtrosContent)
+    listenRadioSlider()
 });

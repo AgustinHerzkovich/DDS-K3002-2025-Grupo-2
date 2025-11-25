@@ -104,10 +104,11 @@ public class ColeccionService {
                                                                       LocalDateTime fechaAcontecimientoHasta,
                                                                       Double latitud,
                                                                       Double longitud,
+                                                                      Double radio,
                                                                       String textoLibre,
                                                                       Pageable pageable) {
 
-        Page<Hecho> hechosIrrestrictos = hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
+        Page<Hecho> hechosIrrestrictos = hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
 
         return hechosIrrestrictos.map(hechoOutputMapper::map);
     }
@@ -120,9 +121,10 @@ public class ColeccionService {
                                                                  LocalDateTime fechaAcontecimientoHasta,
                                                                  Double latitud,
                                                                  Double longitud,
+                                                                 Double radio,
                                                                  String textoLibre,
                                                                  Pageable pageable) {
-        Page<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
+        Page<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
 
         return hechosCurados.map(hechoOutputMapper::map);
     }

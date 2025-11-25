@@ -67,6 +67,21 @@
                 map.fitBounds(markersLayer.getBounds().pad(0.1)); // pad(0.1) añade un pequeño margen
             }
 
+            // Listener para clic en el mapa: autocompletar campos de latitud/longitud en filtros
+            map.on('click', function(e) {
+                const lat = e.latlng.lat.toFixed(6);
+                const lng = e.latlng.lng.toFixed(6);
+
+                // Rellenar los campos de filtro
+                const filtroLatitud = document.getElementById('filtroLatitud');
+                const filtroLongitud = document.getElementById('filtroLongitud');
+
+                if (filtroLatitud) filtroLatitud.value = lat;
+                if (filtroLongitud) filtroLongitud.value = lng;
+
+                console.log('Ubicación seleccionada:', lat, lng);
+            });
+
             /*]]>*/
         })
     </script>

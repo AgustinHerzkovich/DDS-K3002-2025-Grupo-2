@@ -58,13 +58,14 @@ public class ColeccionService {
                                                                                              String fechaAcontecimientoHasta,
                                                                                              Double latitud,
                                                                                              Double longitud,
+                                                                                             Double radio,
                                                                                              String search,
                                                                                              Integer page,
                                                                                              Integer size) {
         return webClient.get()
                 .uri(uriBuilder -> {
                     uriBuilder.path("/colecciones/{idColeccion}/hechosIrrestrictos");
-                    return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, search, page, size, uriBuilder);
+                    return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
@@ -102,13 +103,14 @@ public class ColeccionService {
                                                                          String fechaAcontecimientoHasta,
                                                                          Double latitud,
                                                                          Double longitud,
+                                                                         Double radio,
                                                                          String search,
                                                                          Integer page,
                                                                          Integer size) {
         return webClient.get()
                 .uri(uriBuilder -> {
                     uriBuilder.path("/colecciones/{idColeccion}/hechosCurados");
-                    return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, search, page, size, uriBuilder);
+                    return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
@@ -138,7 +140,7 @@ public class ColeccionService {
                 .doOnError(e -> System.err.println("Error al obtener hechos curados de la colección de la API Pública: " + e.getMessage()));
     }
 
-    private URI getUri(String idColeccion, String categoria, String fechaReporteDesde, String fechaReporteHasta, String fechaAcontecimientoDesde, String fechaAcontecimientoHasta, Double latitud, Double longitud, String search, Integer page, Integer size, UriBuilder uriBuilder) {
+    private URI getUri(String idColeccion, String categoria, String fechaReporteDesde, String fechaReporteHasta, String fechaAcontecimientoDesde, String fechaAcontecimientoHasta, Double latitud, Double longitud, Double radio, String search, Integer page, Integer size, UriBuilder uriBuilder) {
         if (categoria != null) uriBuilder.queryParam("categoria", categoria);
         if (fechaReporteDesde != null) uriBuilder.queryParam("fechaReporteDesde", fechaReporteDesde);
         if (fechaReporteHasta != null) uriBuilder.queryParam("fechaReporteHasta", fechaReporteHasta);
@@ -146,6 +148,7 @@ public class ColeccionService {
         if (fechaAcontecimientoHasta != null) uriBuilder.queryParam("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
         if (latitud != null) uriBuilder.queryParam("latitud", latitud);
         if (longitud != null) uriBuilder.queryParam("longitud", longitud);
+        if (radio != null) uriBuilder.queryParam("radio", radio);
         if (search != null) uriBuilder.queryParam("search", search);
         uriBuilder.queryParam("page", page);
         uriBuilder.queryParam("size", size);

@@ -33,6 +33,7 @@ public class MapaController {
             @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
             @RequestParam(name = "latitud", required = false) Double latitud,
             @RequestParam(name = "longitud", required = false) Double longitud,
+            @RequestParam(name = "radio", required = false) Double radio,
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "10") Integer size,
@@ -49,7 +50,7 @@ public class MapaController {
             pageWrapper = hechoService.obtenerHechosConFiltros(
                 categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, search, page, size
+                latitud, longitud, radio, search, page, size
             ).block();
 
         } else {

@@ -14,8 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface HechoRepository extends JpaRepository<Hecho, String> {
-    // Hardcodeo deltas de distnacia como 0.0005 que equivale a 50 metros aprox, pero convendría recibirlo por parámetro
-
     Optional<Hecho> findById(String id);
 
     @Query(
@@ -46,8 +44,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND h.visible > 0
     """,
             countQuery = """
@@ -60,8 +58,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND h.visible > 0
     """,
             nativeQuery = true)
@@ -74,6 +72,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -84,8 +83,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
           AND (:fechaReporteHasta IS NULL OR h.fechaCarga < :fechaReporteHasta)
           AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento > :fechaAcontecimientoDesde)
           AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento < :fechaAcontecimientoHasta)
-          AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-          AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+          AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+          AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
              AND (h.visible = true )
     """)
     Page<Hecho> filtrarHechos(
@@ -96,6 +95,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -108,8 +108,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (
            :textoLibre IS NULL OR
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
@@ -125,8 +125,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga < :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento > :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento < :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (
            :textoLibre IS NULL OR
            MATCH(h.titulo, h.descripcion, h.contenido_texto)
@@ -143,6 +143,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             @Param("textoLibre") String textoLibre,
             Pageable pageable
     );
@@ -158,8 +159,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
         AND (h.visible = true)
         """)
     Page<Hecho> findByFiltrosYColeccionIrrestrictos(
@@ -171,6 +172,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -186,8 +188,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (h.visible > 0)
     """,
             countQuery = """
@@ -202,8 +204,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (h.visible > 0)
     """,
             nativeQuery = true)
@@ -217,6 +219,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -231,8 +234,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
        AND (h.visible > 0)
    \s""",
@@ -246,8 +249,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
         AND (h.visible > 0)
         """,
@@ -261,6 +264,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             @Param("textoLibre") String textoLibre,
             Pageable pageable
     );
@@ -276,8 +280,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fechaCarga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fechaAcontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fechaAcontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND hc.consensuado = true
          AND (h.visible = true)
     """)
@@ -290,6 +294,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -306,8 +311,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (h.visible > 0)
     """,
             countQuery = """
@@ -323,8 +328,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (h.visible > 0)
     """,
             nativeQuery = true)
@@ -338,6 +343,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             Pageable pageable
     );
 
@@ -352,8 +358,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
         AND (h.visible > 0)
@@ -368,8 +374,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
       AND (:fechaReporteHasta IS NULL OR h.fecha_carga <= :fechaReporteHasta)
       AND (:fechaAcontecimientoDesde IS NULL OR h.fecha_acontecimiento >= :fechaAcontecimientoDesde)
       AND (:fechaAcontecimientoHasta IS NULL OR h.fecha_acontecimiento <= :fechaAcontecimientoHasta)
-      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - 0.0005) AND (:latitud + 0.0005))
-      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - 0.0005) AND (:longitud + 0.0005))
+      AND (:latitud IS NULL OR h.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
+      AND (:longitud IS NULL OR h.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
       AND (:textoLibre IS NULL OR MATCH(h.titulo, h.descripcion, h.contenido_texto) AGAINST(:textoLibre IN NATURAL LANGUAGE MODE))
       AND hc.consensuado = true
         AND (h.visible > 0)
@@ -384,6 +390,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             @Param("fechaAcontecimientoHasta") LocalDateTime fechaAcontecimientoHasta,
             @Param("latitud") Double latitud,
             @Param("longitud") Double longitud,
+            @Param("radio") Double radio,
             @Param("textoLibre") String textoLibre,
             Pageable pageable
     );

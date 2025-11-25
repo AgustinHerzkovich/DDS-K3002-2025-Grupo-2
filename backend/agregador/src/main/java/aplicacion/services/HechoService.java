@@ -70,6 +70,7 @@ public class HechoService {
                                                    LocalDateTime fechaAcontecimientoHasta,
                                                    Double latitud,
                                                    Double longitud,
+                                                   Double radio,
                                                    String textoLibre,
                                                    Pageable pageable) {
         // Caso 1: sin texto libre → búsqueda normal
@@ -77,7 +78,7 @@ public class HechoService {
             return hechoRepository
                     .filtrarHechos(categoria, fechaReporteDesde, fechaReporteHasta,
                             fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                            latitud, longitud, pageable)
+                            latitud, longitud, radio, pageable)
                     .map(hechoOutputMapper::map);
         }
 
@@ -91,6 +92,7 @@ public class HechoService {
                 fechaAcontecimientoHasta,
                 latitud,
                 longitud,
+                radio,
                 pageable
         );
 
@@ -103,7 +105,7 @@ public class HechoService {
         return hechoRepository
                 .filtrarHechosPorTextoLibre(categoria, fechaReporteDesde, fechaReporteHasta,
                         fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                        latitud, longitud, textoLibre.trim(), pageable)
+                        latitud, longitud, radio, textoLibre.trim(), pageable)
                 .map(hechoOutputMapper::map);
     }
 
@@ -143,12 +145,13 @@ public class HechoService {
                                                              LocalDateTime fechaAcontecimientoHasta,
                                                              Double latitud,
                                                              Double longitud,
+                                                             Double radio,
                                                              String textoLibre,
                                                              Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
             return hechoRepository.findByFiltrosYColeccionIrrestrictos(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
-                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable
+                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
             );
         }
 
@@ -157,7 +160,7 @@ public class HechoService {
                 idColeccion, textoLibre.trim(), categoria,
                 fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, pageable
+                latitud, longitud, radio, pageable
         );
 
         if (!exactos.isEmpty()) {
@@ -168,7 +171,7 @@ public class HechoService {
         return hechoRepository.findByFiltrosYColeccionIrrestrictosYTextoLibre(
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, textoLibre.trim(), pageable
+                latitud, longitud, radio, textoLibre.trim(), pageable
         );
     }
 
@@ -180,12 +183,13 @@ public class HechoService {
                                                         LocalDateTime fechaAcontecimientoHasta,
                                                         Double latitud,
                                                         Double longitud,
+                                                        Double radio,
                                                         String textoLibre,
                                                         Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
             return hechoRepository.findByFiltrosYColeccionCurados(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
-                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable
+                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
             );
         }
 
@@ -194,7 +198,7 @@ public class HechoService {
                 idColeccion, textoLibre.trim(), categoria,
                 fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, pageable
+                latitud, longitud, radio, pageable
         );
 
         if (!exactos.isEmpty()) {
@@ -205,7 +209,7 @@ public class HechoService {
         return hechoRepository.findByFiltrosYColeccionCuradosYTextoLibre(
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, textoLibre.trim(), pageable
+                latitud, longitud, radio, textoLibre.trim(), pageable
         );
     }
 
@@ -323,6 +327,7 @@ public class HechoService {
                     null,
                     null,
                     null,
+                    null,
                     pageable);
         } else {
             hechosPage = this.obtenerHechosAsDto(filtros.categoria() != null ? filtros.categoria() : null,
@@ -332,6 +337,7 @@ public class HechoService {
                     filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
                     filtros.latitud()!= null ? filtros.latitud() : null,
                     filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
                     filtros.search() != null  ? filtros.search() : null,
                     pageable);
         }
@@ -359,6 +365,7 @@ public class HechoService {
                     null,
                     null,
                     null,
+                    null,
                     pageable);
         } else {
             hechosPage = this.obtenerHechosIrrestrictosPorColeccion(idColeccion,
@@ -369,6 +376,7 @@ public class HechoService {
                     filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
                     filtros.latitud()!= null ? filtros.latitud() : null,
                     filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
                     filtros.search() != null ? filtros.search() : null,
                     pageable);
         }
@@ -396,6 +404,7 @@ public class HechoService {
                     null,
                     null,
                     null,
+                    null,
                     pageable);
         } else {
             hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
@@ -406,6 +415,7 @@ public class HechoService {
                     filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
                     filtros.latitud()!= null ? filtros.latitud() : null,
                     filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
                     filtros.search() != null ? filtros.search() : null,
                     pageable);
         }

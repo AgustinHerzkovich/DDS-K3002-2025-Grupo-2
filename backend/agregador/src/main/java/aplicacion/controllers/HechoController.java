@@ -40,6 +40,7 @@ public class HechoController {
                                                @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                @RequestParam(name = "latitud", required = false) Double latitud,
                                                @RequestParam(name = "longitud", required = false) Double longitud,
+                                               @RequestParam(name = "radio", required = false) Double radio,
                                                @RequestParam(name = "search", required = false) String textoBuscado,
                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                               @RequestParam(name = "size", defaultValue = "100") Integer size) {
@@ -56,7 +57,7 @@ public class HechoController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechos = hechoService.obtenerHechosAsDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoBuscado, pageable);
+        Page<HechoOutputDto> hechos = hechoService.obtenerHechosAsDto(categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoBuscado, pageable);
 
         return ResponseEntity.ok(hechos);
     }

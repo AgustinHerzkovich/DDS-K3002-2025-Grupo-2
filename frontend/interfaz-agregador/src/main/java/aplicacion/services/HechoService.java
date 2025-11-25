@@ -122,6 +122,7 @@ public class HechoService {
             String fechaAcontecimientoHasta,
             Double latitud,
             Double longitud,
+            Double radio,
             String search,
             Integer page,
             Integer size
@@ -137,6 +138,7 @@ public class HechoService {
                     if (fechaAcontecimientoHasta != null && !fechaAcontecimientoHasta.isEmpty()) uriBuilder.queryParam("fechaAcontecimientoHasta", fechaAcontecimientoHasta);
                     if (latitud != null) uriBuilder.queryParam("latitud", latitud);
                     if (longitud != null) uriBuilder.queryParam("longitud", longitud);
+                    if (radio != null) uriBuilder.queryParam("radio", radio);
                     if (search != null && !search.isEmpty()) uriBuilder.queryParam("search", search);
 
                     uriBuilder.queryParam("page", page);

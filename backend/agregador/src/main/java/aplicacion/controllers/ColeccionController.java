@@ -69,6 +69,7 @@ public class ColeccionController {
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
                                                           @RequestParam(name = "longitud", required = false) Double longitud,
+                                                          @RequestParam(name = "radio", required = false) Double radio,
                                                           @RequestParam(name = "search", required = false) String textoLibre,
                                                           @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                           @RequestParam(name = "size", defaultValue = "100") Integer size){
@@ -85,7 +86,7 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
+        Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
         return ResponseEntity.ok(hechosIrrestrictos);
     }
 
@@ -98,6 +99,7 @@ public class ColeccionController {
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
                                                      @RequestParam(name = "longitud", required = false) Double longitud,
+                                                     @RequestParam(name = "radio", required = false) Double radio,
                                                      @RequestParam(name = "search", required = false) String textoLibre,
                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "100") Integer size){
@@ -114,7 +116,7 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
+        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
         return ResponseEntity.ok(hechosCurados);
     }
 
