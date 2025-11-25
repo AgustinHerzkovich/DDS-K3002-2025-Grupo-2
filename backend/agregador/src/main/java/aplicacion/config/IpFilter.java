@@ -22,14 +22,13 @@ public class IpFilter implements Filter {
             "1.2.3.4"
     );
 
+    // "127.0.0.1",      // Localhost IPv4
+    // "0:0:0:0:0:0:0:1" // Localhost IPv6
     // =========================================================================
     // 2. LISTA BLANCA (WHITELIST)
     // Por ahora se deja vacía para permitir el acceso público general.
     // =========================================================================
-    private final List<String> whitelist = Arrays.asList(
-            // "127.0.0.1",      // Localhost IPv4
-            // "0:0:0:0:0:0:0:1" // Localhost IPv6
-    );
+    private final List<String> whitelist = List.of();
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

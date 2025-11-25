@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -69,7 +68,7 @@ public class ColeccionService {
                 })
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
-                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosPorColeccionIrrestrictos() != null) {
 
@@ -113,7 +112,7 @@ public class ColeccionService {
                 })
                 .retrieve()
                 .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
-                .<PageWrapper<HechoMapaOutputDto>>map(graphqlResponse -> {
+                .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosPorColeccionCurados() != null) {
 

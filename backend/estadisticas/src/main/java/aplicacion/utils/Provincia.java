@@ -4,10 +4,10 @@ import lombok.Getter;
 import org.locationtech.jts.geom.Geometry;
 @Getter
 public class Provincia {
-    private Geometry geom;
-    private String iso;
-    private String provincia;
-    private String pais;
+    private final Geometry geom;
+    private final String iso;
+    private final String provincia;
+    private final String pais;
 
     public Provincia(Geometry geom, String provincia, String pais, String iso) {
         this.geom = geom;

@@ -4,7 +4,6 @@ package aplicacion.services.scheduler;
 import aplicacion.services.CargaDeColeccionesService;
 import aplicacion.services.CargaDeHechosService;
 import aplicacion.services.CargaDeSolicitudesService;
-import aplicacion.services.CargaDeSolicitudesService;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 public class ActualizacionEstadisticasScheduler {
-    private CargaDeHechosService cargaDeHechosService;
-    private CargaDeColeccionesService cargaDeColeccionesService;
-    private CargaDeSolicitudesService cargaDeSolicitudesService;
+    private final CargaDeHechosService cargaDeHechosService;
+    private final CargaDeColeccionesService cargaDeColeccionesService;
+    private final CargaDeSolicitudesService cargaDeSolicitudesService;
 
     public ActualizacionEstadisticasScheduler(CargaDeHechosService cargaDeHechosService, CargaDeColeccionesService cargaDeColeccionesService, CargaDeSolicitudesService cargaDeSolicitudesService) {
         this.cargaDeHechosService = cargaDeHechosService;

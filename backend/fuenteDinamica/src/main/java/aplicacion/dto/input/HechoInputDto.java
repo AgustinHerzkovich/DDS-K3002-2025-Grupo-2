@@ -2,11 +2,13 @@ package aplicacion.dto.input;
 
 import aplicacion.domain.hechos.Origen;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 public class HechoInputDto {
     private String titulo;
     private String descripcion;

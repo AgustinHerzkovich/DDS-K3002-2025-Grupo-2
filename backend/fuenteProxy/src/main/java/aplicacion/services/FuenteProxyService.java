@@ -8,7 +8,7 @@ import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.repositories.FuenteProxyRepository;
-import aplicacion.services.excepciones.FuenteNoEncontradaException;
+import aplicacion.excepciones.FuenteNoEncontradaException;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.transaction.annotation.Transactional;

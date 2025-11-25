@@ -81,11 +81,11 @@
     // Datos de usuario
     const userData = {
       nombre: [[${principal != null ? principal.claims['given_name'] : null}]],
-    apellido: [[${principal != null ? principal.claims['family_name'] : null}]],
-    fechaNacimiento: [[${principal != null ? principal.claims['birthdate'] : null}]],
-    contribuyenteId: [[${session.CONTRIBUYENTE_ID}]],
+    [[${principal != null ? principal.claims['family_name'] : null}]],
+    [[${principal != null ? principal.claims['birthdate'] : null}]],
+    [[${session.CONTRIBUYENTE_ID}]],
             esAdministrador: [[${isAdmin}]]
-  };
+  }
 
     // ===============================================
     // FUNCIONES DINÁMICAS PARA AGREGAR/QUITAR MULTIMEDIA

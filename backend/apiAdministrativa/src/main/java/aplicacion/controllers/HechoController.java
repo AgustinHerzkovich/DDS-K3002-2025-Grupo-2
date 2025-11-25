@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class HechoController {
-    private ConfigService configService;
+    private final ConfigService configService;
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
 

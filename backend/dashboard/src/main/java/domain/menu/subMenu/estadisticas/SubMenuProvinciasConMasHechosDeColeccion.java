@@ -2,7 +2,6 @@ package domain.menu.subMenu.estadisticas;
 
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
-import domain.dtos.estadisticasDTOs.ProvinciaConMasHechosDTO;
 import domain.dtos.estadisticasDTOs.ProvinciaConMasHechosDeColeccionDTO;
 
 import java.util.List;

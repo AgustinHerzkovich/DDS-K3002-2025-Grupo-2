@@ -7,7 +7,7 @@ import aplicacion.domain.hechos.Categoria;
 
 @Service
 public class CategoriaService {
-    private CategoriaRepository categoriaRepository;
+    private final CategoriaRepository categoriaRepository;
     public CategoriaService(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }

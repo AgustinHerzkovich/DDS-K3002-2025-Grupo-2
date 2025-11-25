@@ -103,10 +103,6 @@ public class Hecho {
 
     public void mostrar() { visible = true; }
 
-    public Boolean tieneMismoTitulo(String otroTitulo) {
-        return titulo.equals(otroTitulo);
-    }
-
     public void etiquetar(Etiqueta etiqueta) {
         etiquetas.add(etiqueta);
     }

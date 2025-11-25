@@ -7,8 +7,8 @@ import lombok.Getter;
 // UBICACION
 @Getter
 public class Ubicacion {
-    private Double latitud;
-    private Double longitud;
+    private final Double latitud;
+    private final Double longitud;
 
     @JsonCreator
     public Ubicacion(@JsonProperty("latitud") Double latitud, @JsonProperty("longitud") Double longitud) {

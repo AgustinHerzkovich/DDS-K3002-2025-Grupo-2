@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ColeccionFactProcesor extends AbstractFactProcessor<FactColeccion, FactColeccionId> {
-    private FactColeccionRepository factColeccionRepository;
+    private final FactColeccionRepository factColeccionRepository;
 
     public ColeccionFactProcesor(FactColeccionRepository factColeccionRepository, DimensionUbicacionRepository dimensionUbicacionRepository, DimensionCategoriaRepository dimensionCategoriaRepository, DimensionColeccionRepository dimensionColeccionRepository){
         this.factColeccionRepository = factColeccionRepository;

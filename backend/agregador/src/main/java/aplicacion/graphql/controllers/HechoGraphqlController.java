@@ -6,7 +6,6 @@ import aplicacion.graphql.objects.HechoMapItemPage;
 import aplicacion.graphql.objects.PageInfo;
 import aplicacion.services.HechoService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;

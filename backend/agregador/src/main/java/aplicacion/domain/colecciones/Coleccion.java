@@ -1,7 +1,5 @@
 package aplicacion.domain.colecciones;
 
-import aplicacion.domain.algoritmos.AlgoritmoConsenso;
-import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;

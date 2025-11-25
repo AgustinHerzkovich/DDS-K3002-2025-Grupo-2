@@ -2,7 +2,6 @@ package aplicacion.config;
 
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.services.ContribuyenteService;
-import aplicacion.services.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,8 +9,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.Collection;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
