@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.clasesIntermedias.HechoXColeccionId;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface RepositorioDeHechosXColeccion extends JpaRepository<HechoXColeccion, HechoXColeccionId> {
+public interface HechoXColeccionRepository extends JpaRepository<HechoXColeccion, HechoXColeccionId> {
     @Modifying
     @Transactional
     @Query(value = """

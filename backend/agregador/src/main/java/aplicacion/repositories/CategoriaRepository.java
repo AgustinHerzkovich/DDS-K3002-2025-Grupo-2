@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import aplicacion.domain.hechos.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RepositorioDeCategorias extends JpaRepository<Categoria, Long> {
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Query("""
         SELECT c

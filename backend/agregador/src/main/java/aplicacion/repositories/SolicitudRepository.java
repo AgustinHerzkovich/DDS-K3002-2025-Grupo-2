@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import java.util.List;
 import aplicacion.domain.hechos.Hecho;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepositorioDeSolicitudes extends JpaRepository<SolicitudEliminacion, Long> {
+public interface SolicitudRepository extends JpaRepository<SolicitudEliminacion, Long> {
     List<SolicitudEliminacion> findByHecho(Hecho hecho);
 
     @Query("""

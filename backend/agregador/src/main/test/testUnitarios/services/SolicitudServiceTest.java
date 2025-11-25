@@ -9,7 +9,7 @@ import aplicacion.dto.mappers.SolicitudOutputMapper;
 import aplicacion.dto.output.SolicitudOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
-import aplicacion.repositorios.RepositorioDeSolicitudes;
+import aplicacion.repositories.SolicitudRepository;
 import aplicacion.services.ContribuyenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
@@ -23,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import testUtils.ContribuyenteFactory;
 import testUtils.HechoFactory;
@@ -39,7 +38,7 @@ import static org.mockito.Mockito.*;
 class SolicitudServiceTest {
 
     @Mock
-    private RepositorioDeSolicitudes repositorioDeSolicitudes;
+    private SolicitudRepository repositorioDeSolicitudes;
     @Mock
     private HechoService hechoService;
     @Mock

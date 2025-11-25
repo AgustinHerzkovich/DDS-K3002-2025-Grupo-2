@@ -7,8 +7,8 @@ import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.ContribuyenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
@@ -39,9 +39,9 @@ class HechoServiceTest
 {
 
     @Mock
-    private RepositorioDeHechos repositorioDeHechos;
+    private HechoRepository repositorioDeHechos;
     @Mock
-    private RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private HechoXColeccionRepository repositorioDeHechosXColeccion;
     @Mock
     private HechoOutputMapper hechoOutputMapper;
     @Mock

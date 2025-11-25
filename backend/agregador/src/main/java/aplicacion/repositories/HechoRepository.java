@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
+public interface HechoRepository extends JpaRepository<Hecho, String> {
     // Hardcodeo deltas de distnacia como 0.0005 que equivale a 50 metros aprox, pero convendría recibirlo por parámetro
 
     Optional<Hecho> findById(String id);
