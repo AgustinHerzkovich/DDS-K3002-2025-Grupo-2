@@ -1,4 +1,4 @@
-package aplicacion.repositorios.olap;
+package aplicacion.repositories.olap;
 
 import aplicacion.utils.ConfiguracionGlobal;
 import org.springframework.data.jpa.repository.JpaRepository;

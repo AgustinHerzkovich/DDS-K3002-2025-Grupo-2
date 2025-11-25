@@ -2,7 +2,7 @@ package testUnitarios.services;
 
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeEtiquetas;
+import aplicacion.repositories.EtiquetaRepository;
 import aplicacion.services.EtiquetaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class EtiquetaServiceTest {
 
     @Mock
-    private RepositorioDeEtiquetas repositorioDeEtiquetas;
+    private EtiquetaRepository repositorioDeEtiquetas;
 
     @InjectMocks
     private EtiquetaService etiquetaService;

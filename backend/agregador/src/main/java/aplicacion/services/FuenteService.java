@@ -9,12 +9,9 @@ import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.excepciones.TipoDeFuenteErroneoException;
-import aplicacion.repositorios.RepositorioDeFuentes;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import aplicacion.repositories.FuenteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +19,23 @@ import java.util.*;
 
 @Service
 public class FuenteService {
-    private final RepositorioDeFuentes repositorioDeFuentes;
+    private final FuenteRepository fuenteRepository;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
     //@PersistenceContext
     //private EntityManager entityManager;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
+    public FuenteService(FuenteRepository fuenteRepository,
                          FuenteInputMapper fuenteInputMapper,
                          HechoInputMapper hechoInputMapper) {
-        this.repositorioDeFuentes = repositorioDeFuentes;
+        this.fuenteRepository = fuenteRepository;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
     }
 
     public Page<Fuente> findByTipo(Integer page, Integer limit, String tipo){
         if(tipo == null)
-            return repositorioDeFuentes.findAll(PageRequest.of(page, limit));
+            return fuenteRepository.findAll(PageRequest.of(page, limit));
         Class<? extends  Fuente> tipoClass = switch (tipo.toLowerCase()) {
             case "estatica", "estática", "e" -> FuenteEstatica.class;
             case "dinamica", "dinámica", "d" -> FuenteDinamica.class;
@@ -46,12 +43,12 @@ public class FuenteService {
             default -> throw new TipoDeFuenteErroneoException("Tipo de fuente no reconocido: '"+tipo+"'.Se acepta estatica, dinamica y proxy");
         };
 
-        return repositorioDeFuentes.findByTipo(tipoClass, PageRequest.of(page, limit));
+        return fuenteRepository.findByTipo(tipoClass, PageRequest.of(page, limit));
     }
 
     @Transactional
     public Fuente guardarFuente(Fuente fuente) {
-        return repositorioDeFuentes.save(fuente);
+        return fuenteRepository.save(fuente);
     }
     /**
      * Recibe una Fuente
@@ -62,19 +59,19 @@ public class FuenteService {
 
     @Transactional
     public Fuente guardarOActualizarConexion(Fuente fuente) {
-        Optional<Fuente> optFuente = repositorioDeFuentes.findById(fuente.getId());
+        Optional<Fuente> optFuente = fuenteRepository.findById(fuente.getId());
         if(optFuente.isEmpty())
-            return repositorioDeFuentes.save(fuente);
+            return fuenteRepository.save(fuente);
         optFuente.get().setConexion(fuente.getConexion());
-        return repositorioDeFuentes.save(optFuente.get());
+        return fuenteRepository.save(optFuente.get());
 
     }
 
     // Busca si una fuente ya existe segun su id. Si no existe la guarda y la devuelve, si ya existe la devuelve.
     @Transactional
     public Fuente guardarFuenteSiNoExiste(Fuente fuente) {
-        Optional<Fuente> existente = repositorioDeFuentes.findById(fuente.getId());
-        return existente.orElseGet(() -> repositorioDeFuentes.save(fuente));
+        Optional<Fuente> existente = fuenteRepository.findById(fuente.getId());
+        return existente.orElseGet(() -> fuenteRepository.save(fuente));
     }
 
     @Transactional
@@ -111,27 +108,27 @@ public class FuenteService {
     }
 
     public Long obtenerCantidadFuentes() {
-        return repositorioDeFuentes.count();
+        return fuenteRepository.count();
     }
 
 
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(String idFuente) {
-        return repositorioDeFuentes.findHechosByFuenteId(idFuente);
+        return fuenteRepository.findHechosByFuenteId(idFuente);
     }
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
-        return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
+        return fuenteRepository.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
     }
 
     public List<Fuente> obtenerTodasLasFuentes(){
-        return repositorioDeFuentes.findAll();
+        return fuenteRepository.findAll();
     }
     @Transactional
     public Fuente cambiarAlias(String id, FuenteAliasDto fuenteAliasDto) {
         Fuente fuente = obtenerFuentePorId(id);
         fuente.setAlias(fuenteAliasDto.getAlias());
-        repositorioDeFuentes.save(fuente);
+        fuenteRepository.save(fuente);
         return fuente;
     }
 }

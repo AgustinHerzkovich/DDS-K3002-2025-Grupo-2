@@ -8,7 +8,7 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeFuentes;
+import aplicacion.repositories.FuenteRepository;
 import aplicacion.services.FuenteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class FuenteServiceTest {
 
     @Mock
-    private RepositorioDeFuentes repositorioDeFuentes;
+    private FuenteRepository repositorioDeFuentes;
 
     @Mock
     private FuenteInputMapper fuenteInputMapper;

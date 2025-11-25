@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import java.util.List;
 
 // REPOSITORIO DE HECHOS
 @Repository
-public interface RepositorioDeHechos extends JpaRepository<Hecho, String> {
+public interface HechoRepository extends JpaRepository<Hecho, String> {
 
     List<Hecho> findByAutorId(Long contribuyenteId);
 }

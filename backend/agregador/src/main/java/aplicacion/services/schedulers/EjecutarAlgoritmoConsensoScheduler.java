@@ -5,7 +5,7 @@ import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.clasesIntermedias.HechoXColeccionId;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
@@ -26,14 +26,14 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
     private final HechoService hechoService;
     private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
-    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private final HechoXColeccionRepository hechoXColeccionRepository;
     @Setter
     private volatile Integer horaBajaCarga = 3; // Por default es a las 3 AM
 
-    public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, FuenteService fuenteService) {
+    public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, HechoXColeccionRepository hechoXColeccionRepository, FuenteService fuenteService) {
         this.hechoService = hechoService;
         this.coleccionService = coleccionService;
-        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+        this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.fuenteService = fuenteService;
     }
 
@@ -89,10 +89,10 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
 
             List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(conteoHechos, totalFuentes);
             for (Hecho hecho : hechosCurados) {
-                HechoXColeccion hechoXColeccion = repositorioDeHechosXColeccion.findById(new HechoXColeccionId(hecho.getId(), coleccion.getId()))
+                HechoXColeccion hechoXColeccion = hechoXColeccionRepository.findById(new HechoXColeccionId(hecho.getId(), coleccion.getId()))
                         .orElseThrow(() -> new RuntimeException("No existe la relación"));
                 hechoXColeccion.setConsensuado(true);
-                repositorioDeHechosXColeccion.save(hechoXColeccion);
+                hechoXColeccionRepository.save(hechoXColeccion);
             }
         }
         System.out.println("Curación de hechos finalizada.");

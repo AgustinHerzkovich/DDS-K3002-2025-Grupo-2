@@ -1,4 +1,4 @@
-package aplicacion.repositorios.agregador;
+package aplicacion.repositories.agregador;
 
 import aplicacion.domain.hechosYSolicitudes.Hecho;
 import org.springframework.data.domain.Page;
@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public interface HechoRepository extends JpaRepository<Hecho, String> {
 
