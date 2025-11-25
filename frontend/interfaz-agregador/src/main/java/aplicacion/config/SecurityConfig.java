@@ -43,7 +43,9 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/images/**"),
                                 new AntPathRequestMatcher("/fragments/**"),
-                                new AntPathRequestMatcher("/favicon.ico")
+                                new AntPathRequestMatcher("/favicon.ico"),
+                                // Endpoints de Actuator para monitoreo (Prometheus, health checks, etc.)
+                                new AntPathRequestMatcher("/actuator/**")
                         ).permitAll()
                         // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()
