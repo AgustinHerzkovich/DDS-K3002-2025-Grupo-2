@@ -29,7 +29,7 @@ public class SecurityConfig {
                         .ignoringRequestMatchers("/subir-hechos-post","/guardar-edicion/{id}","/editarIdentidad","/gestionar-solicitud/{id}"))
             .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/solicitudes-pendientes").hasRole("ADMIN")
-                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos","/subir-hechos-post").permitAll()
+                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/subir-hechos","/subir-hechos-post", "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
