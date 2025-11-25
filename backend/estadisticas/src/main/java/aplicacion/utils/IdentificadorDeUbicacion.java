@@ -40,7 +40,7 @@ import java.util.Scanner;
 public class IdentificadorDeUbicacion {
 
     private static IdentificadorDeUbicacion instance;
-    private List<Provincia> provinciasCache = new ArrayList<>();
+    private final List<Provincia> provinciasCache = new ArrayList<>();
     private final Provincia defaultProvincia = new Provincia(null, "Desconocida", "Desconocido", "XX");
     // Lista de provincias en memoria
     private final GeometryFactory gf = new GeometryFactory();
@@ -58,11 +58,10 @@ public class IdentificadorDeUbicacion {
         // Lee el geoJson
         GeoJSON gj = GeoJSONFactory.create(geoJsonContent);
         // Crea un geoJson
-        if (!(gj instanceof FeatureCollection)) {
+        if (!(gj instanceof FeatureCollection fc)) {
             throw new IllegalArgumentException("Esperaba un FeatureCollection de provincias");
         }
         //Verifica que sea un "FeatureCollection"
-        FeatureCollection fc = (FeatureCollection) gj;
         GeoJSONReader reader = new GeoJSONReader();
         int idx = 0;
         for (Feature feature : fc.getFeatures()) {

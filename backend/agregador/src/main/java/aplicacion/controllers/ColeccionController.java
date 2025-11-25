@@ -8,7 +8,6 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.ColeccionService;
-import aplicacion.services.FuenteService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +23,9 @@ import java.util.List;
 @RequestMapping
 public class ColeccionController {
     private final ColeccionService coleccionService;
-    private final FuenteService fuenteService;
-    public ColeccionController(ColeccionService coleccionService, FuenteService fuenteService) {
+
+    public ColeccionController(ColeccionService coleccionService) {
         this.coleccionService = coleccionService;
-        this.fuenteService = fuenteService;
     }
 
     // Operaciones CREATE sobre Colecciones

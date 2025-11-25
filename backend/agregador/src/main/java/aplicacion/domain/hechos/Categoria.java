@@ -20,9 +20,5 @@ public class Categoria {
     public Categoria(String nombre) {
         this.nombre = nombre;
     }
-
-    public Boolean esIdenticaA(String categoria_nombre) {
-        return this.nombre.equals(categoria_nombre);
-    }
 }
 

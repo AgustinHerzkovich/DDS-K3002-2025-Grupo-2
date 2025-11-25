@@ -1,10 +1,9 @@
 package aplicacion.controllers;
 
 import aplicacion.dto.input.FuenteProxyInputDto;
-import aplicacion.dto.output.FuenteDisponibleOutputDto;
 import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.services.excepciones.FuenteNoEncontradaException;
+import aplicacion.excepciones.FuenteNoEncontradaException;
 
 import aplicacion.services.FuenteProxyService;
 import org.springframework.http.HttpStatus;

@@ -3,7 +3,6 @@ package domain.menu.subMenu.estadisticas;
 import domain.apiClient.ApiClient;
 import domain.connectionManager.ConnectionManager;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class SubMenuActualizarEstadisticas {
@@ -36,7 +35,6 @@ public class SubMenuActualizarEstadisticas {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return;
     }
     @SuppressWarnings("BusyWait")
     private static Thread getAnimacionThread() {

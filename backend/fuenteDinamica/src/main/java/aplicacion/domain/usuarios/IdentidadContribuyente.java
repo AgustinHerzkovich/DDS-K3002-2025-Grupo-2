@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 // IDENTIDAD CONTRIBUYENTE
 @Embeddable
@@ -25,10 +24,4 @@ public class IdentidadContribuyente {
         this.apellido = apellido;
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public Integer getEdad() {
-        return Period.between(fechaNacimiento, LocalDate.now()).getYears();
-    }
-
-    public String getNombreCompleto() { return nombre + " " + apellido; }
 }

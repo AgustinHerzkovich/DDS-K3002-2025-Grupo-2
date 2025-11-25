@@ -21,7 +21,6 @@ import java.util.List;
 public class ContribuyenteController {
     private final ContribuyenteService contribuyenteService;
     private final HechoService hechoService;
-    ;
 
     public ContribuyenteController(ContribuyenteService contribuyenteService, HechoService hechoService) {
         this.contribuyenteService = contribuyenteService;

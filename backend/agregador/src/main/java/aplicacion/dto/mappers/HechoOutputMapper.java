@@ -4,8 +4,6 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class HechoOutputMapper implements Mapper<Hecho, HechoOutputDto>{
     private final CategoriaOutputMapper categoriaOutputMapper;

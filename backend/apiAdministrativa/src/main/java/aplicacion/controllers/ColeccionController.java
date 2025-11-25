@@ -3,14 +3,13 @@ package aplicacion.controllers;
 import aplicacion.config.ConfigService;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class ColeccionController {
-    private ConfigService configService;
+    private final ConfigService configService;
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
 

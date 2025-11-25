@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class Termino {
     @Getter
-    private String nombre;
-    private Termino refiereA; // Si no es null es "sinonimo", de lo contrario es "raiz"
+    private final String nombre;
+    private final Termino refiereA; // Si no es null es "sinonimo", de lo contrario es "raiz"
 
     public Termino(String nombre) {
         this.nombre = nombre;

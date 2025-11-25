@@ -1,7 +1,5 @@
 package aplicacion.dto.output;
 
-import aplicacion.dto.output.CriterioDePertenenciaOutputDto;
-import aplicacion.dto.output.UbicacionOutputDto;
 import lombok.Getter;
 import lombok.Setter;
 

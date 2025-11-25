@@ -2,7 +2,6 @@ package aplicacion.domain.conexiones;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.id.factory.spi.GenerationTypeStrategy;
 
 import java.net.URI;
 
