@@ -1,6 +1,5 @@
-package aplicacion.repositorios.olap;
+package aplicacion.repositories.olap;
 
-import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionUbicacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

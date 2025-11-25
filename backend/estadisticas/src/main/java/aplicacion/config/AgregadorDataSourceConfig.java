@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "aplicacion.repositorios.agregador",
+        basePackages = "aplicacion.repositories.agregador",
         entityManagerFactoryRef = "agregadorEntityManagerFactory",
         transactionManagerRef = "agregadorTransactionManager"
 )

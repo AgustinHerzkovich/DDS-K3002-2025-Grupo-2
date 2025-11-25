@@ -1,4 +1,4 @@
-package aplicacion.repositorios;
+package aplicacion.repositories;
 
 import aplicacion.domain.colecciones.Coleccion;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @Repository
-public interface RepositorioDeColecciones extends JpaRepository<Coleccion, String> {
+public interface ColeccionRepository extends JpaRepository<Coleccion, String> {
     @Query("""
     SELECT CASE WHEN COUNT(c) > 0 THEN TRUE ELSE FALSE END
     FROM Coleccion c

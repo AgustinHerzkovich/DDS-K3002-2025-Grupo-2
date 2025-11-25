@@ -11,8 +11,8 @@ import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeRevisiones;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.RevisionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 public class HechoService {
-    private final RepositorioDeHechos repositorioDeHechos;
+    private final HechoRepository hechoRepository;
     private final ContribuyenteService contribuyenteService;
     private final HechoInputMapper hechoInputMapper;
     private final HechoOutputMapper hechoOutputMapper;
@@ -29,11 +29,11 @@ public class HechoService {
     private final CategoriaInputMapper categoriaInputMapper;
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
-    private final RepositorioDeRevisiones repositorioDeRevisiones;
+    private final RevisionRepository revisionRepository;
 
 
-    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RepositorioDeRevisiones repositorioDeRevisiones) {
-        this.repositorioDeHechos = repositorioDeHechos;
+    public HechoService(HechoRepository hechoRepository, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RevisionRepository revisionRepository) {
+        this.hechoRepository = hechoRepository;
         this.contribuyenteService = contribuyenteService;
         this.hechoInputMapper = hechoInputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -41,18 +41,18 @@ public class HechoService {
         this.categoriaInputMapper = categoriaInputMapper;
         this.ubicacionInputMapper = ubicacionInputMapper;
         this.multimediaInputMapper = multimediaInputMapper;
-        this.repositorioDeRevisiones = repositorioDeRevisiones;
+        this.revisionRepository = revisionRepository;
     }
 
     @Transactional
     public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return hechoRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -80,18 +80,18 @@ public class HechoService {
             autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getContribuyenteId());
         }
         Hecho hecho = hechoInputMapper.map(hechoInputDto, autor);
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 
     public HechoOutputDto obtenerHecho(String id) throws HechoNoEncontradoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+        Hecho hecho = hechoRepository.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         return hechoOutputMapper.map(hecho);
     }
 
     public HechoRevisadoOutputDto modificarEstadoRevision(String id, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HechoNoEncontradoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+        Hecho hecho = hechoRepository.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         EstadoRevision estadoRevision = cambioEstadoRevisionInputDto.getEstado();
         String sugerencia = cambioEstadoRevisionInputDto.getSugerencia();
@@ -100,20 +100,20 @@ public class HechoService {
             hecho.setSugerencia(sugerencia);
         }
 
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoRevisadoOutputMapper.map(hecho);
     }
 
     public void guardarRevision(String hechoId, Long administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
-        Hecho hecho = repositorioDeHechos.findById(hechoId)
+        Hecho hecho = hechoRepository.findById(hechoId)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + hechoId));
         Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
         RevisionHecho revisionHecho = new RevisionHecho(administrador, hecho);
-        repositorioDeRevisiones.save(revisionHecho);
+        revisionRepository.save(revisionHecho);
     }
 
     public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+        Hecho hecho = hechoRepository.findById(id)
                     .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         this.validarHechoEditable(hecho);
 
@@ -125,7 +125,7 @@ public class HechoService {
                 hechoEdicionInputDto.getContenidoTexto(),
                 hechoEdicionInputDto.getContenidoMultimedia() != null ? hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null);
 
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 

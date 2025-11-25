@@ -1,23 +1,23 @@
 package aplicacion.services;
 
-import aplicacion.repositorios.RepositorioDeEtiquetas;
+import aplicacion.repositories.EtiquetaRepository;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Etiqueta;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EtiquetaService {
-    private final RepositorioDeEtiquetas repositorioDeEtiquetas;
+    private final EtiquetaRepository etiquetaRepository;
 
-    public EtiquetaService(RepositorioDeEtiquetas repositorioDeEtiquetas) {
-        this.repositorioDeEtiquetas = repositorioDeEtiquetas;
+    public EtiquetaService(EtiquetaRepository etiquetaRepository) {
+        this.etiquetaRepository = etiquetaRepository;
     }
 
     public Etiqueta obtenerEtiquetaPorNombre(String nombre) throws EtiquetaNoEncontradaException {
-        return repositorioDeEtiquetas.findByNombre(nombre).orElseThrow(() -> new EtiquetaNoEncontradaException("Etiqueta no encontrada con nombre: " + nombre));
+        return etiquetaRepository.findByNombre(nombre).orElseThrow(() -> new EtiquetaNoEncontradaException("Etiqueta no encontrada con nombre: " + nombre));
     }
 
     public Etiqueta agregarEtiqueta(String nombre) {
-        return repositorioDeEtiquetas.save(new Etiqueta(nombre));
+        return etiquetaRepository.save(new Etiqueta(nombre));
     }
 }

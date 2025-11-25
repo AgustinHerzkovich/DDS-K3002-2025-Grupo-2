@@ -1,14 +1,10 @@
 package aplicacion.services;
 
-import aplicacion.domain.dimensiones.DimensionCategoria;
-import aplicacion.domain.dimensiones.DimensionTiempo;
-import aplicacion.domain.dimensiones.DimensionUbicacion;
 import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.hechosYSolicitudes.Hecho;
-import aplicacion.domain.id.FactHechoId;
-import aplicacion.repositorios.agregador.HechoRepository;
-import aplicacion.repositorios.olap.*;
-import aplicacion.repositorios.olap.ConfiguracionGlobalRepository;
+import aplicacion.repositories.agregador.HechoRepository;
+import aplicacion.repositories.olap.*;
+import aplicacion.repositories.olap.ConfiguracionGlobalRepository;
 import aplicacion.utils.ConfiguracionGlobal;
 import aplicacion.utils.etl.HechoFactProcesor;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @Service

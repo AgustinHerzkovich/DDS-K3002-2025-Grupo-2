@@ -1,4 +1,4 @@
-package aplicacion.repositorios.olap;
+package aplicacion.repositories.olap;
 
 import aplicacion.domain.facts.FactColeccion;
 import aplicacion.domain.id.FactColeccionId;
@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 @Repository
 public interface FactColeccionRepository extends JpaRepository<FactColeccion, FactColeccionId> {

@@ -1,4 +1,4 @@
-package aplicacion.repositorios.agregador;
+package aplicacion.repositories.agregador;
 
 import aplicacion.domain.hechosYSolicitudes.Coleccion;
 import org.springframework.data.jpa.repository.JpaRepository;

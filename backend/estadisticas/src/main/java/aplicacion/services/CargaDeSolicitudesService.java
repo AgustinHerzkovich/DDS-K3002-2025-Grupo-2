@@ -1,11 +1,10 @@
 package aplicacion.services;
 
 import aplicacion.domain.facts.FactSolicitud;
-import aplicacion.domain.hechosYSolicitudes.solicitudes.SolicitudEliminacion;
-import aplicacion.repositorios.agregador.SolicitudRepository;
-import aplicacion.repositorios.olap.FactSolicitudRepository;
+import aplicacion.repositories.agregador.SolicitudRepository;
+import aplicacion.repositories.olap.FactSolicitudRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;

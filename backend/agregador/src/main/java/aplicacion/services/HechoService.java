@@ -15,8 +15,8 @@ import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.graphql.objects.HechoFiltros;
 import aplicacion.graphql.objects.HechoMapItem;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
@@ -31,16 +31,16 @@ import java.util.*;
 
 @Service
 public class HechoService {
-    private final RepositorioDeHechos repositorioDeHechos;
-    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private final HechoRepository hechoRepository;
+    private final HechoXColeccionRepository hechoXColeccionRepository;
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
-        this.repositorioDeHechos = repositorioDeHechos;
-        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+    public HechoService(HechoRepository hechoRepository, HechoXColeccionRepository hechoXColeccionRepository, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
+        this.hechoRepository = hechoRepository;
+        this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.hechoInputMapper = hechoInputMapper;
@@ -52,11 +52,11 @@ public class HechoService {
         for (Hecho hecho : hechos) {
             guardarOActualizarContribuyenteDeHecho(hecho);
         }
-        repositorioDeHechos.saveAll(hechos);
+        hechoRepository.saveAll(hechos);
     }
 
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return hechoRepository.findAll();
     }
 
     public List<HechoOutputDto> obtenerHechosSinPaginar() {
@@ -74,7 +74,7 @@ public class HechoService {
                                                    Pageable pageable) {
         // Caso 1: sin texto libre → búsqueda normal
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
-            return repositorioDeHechos
+            return hechoRepository
                     .filtrarHechos(categoria, fechaReporteDesde, fechaReporteHasta,
                             fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                             latitud, longitud, pageable)
@@ -82,7 +82,7 @@ public class HechoService {
         }
 
         // Caso 2: buscar primero coincidencia EXACTA
-        Page<Hecho> exactos = repositorioDeHechos.buscarPorTituloExacto(
+        Page<Hecho> exactos = hechoRepository.buscarPorTituloExacto(
                 textoLibre.trim(),
                 categoria,
                 fechaReporteDesde,
@@ -100,7 +100,7 @@ public class HechoService {
         }
 
         // Caso 3: si no hubo coincidencia exacta → full text
-        return repositorioDeHechos
+        return hechoRepository
                 .filtrarHechosPorTextoLibre(categoria, fechaReporteDesde, fechaReporteHasta,
                         fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                         latitud, longitud, textoLibre.trim(), pageable)
@@ -108,7 +108,7 @@ public class HechoService {
     }
 
     public Page<Hecho> obtenerHechosPorTextoLibre(String textoLibre, Pageable pageable) {
-        return repositorioDeHechos.findByTextoLibre(textoLibre, pageable);
+        return hechoRepository.findByTextoLibre(textoLibre, pageable);
     }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
@@ -116,18 +116,18 @@ public class HechoService {
         Coleccion coleccion = hechoPorColeccion.getColeccion();
         // Si el hecho cumple los criterios de pertenencia de la colección, entonces se guarda, en caso contrario no
         if (coleccion.cumpleCriterios(hecho)) {
-            repositorioDeHechosXColeccion.save(hechoPorColeccion);
+            hechoXColeccionRepository.save(hechoPorColeccion);
         }
     }
 
     @Transactional
     public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
-        return repositorioDeHechos.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
+        return hechoRepository.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
     }
 
     public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException {
@@ -146,14 +146,14 @@ public class HechoService {
                                                              String textoLibre,
                                                              Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
-            return repositorioDeHechos.findByFiltrosYColeccionIrrestrictos(
+            return hechoRepository.findByFiltrosYColeccionIrrestrictos(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable
             );
         }
 
         // 1. Buscar exact match
-        Page<Hecho> exactos = repositorioDeHechos.findByFiltrosYColeccionIrrestrictos_TituloExacto(
+        Page<Hecho> exactos = hechoRepository.findByFiltrosYColeccionIrrestrictos_TituloExacto(
                 idColeccion, textoLibre.trim(), categoria,
                 fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
@@ -165,7 +165,7 @@ public class HechoService {
         }
 
         // 2. Buscar full-text
-        return repositorioDeHechos.findByFiltrosYColeccionIrrestrictosYTextoLibre(
+        return hechoRepository.findByFiltrosYColeccionIrrestrictosYTextoLibre(
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                 latitud, longitud, textoLibre.trim(), pageable
@@ -183,14 +183,14 @@ public class HechoService {
                                                         String textoLibre,
                                                         Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
-            return repositorioDeHechos.findByFiltrosYColeccionCurados(
+            return hechoRepository.findByFiltrosYColeccionCurados(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable
             );
         }
 
         // 1. Exact match
-        Page<Hecho> exactos = repositorioDeHechos.findByFiltrosYColeccionCurados_TituloExacto(
+        Page<Hecho> exactos = hechoRepository.findByFiltrosYColeccionCurados_TituloExacto(
                 idColeccion, textoLibre.trim(), categoria,
                 fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
@@ -202,7 +202,7 @@ public class HechoService {
         }
 
         // 2. Full text
-        return repositorioDeHechos.findByFiltrosYColeccionCuradosYTextoLibre(
+        return hechoRepository.findByFiltrosYColeccionCuradosYTextoLibre(
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                 latitud, longitud, textoLibre.trim(), pageable
@@ -211,7 +211,7 @@ public class HechoService {
 
     public void guardarHecho(Hecho hecho) {
         guardarOActualizarContribuyenteDeHecho(hecho);
-        repositorioDeHechos.save(hecho);
+        hechoRepository.save(hecho);
     }
 
     private void guardarOActualizarContribuyenteDeHecho(Hecho hecho) {
@@ -224,12 +224,12 @@ public class HechoService {
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
         normalizadorDeHechos.normalizar(hecho);
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 
     public void borrarHechosPorColeccion(Coleccion coleccion) {
-        repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
+        hechoXColeccionRepository.deleteAllByColeccionId(coleccion.getId());
     }
 
     public void quitarHechosDeSublista(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
@@ -239,7 +239,7 @@ public class HechoService {
     public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
         Md5Hasher hasher = Md5Hasher.getInstance();
         List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
-        return repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
+        return hechoRepository.findByCodigoHasheadoIn(codigosUnicos);
     }
 
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
@@ -272,7 +272,7 @@ public class HechoService {
     @Transactional
     public Etiqueta agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
         Etiqueta etiqueta;
-        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        Optional<Hecho> hecho = hechoRepository.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
         etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
@@ -286,27 +286,27 @@ public class HechoService {
             etiqueta = etiquetaService.agregarEtiqueta(etiquetaName);
         }
         hecho.get().getEtiquetas().add(etiqueta);
-        repositorioDeHechos.save(hecho.get());
+        hechoRepository.save(hecho.get());
         return etiqueta;
     }
 
     public HechoOutputDto eliminarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
-        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        Optional<Hecho> hecho = hechoRepository.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
         List<Etiqueta> etiquetas = hecho.get().getEtiquetas();
         if(etiquetas.stream().anyMatch(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName))) {
             etiquetas.removeIf(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName));
-            repositorioDeHechos.save(hecho.get());
+            hechoRepository.save(hecho.get());
             return hechoOutputMapper.map(hecho.get());
         }
         throw new EtiquetaNoEncontradaException("No se encontró la etiqueta" + etiquetaName);
     }
 
     public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
-        List<String> opciones = currentSearch.length() >= 3 ? repositorioDeHechos.findAutocompletado(currentSearch, limit) : repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
+        List<String> opciones = currentSearch.length() >= 3 ? hechoRepository.findAutocompletado(currentSearch, limit) : hechoRepository.findAutocompletadoLike(currentSearch, limit);
         if(opciones.isEmpty() && currentSearch.length() >=3){
-            return repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
+            return hechoRepository.findAutocompletadoLike(currentSearch, limit);
         }
         else return opciones;
     }
