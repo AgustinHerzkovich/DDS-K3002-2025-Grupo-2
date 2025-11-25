@@ -46,18 +46,35 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
     }
 }
 
+// Convierte una cadena de ubicación a lat/lon usando Nominatim
+async function geocodeUbicacion(pais, provincia, ciudad) {
+    const parts = [ciudad, provincia, pais].filter(Boolean);
+    if (parts.length === 0) return null;
+    const q = parts.join(', ');
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q);
+
+    // Nota: evite llamados masivos a Nominatim desde el cliente en producción.
+    const resp = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+            // No es posible setear User-Agent desde el navegador; Nominatim recibe el UA del navegador.
+        }
+    });
+
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    if (Array.isArray(data) && data.length > 0) {
+        return { lat: data[0].lat, lon: data[0].lon };
+    }
+    return null;
+}
+
 function listenAplicarFilter() {
     const aplicarBtn = document.getElementById('btn-aplicar-filtros');
     const form = document.getElementById('form-filtros');
-    const filtros = [
-        'categoria',
-        'fechaReporteDesde',
-        'fechaReporteHasta',
-        'fechaAcontecimientoDesde',
-        'fechaAcontecimientoHasta'
-    ];
 
-    aplicarBtn.addEventListener('click', function (e) {
+    aplicarBtn.addEventListener('click', async function (e) {
         e.preventDefault();
 
         const params = new URLSearchParams(window.location.search);
@@ -67,6 +84,32 @@ function listenAplicarFilter() {
         const acontecimientoHasta = document.getElementById('fechaAcontecimientoHasta').value;
         const reporteDesde = document.getElementById('fechaReporteDesde').value;
         const reporteHasta = document.getElementById('fechaReporteHasta').value;
+        const categoria = document.getElementById('categoria').value;
+        const pais = document.getElementById('filtroPais')?.value?.trim();
+        const provincia = document.getElementById('filtroProvincia')?.value?.trim();
+        const ciudad = document.getElementById('filtroCiudad')?.value?.trim();
+
+        // Limpiar posibles valores previos
+        const inputLat = document.getElementById('filtroLatitud');
+        const inputLon = document.getElementById('filtroLongitud');
+        if (inputLat) inputLat.value = '';
+        if (inputLon) inputLon.value = '';
+
+        // Si el usuario puso al menos un campo de ubicación, intentar geocodificar
+        if (pais || provincia || ciudad) {
+            try {
+                const geo = await geocodeUbicacion(pais, provincia, ciudad);
+                if (geo) {
+                    if (inputLat) inputLat.value = geo.lat;
+                    if (inputLon) inputLon.value = geo.lon;
+                    console.log('Geocodificado exitosamente:', geo);
+                } else {
+                    console.warn('Nominatim no devolvió coordenadas para la ubicación indicada.');
+                }
+            } catch (err) {
+                console.error('Error geocodificando la ubicación:', err);
+            }
+        }
 
         // Validaciones
         if (acontecimientoDesde && acontecimientoHasta) {
@@ -83,15 +126,28 @@ function listenAplicarFilter() {
             }
         }
 
-        // Actualizar parámetros
-        filtros.forEach(f => {
-            const valor = document.getElementById(f).value;
-            if (valor) {
-                params.set(f, valor);
-            } else {
-                params.delete(f);
-            }
-        });
+        // Actualizar parámetros con los valores correctos
+        if (categoria) params.set('categoria', categoria);
+        else params.delete('categoria');
+
+        if (acontecimientoDesde) params.set('fechaAcontecimientoDesde', acontecimientoDesde);
+        else params.delete('fechaAcontecimientoDesde');
+
+        if (acontecimientoHasta) params.set('fechaAcontecimientoHasta', acontecimientoHasta);
+        else params.delete('fechaAcontecimientoHasta');
+
+        if (reporteDesde) params.set('fechaReporteDesde', reporteDesde);
+        else params.delete('fechaReporteDesde');
+
+        if (reporteHasta) params.set('fechaReporteHasta', reporteHasta);
+        else params.delete('fechaReporteHasta');
+
+        // Enviar latitud y longitud si fueron geocodificadas
+        if (inputLat && inputLat.value) params.set('latitud', inputLat.value);
+        else params.delete('latitud');
+
+        if (inputLon && inputLon.value) params.set('longitud', inputLon.value);
+        else params.delete('longitud');
 
         window.location.href = '/mapa?' + params.toString();
     });
