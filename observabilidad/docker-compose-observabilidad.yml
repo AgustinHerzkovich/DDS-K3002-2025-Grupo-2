@@ -20,6 +20,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
       - prometheus
+      - loki
+    restart: always
 
   # Trazas distribuidas
   zipkin:
@@ -27,6 +29,15 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+
+  # Logs centralizados
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: always
 
 # Para iniciar los servicios de observabilidad:
 # docker-compose -f docker-compose-observabilidad.yml up -d
