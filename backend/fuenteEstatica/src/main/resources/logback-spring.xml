@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Importar configuración por defecto de Spring Boot (para colorear la consola) -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- Configuración para enviar logs a LOKI -->
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <!-- URL donde corre Loki en Docker -->
+            <url>http://localhost:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>app=fuente-estatica,host=${HOSTNAME},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </message>
+            <sortByTime>true</sortByTime>
+        </format>
+    </appender>
+
+    <!-- Activar el envío a Loki -->
+    <root level="INFO">
+        <appender-ref ref="LOKI"/>
+    </root>
+</configuration>
