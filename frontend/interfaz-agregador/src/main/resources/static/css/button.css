@@ -28,6 +28,19 @@
     background-color: darkred;
 }
 
+.btn-tertiary {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    background-color: #3498db;
+    border-radius: 0.375rem;
+}
+
+.btn-tertiary:hover {
+    background-color: #308ac7;
+}
+
 .btn-cancelar {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
@@ -47,8 +60,8 @@
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     font-weight: 500;
-    color: #ffffff;
-    background-color: #000000;
+    color: white;
+    background-color: black;
     border-radius: 0.375rem;
 }
 
@@ -57,27 +70,29 @@
 }
 
 .btn-eliminar {
-    background-color: #e74c3c;
+    background-color: #b91c1c;
     border: none;
     color: white;
-    padding: 2px 6px;
+    padding: 1px 6px;
     border-radius: 3px;
     cursor: pointer;
     font-size: 0.8rem;
 }
 
 .btn-eliminar:hover {
-    background-color: #c0392b;
+    background-color: #991b1b;
 }
 
-.btn-danger-hecho {
-    background-color: #000000;
-    color: white;
+.btn-danger {
+    background-color: #ef4444;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
 }
 
-.btn-danger-hecho:hover {
-    background-color: #1f2937;
-    color: white;
+.btn-danger:hover {
+    background-color: #dc2626;
 }
 
 .btn-danger-small {
@@ -97,6 +112,21 @@
     color: #991b1b; /* red-800 */
 }
 
+.btn-solicitar {
+    background-color: #b91c1c;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-solicitar:hover {
+    background-color: #991b1b;
+}
+
 .btn-sm {
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
@@ -112,21 +142,21 @@
 }
 
 .btn-coleccion {
-    color: #000000;                 /* text-black */
-    padding: 0.5rem;                /* p-2 */
-    display: flex;                   /* flex */
-    align-items: center;             /* items-center */
-    justify-content: center;         /* justify-center */
-    z-index: 10;                     /* z-10 */
-    background-color: transparent;   /* bg-transparent */
-    border: 0;                       /* border-0 */
-    cursor: pointer;                 /* cursor-pointer */
-    transition: all 0.2s ease-in-out; /* transition duration-200 ease-in-out */
+    color: black;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .btn-coleccion:hover {
-    opacity: 0.8;                    /* hover:opacity-80 */
-    transform: scale(1.05);          /* hover:scale-105 */
+    opacity: 0.8;
+    transform: scale(1.05);
 }
 
 .botones-revision {
@@ -135,6 +165,7 @@
     margin-top: 1rem;
     justify-content: flex-end;
 }
+
 .gestion-buttons {
     display: flex;
     gap: 1rem;

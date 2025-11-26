@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const borrarBtns = document.getElementsByClassName("eliminar-coleccion");
+    const coleccionCards = document.getElementsByClassName("coleccion-card");
 
-    for (let i = 0; i < borrarBtns.length; i++) {
-        const borrarBtn = borrarBtns[i];
-        borrarBtn.addEventListener("click", () => eliminarColeccion(borrarBtn.dataset.id));
+    if(allElementsFound([coleccionCards], "eliminar colección")) {
+        for (let i = 0; i < coleccionCards.length; i++) {
+            const coleccionId = coleccionCards[i].dataset.id;
+            console.log(`ID Coleccion ${i+1}: ${coleccionId}`)
+
+            const borrarBtn = document.getElementById(`eliminar-coleccion-${coleccionId}`)
+            borrarBtn.addEventListener("click", () => eliminarColeccion(coleccionId));
+        }
     }
 });
 

@@ -1,7 +1,7 @@
 .colecciones-container {
     display: grid;
     grid-template-rows: repeat(3, 8rem);
-    grid-template-columns: 70%;
+    grid-template-columns: 55%;
     justify-content: center;
     margin-top: 1rem;
     gap: 1rem;

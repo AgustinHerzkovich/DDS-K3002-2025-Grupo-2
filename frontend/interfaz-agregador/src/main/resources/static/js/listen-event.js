@@ -17,7 +17,6 @@ function listenPanelToggle(toggleBtn, content, separator, chevron) {
 
 function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null) {
     if (closeBtn) {
-        // Modal normal
         openBtn.addEventListener('click', () => {
             const menuBtn = document.getElementById("menu-button");
             menuBtn.click()
@@ -26,7 +25,9 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
 
         closeBtn.addEventListener('click', () => {
             modal.classList.add("hidden");
-            if (closingAction) closingAction();
+            if (closingAction) {
+                closingAction();
+            }
         });
     }
     else {
@@ -46,82 +47,7 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
     }
 }
 
-
-
-function listenAplicarFilter() {
-    const aplicarBtn = document.getElementById('btn-aplicar-filtros');
-    const form = document.getElementById('form-filtros');
-
-    aplicarBtn.addEventListener('click', async function (e) {
-        e.preventDefault();
-
-        const params = new URLSearchParams(window.location.search);
-
-        // Tomar directamente de los inputs
-        const acontecimientoDesde = document.getElementById('fechaAcontecimientoDesde').value;
-        const acontecimientoHasta = document.getElementById('fechaAcontecimientoHasta').value;
-        const reporteDesde = document.getElementById('fechaReporteDesde').value;
-        const reporteHasta = document.getElementById('fechaReporteHasta').value;
-        const categoria = document.getElementById('categoria').value;
-        const latitud = document.getElementById('filtroLatitud')?.value;
-        const longitud = document.getElementById('filtroLongitud')?.value;
-        const radio = document.getElementById('filtroRadio')?.value;
-
-        // Validaciones
-        if (acontecimientoDesde && acontecimientoHasta) {
-            if (new Date(acontecimientoDesde) >= new Date(acontecimientoHasta)) {
-                alert("La fecha de acontecimiento 'desde' no puede ser mayor o igual que 'hasta'.");
-                return;
-            }
-        }
-
-        if (reporteDesde && reporteHasta) {
-            if (new Date(reporteDesde) >= new Date(reporteHasta)) {
-                alert("La fecha de reporte 'desde' no puede ser mayor o igual que 'hasta'.");
-                return;
-            }
-        }
-
-        // Actualizar parámetros con los valores correctos
-        if (categoria) params.set('categoria', categoria);
-        else params.delete('categoria');
-
-        if (acontecimientoDesde) params.set('fechaAcontecimientoDesde', acontecimientoDesde);
-        else params.delete('fechaAcontecimientoDesde');
-
-        if (acontecimientoHasta) params.set('fechaAcontecimientoHasta', acontecimientoHasta);
-        else params.delete('fechaAcontecimientoHasta');
-
-        if (reporteDesde) params.set('fechaReporteDesde', reporteDesde);
-        else params.delete('fechaReporteDesde');
-
-        if (reporteHasta) params.set('fechaReporteHasta', reporteHasta);
-        else params.delete('fechaReporteHasta');
-
-        // Enviar latitud, longitud y radio solo si hay coordenadas
-        if (latitud && longitud) {
-            params.set('latitud', latitud);
-            params.set('longitud', longitud);
-            // Convertir radio de km a grados (1 grado ≈ 111 km)
-            const radioKm = radio || 5;
-            const radioGrados = radioKm / 111.0;
-            params.set('radio', radioGrados.toString());
-        } else {
-            params.delete('latitud');
-            params.delete('longitud');
-            params.delete('radio');
-        }
-
-        window.location.href = '/mapa?' + params.toString();
-    });
-
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        aplicarBtn.click();
-    });
-}
-
-function listenLimpiarFilter(inputsContainer) {
+function listenCleanFilters(inputsContainer) {
     const limpiarBtn = document.getElementById('btn-limpiar-filtros');
 
     limpiarBtn.addEventListener("click", function () {
@@ -148,7 +74,20 @@ function listenRadioSlider() {
     }
 }
 
-function listenAgregarFuente(addBtn, object, containerElement) {
+function listenEliminarFuenteDeColeccion() {
+    document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const coleccionId = btn.dataset.coleccionId;
+            const fuenteId = btn.dataset.fuenteId;
+
+            if (coleccionId && fuenteId) {
+                eliminarFuente(coleccionId, fuenteId);
+            }
+        });
+    });
+}
+
+function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
     addBtn.addEventListener("click", function () {
         object.contadorFuentes++;
 
@@ -177,7 +116,7 @@ function listenAgregarFuente(addBtn, object, containerElement) {
                 </select>
             </div>
 
-            <div id="nombre-nontainer-${object.contadorFuentes}" class="hidden">
+            <div id="nombre-container-${object.contadorFuentes}" class="hidden">
                 <label class="block text-xs font-medium text-gray-600 mb-1">Nombre</label>
                 <input type="text" id="fuenteNombre-${object.contadorFuentes}"
                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -216,11 +155,164 @@ function listenMostrarCamposCriterio(tipoCriterio) {
 
 function listenMostrarCamposFuente() {
     document.addEventListener("change", e => {
-        if (e.target.matches("select[id^='fuenteTipo']")) {
+        if (e.target.matches("select[id^='fuente-tipo']")) {
             const id = e.target.dataset.id;
-            const tipo = document.getElementById(`fuenteTipo-${id}`).value;
-            const nombreContainer = document.getElementById(`nombreContainer-${id}`);
+            const tipo = document.getElementById(`fuente-tipo-${id}`).value;
+            const nombreContainer = document.getElementById(`nombre-container-${id}`);
             nombreContainer.classList.toggle("hidden", !(tipo === "ESTATICA" || tipo === "PROXY"));
         }
     });
+}
+
+function listenHomeScrollableArrow(scrollArrowBtn) {
+    scrollArrowBtn.addEventListener("click", function() {
+        const target = document.querySelector('.home-content');
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY + 10;
+
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    });
+}
+
+function listenAgregarMultimedia(object) {
+    const agregarMultimediaBtn = document.getElementById("agregar-multimedia");
+
+    agregarMultimediaBtn.addEventListener("click", function() {
+        object.multimediaCount++;
+        const multimediaCount = object.multimediaCount;
+
+        const container = document.getElementById('multimedia-container');
+
+        const multimediaDiv = document.createElement('div');
+        // Usamos flex para alinear input y botón
+        multimediaDiv.className = 'multimedia-item flex items-center gap-2';
+        multimediaDiv.id = `multimedia-${multimediaCount}`;
+
+        multimediaDiv.innerHTML = `
+                <input type="text" style="color:black"
+                       class="form-multimedia-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
+                       id="url-${multimediaCount}"
+                       placeholder="https://ejemplo.com/imagen.jpg" required>
+                <button id="eliminar-multimedia" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+        `;
+
+        const eliminarMultimediaBtn = document.getElementById(`eliminar-multimedia-${multimediaCount}`)
+        eliminarMultimediaBtn.addEventListener("click", () => function() {
+            const elemento = document.getElementById(`multimedia-${multimediaCount}`);
+            if (elemento) {
+                elemento.remove();
+            }
+        });
+
+        container.appendChild(multimediaDiv);
+    });
+}
+
+function listenMostrarUbicacionInputs(usarCoordenadasCheck) {
+    usarCoordenadasCheck.addEventListener("change", function() {
+        const direccionContainer = document.getElementById("direccion-container");
+        const coordenadasContainer = document.getElementById("coordenadas-container");
+
+        if (usarCoordenadasCheck) {
+            direccionContainer.classList.remove("flex");
+            direccionContainer.classList.add("hidden");
+            coordenadasContainer.classList.add("flex");
+            direccionContainer.classList.remove("hidden");
+
+            // Hacer requeridas las coordenadas
+            document.getElementById("latitud").required = true;
+            document.getElementById("longitud").required = true;
+
+            // Quitar required de dirección
+            document.getElementById("pais").required = false;
+            document.getElementById("provincia").required = false;
+            document.getElementById("ciudad").required = false;
+            document.getElementById("calle").required = false;
+            document.getElementById("altura").required = false;
+        } else {
+            direccionContainer.classList.remove("hidden");
+            direccionContainer.classList.add("flex");
+            coordenadasContainer.classList.add("hidden");
+            coordenadasContainer.classList.remove("flex");
+
+            // Hacer requeridos los campos de dirección
+            document.getElementById("pais").required = true;
+            document.getElementById("provincia").required = true;
+            document.getElementById("ciudad").required = true;
+            document.getElementById("calle").required = true;
+            document.getElementById("altura").required = true;
+
+            // Quitar required de coordenadas
+            document.getElementById("latitud").required = false;
+            document.getElementById("longitud").required = false;
+        }
+    })
+}
+
+function listenEditarHecho(open) {
+    const editarHechBtn = document.getElementById("btn-editar-hecho")
+    const misHechosBtn = document.getElementById("salir-mis-hechos")
+
+    misHechosBtn.click()
+
+    // Abrir el modal de crear/editar hecho
+    openBtn.click()
+
+    // Rellenar el formulario con los datos del hecho
+    document.getElementById('titulo').value = hecho.titulo;
+    document.getElementById('descripcion').value = hecho.descripcion;
+    document.getElementById('categoria').value = hecho.categoria.nombre;
+    document.getElementById('contenido-texto').value = hecho.contenidoTexto;
+    document.getElementById('fecha').value = hecho.fechaAcontecimiento.slice(0, 16);
+    document.getElementById('anonimato').checked = hecho.anonimato;
+
+    // Coordenadas
+    document.getElementById('btn-usar-coordenadas').checked = true;
+    toggleUbicacionInputs();
+    document.getElementById('latitud').value = hecho.ubicacion.latitud;
+    document.getElementById('longitud').value = hecho.ubicacion.longitud;
+
+    // Multimedias
+    if (hecho.contenidoMultimedia && hecho.contenidoMultimedia.length > 0) {
+        hecho.contenidoMultimedia.forEach(url => {
+            multimediaCount++;
+            const container = document.getElementById('multimedia-container');
+            const multimediaDiv = document.createElement('div');
+            multimediaDiv.className = 'multimedia-item flex items-center gap-2';
+            multimediaDiv.id = `multimedia-${multimediaCount}`;
+            multimediaDiv.innerHTML = `
+                <input type="text" style="color:black"
+                       class="form-multimedia-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
+                       id="url-${multimediaCount}"
+                       value="${url}" required>
+                <button type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200" 
+                        onclick="eliminarMultimedia(${multimediaCount})">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" 
+                         stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            `;
+            container.appendChild(multimediaDiv);
+        });
+    }
+
+    // Cambiar el botón de "Publicar" a "Guardar Edición"
+    const botonPublicar = document.querySelector('button[onclick="publicarHecho(false)"]');
+    botonPublicar.textContent = 'Guardar Edición';
+    botonPublicar.onclick = () => guardarEdicion(hecho.id);
+}
+
+function allElementsFound(elementsList, desiredAction) {
+    if(elementsList.some(e => e === null)) {
+        console.log("No se pudo encontrar algún elemento para " + desiredAction)
+    }
+
+    return !elementsList.some(e => e === null);
 }

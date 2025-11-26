@@ -16,11 +16,11 @@
 
             <!-- 1) Cambiar algoritmo -->
             <section class="form-container">
-                <label for="algoritmoSelect" class="form-container-title">
+                <label for="coleccion-algoritmo-select" class="form-container-title">
                     Algoritmo de Consenso: <span th:text="${coleccion.tipoAlgoritmoConsenso}"></span>
                 </label>
                 <div class="flex items-center gap-3 justify-between">
-                    <select id="algoritmoSelect" class="form-primary-select w-[60%]">
+                    <select id="coleccion-algoritmo-select" class="form-primary-select w-[60%]">
                         <option value="ABSOLUTO">Absoluto</option>
                         <option value="IRRESTRICTO">Irrestricto</option>
                         <option value="MAYORIA_SIMPLE">Mayoría simple</option>
@@ -58,7 +58,7 @@
             <section class="form-container">
                 <h3 class="form-container-title">Agregar Nueva Fuente</h3>
                 <div class="flex items-end justify-between">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end w-[79%]">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-end w-[79%]">
                         <div>
                             <label for="newFuenteTipo" class="block text-xs font-medium text-gray-700 mb-1">Tipo <span class="text-red-500">*</span></label>
                             <select id="newFuenteTipo" class="form-primary-select">
@@ -69,15 +69,7 @@
                         </div>
                         <div>
                             <label for="newFuenteId" class="block text-xs font-medium text-gray-700 mb-1">ID Fuente <span class="text-red-500">*</span></label>
-                            <input id="newFuenteId" type="text" placeholder="ID único de la fuente" class="form-control" />
-                        </div>
-                        <div>
-                            <label for="newFuenteIp" class="block text-xs font-medium text-gray-700 mb-1">IP <span class="text-red-500">*</span></label>
-                            <input id="newFuenteIp" type="text" placeholder="Ej: 127.0.0.1" class="form-control" />
-                        </div>
-                        <div>
-                            <label for="newFuentePuerto" class="block text-xs font-medium text-gray-700 mb-1">Puerto <span class="text-red-500">*</span></label>
-                            <input id="newFuentePuerto" type="number" placeholder="Ej: 8081" class="form-control" />
+                            <input id="newFuenteId" type="text" placeholder="ID único de la fuente" class="form-control bg-white" />
                         </div>
                     </div>
                     <button id="btnAgregarFuente" type="button" class="btn-confirmar h-[42px]" th:data-coleccion-id="${coleccion.id}">

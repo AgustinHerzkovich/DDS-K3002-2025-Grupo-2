@@ -6,8 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     obtenerDatosPerfil()
 
-    listenModalToggle(modal, openModalBtn, cancelarBtn, obtenerDatosPerfil)
-    guardarBtn.addEventListener("click", guardarPerfil)
+    if(allElementsFound([modal, openModalBtn, cancelarBtn, guardarBtn], "editar perfil")) {
+        obtenerDatosPerfil()
+        listenModalToggle(modal, openModalBtn, cancelarBtn, obtenerDatosPerfil)
+        guardarBtn.addEventListener("click", guardarPerfil)
+    }
+
 });
 
 function obtenerDatosPerfil() {

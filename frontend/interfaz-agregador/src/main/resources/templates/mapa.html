@@ -2,21 +2,18 @@
     <script src="/js/filtrar-hechos-mapa.js" defer></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="/js/search-bar.js" defer></script>
+
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            /*<![CDATA[*/
             var hechos = /*[[${hechos}]]*/ [];
 
-            console.log("Hechos en JS:", hechos); // Para verificar que llegan correctamente
+            console.log("Hechos en JS:", hechos);
 
-            // Inicializamos el mapa centrado en Buenos Aires
-            const map = L.map('map', {zoomControl: false}).setView([-34.6037, -58.3816], 5);
+            const map = L.map('map', {zoomControl: false})
+                    .setView([-34.6037, -58.3816], 5);
 
-            L.control.zoom({
-                position: 'topright' // ← cambiás la posición
-            }).addTo(map);
+            L.control.zoom({ position: 'topright' }).addTo(map);
 
-            // Capa de mapa de OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors',
                 noWrap: true
@@ -25,34 +22,33 @@
             const customIcon = L.icon({
                 iconUrl: 'data:image/svg+xml;base64,' + btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="41" viewBox="0 0 25 41">
-                    <path fill="#DC2626" stroke="#ffffff" stroke-width="1.5" d="M12.5 0C5.596 0 0 5.596 0 12.5c0 1.933.439 3.761 1.217 5.394L12.5 41l11.283-23.106A12.42 12.42 0 0 0 25 12.5C25 5.596 19.404 0 12.5 0z"/>
+                    <path fill="#DC2626" stroke="#ffffff" stroke-width="1.5"
+                          d="M12.5 0C5.596 0 0 5.596 0 12.5c0 1.933.439 3.761 1.217 5.394L12.5 41l11.283-23.106A12.42 12.42 0 0 0 25 12.5C25 5.596 19.404 0 12.5 0z"/>
                     <circle fill="#ffffff" cx="12.5" cy="12.5" r="5"/>
                 </svg>
-            `),
+                `),
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [0, -41]
             });
 
-            // Grupo de marcadores para poder borrarlos fácilmente si se implementara AJAX en el futuro
             const markersLayer = L.featureGroup().addTo(map);
 
-            // Agregamos un marker por cada hecho
             hechos.forEach(h => {
                 if (h.latitud && h.longitud) {
                     const popupContent = `
-                    <div style="text-align: center; max-width: 200px;">
-                        <b style="word-wrap: break-word;">${h.titulo}</b>
-                        <br><br>
-                        <a href="/hechos/${h.id}"
-                            class="inline-block px-3 py-1.5 bg-red-700 text-white no-underline rounded text-sm hover:bg-red-800">
-                           Ver hecho
-                        </a>
-                    </div>
-                `;
+                        <div style="text-align: center; max-width: 200px;">
+                            <b style="word-wrap: break-word;">${h.titulo}</b>
+                            <br><br>
+                            <a href="/hechos/${h.id}"
+                               class="inline-block px-3 py-1.5 bg-red-700 text-white no-underline rounded text-sm hover:bg-red-800">
+                                Ver hecho
+                            </a>
+                        </div>
+                    `;
                     try {
                         L.marker([h.latitud, h.longitud], {icon: customIcon})
-                                .addTo(markersLayer) // Añadir al grupo
+                                .addTo(markersLayer)
                                 .bindPopup(popupContent);
                     } catch (e) {
                         console.error("Error al crear marcador para hecho:", h, e);
@@ -62,17 +58,14 @@
                 }
             });
 
-            // Ajustar el zoom para mostrar todos los marcadores (si hay alguno)
             if (markersLayer.getLayers().length > 0) {
-                map.fitBounds(markersLayer.getBounds().pad(0.1)); // pad(0.1) añade un pequeño margen
+                map.fitBounds(markersLayer.getBounds().pad(0.1));
             }
 
-            // Listener para clic en el mapa: autocompletar campos de latitud/longitud en filtros
             map.on('click', function(e) {
                 const lat = e.latlng.lat.toFixed(6);
                 const lng = e.latlng.lng.toFixed(6);
 
-                // Rellenar los campos de filtro
                 const filtroLatitud = document.getElementById('filtroLatitud');
                 const filtroLongitud = document.getElementById('filtroLongitud');
 
@@ -81,8 +74,6 @@
 
                 console.log('Ubicación seleccionada:', lat, lng);
             });
-
-            /*]]>*/
         })
     </script>
 </th:block>
@@ -99,21 +90,21 @@
     </style>
 </th:block>
 
-
-
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, true)}">
-    <main class="relative h-[900px] w-full">
-        <div id="map" class="h-[900px] w-full m-0 p-0 z-[1] position-relative"></div>
+    <main class="relative h-[86vh] w-full">
+        <div id="map" class="h-full w-full m-0 p-0 z-[1] relative"></div>
 
-        <!-- Contenedor para los paneles laterales -->
-        <div class="position-absolute top-2.5 left-2.5 z-[1000] flex flex-col gap-4 max-w-[380px]">
-            <th:block th:replace="~{fragments/modals :: modalHechosRecientes(${hechosRecientes})}"/>
+        <div class="absolute top-2.5 left-2.5 z-[1000] max-w-[380px]">
             <th:block th:replace="~{fragments/modals :: modalFiltros}"/>
         </div>
 
         <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
-            @{/mapa(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})},
-            @{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria}, fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta}, fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}
+            @{/mapa(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria},
+            fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
+            fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})},
+            @{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria},
+            fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
+            fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}
         )}" />
     </main>
 </th:block>

@@ -8,11 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('fuentes-container');
     let contadorFuentesObject = {contadorFuentes : 0};
 
-    listenModalToggle(modal, openModalBtn, cancelarBtn, () => cerrarModalCrearColecciones(modal, contadorFuentesObject, tipoCriterio, container));
-    crearBtn.addEventListener("click", crearColeccion)
-    listenAgregarFuente(agregarFuenteBtn, contadorFuentesObject, container);
-    listenMostrarCamposCriterio(tipoCriterio);
-    listenMostrarCamposFuente();
+    if(allElementsFound([modal, openModalBtn, crearBtn, cancelarBtn, agregarFuenteBtn, tipoCriterio, container], "crear colección")) {
+        listenModalToggle(modal, openModalBtn, cancelarBtn, () => cerrarModalCrearColecciones(modal, contadorFuentesObject, tipoCriterio, container));
+        crearBtn.addEventListener("click", crearColeccion)
+        listenAgregarFuenteCrearColeccion(agregarFuenteBtn, contadorFuentesObject, container);
+        listenMostrarCamposCriterio(tipoCriterio);
+        listenMostrarCamposFuente();
+    }
 });
 
 function cerrarModalCrearColecciones(modal, object, tipoCriterio, container) {

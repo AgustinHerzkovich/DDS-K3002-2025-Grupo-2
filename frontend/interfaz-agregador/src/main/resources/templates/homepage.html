@@ -1,10 +1,5 @@
 <th:block th:fragment="pageScripts">
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const returnBtn = document.getElementById("btn-return");
-            if (returnBtn) returnBtn.remove();
-        });
-    </script>
+    <script src="/js/home.js"></script>
 </th:block>
 
 <th:block th:fragment="pageStyles">
@@ -25,32 +20,19 @@
             <a th:href="@{/mapa}" class="map-button">Mapa Interactivo</a>
 
             <!-- Flecha deslizante -->
-            <svg class="scroll-arrow" onclick="scrollToContent()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40" aria-label="scroll down">
+            <svg id="home-scroll-arrow" class="scroll-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="40" height="40" aria-label="scroll down">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
             </svg>
         </div>
-
-        <script>
-            // Función para deslizar al contenido inferior
-            function scrollToContent() {
-                const target = document.querySelector('.content-home');
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
 
         <!-- Barra separadora -->
         <div class="bg-black text-white px-6 py-4"></div>
 
         <!-- Contenido inferior -->
-        <div class="content-home">
-            <div class="grid grid-cols-2 gap-20 text-center my-20">
+        <div class="home-content">
+            <div class="home-content-grid">
                 <!-- Bloque 1 -->
-                <div class="flex flex-col items-center">
+                <div class="home-content-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke-width="1.5" stroke="red" class="w-16 h-16 mb-4">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -60,7 +42,7 @@
                 </div>
 
                 <!-- Bloque 2 -->
-                <div class="flex flex-col items-center">
+                <div class="home-content-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke-width="1.5" stroke="red" class="w-16 h-16 mb-4">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -70,7 +52,7 @@
                 </div>
 
                 <!-- Bloque 3 -->
-                <div class="flex flex-col items-center">
+                <div class="home-content-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke-width="1.5" stroke="red" class="w-16 h-16 mb-4">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -80,7 +62,7 @@
                 </div>
 
                 <!-- Bloque 4 -->
-                <div class="flex flex-col items-center">
+                <div class="home-content-item">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke-width="1.5" stroke="red" class="w-16 h-16 mb-4">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -88,7 +70,10 @@
                     </svg>
                     <p class="text-xl font-semibold">Solicita la eliminación de un hecho</p>
                 </div>
-        </div>
+            </div>
+            <div>
+                <
+            </div>
         </div>
     </main>
 </th:block>

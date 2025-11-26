@@ -1,25 +1,57 @@
 document.addEventListener('DOMContentLoaded', function () {
     const cambiarAlgoritmoBtn = document.getElementById('btnCambiarAlgoritmo');
-    const btnAgregar = document.getElementById('btnAgregarFuente');
+    const agregarBtn = document.getElementById('btnAgregarFuente');
+    const select = document.getElementById('coleccion-algoritmo-select');
 
-    cambiarAlgoritmoBtn.addEventListener('click', () => {
-        const coleccionId = cambiarAlgoritmoBtn.dataset.coleccionId;
-        cambiarAlgoritmo(coleccionId);
-    });
 
-    document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const coleccionId = btn.dataset.coleccionId;
-            const fuenteId = btn.dataset.fuenteId;
-            if (coleccionId && fuenteId) eliminarFuente(coleccionId, fuenteId);
+    if(allElementsFound([cambiarAlgoritmoBtn, agregarBtn, select], "editar colección")) {
+        listenEliminarFuenteDeColeccion()
+
+        cambiarAlgoritmoBtn.addEventListener('click', () => {
+            const coleccionId = cambiarAlgoritmoBtn.dataset.coleccionId;
+
+            if(coleccionId) {
+                cambiarAlgoritmo(coleccionId);
+            }
         });
-    });
 
-    btnAgregar.addEventListener('click', () => {
-        const coleccionId = btnAgregar.dataset.coleccionId;
-        if (coleccionId) agregarFuente(coleccionId);
-    });
+        agregarBtn.addEventListener('click', () => {
+            const coleccionId = agregarBtn.dataset.coleccionId;
+
+            if (coleccionId) {
+                agregarFuente(coleccionId);
+            }
+        });
+    }
 });
+
+function cambiarAlgoritmo(coleccionId) {
+    if (!coleccionId) {
+        console.error('ID de colección inválido');
+        return;
+    }
+
+    const select = document.getElementById('coleccion-algoritmo-select');
+    const nuevoAlgoritmo = select.value;
+
+    fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
+        method: 'PATCH',
+        headers: getHeaders(),
+        body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(errorText => {throw new Error(errorText || 'Error al cambiar el algoritmo')})
+            }
+
+            alert('Algoritmo actualizado exitosamente');
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error en cambiarAlgoritmo:', error);
+            alert(`Error al cambiar algoritmo: ${error.message}`);
+        })
+}
 
 function eliminarFuente(coleccionId, fuenteId) {
     if (!coleccionId || !fuenteId) {
@@ -44,34 +76,6 @@ function eliminarFuente(coleccionId, fuenteId) {
         .catch(error => {
             console.error('Error en eliminarFuente:', error);
             alert(`Error al eliminar fuente: ${error.message}`);
-        })
-}
-
-function cambiarAlgoritmo(coleccionId) {
-    if (!coleccionId) {
-        console.error('ID de colección inválido');
-        return;
-    }
-
-    const select = document.getElementById('algoritmoSelect');
-    const nuevoAlgoritmo = select.value;
-
-    fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
-            method: 'PATCH',
-            headers: getHeaders(),
-            body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(errorText => {throw new Error(errorText || 'Error al cambiar el algoritmo')})
-            }
-
-            alert('Algoritmo actualizado exitosamente');
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error('Error en cambiarAlgoritmo:', error);
-            alert(`Error al cambiar algoritmo: ${error.message}`);
         })
 }
 

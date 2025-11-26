@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tipo = input.closest("[data-tipo]").dataset.tipo; // "hechos" o "colecciones"
     const suggestionsContainer = document.createElement("ul");
 
+
     suggestionsContainer.id = "suggestions-list";
     suggestionsContainer.className = "absolute bg-white border border-gray-300 rounded-md mt-1 w-full z-50 shadow-lg text-black";
     input.parentNode.appendChild(suggestionsContainer);
