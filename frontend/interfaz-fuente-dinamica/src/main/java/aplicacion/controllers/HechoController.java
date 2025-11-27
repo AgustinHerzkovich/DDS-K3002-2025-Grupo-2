@@ -30,7 +30,7 @@ public class HechoController {
     @GetMapping("/editar-hecho/{id}")
     @PreAuthorize("isAuthenticated()")
     public String editarHechoForm(
-            @PathVariable("id") String hechoId,
+            @PathVariable(name = "id") String hechoId,
             @AuthenticationPrincipal OidcUser principal,
             Model model
     ) {
@@ -56,7 +56,7 @@ public class HechoController {
     @PostMapping("/guardar-edicion/{id}")
     //@PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateHecho(
-            @PathVariable("id") String hechoId,
+            @PathVariable(name = "id") String hechoId,
             @RequestBody HechoEdicionInputDto hechoEdicionInputDto
     ) {
         System.out.println(" Iniciando edición para hecho ID: " + hechoId);
@@ -130,7 +130,7 @@ public class HechoController {
     @PostMapping("/gestionar-solicitud/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> gestionarSolicitud(
-            @PathVariable("id") String hechoId,
+            @PathVariable(name = "id") String hechoId,
             @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto // DTO que contiene ESTADO y SUGERENCIA
     ) {
 

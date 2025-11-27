@@ -27,7 +27,7 @@ public class FuenteProxyController {
     }
 
     @GetMapping("/{id}/hechos")
-    public ResponseEntity<?> obtenerHechosDeFuente(@PathVariable("id") String id){
+    public ResponseEntity<?> obtenerHechosDeFuente(@PathVariable(name = "id") String id){
         try {
             return ResponseEntity.ok(fuenteProxyService.importarHechosDeFuente(id));
         } catch (FuenteNoEncontradaException e) {

@@ -43,7 +43,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<?> obtenerHecho(@PathVariable("id") String id) {
+    public ResponseEntity<?> obtenerHecho(@PathVariable(name = "id") String id) {
         try{
             HechoOutputDto hecho = hechoService.obtenerHecho(id);
             return ResponseEntity.ok(hecho);
@@ -65,7 +65,7 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}/estadoRevision")
-    public ResponseEntity<?> modificarEstadoRevision(@PathVariable("id") String id,
+    public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
                                                      @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
                                                      @RequestHeader(value = "Administrador", required = false) Long administradorId) {
         try {
@@ -81,7 +81,7 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}")
-    public ResponseEntity<?> editarHecho(@PathVariable("id") String id,
+    public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
                                          @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
         System.out.println("EDITANDO el hecho: " + id );
         try {

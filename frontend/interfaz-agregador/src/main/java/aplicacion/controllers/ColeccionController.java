@@ -51,7 +51,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public String paginaHechosIrrestrictosDeColeccion(@PathVariable("id") String id,
+    public String paginaHechosIrrestrictosDeColeccion(@PathVariable(name = "id") String id,
                                                       @RequestParam(name = "categoria", required = false) String categoria,
                                                       @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                       @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -110,7 +110,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public String paginaHechosCuradosDeColeccion(@PathVariable("id") String id,
+    public String paginaHechosCuradosDeColeccion(@PathVariable(name = "id") String id,
                                                  @RequestParam(name = "categoria", required = false) String categoria,
                                                  @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                  @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -170,7 +170,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public String paginaColeccion(@PathVariable("id") String id, Model model) {
+    public String paginaColeccion(@PathVariable(name = "id") String id, Model model) {
         ColeccionOutputDto coleccion = coleccionService.obtenerColeccion(id);
         if (coleccion == null) {
             return "error/404"; // Ver si está bien tirar esto o capaz convenga otra cosa

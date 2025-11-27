@@ -20,13 +20,13 @@ public class HechoController {
     }
 
     @PostMapping("/hechos/{id}/tags")
-    public ResponseEntity<Object> agregarEtiqueta(@PathVariable(name="id") String id, @RequestBody String body) {
+    public ResponseEntity<Object> agregarEtiqueta(@PathVariable(name = "id") String id, @RequestBody String body) {
         return solicitudesHttp.post(urlBaseAgregador + "/hechos/" + id + "/tags", body, Object.class);
     }
 
     @DeleteMapping("/hechos/{id}/tags/{nombreTag}")
-    public ResponseEntity<Void> quitarEtiqueta(@PathVariable("id") String id,
-                                             @PathVariable(name="nombreTag") String nombreTag) {
+    public ResponseEntity<Void> quitarEtiqueta(@PathVariable(name = "id") String id,
+                                             @PathVariable(name = "nombreTag") String nombreTag) {
         return solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, Void.class);
     }
 

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         listenMostrarUbicacionInputs(usarCoordenadasCheck)
         listenAgregarMultimedia(multimediaCountObject)
 
-        confirmBtn.addEventListener("click", () => publicarHecho(closeBtn, usarCoordenadasCheck.checked, window.isAdmin))
+        confirmBtn.addEventListener("click", () => publicarHecho(closeBtn, usarCoordenadasCheck.checked))
     }
 });
 
@@ -23,7 +23,7 @@ function limpiarFormulario(multimediaCountObject) {
 }
 
 // Función para publicar el hecho (actualizada para usar array de URLs)
-async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin = false) {
+async function publicarHecho(closeBtn, usarCoordenadasCheck) {
     try {
         mostrarCargando("crear-hecho")
 
@@ -31,12 +31,21 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin = false) {
         const titulo = document.getElementById('crear-hecho-titulo').value.trim();
         const descripcion = document.getElementById('crear-hecho-descripcion').value.trim();
         const categoria = document.getElementById('crear-hecho-categoria').value.trim();
+        const fechaInput = document.getElementById('crear-hecho-fecha').value;
+        const contenidoTexto = document.getElementById('crear-hecho-contenido-texto').value.trim();
+        const anonimato = document.getElementById('crear-hecho-anonimato').checked;
         let ubicacion = { latitud: null, longitud: null };
 
+        if (!fechaInput || !contenidoTexto) {
+            throw new Error('Por favor complete todos los campos obligatorios (*)');
+        }
         // Validar campos obligatorios básicos
         if (!titulo || !descripcion || !categoria) {
             throw new Error('Por favor complete todos los campos obligatorios (*)');
         }
+
+        const fechaAcontecimiento = fechaInput + ':00';
+        const urlsMultimedia = recopilarMultimedias();
 
         // --- Ubicación ---
         if (usarCoordenadasCheck) {
@@ -71,18 +80,6 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin = false) {
             ubicacion = { latitud: parseFloat(data[0].lat), longitud: parseFloat(data[0].lon) };
         }
 
-        // --- Otros campos ---
-        const fechaInput = document.getElementById('crear-hecho-fecha').value;
-        const contenidoTexto = document.getElementById('crear-hecho-contenido-texto').value.trim();
-        const anonimato = document.getElementById('crear-hecho-anonimato').checked;
-
-        if (!fechaInput || !contenidoTexto || ubicacion.latitud == null || ubicacion.longitud == null) {
-            throw new Error('Por favor complete todos los campos obligatorios (*)');
-        }
-
-        const fechaAcontecimiento = fechaInput + ':00';
-        const urlsMultimedia = recopilarMultimedias();
-
         // --- Objeto Hecho ---
         const hecho = {
             titulo,
@@ -97,7 +94,7 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin = false) {
         };
 
         if (!anonimato && window.autorData) {
-            hecho.contribuyenteId = window.autorData.id;
+            hecho.autor = window.autorData.id;
         }
 
         const endpoint = isAdmin

@@ -56,12 +56,12 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ColeccionOutputDto mostrarColeccion(@PathVariable("id") String idColeccion) {
+    public ColeccionOutputDto mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
         return coleccionService.obtenerColeccionDTO(idColeccion);
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosIrrestrictos(@PathVariable(name = "id") String idColeccion,
                                                           @RequestParam(name = "categoria", required = false) String categoria,
                                                           @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                           @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -91,7 +91,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosCurados(@PathVariable(name = "id") String idColeccion,
                                                      @RequestParam(name = "categoria", required = false) String categoria,
                                                      @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                      @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -122,7 +122,7 @@ public class ColeccionController {
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable("id") String idColeccion,
+    public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
                                                    @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
@@ -130,7 +130,7 @@ public class ColeccionController {
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable("id") String idColeccion,
+    public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable(name = "id") String idColeccion,
                                                          @RequestBody FuenteInputDto fuenteInputDto) {
         ColeccionOutputDto coleccionOutputDto;
         try {
@@ -143,8 +143,8 @@ public class ColeccionController {
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
-    public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @PathVariable("fuenteId") String fuenteId) {
+    public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable(name = "id") String idColeccion,
+                                             @PathVariable(name = "fuenteId") String fuenteId) {
         try {
             ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
             System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId);
@@ -156,7 +156,7 @@ public class ColeccionController {
 
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
-    public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
+    public ResponseEntity<Void> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);
             System.out.println("Coleccion: " + idColeccion + " eliminada");

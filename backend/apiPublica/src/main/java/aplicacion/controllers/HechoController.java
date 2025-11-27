@@ -117,7 +117,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<Object> obtenerHechoPorId(@PathVariable("id") String id) {
+    public ResponseEntity<Object> obtenerHechoPorId(@PathVariable(name = "id") String id) {
         String url = urlBaseAgregador + "/hechos/" + id;
         return solicitudesHttp.get(url, Object.class);
     }

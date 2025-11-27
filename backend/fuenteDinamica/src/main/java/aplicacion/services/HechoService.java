@@ -71,13 +71,13 @@ public class HechoService {
 
     @Transactional //(readOnly = true)
     public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
-        Long identidadId = hechoInputDto.getContribuyenteId();
+        Long identidadId = hechoInputDto.getAutor();
         Contribuyente autor = null;
         if (!hechoInputDto.getAnonimato() && identidadId == null) {
             throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");
         }
         if (!hechoInputDto.getAnonimato()) {
-            autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getContribuyenteId());
+            autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getAutor());
         }
         Hecho hecho = hechoInputMapper.map(hechoInputDto, autor);
         hecho = hechoRepository.save(hecho);

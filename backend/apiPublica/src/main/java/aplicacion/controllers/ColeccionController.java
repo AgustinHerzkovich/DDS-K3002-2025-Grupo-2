@@ -34,7 +34,7 @@ public class ColeccionController {
     // --- READ ---
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
     public ResponseEntity<Object> mostrarHechosIrrestrictos(
-            @PathVariable("id") String id,
+            @PathVariable(name = "id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -125,7 +125,7 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/{id}/hechosCurados")
     public ResponseEntity<Object> mostrarHechosCurados(
-            @PathVariable("id") String id,
+            @PathVariable(name = "id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -226,7 +226,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ResponseEntity<Object> mostrarColeccion(@PathVariable("id") String id) {
+    public ResponseEntity<Object> mostrarColeccion(@PathVariable(name = "id") String id) {
         return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
     }
 
