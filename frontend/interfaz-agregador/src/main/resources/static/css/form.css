@@ -15,7 +15,8 @@
 }
 
 .form-label {
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 0.3rem;
     color: #374151;
     font-weight: 500;
@@ -121,13 +122,6 @@ input[type="checkbox"] {
     margin-right: 0.5rem;
     cursor: pointer;
     accent-color: #3b82f6;
-}
-
-.form-solicitud-label {
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.5rem;
-    display: block;
 }
 
 .form-solicitud-control {

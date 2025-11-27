@@ -1,8 +1,9 @@
 <th:block th:fragment="menuScripts">
 	<script src="/js/menu.js" defer></script>
 	<script src="/js/editar-perfil.js" defer></script>
-	<script src="/js/crear-coleccion.js" defer></script>
-	<!--<script src="/js/crear-hecho.js" defer></script>-->
+	<script th:if="${isAdmin}" src="/js/crear-coleccion.js" defer></script>
+	<script src="/js/ver-mis-hechos.js" defer></script>
+	<script src="/js/crear-hecho.js" defer></script>
 </th:block>
 
 
@@ -76,8 +77,7 @@
 			<div th:if="${isLoggedIn}" class="dropdown-menu-section">
 				<h3 class="dropdown-menu-section-title">Acciones</h3>
 
-				<button id="menu-crear-hecho"
-						class="dropdown-menu-item dropdown-menu-button">
+				<button id="menu-crear-hecho" class="dropdown-menu-item dropdown-menu-button">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -94,7 +94,7 @@
 					<span>Crear Colección</span>
 				</button>
 
-				<button id="menu-mis-hechos" onclick="toggleModalMisHechos();"
+				<button id="menu-mis-hechos"
 						class="dropdown-menu-item dropdown-menu-button" data-is-admin="${isAdmin}">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
@@ -150,8 +150,8 @@
 			</div>
 		</div>
 	</div>
-	<!-- <th:block th:replace="~{fragments/modals :: modalCrearHecho}"/>-->
-	<th:block th:replace="~{fragments/modals :: modalCrearColeccion}"/>
+	<th:block th:replace="~{fragments/modals :: modalCrearHecho}"/>
+	<th:block th:if="${isAdmin}" th:replace="~{fragments/modals :: modalCrearColeccion}"/>
 	<th:block th:replace="~{fragments/modals :: modalEditarPerfil}"/>
-	<!-- <th:block th:replace="~{fragments/modals :: modalMisHechos}"/>-->
+	<th:block th:replace="~{fragments/modals :: modalMisHechos}"/>
 </th:block>

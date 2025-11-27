@@ -5,7 +5,7 @@
         const solicitanteId = /*[[${userId}]]*/ '';
         console.log("ID de solicitud:", solicitanteId);
     </script>
-    <script src="/js/etiqueta.js"></script>
+    <script th:unless="${!isAdmin}" src="/js/etiqueta.js"></script>
     <script src="/js/solicitar-eliminacion.js"></script>
 </th:block>
 
@@ -117,7 +117,7 @@
                             </ul>
 
                             <div class="agregar-tag gap-3">
-                                <input id="nuevaEtiqueta" type="text" placeholder="Agregar nueva etiqueta" class="input-tag max-w-[250px] w-auto" aria-label="Agregar Nueva Etiqueta"/>
+                                <input id="nuevaEtiqueta" type="text" maxlength="20" placeholder="Agregar nueva etiqueta" class="input-tag max-w-[250px] w-auto" aria-label="Agregar Nueva Etiqueta"/>
                                 <button id="btn-agregar-etiqueta" type="button" class="btn-tertiary">Agregar</button>
                             </div>
                         </div>

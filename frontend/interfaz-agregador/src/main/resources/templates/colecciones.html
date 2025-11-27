@@ -1,5 +1,5 @@
 <th:block th:fragment="pageScripts">
-    <script src="/js/eliminar-coleccion.js" defer></script>
+    <script th:if="${isAdmin}" src="/js/eliminar-coleccion.js" defer></script>
     <script src="/js/search-bar.js" defer></script>
 </th:block>
 
@@ -11,7 +11,7 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
-    <main class="main-padding h-[86vh] flex flex-column">
+    <main class="main-padding flex flex-column">
         <h1 class="page-title">Colecciones</h1>
         <div th:replace="~{fragments/search-bar :: searchBar('colecciones')}" class="justify-content-center"></div>
 
@@ -64,5 +64,6 @@
                 @{/colecciones(page=${currentPage - 1}, size=${pageSize})},
                 @{/colecciones(page=${currentPage + 1}, size=${pageSize})}
             )}" />
+        <th:block th:text="${pageSize}"></th:block>
     </main>
 </th:block>
