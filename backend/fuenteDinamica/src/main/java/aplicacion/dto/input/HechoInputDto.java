@@ -19,5 +19,5 @@ public class HechoInputDto {
     private String contenidoTexto;
     private List<MultimediaInputDto> contenidoMultimedia;
     private Boolean anonimato;
-    private Long contribuyenteId;
+    private Long autor;
 }

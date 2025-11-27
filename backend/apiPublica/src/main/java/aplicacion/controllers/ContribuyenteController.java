@@ -24,7 +24,7 @@ public class ContribuyenteController {
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<Object> obtenerHechosContribuyente(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> obtenerHechosContribuyente(@PathVariable(name = "id") Long id) {
         return solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", Object.class);
     }
 
@@ -35,7 +35,7 @@ public class ContribuyenteController {
         return solicitudesHttp.get(url.toString(), Object.class);
     }
     @PatchMapping("/contribuyentes/{id}/identidad")
-    public ResponseEntity<Object> modificarIdentidadAContribuyente(@RequestBody Object body , @PathVariable("id") Long id) {
+    public ResponseEntity<Object> modificarIdentidadAContribuyente(@RequestBody Object body , @PathVariable(name = "id") Long id) {
         return solicitudesHttp.patch(urlBaseAgregador + "/contribuyentes/" + id + "/identidad", body, Object.class);
     }
 }

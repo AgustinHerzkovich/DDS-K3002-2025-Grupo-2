@@ -21,7 +21,7 @@ public class SolicitudController {
 
     @PatchMapping("/solicitudes/{id}/estado")
     public ResponseEntity<Object> actualizarEstadoSolicitud(
-            @PathVariable("id") Long id,
+            @PathVariable(name = "id") Long id,
             @RequestBody String revisionSolicitud) {
         solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, Object.class);
         return ResponseEntity.ok().build();
@@ -37,7 +37,7 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes/{id}")
-    public ResponseEntity<Object> obtenerSolicitud(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> obtenerSolicitud(@PathVariable(name = "id") Long id) {
         return solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, Object.class);
     }
 }
