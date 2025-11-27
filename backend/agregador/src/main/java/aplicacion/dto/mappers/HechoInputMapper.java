@@ -1,7 +1,9 @@
 package aplicacion.dto.mappers;
 
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.input.HechoReporteInputDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,6 +33,21 @@ public class HechoInputMapper implements Mapper<HechoInputDto, Hecho>{
                 hechoInputDto.getContenidoMultimedia() != null ? hechoInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null,
                 hechoInputDto.getAnonimato(),
                 hechoInputDto.getAutor() != null ? this.contribuyenteInputMapper.map(hechoInputDto.getAutor()) : null
+        );
+    }
+
+    public Hecho mapReporte(HechoReporteInputDto hechoReporteInputDto, Contribuyente contribuyente){
+        return new Hecho(
+                hechoReporteInputDto.getTitulo(),
+                hechoReporteInputDto.getDescripcion(),
+                categoriaInputMapper.map(hechoReporteInputDto.getCategoria()),
+                ubicacionInputMapper.map(hechoReporteInputDto.getUbicacion()),
+                hechoReporteInputDto.getFechaAcontecimiento(),
+                hechoReporteInputDto.getOrigen(),
+                hechoReporteInputDto.getContenidoTexto() != null ? hechoReporteInputDto.getContenidoTexto() : "",
+                hechoReporteInputDto.getContenidoMultimedia() != null ? hechoReporteInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null,
+                hechoReporteInputDto.getAnonimato(),
+                hechoReporteInputDto.getAutor() != null ? contribuyente : null
         );
     }
 }
