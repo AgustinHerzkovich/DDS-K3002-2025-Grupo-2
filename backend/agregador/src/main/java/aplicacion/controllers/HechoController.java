@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.EtiquetaOutputMapper;
 import aplicacion.dto.output.EtiquetaOutputDTO;
 import aplicacion.dto.output.HechoOutputDto;
@@ -73,8 +74,8 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<HechoOutputDto> reportarHecho(@RequestBody HechoInputDto hechoInputDto) {
-        HechoOutputDto hecho = hechoService.agregarHecho(hechoInputDto);
+    public ResponseEntity<HechoOutputDto> reportarHecho(@RequestBody HechoReporteInputDto hechoReporteInputDto) {
+        HechoOutputDto hecho = hechoService.agregarHechoReportado(hechoReporteInputDto);
         System.out.println("Hecho creado: " + hecho.getId());
         return ResponseEntity.ok(hecho);
     }
