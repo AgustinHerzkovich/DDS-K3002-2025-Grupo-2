@@ -7,6 +7,7 @@ import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.HechoInputDto;
+import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
@@ -227,6 +228,14 @@ public class HechoService {
 
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
+        normalizadorDeHechos.normalizar(hecho);
+        hecho = hechoRepository.save(hecho);
+        return hechoOutputMapper.map(hecho);
+    }
+
+    public HechoOutputDto agregarHechoReportado(HechoReporteInputDto hechoReporteInputDto) throws ContribuyenteNoConfiguradoException {
+        Contribuyente contribuyente = contribuyenteService.obtenerContribuyente(hechoReporteInputDto.getAutor());
+        Hecho hecho = hechoInputMapper.mapReporte(hechoReporteInputDto, contribuyente);
         normalizadorDeHechos.normalizar(hecho);
         hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
