@@ -53,14 +53,14 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes/{id}")
-    public ResponseEntity<SolicitudOutputDto> obtenerSolicitud(@PathVariable("id") Long id) {
+    public ResponseEntity<SolicitudOutputDto> obtenerSolicitud(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(solicitudService.obtenerSolicitudDTO(id));
     }
 
     @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
     public ResponseEntity<Void> actualizarEstadoSolicitud(
-            @PathVariable("id") Long id,
+            @PathVariable(name = "id") Long id,
             @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){
         List<SolicitudEliminacion> solis;
         SolicitudEliminacion sol;

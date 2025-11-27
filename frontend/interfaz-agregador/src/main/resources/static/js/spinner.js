@@ -1,6 +1,4 @@
 function mostrarCargando(confirmBtnId) {
-    console.log(`confirmar-spinner-${confirmBtnId}`)
-    console.log(confirmBtnId)
     document.getElementById(`confirmar-${confirmBtnId}`).classList.add("hidden")
     document.getElementById(`confirmar-spinner-${confirmBtnId}`).classList.remove("hidden")
 }

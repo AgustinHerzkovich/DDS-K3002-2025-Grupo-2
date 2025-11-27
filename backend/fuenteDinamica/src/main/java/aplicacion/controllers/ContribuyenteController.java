@@ -28,7 +28,7 @@ public class ContribuyenteController {
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<List<HechoOutputDto>> obtenerHechosContribuyente(@PathVariable("id") Long id) {
+    public ResponseEntity<List<HechoOutputDto>> obtenerHechosContribuyente(@PathVariable(name = "id") Long id) {
         try {
             Validaciones.validarId(id);
             List<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id);
@@ -56,7 +56,7 @@ public class ContribuyenteController {
 
     @PatchMapping("/contribuyentes/{id}/identidad")
     public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
-                                                              @PathVariable("id") Long id) {
+                                                              @PathVariable(name = "id") Long id) {
         try {
             Validaciones.validarId(id);
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);

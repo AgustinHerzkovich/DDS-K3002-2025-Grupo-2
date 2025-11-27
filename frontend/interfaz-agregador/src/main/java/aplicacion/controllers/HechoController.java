@@ -26,7 +26,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public String paginaHecho(@PathVariable("id") String id,
+    public String paginaHecho(@PathVariable(name = "id") String id,
                              Model model) {
         HechoOutputDto hecho = hechoService.obtenerHecho(id);
         if (hecho == null) {
@@ -40,7 +40,7 @@ public class HechoController {
     @PostMapping("/gestionar-solicitud/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> gestionarSolicitud(
-            @PathVariable("id") String hechoId,
+            @PathVariable(name = "id") String hechoId,
             @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto // DTO que contiene ESTADO y SUGERENCIA
     ) {
         try {

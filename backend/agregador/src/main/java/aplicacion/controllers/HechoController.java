@@ -63,7 +63,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<HechoOutputDto> obtenerHechoPorId(@PathVariable("id") String id) {
+    public ResponseEntity<HechoOutputDto> obtenerHechoPorId(@PathVariable(name = "id") String id) {
         try {
             HechoOutputDto hecho = hechoService.obtenerHechoDto(id);
             return ResponseEntity.ok(hecho);
