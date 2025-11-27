@@ -24,30 +24,28 @@ public class ColeccionController {
     @GetMapping("/colecciones")
     public String paginaColecciones(@RequestParam(name = "search", required = false) String search,
                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                    @RequestParam(name = "size", defaultValue = "10") Integer size,
+                                    @RequestParam(name = "size", defaultValue = "3") Integer size,
                                     Model model) {
         PageWrapper<ColeccionOutputDto> pageWrapper = coleccionService
                 .obtenerColecciones(page, size, search)
                 .block();
 
-        if (pageWrapper == null) {
+        if (pageWrapper == null || pageWrapper.getContent() == null) {
             model.addAttribute("colecciones", List.of());
             model.addAttribute("currentPage", 0);
             model.addAttribute("pageSize", size);
             model.addAttribute("hasNext", false);
             model.addAttribute("hasPrevious", false);
             model.addAttribute("totalPages", 0);
-
-            return "colecciones";
+        } else {
+            model.addAttribute("colecciones", pageWrapper.getContent());
+            model.addAttribute("search", search != null ? search : "");
+            model.addAttribute("currentPage", pageWrapper.getNumber());
+            model.addAttribute("pageSize", pageWrapper.getSize());
+            model.addAttribute("hasNext", !pageWrapper.isLast());
+            model.addAttribute("hasPrevious", !pageWrapper.isFirst());
+            model.addAttribute("totalPages", pageWrapper.getTotalPages());
         }
-
-        model.addAttribute("colecciones", pageWrapper.getContent());
-        model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("currentPage", pageWrapper.getNumber());
-        model.addAttribute("pageSize", pageWrapper.getSize());
-        model.addAttribute("hasNext", !pageWrapper.isLast());
-        model.addAttribute("hasPrevious", !pageWrapper.isFirst());
-        model.addAttribute("totalPages", pageWrapper.getTotalPages());
 
         return "colecciones";
     }

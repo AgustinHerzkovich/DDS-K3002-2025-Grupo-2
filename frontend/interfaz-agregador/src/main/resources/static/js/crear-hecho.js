@@ -3,67 +3,128 @@ document.addEventListener("DOMContentLoaded", function() {
     const openBtn = document.getElementById("menu-crear-hecho");
     const closeBtn = document.getElementById("salir-crear-hecho");
     const confirmBtn = document.getElementById("crear-hecho")
-    const usarCoordenadasCheck = document.getElementById("btn-usar-coordenadas").checked;
+    const usarCoordenadasCheck = document.getElementById("btn-usar-coordenadas");
     const misHechosBtn = document.getElementById("salir-mis-hechos")
     const multimediaCountObject = {multimediaCount : 0};
 
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, usarCoordenadasCheck, misHechosBtn], "crear hecho")) {
         listenModalToggle(modal, openBtn, closeBtn, () => limpiarFormulario(multimediaCountObject))
-        listenEditarHecho(openBtn, )
         listenMostrarUbicacionInputs(usarCoordenadasCheck)
         listenAgregarMultimedia(multimediaCountObject)
+
+        confirmBtn.addEventListener("click", () => publicarHecho(closeBtn, usarCoordenadasCheck.checked, window.isAdmin))
     }
 });
 
-async function guardarEdicion(hechoId) {
-    // Obtener todos los valores del formulario igual que en publicarHecho
-    const titulo = document.getElementById('titulo').value;
-    const descripcion = document.getElementById('descripcion').value;
-    const categoria = document.getElementById('categoria').value;
-    const contenidoTexto = document.getElementById('contenido-texto').value;
-    const fechaInput = document.getElementById('fecha').value;
-    const anonimato = document.getElementById('anonimato').checked;
-    const urlsMultimedia = recopilarMultimedias();
+function limpiarFormulario(multimediaCountObject) {
+    document.getElementById('form-crear-hecho').reset();
+    document.getElementById('multimedia-container').innerHTML = '';
+    multimediaCountObject.multimediaCount = 0;
+}
 
-    let ubicacion = {};
-    if (document.getElementById('btn-usar-coordenadas').checked) {
-        ubicacion = {
-            latitud: parseFloat(document.getElementById('latitud').value),
-            longitud: parseFloat(document.getElementById('longitud').value)
-        };
-    }
-
-    const hechoEditado = {
-        titulo,
-        descripcion,
-        categoria: { nombre: categoria },
-        ubicacion,
-        fechaAcontecimiento: fechaInput + ':00',
-        contenidoTexto,
-        contenidoMultimedia: urlsMultimedia,
-        anonimato
-    };
-
-
+// Función para publicar el hecho (actualizada para usar array de URLs)
+async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin = false) {
     try {
-        const response = await fetch(`http://localhost:8082/fuentesDinamicas/hechos/${hechoId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(hechoEditado)
+        mostrarCargando("crear-hecho")
+
+        // --- Datos del formulario ---
+        const titulo = document.getElementById('crear-hecho-titulo').value.trim();
+        const descripcion = document.getElementById('crear-hecho-descripcion').value.trim();
+        const categoria = document.getElementById('crear-hecho-categoria').value.trim();
+        let ubicacion = { latitud: null, longitud: null };
+
+        // Validar campos obligatorios básicos
+        if (!titulo || !descripcion || !categoria) {
+            throw new Error('Por favor complete todos los campos obligatorios (*)');
+        }
+
+        // --- Ubicación ---
+        if (usarCoordenadasCheck) {
+            const latitud = parseFloat(document.getElementById('crear-hecho-latitud').value);
+            const longitud = parseFloat(document.getElementById('crear-hecho-longitud').value);
+            if (isNaN(latitud) || isNaN(longitud)) {
+                throw new Error('Debe ingresar una latitúd y longitúd válidas.');
+            }
+            ubicacion = { latitud, longitud };
+        } else {
+            const pais = document.getElementById('crear-hecho-pais').value.trim();
+            const provincia = document.getElementById('crear-hecho-provincia').value.trim();
+            const ciudad = document.getElementById('crear-hecho-ciudad').value.trim();
+            const calle = document.getElementById('crear-hecho-calle').value.trim();
+            const altura = document.getElementById('crear-hecho-altura').value.trim();
+
+            if (!pais || !provincia || !ciudad || !calle || !altura) {
+                throw new Error('Por favor complete todos los campos de dirección.');
+            }
+
+            const direccionCompleta = `${calle} ${altura}, ${ciudad}, ${provincia}, ${pais}`;
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`,
+                { headers: { "User-Agent": "MetaMapa/1.0" } }
+            );
+            const data = await response.json();
+
+            if (!data || data.length === 0) {
+                throw new Error('No se pudo obtener la ubicación geográfica. Verifique la dirección ingresada.');
+            }
+
+            ubicacion = { latitud: parseFloat(data[0].lat), longitud: parseFloat(data[0].lon) };
+        }
+
+        // --- Otros campos ---
+        const fechaInput = document.getElementById('crear-hecho-fecha').value;
+        const contenidoTexto = document.getElementById('crear-hecho-contenido-texto').value.trim();
+        const anonimato = document.getElementById('crear-hecho-anonimato').checked;
+
+        if (!fechaInput || !contenidoTexto || ubicacion.latitud == null || ubicacion.longitud == null) {
+            throw new Error('Por favor complete todos los campos obligatorios (*)');
+        }
+
+        const fechaAcontecimiento = fechaInput + ':00';
+        const urlsMultimedia = recopilarMultimedias();
+
+        // --- Objeto Hecho ---
+        const hecho = {
+            titulo,
+            descripcion,
+            categoria: { nombre: categoria },
+            ubicacion,
+            fechaAcontecimiento,
+            origen: isAdmin ? 'CARGA_MANUAL' : 'CONTRIBUYENTE',
+            contenidoTexto,
+            contenidoMultimedia: urlsMultimedia,
+            anonimato
+        };
+
+        if (!anonimato && window.autorData) {
+            hecho.contribuyenteId = window.autorData.id;
+        }
+
+        const endpoint = isAdmin
+            ? 'http://localhost:8086/apiAdministrativa/hechos'
+            : 'http://localhost:8082/fuentesDinamicas/hechos';
+
+        // --- Envío al backend ---
+        const backendResponse = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(hecho)
         });
 
-        if (response.ok) {
-            alert('Hecho actualizado exitosamente');
-            toggleModalCrearHecho();
-            location.reload();
-        } else {
-            throw new Error('Error al actualizar el hecho');
+        if (!backendResponse.ok) {
+            const text = await backendResponse.text();
+            throw new Error('Error al publicar el hecho: ' + (text || backendResponse.status));
         }
+
+        alert('Hecho publicado exitosamente');
+        closeBtn.click();
+        location.reload();
+
     } catch (error) {
-        console.error('Error:', error);
-        alert('Error al actualizar el hecho');
+        console.error(error);
+        alert(`Error al publicar el hecho:\n${error.message}`);
+    } finally {
+        ocultarCargando("crear-hecho")
     }
 }
 
@@ -82,137 +143,4 @@ function recopilarMultimedias() {
     });
 
     return urls; // Devuelve un array de strings (URLs)
-}
-
-// Función para publicar el hecho (actualizada para usar array de URLs)
-async function publicarHecho(closeBtn, usarCoordenadasCheck, isAdmin=false) {
-    // Obtener valores del formulario
-    console.log(isAdmin);
-    const titulo = document.getElementById('titulo').value;
-    const descripcion = document.getElementById('descripcion').value;
-    const categoria = document.getElementById('categoria').value;
-    let ubicacion = {};
-
-    if (usarCoordenadasCheck) {
-        // Caso manual
-        const latitud = parseFloat(document.getElementById('latitud').value);
-        const longitud = parseFloat(document.getElementById('longitud').value);
-
-        if (isNaN(latitud) || isNaN(longitud)) {
-            alert('Debe ingresar latitud y longitud válidas.');
-            return;
-        }
-
-        ubicacion = { latitud, longitud };
-    } else {
-        // Caso dirección -> geocoding
-        const pais = document.getElementById('pais').value.trim();
-        const provincia = document.getElementById('provincia').value.trim();
-        const ciudad = document.getElementById('ciudad').value.trim();
-        const calle = document.getElementById('calle').value.trim();
-        const altura = document.getElementById('altura').value.trim();
-
-        if (!pais || !provincia || !ciudad || !calle || !altura) {
-            alert('Por favor complete todos los campos de dirección.');
-            return;
-        }
-
-        const direccionCompleta = `${calle} ${altura}, ${ciudad}, ${provincia}, ${pais}`;
-        console.log('Buscando coordenadas para:', direccionCompleta);
-
-        try {
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`
-            );
-            const data = await response.json();
-
-            if (!data || data.length === 0) {
-                alert('No se pudo obtener la ubicación geográfica. Verifique la dirección ingresada.');
-                return;
-            }
-
-            const latitud = parseFloat(data[0].lat);
-            const longitud = parseFloat(data[0].lon);
-            ubicacion = { latitud, longitud };
-            console.log('Ubicación geocodificada:', ubicacion);
-
-        } catch (error) {
-            console.error('Error al obtener coordenadas:', error);
-            alert('Hubo un error al obtener la ubicación. Intente nuevamente.');
-            return;
-        }
-    }
-
-    const fechaInput = document.getElementById('fecha').value;
-    const contenidoTexto = document.getElementById('contenido-texto').value;
-    const anonimato = document.getElementById('anonimato').checked;
-
-    if (!titulo || !descripcion || !categoria || !ubicacion.latitud || !ubicacion.longitud || !fechaInput || !contenidoTexto) {
-        alert('Por favor complete todos los campos obligatorios (*)');
-        return;
-    }
-
-    // Convertir la fecha de datetime-local a formato ISO
-    const fechaAcontecimiento = fechaInput + ':00'; // Agregar segundos
-
-    const urlsMultimedia = recopilarMultimedias();
-
-    // Crear objeto de hecho
-    const hecho = {
-        titulo: titulo,
-        descripcion: descripcion,
-        categoria: {
-            nombre: categoria
-        },
-        ubicacion,
-        fechaAcontecimiento: fechaAcontecimiento,
-        origen: isAdmin ? 'CARGA_MANUAL': 'CONTRIBUYENTE',
-        contenidoTexto: contenidoTexto,
-        contenidoMultimedia: urlsMultimedia,
-        anonimato: anonimato
-    };
-
-
-    // console.log("anonimato:", anonimato);
-    // console.log("window.autorData:", window.autorData);
-    if (!anonimato && window.autorData) {
-        console.log("id es:", window.autorData.id);
-        hecho.contribuyenteId = window.autorData.id;
-    }
-
-    console.log('Hecho a publicar:', hecho);
-    console.log('JSON del hecho:', JSON.stringify(hecho, null, 2));
-    const endpoint = isAdmin ? 'http://localhost:8086/apiAdministrativa/hechos' : 'http://localhost:8082/fuentesDinamicas/hechos';
-
-    // Enviar al backend
-    fetch(endpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(hecho)
-    })
-        .then(response => {
-            if (response.ok) {
-                alert('Hecho publicado exitosamente');
-                closeBtn.click();
-                location.reload();
-            } else {
-                // Intenta leer el mensaje de error del backend si existe
-                return response.text().then(text => {
-                    throw new Error('Error al publicar el hecho: ' + (text || response.status));
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al publicar el hecho.\nDetalle: ' + error.message);
-        });
-}
-
-// Función para limpiar el formulario
-function limpiarFormulario(multimediaCountObject) {
-    document.getElementById('form-crear-hecho').reset();
-    document.getElementById('multimedia-container').innerHTML = '';
-    multimediaCountObject.multimediaCount = 0;
 }

@@ -1,73 +1,96 @@
-<div th:fragment="modalCrearHecho" class="modal-page hidden">
+<div th:fragment="modalCrearHecho" id="modal-crear-hecho" class="modal-page hidden">
 	<!-- Modal personalizado -->
-	<div id="modal-crear-hecho" class="modal-content modal-page-format">
-		<div class="modal-header">
+	<div class="modal-content modal-page-format max-w-2xl">
+		<div class="create-modal-header">
 			<h5 class="modal-title">Crear Nuevo Hecho</h5>
 		</div>
 
 		<div class="modal-page-body">
-			<form id="form-rear-hecho">
+			<form id="form-crear-hecho">
 				<!-- Fila 1: Título y Categoría -->
 				<div class="row g-2 mb-3">
 					<div class="col-md-8">
-						<label for="titulo" class="form-label">Título</label>
-						<input type="text" class="form-control" id="titulo" placeholder="Ingrese el título del hecho" required>
+						<label for="crear-hecho-titulo" class="form-label">
+							Título
+							<span class="text-red-500">
+								*
+							</span>
+							<span class="max-char-span">
+								(Máx.200 caracteres)
+							</span>
+						</label>
+						<input type="text" maxlength="200" class="form-control" id="crear-hecho-titulo" placeholder="Ingrese el título del hecho" required>
 					</div>
 					<div class="col-md-4">
-						<label for="hecho-categoria" class="form-label">Categoría</label>
-						<input type="text" class="form-control" id="hecho-categoria" placeholder="Ej: Desastre Natural" required>
+						<label for="crear-hecho-categoria" class="form-label">
+							Categoría
+							<span class="text-red-500">
+								*
+							</span>
+						</label>
+						<input type="text" class="form-control" maxlength="50" id="crear-hecho-categoria" placeholder="Ej: Desastre Natural" required>
 					</div>
 				</div>
 
 				<!-- Fila 2: Descripción -->
 				<div class="mb-3">
-					<label for="descripcion" class="form-label">Descripción</label>
-					<textarea class="form-control" id="descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
+					<label for="crear-hecho-descripcion" class="form-label">
+						Descripción
+						<span class="text-red-500">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.1000 caracteres)
+						</span>
+					</label>
+					<textarea class="form-control" maxlength="1000" id="crear-hecho-descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
 				</div>
 
 				<!-- Sección de Ubicación -->
 				<div class="mb-3">
-					<label class="form-label">Ubicación</label>
-					<div class="form-check mb-2">
-						<input type="checkbox" id="btn-usar-coordenadas" class="form-check-input" onchange="toggleUbicacionInputs()">
-						<label for="btn-usar-coordenadas" class="form-check-label text-black">
+					<label class="form-label">
+						Ubicación
+					</label>
+					<div class="mb-2 d-flex items-center">
+						<input type="checkbox" id="btn-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
+						<p class="ms-2 text-black">
 							Ingresar manualmente latitud y longitud
-						</label>
+						</p>
 					</div>
 
 					<!-- Campos de dirección -->
 					<div id="direccion-container" class="row g-2">
 						<div class="col-md-6">
-							<label for="pais" class="form-label">País</label>
-							<input type="text" class="form-control" id="pais" placeholder="Ej: Argentina" required>
+							<label for="crear-hecho-pais" class="form-label">País<span class="text-red-500">*</span></label>
+							<input type="text" class="form-control" id="crear-hecho-pais" placeholder="Ej: Argentina" required>
 						</div>
 						<div class="col-md-6">
-							<label for="provincia" class="form-label">Provincia</label>
-							<input type="text" class="form-control" id="provincia" placeholder="Ej: Buenos Aires" required>
+							<label for="crear-hecho-provincia" class="form-label">Provincia<span class="text-red-500">*</span></label>
+							<input type="text" class="form-control" id="crear-hecho-provincia" placeholder="Ej: Buenos Aires" required>
 						</div>
 						<div class="col-md-4">
-							<label for="ciudad" class="form-label">Ciudad</label>
-							<input type="text" class="form-control" id="ciudad" placeholder="Ej: La Plata" required>
+							<label for="crear-hecho-ciudad" class="form-label">Ciudad<span class="text-red-500">*</span></label>
+							<input type="text" class="form-control" id="crear-hecho-ciudad" placeholder="Ej: La Plata" required>
 						</div>
 						<div class="col-md-5">
-							<label for="calle" class="form-label">Calle</label>
-							<input type="text" class="form-control" id="calle" placeholder="Ej: Calle 7" required>
+							<label for="crear-hecho-calle" class="form-label">Calle<span class="text-red-500">*</span></label>
+							<input type="text" class="form-control" id="crear-hecho-calle" placeholder="Ej: Calle 7" required>
 						</div>
 						<div class="col-md-3">
-							<label for="altura" class="form-label">Altura</label>
-							<input type="text" class="form-control" id="altura" placeholder="Ej: 1234" required>
+							<label for="crear-hecho-altura" class="form-label">Altura<span class="text-red-500">*</span></label>
+							<input type="text" class="form-control" id="crear-hecho-altura" placeholder="Ej: 1234" required>
 						</div>
 					</div>
 
 					<!-- Campos de coordenadas -->
 					<div id="coordenadas-container" class="row g-2 hidden">
 						<div class="col-md-6">
-							<label for="latitud" class="form-label">Latitud</label>
-							<input type="number" step="any" class="form-control" id="latitud" placeholder="-34.603722">
+							<label for="crear-hecho-latitud" class="form-label">Latitud<span class="text-red-500">*</span></label>
+							<input type="number" step="any" class="form-control" id="crear-hecho-latitud" placeholder="-34.603722">
 						</div>
 						<div class="col-md-6">
-							<label for="longitud" class="form-label">Longitud</label>
-							<input type="number" step="any" class="form-control" id="longitud" placeholder="-58.381592">
+							<label for="crear-hecho-longitud" class="form-label">Longitud<span class="text-red-500">*</span></label>
+							<input type="number" step="any" class="form-control" id="crear-hecho-longitud" placeholder="-58.381592">
 						</div>
 					</div>
 				</div>
@@ -75,37 +98,58 @@
 				<!-- Fila 3: Fecha y Contenido Texto -->
 				<div class="row g-2 mb-3">
 					<div class="col-md-5">
-						<label for="fecha" class="form-label">Fecha y Hora</label>
-						<input type="datetime-local" class="form-control" id="fecha" required>
+						<label for="crear-hecho-fecha" class="form-label">
+							Fecha y Hora
+							<span class="text-red-500">
+								*
+							</span>
+						</label>
+						<input type="datetime-local" class="form-control" id="crear-hecho-fecha" required>
 					</div>
 					<div class="col-md-7">
-						<label for="contenido-texto" class="form-label">Contenido de Texto</label>
-						<textarea class="form-control" id="contenido-texto" rows="2" placeholder="Describa el hecho..." required></textarea>
+						<label for="crear-hecho-contenido-texto" class="form-label">
+							Contenido de Texto
+							<span class="text-red-500">
+								*
+							</span>
+							<span class="max-char-span">
+								(Máx.500 caracteres)
+							</span>
+						</label>
+						<textarea class="form-control" maxlength="500" id="crear-hecho-contenido-texto" rows="2" placeholder="Describa el hecho..." required></textarea>
 					</div>
 				</div>
 
 				<!-- Sección de Multimedia -->
 				<div class="mb-3">
-					<label class="form-label">Contenido Multimedia</label>
+					<label class="form-label">
+						Contenido Multimedia
+						<span class="max-char-span">
+								(Máx.500 caracteres)
+						</span>
+					</label>
 					<div id="multimedia-container"></div>
-					<button id="agregar-multimedia" type="button" class="btn btn-sm btn-primary mt-2">
+					<button id="agregar-multimedia" type="button" class="btn-tertiary">
 						+ Añadir Multimedia
 					</button>
 				</div>
 
 				<!-- Checkbox de anonimato -->
-				<div class="mb-3">
-					<label class="d-flex items-center">
-						<input type="checkbox" id="anonimato" name="anonimato" class="form-check-input">
-						<span class="ms-2 text-black">Publicar de forma anónima</span>
-					</label>
+				<div class="mb-3 d-flex items-center">
+					<input type="checkbox" id="crear-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
+					<p class="ms-2 text-black">
+						Publicar de forma anónima
+					</p>
 				</div>
 			</form>
 		</div>
 
 		<div class="modal-footer">
 			<button id="salir-crear-hecho" type="button" class="btn-cancelar" aria-label="Cancelar">Cancelar</button>
-			<button id="crear-hecho" type="button" class="btn-crear" th:onclick="|publicarHecho(${isAdmin})|" aria-label="Publicar Hecho">Publicar</button>
+			<button id="crear-hecho" class="btn-confirmar" aria-label="Publicar Hecho">
+				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Publicar Hecho', 'crear-hecho')}" />
+			</button>
+
 		</div>
 	</div>
 </div>
@@ -114,7 +158,7 @@
 	<!-- Modal para Crear Colección -->
 	<div class="modal-content modal-page-format max-w-2xl">
 		<!-- Header del Modal -->
-		<div class="modal-header">
+		<div class="create-modal-header">
 			<h5 class="modal-title text-white">Crear Nueva Colección</h5>
 		</div>
 
@@ -123,17 +167,26 @@
 			<form id="form-crear-coleccion" class="space-y-4">
 				<!-- Título -->
 				<div>
-					<label for="titulo-coleccion" class="block text-sm font-medium text-gray-700 mb-1">Título</label>
-					<input type="text" id="titulo-coleccion"
+					<label for="titulo-coleccion" class="block text-sm font-medium text-gray-700 mb-1">
+						Título
+						<span class="max-char-span">
+							(Máx.50 caracteres)
+						</span>
+					</label>
+					<input type="text" id="titulo-coleccion" maxlength="50"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 						   placeholder="Ingrese el título de la colección" required>
 				</div>
 
 				<!-- Descripción -->
 				<div>
-					<label for="descripcion-coleccion"
-						   class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-					<textarea id="descripcion-coleccion" rows="3"
+					<label for="descripcion-coleccion" class="block text-sm font-medium text-gray-700 mb-1">
+						Descripción
+						<span class="max-char-span">
+							(Máx.150 caracteres)
+						</span>
+					</label>
+					<textarea id="descripcion-coleccion" rows="3" maxlength="150"
 							  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 							  placeholder="Describa la colección" required></textarea>
 				</div>
@@ -154,23 +207,26 @@
 				<div id="campos-distancia" class="space-y-2 hidden">
 					<div class="grid grid-cols-2 gap-2">
 						<div>
-							<label for="criterio-latitud" class="block text-sm font-medium text-gray-700 mb-1">Latitud
-								Base</label>
+							<label for="criterio-latitud" class="block text-sm font-medium text-gray-700 mb-1">
+								Latitud Base
+							</label>
 							<input type="number" step="any" id="criterio-latitud"
 								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 								   placeholder="-34.603722">
 						</div>
 						<div>
-							<label for="criterio-longitud" class="block text-sm font-medium text-gray-700 mb-1">Longitud
-								Base</label>
+							<label for="criterio-longitud" class="block text-sm font-medium text-gray-700 mb-1">
+								Longitud Base
+							</label>
 							<input type="number" step="any" id="criterio-longitud"
 								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 								   placeholder="-58.381592">
 						</div>
 					</div>
 					<div>
-						<label for="criterio-distancia-minima" class="block text-sm font-medium text-gray-700 mb-1">Distancia
-							Mínima (km)</label>
+						<label for="criterio-distancia-minima" class="block text-sm font-medium text-gray-700 mb-1">
+							Distancia Mínima (km)
+						</label>
 						<input type="number" step="any" id="criterio-distancia-minima"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
 							   placeholder="100">
@@ -180,14 +236,16 @@
 				<!-- Campos Fecha -->
 				<div id="campos-fecha" class="space-y-2 hidden">
 					<div>
-						<label for="criterio-fecha-inicial" class="block text-sm font-medium text-gray-700 mb-1">Fecha
-							Inicial</label>
+						<label for="criterio-fecha-inicial" class="block text-sm font-medium text-gray-700 mb-1">
+							Fecha Inicial
+						</label>
 						<input type="datetime-local" id="criterio-fecha-inicial"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 					</div>
 					<div>
-						<label for="criterio-fecha-final" class="block text-sm font-medium text-gray-700 mb-1">Fecha
-							Final</label>
+						<label for="criterio-fecha-final" class="block text-sm font-medium text-gray-700 mb-1">
+							Fecha Final
+						</label>
 						<input type="datetime-local" id="criterio-fecha-final"
 							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
 					</div>
@@ -197,16 +255,16 @@
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-1">Fuentes</label>
 					<div id="fuentes-container" class="space-y-2"></div>
-					<button id="crear-coleccion-agregar-fuente" type="button"
-							class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm">
+					<button id="crear-coleccion-agregar-fuente" type="button" class="btn-tertiary">
 						+ Agregar Fuente
 					</button>
 				</div>
 
 				<!-- Algoritmo de Consenso -->
 				<div>
-					<label for="algoritmo-consenso" class="block text-sm font-medium text-gray-700 mb-1">Algoritmo de
-						Consenso</label>
+					<label for="algoritmo-consenso" class="block text-sm font-medium text-gray-700 mb-1">
+						Algoritmo de Consenso
+					</label>
 					<select id="algoritmo-consenso"
 							class="form-primary-select">
 						<option value="ABSOLUTO">Absoluto</option>
@@ -221,31 +279,23 @@
 		<!-- Footer del Modal -->
 		<div class="modal-footer flex justify-end gap-2 p-4 border-t">
 			<button id="salir-crear-coleccion" type="button" class="btn-cancelar" aria-label="Cancelar">Cancelar</button>
-			<button id="crear-coleccion" type="button" class="btn-confirmar" aria-label="Crear Coleccion">Crear Colección</button>
+			<button id="crear-coleccion" class="btn-confirmar" aria-label="Crear Coleccion">
+				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Crear Colección', 'crear-coleccion')}" />
+			</button>
 		</div>
 	</div>
 </div>
 
-<div th:fragment="modalMisHechos(hechos)" id="mis-hechos-modal" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-lg">
+<div th:fragment="modalMisHechos" id="modal-mis-hechos" class="modal-page hidden">
+	<div class="modal-content modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
 		<div class="modal-header">
 			<h5 class="modal-title">Mis Hechos</h5>
-			<button id="salir-mis-hechos" type="button" class="btn-close" data-bs-dismiss="modal">Salir</button>
 		</div>
-		<div class="modal-body">
-			<div class="list-group">
-				${hechos.map(hecho => `
-				<div class="list-group-item">
-					<div class="d-flex justify-content-between align-items-center">
-						<h6>${hecho.titulo}</h6>
-						<button th:id="btn-editar-hecho-${hecho.id}" th:data-hecho="${hecho}" class="btn-editar-hecho btn btn-primary btn-sm">
-						Editar
-						</button>
-					</div>
-					<p>${hecho.descripcion}</p>
-					<small>Fecha: ${new Date(hecho.fechaAcontecimiento).toLocaleDateString()}</small>
-				</div>
-			</div>
+		<div class="modal-page-body">
+			<div id="lista-mis-hechos" class="list-group"></div>
+		</div>
+		<div class="modal-footer">
+			<button id="salir-mis-hechos" type="button" class="btn-cancelar">Cerrar</button>
 		</div>
 	</div>
 </div>
@@ -260,25 +310,48 @@
 		<div class="modal-page-body">
 			<form id="formEditarPerfil" class="space-y-4">
 				<div>
-					<label for="perfil-nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
-					<input type="text" id="perfil-nombre"
+					<label for="perfil-nombre" class="form-label">
+						Nombre
+						<span class="text-red-500">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.20 caracteres)
+						</span>
+					</label>
+					<input type="text" id="perfil-nombre" maxlength="20"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfil-apellido" class="block text-sm font-medium text-gray-700 mb-1">Apellido <span class="text-red-500">*</span></label>
-					<input type="text" id="perfil-apellido"
+					<label for="perfil-apellido" class="form-label">
+						Apellido
+						<span class="text-red-500">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.20 caracteres)
+						</span>
+					</label>
+					<input type="text" id="perfil-apellido" maxlength="20"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfil-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-					<input type="email" id="perfil-email"
+					<label for="perfil-email" class="form-label">
+						Email
+						<span class="max-char-span">
+							(Máx.255 caracteres)
+						</span>
+					</label>
+					<input type="email" id="perfil-email" maxlength="255"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
 
 				<div>
-					<label for="perfil-fecha-nacimiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento</label>
+					<label for="perfil-fecha-nacimiento" class="form-label">
+						Fecha de Nacimiento
+					</label>
 					<input type="date" id="perfil-fecha-nacimiento"
 						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300" required>
 				</div>
@@ -352,8 +425,7 @@
 	<div class="flex justify-between items-center p-4 pb-3">
 		<h3 class="text-lg font-bold">Filtros</h3>
 		<div class="flex items-center gap-2.5">
-			<button id="btn-aplicar-filtros"
-					class="px-3 py-1 text-xs text-white font-semibold rounded-lg bg-red-700 hover:bg-red-800">
+			<button id="btn-aplicar-filtros" class="btn-secondary">
 				Aplicar
 			</button>
 			<button id="btn-toggle-filtros"
@@ -371,10 +443,16 @@
 		<form id="form-filtros">
 			<!-- Categoría -->
 			<div class="mb-4">
-				<label for="categoria" class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
+				<label for="categoria" class="block text-xs font-medium text-gray-700 mb-1">
+					Categoría
+					<span class="max-char-span">
+						(Máx.50 caracteres)
+					</span>
+				</label>
 				<input type="text"
 					   id="categoria"
 					   name="categoria"
+					   maxlength="50"
 					   th:value="${categoria}"
 					   class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded-full focus:ring-2 focus:ring-gray-300 focus:border-transparent outline-none"
 					   placeholder="Ingrese categoría...">
@@ -460,7 +538,7 @@
 </div>
 
 <div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
-	<div class="modal-pendientes-content">
+	<div class="modal-content modal-pendientes-content">
 		<button class="modal-close" onclick="closeDetalle()">×</button>
 		<h2 id="modalTitulo"></h2>
 		<p id="modalDescripcion"></p>
@@ -484,18 +562,26 @@
 
 <div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
 	<div class="modal-content custom-modal-solicitud modal-page-format max-w-2xl">
-	<div class="modal-solicitud-header">
-		<h5 class="modal-solicitud-title text-white">Usted va a solicitar la eliminación de este hecho</h5>
-	</div>
-	<div class="modal-solicitud-body">
-		<form id="formSolicitud" class="mb-3">
-			<label for="motivo-solicitud-eliminacion" class="form-solicitud-label">Motivo</label>
-			<textarea class="form-solicitud-control" id="motivo-solicitud-eliminacion" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
-		</form>
-	</div>
-	<div class="modal-solicitud-footer">
-		<button id="salir-solicitar-eliminacion" type="button" class="btn-cancelar">Cancelar</button>
-		<button id="enviar-solicitud-eliminacion" type="button" class="btn-confirmar">Enviar</button>
-	</div>
+		<div class="modal-solicitud-header">
+			<h5 class="modal-solicitud-title text-white">Usted va a solicitar la eliminación de este hecho</h5>
+		</div>
+		<div class="modal-solicitud-body">
+			<form id="formSolicitud" class="mb-3">
+				<label for="motivo-solicitud-eliminacion" class="form-label text-xl">
+					Motivo
+					<span class="max-char-span text-xs">
+						(Mín.500 caracteres)
+						(Máx.2000 caracteres)
+					</span>
+				</label>
+				<textarea class="form-solicitud-control" maxlength="2000" minlength="500" id="motivo-solicitud-eliminacion" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+			</form>
+		</div>
+		<div class="modal-solicitud-footer">
+			<button id="salir-solicitar-eliminacion" type="button" class="btn-cancelar">Cancelar</button>
+			<button id="enviar-solicitud-eliminacion" type="button" class="btn-confirmar">
+				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Enviar', 'enviar-solicitud-eliminacion')}" />
+			</button>
+		</div>
 	</div>
 </div>

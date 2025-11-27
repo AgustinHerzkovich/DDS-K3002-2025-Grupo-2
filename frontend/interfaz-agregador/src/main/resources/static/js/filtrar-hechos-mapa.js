@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const hechosToggleBtn = document.getElementById('btn-toggle-hechos');
-    const hechosContent = document.getElementById('hechos-content');
-    const hechosSeparator = document.getElementById('hechos-separator');
-    const hechosChevron = document.getElementById('chevron-icon');
-
-    if(allElementsFound([hechosToggleBtn, hechosContent, hechosSeparator, hechosChevron], "obtener hechos recientes")) {
-        listenPanelToggle(hechosToggleBtn, hechosContent, hechosSeparator, hechosChevron)
-    }
-
     const filtrosToggleBtn = document.getElementById('btn-toggle-filtros');
     const filtrosContent = document.getElementById('filtros-content');
     const filtrosSeparator = document.getElementById('filtros-separator');

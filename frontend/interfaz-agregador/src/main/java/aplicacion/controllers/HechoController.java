@@ -43,9 +43,6 @@ public class HechoController {
             @PathVariable("id") String hechoId,
             @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto // DTO que contiene ESTADO y SUGERENCIA
     ) {
-
-
-
         try {
             ResponseEntity<String> response = this.hechoService.gestionarRevision(hechoId, cambioEstadoDto);
 
@@ -61,7 +58,6 @@ public class HechoController {
             System.err.println("ERROR FATAL al gestionar hecho ID " + hechoId + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo de comunicación.\"}");
         }
-
     }
 
     @GetMapping("/hechos-pendientes")

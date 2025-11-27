@@ -19,11 +19,13 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
     if (closeBtn) {
         openBtn.addEventListener('click', () => {
             const menuBtn = document.getElementById("menu-button");
+            document.body.classList.add("overflow-hidden");
             menuBtn.click()
             modal.classList.remove("hidden");
         });
 
         closeBtn.addEventListener('click', () => {
+            document.body.classList.remove("overflow-hidden");
             modal.classList.add("hidden");
             if (closingAction) {
                 closingAction();
@@ -117,8 +119,13 @@ function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
             </div>
 
             <div id="nombre-container-${object.contadorFuentes}" class="hidden">
-                <label class="block text-xs font-medium text-gray-600 mb-1">Nombre</label>
-                <input type="text" id="fuenteNombre-${object.contadorFuentes}"
+                <label class="block text-xs font-medium text-gray-600 mb-1">
+                    Nombre
+                    <span class="max-char-span">
+						(Máx.255 caracteres)
+					</span>
+                </label>
+                <input type="text" id="fuenteNombre-${object.contadorFuentes}" maxlength="255"
                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
                        placeholder="Ingrese el nombre">
             </div>
@@ -178,81 +185,77 @@ function listenHomeScrollableArrow(scrollArrowBtn) {
 
 function listenAgregarMultimedia(object) {
     const agregarMultimediaBtn = document.getElementById("agregar-multimedia");
+    const container = document.getElementById('multimedia-container');
 
     agregarMultimediaBtn.addEventListener("click", function() {
         object.multimediaCount++;
-        const multimediaCount = object.multimediaCount;
-
-        const container = document.getElementById('multimedia-container');
 
         const multimediaDiv = document.createElement('div');
-        // Usamos flex para alinear input y botón
-        multimediaDiv.className = 'multimedia-item flex items-center gap-2';
-        multimediaDiv.id = `multimedia-${multimediaCount}`;
+        multimediaDiv.className = 'multimedia-item flex items-center gap-2 mb-[1rem]';
+        multimediaDiv.id = `multimedia-${object.multimediaCount}`;
 
         multimediaDiv.innerHTML = `
-                <input type="text" style="color:black"
-                       class="form-multimedia-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
-                       id="url-${multimediaCount}"
+                <input type="text" class="form-control" maxlength="500"
+                       id="url-${object.multimediaCount}"
                        placeholder="https://ejemplo.com/imagen.jpg" required>
-                <button id="eliminar-multimedia" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
+                <button id="eliminar-multimedia-${object.multimediaCount}" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                     </svg>
                 </button>
         `;
 
-        const eliminarMultimediaBtn = document.getElementById(`eliminar-multimedia-${multimediaCount}`)
-        eliminarMultimediaBtn.addEventListener("click", () => function() {
-            const elemento = document.getElementById(`multimedia-${multimediaCount}`);
-            if (elemento) {
-                elemento.remove();
-            }
-        });
-
         container.appendChild(multimediaDiv);
+
+        const eliminarMultimediaBtn = document.getElementById(`eliminar-multimedia-${object.multimediaCount}`)
+        const element = document.getElementById(`multimedia-${object.multimediaCount}`);
+        eliminarMultimediaBtn.addEventListener("click", () => element.remove());
     });
 }
 
 function listenMostrarUbicacionInputs(usarCoordenadasCheck) {
-    usarCoordenadasCheck.addEventListener("change", function() {
+    usarCoordenadasCheck.addEventListener("click", function() {
         const direccionContainer = document.getElementById("direccion-container");
         const coordenadasContainer = document.getElementById("coordenadas-container");
+        const latitud = document.getElementById("crear-hecho-latitud");
+        const longitud = document.getElementById("crear-hecho-longitud");
+        const pais = document.getElementById("crear-hecho-pais");
+        const provincia = document.getElementById("crear-hecho-provincia");
+        const ciudad = document.getElementById("crear-hecho-ciudad");
+        const calle = document.getElementById("crear-hecho-calle");
+        const altura = document.getElementById("crear-hecho-altura");
 
-        if (usarCoordenadasCheck) {
-            direccionContainer.classList.remove("flex");
+        if (usarCoordenadasCheck.checked) {
+            // Mostrar coordenadas
             direccionContainer.classList.add("hidden");
-            coordenadasContainer.classList.add("flex");
-            direccionContainer.classList.remove("hidden");
+            coordenadasContainer.classList.remove("hidden");
 
-            // Hacer requeridas las coordenadas
-            document.getElementById("latitud").required = true;
-            document.getElementById("longitud").required = true;
+            // Requeridos
+            latitud.required = true;
+            longitud.required = true;
 
-            // Quitar required de dirección
-            document.getElementById("pais").required = false;
-            document.getElementById("provincia").required = false;
-            document.getElementById("ciudad").required = false;
-            document.getElementById("calle").required = false;
-            document.getElementById("altura").required = false;
+            pais.required = false;
+            provincia.required = false;
+            ciudad.required = false;
+            calle.required = false;
+            altura.required = false;
+
         } else {
+            // Mostrar dirección
             direccionContainer.classList.remove("hidden");
-            direccionContainer.classList.add("flex");
             coordenadasContainer.classList.add("hidden");
-            coordenadasContainer.classList.remove("flex");
 
-            // Hacer requeridos los campos de dirección
-            document.getElementById("pais").required = true;
-            document.getElementById("provincia").required = true;
-            document.getElementById("ciudad").required = true;
-            document.getElementById("calle").required = true;
-            document.getElementById("altura").required = true;
+            // Requeridos
+            pais.required = true;
+            provincia.required = true;
+            ciudad.required = true;
+            calle.required = true;
+            altura.required = true;
 
-            // Quitar required de coordenadas
-            document.getElementById("latitud").required = false;
-            document.getElementById("longitud").required = false;
+            latitud.required = false;
+            longitud.required = false;
         }
-    })
+    });
 }
 
 function listenEditarHecho(open) {
@@ -287,7 +290,7 @@ function listenEditarHecho(open) {
             multimediaDiv.className = 'multimedia-item flex items-center gap-2';
             multimediaDiv.id = `multimedia-${multimediaCount}`;
             multimediaDiv.innerHTML = `
-                <input type="text" style="color:black"
+                <input type="text" style="color:black" maxlength="500"
                        class="form-multimedia-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
                        id="url-${multimediaCount}"
                        value="${url}" required>
@@ -307,6 +310,16 @@ function listenEditarHecho(open) {
     const botonPublicar = document.querySelector('button[onclick="publicarHecho(false)"]');
     botonPublicar.textContent = 'Guardar Edición';
     botonPublicar.onclick = () => guardarEdicion(hecho.id);
+}
+
+function listenIrACrearHecho(closeMisHechosBtn) {
+    const openModalCrearHechoBtn = document.getElementById("open-modal-crear-hecho")
+    const crearHechoMenuBtn = document.getElementById("menu-crear-hecho")
+
+    openModalCrearHechoBtn.addEventListener("click", function() {
+        closeMisHechosBtn.click();
+        crearHechoMenuBtn.click();
+    })
 }
 
 function allElementsFound(elementsList, desiredAction) {
