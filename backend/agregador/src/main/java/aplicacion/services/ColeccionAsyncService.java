@@ -23,11 +23,12 @@ public class ColeccionAsyncService {
     private final FuenteService fuenteService;
     private final HechoXColeccionRepository hechoXColeccionRepository;
     private final ColeccionRepository coleccionRepository;
-
-    public ColeccionAsyncService(FuenteService fuenteService, HechoXColeccionRepository hechoXColeccionRepository, ColeccionRepository coleccionRepository) {
+    private final FuenteMutexManager fuenteMutexManager;
+    public ColeccionAsyncService(FuenteService fuenteService, HechoXColeccionRepository hechoXColeccionRepository, ColeccionRepository coleccionRepository, FuenteMutexManager fuenteMutexManager) {
         this.fuenteService = fuenteService;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.coleccionRepository = coleccionRepository;
+        this.fuenteMutexManager = fuenteMutexManager;
     }
 
     /**
@@ -38,7 +39,16 @@ public class ColeccionAsyncService {
     @Async
     public void onColeccionCreada(ColeccionCreadaEvent event) {
         System.out.println("Evento recibido: Colección creada con ID: " + event.getColeccionId());
-        asociarHechosPreexistentes(event.getColeccionId());
+        fuenteMutexManager.lockAll(event.getFuentesId());
+        System.out.println("Insercion de hechos iniciada");
+        try {
+            asociarHechosPreexistentes(event.getColeccionId());
+        }catch (Exception e){
+            System.err.println( "Error: No se pudo cargar los hechos de una de las fuentes   -   "+ e.getMessage());
+        }finally {
+            fuenteMutexManager.unlockAll(event.getFuentesId());
+            System.out.println("Insercion de hechos finalizada exitosamente");
+        }
     }
 
     /**
@@ -48,12 +58,21 @@ public class ColeccionAsyncService {
     @Async
     public void onFuenteAgregada(FuenteAgregadaAColeccionEvent event) {
         System.out.println("Evento recibido: Fuente agregada - Colección: " + event.getColeccionId() + ", Fuente: " + event.getFuenteId());
+        fuenteMutexManager.lock(event.getFuenteId());
+        System.out.println("Insercion de hechos iniciada");
+        try {
+            // Recargar la colección en una nueva transacción
+            Coleccion coleccion = coleccionRepository.findById(event.getColeccionId())
+                    .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + event.getColeccionId()));
+            asociarHechosPreexistentesDeFuenteAColeccion(coleccion, event.getFuenteId());
+        }catch (Exception e){
+            System.err.println( "Error: no se pudo cargar los hechos de la fuente " + event.getFuenteId() + "  -   "+ e.getMessage());
+        }
+        finally {
+            fuenteMutexManager.unlock(event.getFuenteId());
+            System.out.println("Insercion de hechos finalizada exitosamente");
+        }
 
-        // Recargar la colección en una nueva transacción
-        Coleccion coleccion = coleccionRepository.findById(event.getColeccionId())
-                .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + event.getColeccionId()));
-
-        asociarHechosPreexistentesDeFuenteAColeccion(coleccion, event.getFuenteId());
     }
 
     @Transactional
