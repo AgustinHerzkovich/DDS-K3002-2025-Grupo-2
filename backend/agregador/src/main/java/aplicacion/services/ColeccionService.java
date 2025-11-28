@@ -55,7 +55,7 @@ public class ColeccionService {
         Coleccion coleccionGuardada = coleccionRepository.save(coleccionLocal);
 
         // Publicar evento que se ejecutará después del commit de la transacción
-        eventPublisher.publishEvent(new ColeccionCreadaEvent(this, coleccionGuardada.getId()));
+        eventPublisher.publishEvent(new ColeccionCreadaEvent(this, coleccionGuardada));
 
         return coleccionOutputMapper.map(coleccionGuardada);
     }
@@ -133,8 +133,7 @@ public class ColeccionService {
 
     @Transactional
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
-        Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
-        fuente = fuenteService.guardarFuenteSiNoExiste(fuente);
+        Fuente fuente = fuenteService.obtenerFuentePorId(fuenteInputDto.getId());
         Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
         coleccion = coleccionRepository.save(coleccion);
