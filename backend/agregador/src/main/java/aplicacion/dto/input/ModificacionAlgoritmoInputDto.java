@@ -1,15 +1,13 @@
 package aplicacion.dto.input;
 
 import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModificacionAlgoritmoInputDto {
+    @Size(max = 31, message = "El tipo de algoritmo de consenso no puede tener más de 31 caracteres")
     private TipoAlgoritmoConsenso algoritmoConsenso;
 }

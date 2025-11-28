@@ -6,6 +6,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 
 import aplicacion.services.FuenteProxyService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class FuenteProxyController {
     }
 
     @PostMapping
-    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@RequestBody FuenteProxyInputDto fuenteProxyInputDto){
+    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@Valid @RequestBody FuenteProxyInputDto fuenteProxyInputDto){
         FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
         return ResponseEntity.ok(fuenteProxy);
     }

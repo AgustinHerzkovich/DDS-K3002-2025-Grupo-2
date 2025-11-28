@@ -13,6 +13,7 @@ import aplicacion.services.HechoService;
 import aplicacion.services.SolicitudService;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,7 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<SolicitudOutputDto> crearSolicitud(@RequestBody SolicitudInputDto solicitudDto) {
+    public ResponseEntity<SolicitudOutputDto> crearSolicitud(@Valid @RequestBody SolicitudInputDto solicitudDto) {
         try {
             SolicitudOutputDto solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
             System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHechoId());
@@ -61,7 +62,7 @@ public class SolicitudController {
     @PatchMapping ("/solicitudes/{id}/estado")
     public ResponseEntity<Void> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
-            @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){
+            @Valid @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){
         List<SolicitudEliminacion> solis;
         SolicitudEliminacion sol;
         Contribuyente contribuyente;

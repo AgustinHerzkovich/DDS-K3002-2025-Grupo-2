@@ -7,6 +7,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.services.HechoService;
 import aplicacion.excepciones.*;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<?> agregarHecho(@RequestBody HechoInputDto hechoInputDto) {
+    public ResponseEntity<?> agregarHecho(@Valid @RequestBody HechoInputDto hechoInputDto) {
         HechoOutputDto hecho;
         try {
             hecho = hechoService.guardarHecho(hechoInputDto);
@@ -66,7 +67,7 @@ public class HechoController {
 
     @PatchMapping("/hechos/{id}/estadoRevision")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
-                                                     @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
+                                                     @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
                                                      @RequestHeader(value = "Administrador", required = false) Long administradorId) {
         try {
             HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
@@ -82,7 +83,7 @@ public class HechoController {
 
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
-                                         @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
+                                         @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
         System.out.println("EDITANDO el hecho: " + id );
         try {
             HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto);
