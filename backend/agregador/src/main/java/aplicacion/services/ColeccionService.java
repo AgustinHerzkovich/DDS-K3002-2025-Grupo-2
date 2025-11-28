@@ -1,6 +1,5 @@
 package aplicacion.services;
 
-import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Hecho;
@@ -10,10 +9,13 @@ import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.events.ColeccionCreadaEvent;
+import aplicacion.events.FuenteAgregadaAColeccionEvent;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositories.ColeccionRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ColeccionService {
@@ -33,8 +34,9 @@ public class ColeccionService {
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, ColeccionRepository coleccionRepository, HechoService hechoService, HechoXColeccionRepository hechoXColeccionRepository, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, ColeccionRepository coleccionRepository, HechoService hechoService, HechoXColeccionRepository hechoXColeccionRepository, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, ApplicationEventPublisher eventPublisher) {
         this.coleccionRepository = coleccionRepository;
         this.hechoService = hechoService;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
@@ -43,6 +45,7 @@ public class ColeccionService {
         this.hechoOutputMapper = hechoOutputMapper;
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
+        this.eventPublisher = eventPublisher;
     }
     @Transactional
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
@@ -50,28 +53,11 @@ public class ColeccionService {
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
         coleccionLocal.setFuentes(fuentes);
         Coleccion coleccionGuardada = coleccionRepository.save(coleccionLocal);
-        this.asociarHechosPreexistentes(coleccionGuardada);
+
+        // Publicar evento que se ejecutará después del commit de la transacción
+        eventPublisher.publishEvent(new ColeccionCreadaEvent(this, coleccionGuardada.getId()));
+
         return coleccionOutputMapper.map(coleccionGuardada);
-    }
-    @Transactional
-    public void asociarHechosPreexistentes(Coleccion coleccion) {
-        System.out.println("Asociando hechos preexistentes de "+coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
-        List<Fuente> fuentes = coleccion.getFuentes();
-        for (Fuente fuente : fuentes) {
-            asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
-        }
-    }
-    @Transactional
-    public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, Fuente fuente){
-        System.out.println("Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + fuente.getHechos().size() + " hechos");
-        List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuente.getId());
-        List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
-                .filter(coleccion::cumpleCriterios)
-                .toList();
-        List<HechoXColeccion> hechosXColeccion = hechosQueCumplenCriterios.stream()
-                .map(hecho -> new HechoXColeccion(hecho, coleccion))
-                .collect(Collectors.toList());
-        hechoXColeccionRepository.saveAll(hechosXColeccion);
     }
 
     public Page<ColeccionOutputDto> obtenerColeccionesDTO(Pageable pageable) { //ahora service devuelve todos en DTO. Se crean metodos nuevos de ser necesario.
@@ -145,13 +131,17 @@ public class ColeccionService {
         return coleccionOutputMapper.map(coleccionPersistida);
     }
 
+    @Transactional
     public ColeccionOutputDto agregarFuenteAColeccion(String coleccionId, FuenteInputDto fuenteInputDto) throws ColeccionNoEncontradaException {
         Fuente fuente = fuenteInputMapper.map(fuenteInputDto);
         fuente = fuenteService.guardarFuenteSiNoExiste(fuente);
         Coleccion coleccion = obtenerColeccion(coleccionId);
         coleccion.agregarFuente(fuente);
         coleccion = coleccionRepository.save(coleccion);
-        asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);        //Agrega hechos viejos a la coleccion, si es fuente nueva no se agrega nada
+
+        // Publicar evento que se ejecutará después del commit de la transacción
+        eventPublisher.publishEvent(new FuenteAgregadaAColeccionEvent(this, coleccionId, fuente.getId()));
+
         return coleccionOutputMapper.map(coleccion);
     }
 

@@ -13,6 +13,7 @@ import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.repositories.ColeccionRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
+import aplicacion.services.ColeccionAsyncService;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
@@ -41,6 +42,7 @@ class ColeccionServiceTest {
     @Mock private FuenteInputMapper fuenteInputMapper;
 
     @InjectMocks private ColeccionService coleccionService;
+    @InjectMocks private ColeccionAsyncService coleccionAsyncService;
 
     private Coleccion coleccion;
     private ColeccionInputDto inputDto;
@@ -82,7 +84,7 @@ class ColeccionServiceTest {
         when(repositorioDeHechosXColeccion.saveAll(anyList())).thenReturn(List.of());
         when(fuenteService.obtenerHechosPorFuente(anyString())).thenReturn(List.of());
 
-        coleccionService.asociarHechosPreexistentes(coleccion);
+        coleccionAsyncService.asociarHechosPreexistentes(coleccion.getId());
 
         verify(fuenteService, times(2)).obtenerHechosPorFuente(anyString());
     }
@@ -91,10 +93,11 @@ class ColeccionServiceTest {
     @DisplayName("Debe asociar hechos preexistentes de una fuente")
     void asociarHechosPreexistentesDeFuenteAColeccionGuardaHechosXColeccion() {
         Hecho hecho = new Hecho();
+        when(fuenteService.obtenerFuentePorId(fuente.getId())).thenReturn(fuente);
         when(fuenteService.obtenerHechosPorFuente(fuente.getId())).thenReturn(List.of(hecho));
         when(repositorioDeHechosXColeccion.saveAll(anyList())).thenReturn(List.of());
 
-        coleccionService.asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
+        coleccionAsyncService.asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente.getId());
 
         verify(repositorioDeHechosXColeccion).saveAll(anyList());
     }
