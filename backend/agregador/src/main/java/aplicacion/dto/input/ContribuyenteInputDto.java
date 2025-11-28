@@ -2,15 +2,15 @@ package aplicacion.dto.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContribuyenteInputDto {
     private Boolean esAdministrador;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentidadContribuyenteInputDto identidad;
+    @Size(max = 255, message = "El mail no puede tener más de 255 caracteres")
     private String mail;
 }

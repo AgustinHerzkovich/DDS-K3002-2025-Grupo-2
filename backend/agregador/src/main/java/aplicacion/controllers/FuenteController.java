@@ -5,6 +5,7 @@ import aplicacion.dto.mappers.FuenteOutputMapper;
 import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.InvalidPageException;
 import aplicacion.services.FuenteService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class FuenteController {
         return ResponseEntity.ok(fuenteService.findByTipo(page, limit, tipoFuente).map(fuenteOutputMapper::map));
     }
     @PatchMapping("/fuentes/{id}")
-    public ResponseEntity<FuenteOutputDto> renameFuente(@RequestBody FuenteAliasDto fuenteAliasDto, @PathVariable(name = "id") String id){
+    public ResponseEntity<FuenteOutputDto> renameFuente(@Valid @RequestBody FuenteAliasDto fuenteAliasDto, @PathVariable(name = "id") String id){
         return ResponseEntity.ok(fuenteOutputMapper.map(fuenteService.cambiarAlias(id, fuenteAliasDto)));
     }
 

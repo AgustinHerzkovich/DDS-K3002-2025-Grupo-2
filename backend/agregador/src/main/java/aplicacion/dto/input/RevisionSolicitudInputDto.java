@@ -1,13 +1,13 @@
 package aplicacion.dto.input;
 
-import lombok.Getter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class RevisionSolicitudInputDto {
+    @Size(max = 31, message = "El nuevo estado no puede tener más de 31 caracteres")
     private String nuevoEstado;
     private Long adminId;
 }

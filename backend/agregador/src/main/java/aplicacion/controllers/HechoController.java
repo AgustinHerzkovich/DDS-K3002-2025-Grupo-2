@@ -11,6 +11,7 @@ import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -74,7 +75,7 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<HechoOutputDto> reportarHecho(@RequestBody HechoReporteInputDto hechoReporteInputDto) {
+    public ResponseEntity<HechoOutputDto> reportarHecho(@Valid @RequestBody HechoReporteInputDto hechoReporteInputDto) {
         HechoOutputDto hecho = hechoService.agregarHechoReportado(hechoReporteInputDto);
         System.out.println("Hecho creado: " + hecho.getId());
         return ResponseEntity.ok(hecho);
