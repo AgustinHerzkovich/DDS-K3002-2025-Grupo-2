@@ -1,8 +1,13 @@
-<div th:fragment="modalCrearHecho" id="modal-crear-hecho" class="modal-page hidden">
+<div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
 	<!-- Modal personalizado -->
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="create-modal-header">
-			<h5 class="modal-title">Crear Nuevo Hecho</h5>
+			<h5 id="modal-crear-hecho-titulo" class="modal-title hidden">
+				Crear Nuevo Hecho
+			</h5>
+			<h5 id="modal-editar-hecho-titulo" class="modal-title hidden">
+				Editar Hecho
+			</h5>
 		</div>
 
 		<div class="modal-page-body">
@@ -52,7 +57,7 @@
 						Ubicación
 					</label>
 					<div class="mb-2 d-flex items-center">
-						<input type="checkbox" id="btn-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
+						<input type="checkbox" id="crear-hecho-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
 						<p class="ms-2 text-black">
 							Ingresar manualmente latitud y longitud
 						</p>
@@ -83,7 +88,7 @@
 					</div>
 
 					<!-- Campos de coordenadas -->
-					<div id="coordenadas-container" class="row g-2 hidden">
+					<div id="crear-hecho-coordenadas-container" class="row g-2 hidden">
 						<div class="col-md-6">
 							<label for="crear-hecho-latitud" class="form-label">Latitud<span class="text-red-500">*</span></label>
 							<input type="number" step="any" class="form-control" id="crear-hecho-latitud" placeholder="-34.603722">
@@ -104,7 +109,7 @@
 								*
 							</span>
 						</label>
-						<input type="datetime-local" class="form-control" id="crear-hecho-fecha" required>
+						<input id="crear-hecho-fecha" type="datetime-local" class="form-control" required>
 					</div>
 					<div class="col-md-7">
 						<label for="crear-hecho-contenido-texto" class="form-label">
@@ -116,7 +121,7 @@
 								(Máx.500 caracteres)
 							</span>
 						</label>
-						<textarea class="form-control" maxlength="500" id="crear-hecho-contenido-texto" rows="2" placeholder="Describa el hecho..." required></textarea>
+						<textarea id="crear-hecho-contenido-texto" class="form-control" maxlength="500" rows="2" placeholder="Describa el hecho..." required></textarea>
 					</div>
 				</div>
 
@@ -128,8 +133,8 @@
 								(Máx.500 caracteres)
 						</span>
 					</label>
-					<div id="multimedia-container"></div>
-					<button id="agregar-multimedia" type="button" class="btn-tertiary">
+					<div id="crear-hecho-multimedia-container"></div>
+					<button id="crear-hecho-agregar-multimedia" type="button" class="btn-tertiary">
 						+ Añadir Multimedia
 					</button>
 				</div>
@@ -145,11 +150,10 @@
 		</div>
 
 		<div class="modal-footer">
-			<button id="salir-crear-hecho" type="button" class="btn-cancelar" aria-label="Cancelar">Cancelar</button>
-			<button id="crear-hecho" class="btn-confirmar" aria-label="Publicar Hecho">
-				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Publicar Hecho', 'crear-hecho')}" />
-			</button>
-
+			<div th:replace="~{fragments/button :: exitModalButton('Cancelar', 'salir-crear-hecho')}" class="hidden"></div>
+			<div th:replace="~{fragments/button :: spinnerConfirmButton('Publicar', 'crear-hecho')}" class="hidden"></div>
+			<div th:replace="~{fragments/button :: exitModalButton('Volver', 'salir-editar-hecho')}" class="hidden"></div>
+			<div th:replace="~{fragments/button :: spinnerConfirmButton('Guardar Cambios', 'editar-hecho')}" class="hidden"></div>
 		</div>
 	</div>
 </div>
@@ -174,7 +178,7 @@
 						</span>
 					</label>
 					<input type="text" id="titulo-coleccion" maxlength="50"
-						   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+						   class="form-control"
 						   placeholder="Ingrese el título de la colección" required>
 				</div>
 
@@ -187,16 +191,17 @@
 						</span>
 					</label>
 					<textarea id="descripcion-coleccion" rows="3" maxlength="150"
-							  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+							  class="form-control"
 							  placeholder="Describa la colección" required></textarea>
 				</div>
 
 				<!-- Criterio de Pertenencia -->
 				<div>
 					<label for="criterio-tipo" class="block text-sm font-medium text-gray-700 mb-1">Criterio de
-						Pertenencia</label>
+						Pertenencia
+					</label>
 					<select id="criterio-tipo"
-							class="form-primary-select">
+							class="form-control">
 						<option value="">Seleccione un criterio</option>
 						<option value="DISTANCIA">Distancia</option>
 						<option value="FECHA">Fecha</option>
@@ -211,7 +216,7 @@
 								Latitud Base
 							</label>
 							<input type="number" step="any" id="criterio-latitud"
-								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+								   class="form-control"
 								   placeholder="-34.603722">
 						</div>
 						<div>
@@ -219,7 +224,7 @@
 								Longitud Base
 							</label>
 							<input type="number" step="any" id="criterio-longitud"
-								   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+								   class="form-control"
 								   placeholder="-58.381592">
 						</div>
 					</div>
@@ -228,7 +233,7 @@
 							Distancia Mínima (km)
 						</label>
 						<input type="number" step="any" id="criterio-distancia-minima"
-							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+							   class="form-control"
 							   placeholder="100">
 					</div>
 				</div>
@@ -240,14 +245,14 @@
 							Fecha Inicial
 						</label>
 						<input type="datetime-local" id="criterio-fecha-inicial"
-							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
+							   class="form-control">
 					</div>
 					<div>
 						<label for="criterio-fecha-final" class="block text-sm font-medium text-gray-700 mb-1">
 							Fecha Final
 						</label>
 						<input type="datetime-local" id="criterio-fecha-final"
-							   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-300">
+							   class="form-control">
 					</div>
 				</div>
 
@@ -266,7 +271,8 @@
 						Algoritmo de Consenso
 					</label>
 					<select id="algoritmo-consenso"
-							class="form-primary-select">
+							class="form-control">
+						<option value="">Seleccione un algoritmo</option>
 						<option value="ABSOLUTO">Absoluto</option>
 						<option value="IRRESTRICTO">Irrestricto</option>
 						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
@@ -278,10 +284,8 @@
 
 		<!-- Footer del Modal -->
 		<div class="modal-footer flex justify-end gap-2 p-4 border-t">
-			<button id="salir-crear-coleccion" type="button" class="btn-cancelar" aria-label="Cancelar">Cancelar</button>
-			<button id="crear-coleccion" class="btn-confirmar" aria-label="Crear Coleccion">
-				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Crear Colección', 'crear-coleccion')}" />
-			</button>
+			<th:block th:replace="~{fragments/button :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" />
+			<th:block th:replace="~{fragments/button :: spinnerConfirmButton('Crear Colección', 'crear-coleccion')}" />
 		</div>
 	</div>
 </div>
@@ -295,7 +299,7 @@
 			<div id="lista-mis-hechos" class="list-group"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="salir-mis-hechos" type="button" class="btn-cancelar">Cerrar</button>
+			<th:block th:replace="~{fragments/button :: exitModalButton('Cerrar', 'salir-mis-hechos')}" />
 		</div>
 	</div>
 </div>
@@ -359,8 +363,8 @@
 		</div>
 
 		<div class="modal-footer flex justify-end items-center p-4 border-t border-gray-200 space-x-3">
-			<button id="salir-editar-perfil" type="button" class="btn-cancelar">Cancelar</button>
-			<button id="editar-perfil" type="button" class="btn-confirmar">Guardar Cambios</button>
+			<th:block th:replace="~{fragments/button :: exitModalButton('Cancelar', 'salir-editar-perfil')}" />
+			<th:block th:replace="~{fragments/button :: spinnerConfirmButton('Guardar Cambios', 'editar-perfil')}" />
 		</div>
 	</div>
 </div>
@@ -425,11 +429,10 @@
 	<div class="flex justify-between items-center p-4 pb-3">
 		<h3 class="text-lg font-bold">Filtros</h3>
 		<div class="flex items-center gap-2.5">
-			<button id="btn-aplicar-filtros" class="btn-secondary">
+			<button id="btn-aplicar-filtros" class="btn-secondary" aria-label="Aplicar Filtros">
 				Aplicar
 			</button>
-			<button id="btn-toggle-filtros"
-					class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
+			<button id="btn-toggle-filtros" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200" aria-label="Cerrar o Abrir Panel de Filtros">
 				<svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
 					 stroke-width="2" stroke="currentColor" class="w-6 h-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
@@ -530,7 +533,8 @@
 			<!-- Botón limpiar filtros -->
 			<button type="button"
 					id="btn-limpiar-filtros"
-					class="w-full mt-2 px-3 py-1.5 text-xs text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+					class="w-full mt-2 px-3 py-1.5 text-xs text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+					aria-label="Limpiar Filtros">
 				Limpiar filtros
 			</button>
 		</form>
@@ -578,10 +582,8 @@
 			</form>
 		</div>
 		<div class="modal-solicitud-footer">
-			<button id="salir-solicitar-eliminacion" type="button" class="btn-cancelar">Cancelar</button>
-			<button id="enviar-solicitud-eliminacion" type="button" class="btn-confirmar">
-				<th:block th:replace="~{fragments/spinner :: spinnerConfirmButton('Enviar', 'enviar-solicitud-eliminacion')}" />
-			</button>
+			<th:block th:replace="~{fragments/button :: exitModalButton('Cancelar', 'salir-solicitar-eliminacion')}" />
+			<th:block th:replace="~{fragments/button :: spinnerConfirmButton('Enviar', 'enviar-solicitud-eliminacion')}" />
 		</div>
 	</div>
 </div>

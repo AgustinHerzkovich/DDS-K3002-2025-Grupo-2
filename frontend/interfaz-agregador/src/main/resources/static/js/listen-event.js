@@ -49,7 +49,7 @@ function listenModalToggle(modal, openBtn, closeBtn = null, closingAction = null
     }
 }
 
-function listenCleanFilters(inputsContainer) {
+function listenLimpiarFiltrosMapa(inputsContainer) {
     const limpiarBtn = document.getElementById('btn-limpiar-filtros');
 
     limpiarBtn.addEventListener("click", function () {
@@ -65,7 +65,7 @@ function listenCleanFilters(inputsContainer) {
     });
 }
 
-function listenRadioSlider() {
+function listenRadioSliderMapa() {
     const radioSlider = document.getElementById('filtroRadio');
     const radioValue = document.getElementById('radio-value');
 
@@ -76,16 +76,134 @@ function listenRadioSlider() {
     }
 }
 
-function listenEliminarFuenteDeColeccion() {
-    document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const coleccionId = btn.dataset.coleccionId;
-            const fuenteId = btn.dataset.fuenteId;
+function listenCambiarAlgoritmoEditarColeccion() {
+    const cambiarAlgoritmoBtn = document.getElementById('btnCambiarAlgoritmo');
 
-            if (coleccionId && fuenteId) {
-                eliminarFuente(coleccionId, fuenteId);
+    if(allElementsFound([cambiarAlgoritmoBtn], "confirmar el cambio de algoritmo")) {
+        cambiarAlgoritmoBtn.addEventListener('click', async function() {
+            try {
+                mostrarCargando("cambiar-algoritmo-coleccion");
+                const coleccionId = cambiarAlgoritmoBtn.dataset.coleccionId;
+
+                if (!coleccionId) {
+                    console.error('ID de colección inválido');
+                    return;
+                }
+
+                const select = document.getElementById('coleccion-algoritmo-select');
+                const nuevoAlgoritmo = select.value;
+
+                const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
+                    method: 'PATCH',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
+                })
+
+                if (!response.ok) {
+                    const errorText = await response.text()
+                    throw new Error(errorText ? `Error al cambiar el algoritmo:\n${errorText}` : "Error al cambiar el algoritmo")
+                }
+
+                alert('Algoritmo actualizado exitosamente');
+                window.location.reload();
+            } catch (error){
+                console.error('Error en cambiarAlgoritmoEditarColeccion:', error);
+                alert(error.message);
+            } finally {
+                ocultarCargando("cambiar-algoritmo-coleccion");
             }
         });
+    }
+}
+
+function listenEliminarFuenteEditarColeccion() {
+    document.querySelectorAll('.btn-eliminar-fuente').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            try {
+                mostrarCargando(btn.id);
+
+                const coleccionId = btn.dataset.coleccionId;
+                const fuenteId = btn.dataset.fuenteId;
+
+                if(!allElementsFound([coleccionId, fuenteId], "eliminar fuentes")) {
+                    return;
+                }
+
+                if (!confirm(`¿Estás seguro de eliminar la fuente "${fuenteId}"?`)) return;
+
+                const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/fuentes/${fuenteId}`, {
+                    method: 'DELETE',
+                    headers: getHeaders()
+                })
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText ? `Error al eliminar la fuente:\n${errorText}` : "Error al eliminar la fuente")
+                }
+
+                alert('Fuente eliminada exitosamente');
+                window.location.reload();
+            } catch (error) {
+                console.error('Error en eliminarFuente:', error);
+                alert(error.message);
+            } finally {
+                ocultarCargando(btn.id);
+            }
+        });
+    });
+}
+
+function listenAgregarFuenteEditarColeccion() {
+    const agregarBtn = document.getElementById('btnAgregarFuente');
+
+    agregarBtn.addEventListener('click', () => {
+        const coleccionId = agregarBtn.dataset.coleccionId;
+
+        if(!allElementsFound([coleccionId], "agregar fuentes")) {
+            return;
+        }
+
+        const tipo = document.getElementById('newFuenteTipo')?.value;
+        const id = document.getElementById('newFuenteId')?.value?.trim();
+        const ip = document.getElementById('newFuenteIp')?.value?.trim();
+        const puerto = document.getElementById('newFuentePuerto')?.value?.trim();
+
+        if (!tipo || !id || !ip || !puerto) {
+            alert('Todos los campos son obligatorios');
+            return;
+        }
+
+        const puertoNum = parseInt(puerto, 10);
+        if (isNaN(puertoNum) || puertoNum <= 0) {
+            alert('El puerto debe ser un número válido mayor a 0');
+            return;
+        }
+
+        const nuevaFuente = { tipo, id, ip, puerto: puertoNum };
+
+        fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/fuentes`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(nuevaFuente)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(errorText => {throw new Error(errorText || 'Error al agregar la fuente')})
+                }
+
+                alert('Fuente agregada exitosamente');
+
+                // Limpiar campos
+                document.getElementById('newFuenteId').value = '';
+                document.getElementById('newFuenteIp').value = '';
+                document.getElementById('newFuentePuerto').value = '';
+
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Error en agregarFuente:', error);
+                alert(`Error al agregar fuente: ${error.message}`);
+            })
     });
 }
 
@@ -112,9 +230,9 @@ function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
                         class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
                         data-id="${object.contadorFuentes}">
                     <option value="">Seleccione el tipo de fuente</option>
-                    <option value="ESTATICA">Estática</option>
-                    <option value="DINAMICA">Dinámica</option>
-                    <option value="PROXY">Proxy</option>
+                    <option value="estatica">Estática</option>
+                    <option value="dinamica">Dinámica</option>
+                    <option value="proxy">Proxy</option>
                 </select>
             </div>
 
@@ -125,7 +243,7 @@ function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
 						(Máx.255 caracteres)
 					</span>
                 </label>
-                <input type="text" id="fuenteNombre-${object.contadorFuentes}" maxlength="255"
+                <input type="text" id="fuente-nombre-${object.contadorFuentes}" maxlength="255"
                        class="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
                        placeholder="Ingrese el nombre">
             </div>
@@ -140,7 +258,7 @@ function listenAgregarFuenteCrearColeccion(addBtn, object, containerElement) {
     });
 }
 
-function listenMostrarCamposCriterio(tipoCriterio) {
+function listenCamposCriterioCrearColeccion(tipoCriterio) {
     const camposDistancia = document.getElementById("campos-distancia");
     const camposFecha = document.getElementById("campos-fecha");
 
@@ -160,7 +278,7 @@ function listenMostrarCamposCriterio(tipoCriterio) {
     });
 }
 
-function listenMostrarCamposFuente() {
+function listenCamposFuenteCrearColeccion() {
     document.addEventListener("change", e => {
         if (e.target.matches("select[id^='fuente-tipo']")) {
             const id = e.target.dataset.id;
@@ -171,7 +289,7 @@ function listenMostrarCamposFuente() {
     });
 }
 
-function listenHomeScrollableArrow(scrollArrowBtn) {
+function listenScrollableArrowHome(scrollArrowBtn) {
     scrollArrowBtn.addEventListener("click", function() {
         const target = document.querySelector('.home-content');
         const targetPosition = target.getBoundingClientRect().top + window.scrollY + 10;
@@ -183,9 +301,9 @@ function listenHomeScrollableArrow(scrollArrowBtn) {
     });
 }
 
-function listenAgregarMultimedia(object) {
-    const agregarMultimediaBtn = document.getElementById("agregar-multimedia");
-    const container = document.getElementById('multimedia-container');
+function listenAgregarMultimediaCrearHecho(object) {
+    const agregarMultimediaBtn = document.getElementById("crear-hecho-agregar-multimedia");
+    const container = document.getElementById('crear-hecho-multimedia-container');
 
     agregarMultimediaBtn.addEventListener("click", function() {
         object.multimediaCount++;
@@ -213,10 +331,10 @@ function listenAgregarMultimedia(object) {
     });
 }
 
-function listenMostrarUbicacionInputs(usarCoordenadasCheck) {
+function listenUbicacionInputsCrearHecho(usarCoordenadasCheck) {
     usarCoordenadasCheck.addEventListener("click", function() {
         const direccionContainer = document.getElementById("direccion-container");
-        const coordenadasContainer = document.getElementById("coordenadas-container");
+        const coordenadasContainer = document.getElementById("crear-hecho-coordenadas-container");
         const latitud = document.getElementById("crear-hecho-latitud");
         const longitud = document.getElementById("crear-hecho-longitud");
         const pais = document.getElementById("crear-hecho-pais");
@@ -258,74 +376,18 @@ function listenMostrarUbicacionInputs(usarCoordenadasCheck) {
     });
 }
 
-function listenEditarHecho(open) {
-    const editarHechBtn = document.getElementById("btn-editar-hecho")
-    const misHechosBtn = document.getElementById("salir-mis-hechos")
-
-    misHechosBtn.click()
-
-    // Abrir el modal de crear/editar hecho
-    openBtn.click()
-
-    // Rellenar el formulario con los datos del hecho
-    document.getElementById('titulo').value = hecho.titulo;
-    document.getElementById('descripcion').value = hecho.descripcion;
-    document.getElementById('categoria').value = hecho.categoria.nombre;
-    document.getElementById('contenido-texto').value = hecho.contenidoTexto;
-    document.getElementById('fecha').value = hecho.fechaAcontecimiento.slice(0, 16);
-    document.getElementById('anonimato').checked = hecho.anonimato;
-
-    // Coordenadas
-    document.getElementById('btn-usar-coordenadas').checked = true;
-    toggleUbicacionInputs();
-    document.getElementById('latitud').value = hecho.ubicacion.latitud;
-    document.getElementById('longitud').value = hecho.ubicacion.longitud;
-
-    // Multimedias
-    if (hecho.contenidoMultimedia && hecho.contenidoMultimedia.length > 0) {
-        hecho.contenidoMultimedia.forEach(url => {
-            multimediaCount++;
-            const container = document.getElementById('multimedia-container');
-            const multimediaDiv = document.createElement('div');
-            multimediaDiv.className = 'multimedia-item flex items-center gap-2';
-            multimediaDiv.id = `multimedia-${multimediaCount}`;
-            multimediaDiv.innerHTML = `
-                <input type="text" style="color:black" maxlength="500"
-                       class="form-multimedia-input flex-grow border-gray-300 rounded-md shadow-sm text-sm"
-                       id="url-${multimediaCount}"
-                       value="${url}" required>
-                <button type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200" 
-                        onclick="eliminarMultimedia(${multimediaCount})">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" 
-                         stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            `;
-            container.appendChild(multimediaDiv);
-        });
-    }
-
-    // Cambiar el botón de "Publicar" a "Guardar Edición"
-    const botonPublicar = document.querySelector('button[onclick="publicarHecho(false)"]');
-    botonPublicar.textContent = 'Guardar Edición';
-    botonPublicar.onclick = () => guardarEdicion(hecho.id);
+function listenIrACrearHecho() {
+    const openModalCrearHechoBtn = document.getElementById("open-modal-hecho")
+    openModalCrearHechoBtn.addEventListener("click", () => moveBetweenModals("salir-mis-hechos", "menu-crear-hecho"))
 }
 
-function listenIrACrearHecho(closeMisHechosBtn) {
-    const openModalCrearHechoBtn = document.getElementById("open-modal-crear-hecho")
-    const crearHechoMenuBtn = document.getElementById("menu-crear-hecho")
+function listenEditarHechoButtons(hechos) {
+    hechos.forEach(hecho => {
+        const editBtn = document.getElementById(`btn-editar-hecho-${hecho.id}`)
 
-    openModalCrearHechoBtn.addEventListener("click", function() {
-        closeMisHechosBtn.click();
-        crearHechoMenuBtn.click();
+        editBtn.addEventListener("click", function() {
+
+            moveBetweenModals("salir-mis-hechos", "menu-crear-hecho");
+        })
     })
-}
-
-function allElementsFound(elementsList, desiredAction) {
-    if(elementsList.some(e => e === null)) {
-        console.log("No se pudo encontrar algún elemento para " + desiredAction)
-    }
-
-    return !elementsList.some(e => e === null);
 }

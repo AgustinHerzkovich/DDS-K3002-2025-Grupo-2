@@ -48,6 +48,8 @@
     background-color: #f9fafb;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: #1f2937 !important; /* Color negro para el texto */
+    appearance: auto;
+    -webkit-appearance: auto;
 }
 
 .form-control:hover {
@@ -67,53 +69,22 @@
     color: #9ca3af !important;
 }
 
-.form-primary-select {
-    width: 100%;                    /* w-full */
-    padding: 0.5rem 0.75rem;         /* px-3 */
-    border: 1px solid #d1d5db;      /* border-gray-300 */
-    border-radius: 0.375rem;        /* rounded-md */
-    outline: none;                  /* focus:outline-none */
+.form-check-input {
+    accent-color: #3b82f6;
 }
 
-.form-primary-select:focus {
-    box-shadow: 0 0 0 2px #d1d5db;  /* focus:ring-2 + focus:ring-gray-300 */
-}
-
-.form-primary-select:hover {
-    cursor: pointer;
-}
-
-.form-secondary-select {
+.form-not-completed {
     width: 100%;
     padding: 0.5rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid #b91c1c;
     border-radius: 8px;
     font-size: 0.9rem;
     transition: all 0.2s ease;
     background-color: #f9fafb;
-    cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: #1f2937 !important; /* Color negro para el texto */
-}
-
-.form-secondary-select:hover {
-    border-color: #d1d5db;
-    background-color: #ffffff;
-}
-
-.form-secondary-select:focus {
-    outline: none;
-    border-color: #000000;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
-    color: #1f2937 !important; /* Asegurar que el texto siga siendo negro */
-}
-
-.form-secondary-select option {
-    color: #1f2937 !important; /* Color negro para las opciones */
-}
-
-.form-check-input {
-    accent-color: #3b82f6;
+    appearance: auto;
+    -webkit-appearance: auto;
 }
 
 input[type="checkbox"] {

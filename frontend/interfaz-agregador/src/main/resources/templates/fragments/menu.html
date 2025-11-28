@@ -1,5 +1,7 @@
 <th:block th:fragment="menuScripts">
 	<script src="/js/menu.js" defer></script>
+	<script src="/js/modal.js" defer></script>
+	<script src="/js/listen-event.js" defer></script>
 	<script src="/js/editar-perfil.js" defer></script>
 	<script th:if="${isAdmin}" src="/js/crear-coleccion.js" defer></script>
 	<script src="/js/ver-mis-hechos.js" defer></script>
@@ -150,8 +152,8 @@
 			</div>
 		</div>
 	</div>
-	<th:block th:replace="~{fragments/modals :: modalCrearHecho}"/>
-	<th:block th:if="${isAdmin}" th:replace="~{fragments/modals :: modalCrearColeccion}"/>
-	<th:block th:replace="~{fragments/modals :: modalEditarPerfil}"/>
-	<th:block th:replace="~{fragments/modals :: modalMisHechos}"/>
+	<th:block th:replace="~{fragments/modal :: modalHecho}"/>
+	<th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalCrearColeccion}"/>
+	<th:block th:replace="~{fragments/modal :: modalEditarPerfil}"/>
+	<th:block th:replace="~{fragments/modal :: modalMisHechos}"/>
 </th:block>
