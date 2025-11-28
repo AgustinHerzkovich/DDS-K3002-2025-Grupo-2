@@ -1,28 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.getElementById("modal-crear-hecho");
+    const modal = document.getElementById("modal-hecho");
     const openBtn = document.getElementById("menu-crear-hecho");
     const closeBtn = document.getElementById("salir-crear-hecho");
     const confirmBtn = document.getElementById("crear-hecho")
-    const usarCoordenadasCheck = document.getElementById("btn-usar-coordenadas");
-    const misHechosBtn = document.getElementById("salir-mis-hechos")
+    const usarCoordenadasCheck = document.getElementById("crear-hecho-usar-coordenadas");
     const multimediaCountObject = {multimediaCount : 0};
 
-    if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, usarCoordenadasCheck, misHechosBtn], "crear hecho")) {
-        listenModalToggle(modal, openBtn, closeBtn, () => limpiarFormulario(multimediaCountObject))
-        listenMostrarUbicacionInputs(usarCoordenadasCheck)
-        listenAgregarMultimedia(multimediaCountObject)
+    if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, usarCoordenadasCheck], "crear hecho")) {
+        listenModalToggle(modal, openBtn, closeBtn, () => limpiarFormularioModalHecho(multimediaCountObject))
+        listenUbicacionInputsCrearHecho(usarCoordenadasCheck)
+        listenAgregarMultimediaCrearHecho(multimediaCountObject)
 
         confirmBtn.addEventListener("click", () => publicarHecho(closeBtn, usarCoordenadasCheck.checked))
     }
 });
 
-function limpiarFormulario(multimediaCountObject) {
-    document.getElementById('form-crear-hecho').reset();
-    document.getElementById('multimedia-container').innerHTML = '';
-    multimediaCountObject.multimediaCount = 0;
-}
-
-// Función para publicar el hecho (actualizada para usar array de URLs)
 async function publicarHecho(closeBtn, usarCoordenadasCheck) {
     try {
         mostrarCargando("crear-hecho")
@@ -45,7 +37,7 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
         }
 
         const fechaAcontecimiento = fechaInput + ':00';
-        const urlsMultimedia = recopilarMultimedias();
+        const urlsMultimedia = recopilarMultimediasEditarHecho();
 
         // --- Ubicación ---
         if (usarCoordenadasCheck) {
@@ -123,21 +115,4 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
     } finally {
         ocultarCargando("crear-hecho")
     }
-}
-
-// Función para recopilar solo las URLs de multimedias
-function recopilarMultimedias() {
-    const urls = [];
-    const container = document.getElementById('multimedia-container');
-    const multimediaItems = container.querySelectorAll('.multimedia-item');
-
-    multimediaItems.forEach(item => {
-        const id = item.id.split('-')[1];
-        const urlInput = document.getElementById(`url-${id}`);
-        if (urlInput && urlInput.value.trim()) { // Solo añadir si no está vacío
-            urls.push(urlInput.value.trim());
-        }
-    });
-
-    return urls; // Devuelve un array de strings (URLs)
 }

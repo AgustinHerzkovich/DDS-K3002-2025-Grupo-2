@@ -7,17 +7,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if(allElementsFound([filtrosToggleBtn, filtrosContent, filtrosSeparator, filtrosChevron], "filtrar hechos")) {
         listenPanelToggle(filtrosToggleBtn, filtrosContent, filtrosSeparator, filtrosChevron)
-        listenCleanFilters(filtrosContent)
-        listenRadioSlider()
+        listenLimpiarFiltrosMapa(filtrosContent)
+        listenRadioSliderMapa()
 
         aplicarBtn.addEventListener('click', async function(e) {
             e.preventDefault();
-            agregarFiltros();
+            aplicarFiltros();
         });
     }
 });
 
-function agregarFiltros() {
+function aplicarFiltros() {
     const params = new URLSearchParams(window.location.search);
 
     // Tomar directamente de los inputs

@@ -7,6 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if(allElementsFound([scrollArrowBtn], "scrollear con flecha")) {
-        listenHomeScrollableArrow(scrollArrowBtn)
+        listenScrollableArrowHome(scrollArrowBtn)
     }
 });
