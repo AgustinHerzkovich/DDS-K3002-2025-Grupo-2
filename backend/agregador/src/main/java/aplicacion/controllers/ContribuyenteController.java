@@ -9,6 +9,7 @@ import aplicacion.services.ContribuyenteService;
 import domain.excepciones.IdInvalidoException;
 import domain.peticiones.Validaciones;
 import aplicacion.services.HechoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<ContribuyenteOutputDto> crearContribuyente(@RequestBody ContribuyenteInputDto contribuyenteInputDto) {
+    public ResponseEntity<ContribuyenteOutputDto> crearContribuyente(@Valid @RequestBody ContribuyenteInputDto contribuyenteInputDto) {
         try {
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.guardarContribuyente(contribuyenteInputDto);
             System.out.println("Se ha creado el contribuyente: " + contribuyenteProcesado.getId()); // esto cuando se haga el front lo podemos sacar
@@ -74,7 +75,7 @@ public class ContribuyenteController {
     }
 
     @PatchMapping("/contribuyentes/{id}/identidad")
-    public ResponseEntity<?> modificarIdentidadAContribuyente(@RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto, @PathVariable(name = "id") Long id) {
+    public ResponseEntity<?> modificarIdentidadAContribuyente(@Valid @RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto, @PathVariable(name = "id") Long id) {
         try {
             Validaciones.validarId(id);
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);

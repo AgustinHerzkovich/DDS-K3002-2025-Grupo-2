@@ -79,7 +79,7 @@ public class SolicitudService {
 
     @Transactional
     public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
-        this.validarMotivoSolicitud(solicitudDto.getMotivo());
+        this.validarMotivoSolicitud(solicitudDto.getMotivo()); // Por las dudas, pero ya se valida antes
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());

@@ -2,13 +2,16 @@ package aplicacion.controllers;
 
 import aplicacion.services.ArchivoService;
 import aplicacion.services.AwsS3FileServerService;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/fuentesEstaticas")
 public class ArchivoController {
 
@@ -25,7 +28,7 @@ public class ArchivoController {
     }
 
     @PostMapping("/archivos/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url) {
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody @Size(max = 5000, message = "La url no puede tener más de 5000 caracteres") String url) {
         try {
             url = url.replaceAll("^\"|\"$", "");
             archivoService.subirArchivoDesdeUrl(url);
