@@ -8,6 +8,7 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.ColeccionService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class ColeccionController {
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
-    public ResponseEntity<ColeccionOutputDto> crearColeccion(@RequestBody ColeccionInputDto coleccion) {
+    public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccionOutput.getId());
@@ -123,7 +124,7 @@ public class ColeccionController {
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
     public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
-                                                   @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
+                                                   @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
         System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
         return ResponseEntity.ok(coleccion);
@@ -131,7 +132,7 @@ public class ColeccionController {
 
     @PostMapping("/colecciones/{id}/fuentes")
     public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable(name = "id") String idColeccion,
-                                                         @RequestBody FuenteInputDto fuenteInputDto) {
+                                                         @Valid @RequestBody FuenteInputDto fuenteInputDto) {
         ColeccionOutputDto coleccionOutputDto;
         try {
             coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);

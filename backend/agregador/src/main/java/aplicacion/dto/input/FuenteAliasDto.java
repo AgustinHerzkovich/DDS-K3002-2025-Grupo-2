@@ -1,14 +1,12 @@
 package aplicacion.dto.input;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class FuenteAliasDto {
-    String alias;
+    @Size(max = 255, message = "El alias no puede tener más de 255 caracteres")
+    private String alias;
 }

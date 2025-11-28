@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class fuenteDinamicaIdController {
+public class FuenteDinamicaIdController {
     @Value("${fuente.id}")
     private String idFuente;
     @GetMapping("/fuenteDinamicaId")
