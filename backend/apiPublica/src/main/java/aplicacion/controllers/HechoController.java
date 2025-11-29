@@ -45,7 +45,7 @@ public class HechoController {
         // Construir la query GraphQL
         String query = """
             query ObtenerHechos($filtros: HechoFiltros, $page: Int, $limit: Int) {
-                hechosEnMapa(filtros: $filtros, page: $page, limit: $limit) {
+                getHechos(filtros: $filtros, page: $page, limit: $limit) {
                     content {
                         id
                         titulo

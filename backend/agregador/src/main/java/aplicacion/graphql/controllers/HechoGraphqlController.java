@@ -1,8 +1,8 @@
 package aplicacion.graphql.controllers;
 
 import aplicacion.graphql.objects.HechoFiltros;
-import aplicacion.graphql.objects.HechoMapItem;
-import aplicacion.graphql.objects.HechoMapItemPage;
+import aplicacion.graphql.objects.HechoItem;
+import aplicacion.graphql.objects.HechoItemPage;
 import aplicacion.graphql.objects.PageInfo;
 import aplicacion.services.HechoService;
 import org.springframework.data.domain.Page;
@@ -19,8 +19,8 @@ public class HechoGraphqlController {
     }
 
     @QueryMapping
-    public HechoMapItemPage hechosEnMapa(@Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
-        Page<HechoMapItem> hechos = hechoService.obtenerHechosParaMapaGraphql(
+    public HechoItemPage getHechos(@Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
+        Page<HechoItem> hechos = hechoService.obtenerHechosParaMapaGraphql(
             filtros,
             page == null ? 0 : page,
             limit == null ? 100 : limit
@@ -35,12 +35,12 @@ public class HechoGraphqlController {
             hechos.hasPrevious()
         );
 
-        return new HechoMapItemPage(hechos.getContent(), pageInfo);
+        return new HechoItemPage(hechos.getContent(), pageInfo);
     }
 
     @QueryMapping
-    public HechoMapItemPage hechosPorColeccionIrrestrictos(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
-        Page<HechoMapItem> hechos = hechoService.obtenerHechosDeColeccionIrrestrictosGraphql(
+    public HechoItemPage getHechosPorColeccionIrrestrictos(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
+        Page<HechoItem> hechos = hechoService.obtenerHechosDeColeccionIrrestrictosGraphql(
                 idColeccion,
                 filtros,
                 page == null ? 0 : page,
@@ -56,13 +56,13 @@ public class HechoGraphqlController {
                 hechos.hasPrevious()
         );
 
-        return new HechoMapItemPage(hechos.getContent(), pageInfo);
+        return new HechoItemPage(hechos.getContent(), pageInfo);
     }
 
 
     @QueryMapping
-    public HechoMapItemPage hechosPorColeccionCurados(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit){
-        Page<HechoMapItem> hechos = hechoService.obtenerHechosDeColeccionCuradosGraphql(
+    public HechoItemPage getHechosPorColeccionCurados(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit){
+        Page<HechoItem> hechos = hechoService.obtenerHechosDeColeccionCuradosGraphql(
                 idColeccion,
                 filtros,
                 page == null ? 0 : page,
@@ -78,6 +78,6 @@ public class HechoGraphqlController {
                 hechos.hasPrevious()
         );
 
-        return new HechoMapItemPage(hechos.getContent(), pageInfo);
+        return new HechoItemPage(hechos.getContent(), pageInfo);
     }
 }
