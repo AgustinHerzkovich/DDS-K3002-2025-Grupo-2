@@ -79,7 +79,12 @@
             <artifactId>caffeine</artifactId>
             <version>3.2.3</version>
         </dependency>
-
+        
+        <dependency>
+            <groupId>com.graphql-java-kickstart</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>14.0.0</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-graphql -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

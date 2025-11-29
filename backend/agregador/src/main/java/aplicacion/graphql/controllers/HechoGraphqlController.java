@@ -39,35 +39,23 @@ public class HechoGraphqlController {
     }
 
     @QueryMapping
-    public HechoItemPage getHechosPorColeccionIrrestrictos(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
-        Page<HechoItem> hechos = hechoService.obtenerHechosDeColeccionIrrestrictosGraphql(
-                idColeccion,
-                filtros,
-                page == null ? 0 : page,
-                limit == null ? 100 : limit
-        );
-
-        PageInfo pageInfo = new PageInfo(
-                (int) hechos.getTotalElements(),
-                hechos.getTotalPages(),
-                hechos.getNumber(),
-                hechos.getSize(),
-                hechos.hasNext(),
-                hechos.hasPrevious()
-        );
-
-        return new HechoItemPage(hechos.getContent(), pageInfo);
-    }
-
-
-    @QueryMapping
-    public HechoItemPage getHechosPorColeccionCurados(@Argument String idColeccion, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit){
-        Page<HechoItem> hechos = hechoService.obtenerHechosDeColeccionCuradosGraphql(
-                idColeccion,
-                filtros,
-                page == null ? 0 : page,
-                limit == null ? 100 : limit
-        );
+    public HechoItemPage getHechosPorColeccion(@Argument String idColeccion, @Argument Boolean curados, @Argument HechoFiltros filtros, @Argument Integer page, @Argument Integer limit) {
+        Page<HechoItem> hechos;
+        if (!curados) {
+            hechos = hechoService.obtenerHechosDeColeccionIrrestrictosGraphql(
+                    idColeccion,
+                    filtros,
+                    page == null ? 0 : page,
+                    limit == null ? 100 : limit
+            );
+        } else {
+            hechos = hechoService.obtenerHechosDeColeccionCuradosGraphql(
+                    idColeccion,
+                    filtros,
+                    page == null ? 0 : page,
+                    limit == null ? 100 : limit
+            );
+        }
 
         PageInfo pageInfo = new PageInfo(
                 (int) hechos.getTotalElements(),
