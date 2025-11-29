@@ -90,12 +90,12 @@
     </style>
 </th:block>
 
-<th:block th:replace="~{fragments/layout :: layout(~{::main}, true)}">
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, ${true})}">
     <main class="relative h-[86vh] w-full">
         <div id="map" class="h-full w-full m-0 p-0 z-[1] relative"></div>
 
         <div class="absolute top-2.5 left-2.5 z-[1000] max-w-[380px]">
-            <th:block th:replace="~{fragments/modals :: modalFiltros}"/>
+            <th:block th:replace="~{fragments/modal :: modalFiltros}"/>
         </div>
 
         <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
