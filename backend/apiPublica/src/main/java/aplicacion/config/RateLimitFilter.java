@@ -6,6 +6,7 @@ import io.github.bucket4j.Refill;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class RateLimitFilter implements Filter {
 
+    @Value("${api.rate.maxPerMinute}")
+    Integer maximoPorMinuto;
     // Cache en memoria para guardar el "balde" de tokens asociado a cada IP
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
@@ -52,8 +55,8 @@ public class RateLimitFilter implements Filter {
      * Aquí definimos cuántas peticiones se permiten por minuto.
      */
     private Bucket createNewBucket() {
-        // Límite: 20 peticiones (capacidad) recargables cada 1 minuto.
-        Bandwidth limit = Bandwidth.classic(20, Refill.greedy(20, Duration.ofMinutes(1)));
+        // Límite: maximoPorMinuto peticiones (capacidad) recargables cada 1 minuto.
+        Bandwidth limit = Bandwidth.classic(maximoPorMinuto, Refill.greedy(maximoPorMinuto, Duration.ofMinutes(1)));
 
         return Bucket.builder()
                 .addLimit(limit)
