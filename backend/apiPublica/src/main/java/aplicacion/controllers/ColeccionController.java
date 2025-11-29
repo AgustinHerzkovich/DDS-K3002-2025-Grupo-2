@@ -51,7 +51,7 @@ public class ColeccionController {
         // Construir la query GraphQL
         String query = """
             query ObtenerHechosDeColeccionIrrestrictos($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
-                hechosPorColeccionIrrestrictos(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+                getHechosPorColeccionIrrestrictos(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
                     content {
                         id
                         titulo
@@ -141,7 +141,7 @@ public class ColeccionController {
         // Construir la query GraphQL
         String query = """
             query ObtenerHechosDeColeccionCurados($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
-                hechosPorColeccionCurados(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+                getHechosPorColeccionCurados(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
                     content {
                         id
                         titulo

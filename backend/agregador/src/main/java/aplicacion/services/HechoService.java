@@ -15,7 +15,7 @@ import aplicacion.excepciones.CategoriaYaPresenteException;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.graphql.objects.HechoFiltros;
-import aplicacion.graphql.objects.HechoMapItem;
+import aplicacion.graphql.objects.HechoItem;
 import aplicacion.repositories.HechoRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.excepciones.HechoNoEncontradoException;
@@ -39,6 +39,7 @@ public class HechoService {
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
+
     public HechoService(HechoRepository hechoRepository, HechoXColeccionRepository hechoXColeccionRepository, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
         this.hechoRepository = hechoRepository;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
@@ -138,22 +139,22 @@ public class HechoService {
         return hechoOutputMapper.map(hecho);
     }
 
-    public Page<Hecho> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
-                                                             String categoria,
-                                                             LocalDateTime fechaReporteDesde,
-                                                             LocalDateTime fechaReporteHasta,
-                                                             LocalDateTime fechaAcontecimientoDesde,
-                                                             LocalDateTime fechaAcontecimientoHasta,
-                                                             Double latitud,
-                                                             Double longitud,
-                                                             Double radio,
-                                                             String textoLibre,
-                                                             Pageable pageable) {
+    public Page<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
+                                                                                      String categoria,
+                                                                                      LocalDateTime fechaReporteDesde,
+                                                                                      LocalDateTime fechaReporteHasta,
+                                                                                      LocalDateTime fechaAcontecimientoDesde,
+                                                                                      LocalDateTime fechaAcontecimientoHasta,
+                                                                                      Double latitud,
+                                                                                      Double longitud,
+                                                                                      Double radio,
+                                                                                      String textoLibre,
+                                                                                      Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
             return hechoRepository.findByFiltrosYColeccionIrrestrictos(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
-            );
+            ).map(hechoOutputMapper::map);
         }
 
         // 1. Buscar exact match
@@ -165,7 +166,7 @@ public class HechoService {
         );
 
         if (!exactos.isEmpty()) {
-            return exactos;
+            return exactos.map(hechoOutputMapper::map);
         }
 
         // 2. Buscar full-text
@@ -173,25 +174,25 @@ public class HechoService {
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                 latitud, longitud, radio, textoLibre.trim(), pageable
-        );
+        ).map(hechoOutputMapper::map);
     }
 
-    public Page<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion,
-                                                        String categoria,
-                                                        LocalDateTime fechaReporteDesde,
-                                                        LocalDateTime fechaReporteHasta,
-                                                        LocalDateTime fechaAcontecimientoDesde,
-                                                        LocalDateTime fechaAcontecimientoHasta,
-                                                        Double latitud,
-                                                        Double longitud,
-                                                        Double radio,
-                                                        String textoLibre,
-                                                        Pageable pageable) {
+    public Page<HechoOutputDto> obtenerHechosCuradosPorColeccion(String idColeccion,
+                                                                                 String categoria,
+                                                                                 LocalDateTime fechaReporteDesde,
+                                                                                 LocalDateTime fechaReporteHasta,
+                                                                                 LocalDateTime fechaAcontecimientoDesde,
+                                                                                 LocalDateTime fechaAcontecimientoHasta,
+                                                                                 Double latitud,
+                                                                                 Double longitud,
+                                                                                 Double radio,
+                                                                                 String textoLibre,
+                                                                                 Pageable pageable) {
         if (textoLibre == null || textoLibre.trim().isEmpty()) {
             return hechoRepository.findByFiltrosYColeccionCurados(
                     idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
-            );
+            ).map(hechoOutputMapper::map);
         }
 
         // 1. Exact match
@@ -203,7 +204,7 @@ public class HechoService {
         );
 
         if (!exactos.isEmpty()) {
-            return exactos;
+            return exactos.map(hechoOutputMapper::map);
         }
 
         // 2. Full text
@@ -211,7 +212,7 @@ public class HechoService {
                 idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
                 latitud, longitud, radio, textoLibre.trim(), pageable
-        );
+        ).map(hechoOutputMapper::map);
     }
 
     public void guardarHecho(Hecho hecho) {
@@ -324,7 +325,7 @@ public class HechoService {
         else return opciones;
     }
 
-    public Page<HechoMapItem> obtenerHechosParaMapaGraphql(HechoFiltros filtros, Integer page, Integer limit) {
+    public Page<HechoItem> obtenerHechosParaMapaGraphql(HechoFiltros filtros, Integer page, Integer limit) {
         Pageable pageable = Pageable.ofSize(limit).withPage(page);
         Page<HechoOutputDto> hechosPage;
         if (filtros == null) {
@@ -351,19 +352,12 @@ public class HechoService {
                     pageable);
         }
 
-        return hechosPage.map(hecho -> new HechoMapItem(
-                hecho.getId(),
-                hecho.getTitulo(),
-                hecho.getUbicacion().getLatitud(),
-                hecho.getUbicacion().getLongitud(),
-                hecho.getCategoria().getNombre(),
-                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
-        ));
+        return mapHechosGraphql(hechosPage);
     }
 
-    public Page<HechoMapItem> obtenerHechosDeColeccionIrrestrictosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit ){
+    public Page<HechoItem> obtenerHechosDeColeccionIrrestrictosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit ){
         Pageable pageable = Pageable.ofSize(limit).withPage(page);
-        Page<Hecho> hechosPage;
+        Page<HechoOutputDto> hechosPage;
         if (filtros == null) {
             hechosPage = this.obtenerHechosIrrestrictosPorColeccion(idColeccion,
                     null,
@@ -390,19 +384,12 @@ public class HechoService {
                     pageable);
         }
 
-        return hechosPage.map(hecho -> new HechoMapItem(
-                hecho.getId(),
-                hecho.getTitulo(),
-                hecho.getUbicacion().getLatitud(),
-                hecho.getUbicacion().getLongitud(),
-                hecho.getCategoria().getNombre(),
-                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
-        ));
+        return mapHechosGraphql(hechosPage);
     }
 
-    public Page<HechoMapItem> obtenerHechosDeColeccionCuradosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit){
+    public Page<HechoItem> obtenerHechosDeColeccionCuradosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit){
         Pageable pageable = Pageable.ofSize(limit).withPage(page);
-        Page<Hecho> hechosPage;
+        Page<HechoOutputDto> hechosPage;
         if (filtros == null) {
             hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
                     null,
@@ -429,13 +416,22 @@ public class HechoService {
                     pageable);
         }
 
-        return hechosPage.map(hecho -> new HechoMapItem(
+        return mapHechosGraphql(hechosPage);
+    }
+
+    private Page<HechoItem> mapHechosGraphql(Page<HechoOutputDto> hechosPage) {
+        return hechosPage.map(hecho -> new HechoItem(
                 hecho.getId(),
                 hecho.getTitulo(),
+                hecho.getDescripcion(),
                 hecho.getUbicacion().getLatitud(),
                 hecho.getUbicacion().getLongitud(),
                 hecho.getCategoria().getNombre(),
-                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null
+                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getFechaAcontecimiento() != null ? hecho.getFechaAcontecimiento().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getFechaUltimaModificacion() != null ? hecho.getFechaUltimaModificacion().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getContenidoTexto(),
+                hecho.getAnonimato()
         ));
     }
 }

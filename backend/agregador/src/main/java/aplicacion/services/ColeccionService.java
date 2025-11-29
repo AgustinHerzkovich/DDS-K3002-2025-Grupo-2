@@ -94,9 +94,7 @@ public class ColeccionService {
                                                                       String textoLibre,
                                                                       Pageable pageable) {
 
-        Page<Hecho> hechosIrrestrictos = hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
-
-        return hechosIrrestrictos.map(hechoOutputMapper::map);
+        return hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
     }
 
     public Page<HechoOutputDto> obtenerHechosCuradosPorColeccion(String idColeccion,
@@ -110,9 +108,8 @@ public class ColeccionService {
                                                                  Double radio,
                                                                  String textoLibre,
                                                                  Pageable pageable) {
-        Page<Hecho> hechosCurados = hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
 
-        return hechosCurados.map(hechoOutputMapper::map);
+        return hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
     }
 
     public void eliminarColeccion(String idColeccion) throws ColeccionNoEncontradaException{
