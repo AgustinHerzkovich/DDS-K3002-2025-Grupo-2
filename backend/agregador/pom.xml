@@ -79,12 +79,7 @@
             <artifactId>caffeine</artifactId>
             <version>3.2.3</version>
         </dependency>
-        
-        <dependency>
-            <groupId>com.graphql-java-kickstart</groupId>
-            <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>14.0.0</version>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-graphql -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -96,7 +91,11 @@
             <artifactId>graphql-java-extended-scalars</artifactId>
             <version>18.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.smallrye</groupId>
+            <artifactId>smallrye-graphql-ui-graphiql</artifactId>
+            <version>2.16.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.graphql</groupId>
             <artifactId>spring-graphql-test</artifactId>
@@ -105,20 +104,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>5.0.2</version>
-        </dependency>
 
-        <dependency>
-            <groupId>io.smallrye</groupId>
-            <artifactId>smallrye-graphql-ui-graphiql</artifactId>
-            <version>2.16.0</version>
-        </dependency>
+
     </dependencies>
     <build>
         <plugins>
