@@ -42,6 +42,5 @@ input HechoFiltros {
 
 type Query {
     getHechos(filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
-    getHechosPorColeccionIrrestrictos(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
-    getHechosPorColeccionCurados(idColeccion: String, filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
+    getHechosPorColeccion(idColeccion: String, curados: Boolean!, filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
 }

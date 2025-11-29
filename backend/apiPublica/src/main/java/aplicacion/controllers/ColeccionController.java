@@ -50,8 +50,8 @@ public class ColeccionController {
     {
         // Construir la query GraphQL
         String query = """
-            query ObtenerHechosDeColeccionIrrestrictos($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
-                getHechosPorColeccionIrrestrictos(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+            query ObtenerHechosDeColeccionIrrestrictos($idColeccion: String, $curados: Boolean, $filtros: HechoFiltros, $page: Int, $limit: Int) {
+                getHechosPorColeccion(idColeccion: $idColeccion, curados: $curados, filtros: $filtros, page: $page, limit: $limit) {
                     content {
                         id
                         titulo
@@ -109,6 +109,7 @@ public class ColeccionController {
         // Construir el mapa de variables
         Map<String, Object> variables = new HashMap<>();
         variables.put("idColeccion", id);
+        variables.put("curados", false);
         variables.put("filtros", filtros.isEmpty() ? null : filtros);
         variables.put("page", page);
         variables.put("limit", size);
@@ -140,8 +141,8 @@ public class ColeccionController {
     ) {
         // Construir la query GraphQL
         String query = """
-            query ObtenerHechosDeColeccionCurados($idColeccion: String, $filtros: HechoFiltros, $page: Int, $limit: Int) {
-                getHechosPorColeccionCurados(idColeccion: $idColeccion, filtros: $filtros, page: $page, limit: $limit) {
+            query ObtenerHechosDeColeccionCurados($idColeccion: String, $curados: Boolean, $filtros: HechoFiltros, $page: Int, $limit: Int) {
+                getHechosPorColeccion(idColeccion: $idColeccion, curados: $curados, filtros: $filtros, page: $page, limit: $limit) {
                     content {
                         id
                         titulo
@@ -199,6 +200,7 @@ public class ColeccionController {
         // Construir el mapa de variables
         Map<String, Object> variables = new HashMap<>();
         variables.put("idColeccion", id);
+        variables.put("curados", true);
         variables.put("filtros", filtros.isEmpty() ? null : filtros);
         variables.put("page", page);
         variables.put("limit", size);
