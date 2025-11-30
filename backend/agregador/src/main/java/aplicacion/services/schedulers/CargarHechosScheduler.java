@@ -60,7 +60,7 @@ public class CargarHechosScheduler {
             fuenteSet.addAll(fuenteService.obtenerTodasLasFuentes());
         }
         fuenteSet = fuenteSet.stream().filter(fuente -> fuente.getConexion().isOnlineUltimaVez()).collect(Collectors.toSet());
-        fuenteMutexManager.lockAll(fuenteSet.stream().map(Fuente::getId).toList());
+        fuenteMutexManager.lockAll(fuenteSet.stream().map(Fuente::getId).collect(Collectors.toSet()));
         try {
 
             System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
@@ -113,6 +113,8 @@ public class CargarHechosScheduler {
         }catch (Exception e){
             System.err.println("No se pudo concretar la asignacion de hechos scheduleada");
             e.printStackTrace();
+        }finally {
+            fuenteMutexManager.unlockAll(fuenteSet.stream().map(Fuente::getId).collect(Collectors.toSet()));
         }
         System.out.println("""
                 

@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,15 +41,15 @@ public class ColeccionAsyncService {
     @Async
     public void onColeccionCreada(ColeccionCreadaEvent event) {
         System.out.println("Evento recibido: Colección creada con ID: " + event.getColeccionId());
-        fuenteMutexManager.lockAll(event.getFuentesId());
-        System.out.println("Insercion de hechos iniciada");
+        fuenteMutexManager.lockAll(new HashSet<>(event.getFuentesId()));
+        System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos iniciada");
         try {
             asociarHechosPreexistentes(event.getColeccionId());
         }catch (Exception e){
-            System.err.println( "Error: No se pudo cargar los hechos de una de las fuentes   -   "+ e.getMessage());
+            System.err.println("("+event.getColeccionId()+")  -  "+ "Error: No se pudo cargar los hechos de una de las fuentes   -   "+ e.getMessage());
         }finally {
-            fuenteMutexManager.unlockAll(event.getFuentesId());
-            System.out.println("Insercion de hechos finalizada exitosamente");
+            fuenteMutexManager.unlockAll(new HashSet<>(event.getFuentesId()));
+            System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos finalizada exitosamente");
         }
     }
 
@@ -59,18 +61,18 @@ public class ColeccionAsyncService {
     public void onFuenteAgregada(FuenteAgregadaAColeccionEvent event) {
         System.out.println("Evento recibido: Fuente agregada - Colección: " + event.getColeccionId() + ", Fuente: " + event.getFuenteId());
         fuenteMutexManager.lock(event.getFuenteId());
-        System.out.println("Insercion de hechos iniciada");
+        System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos iniciada");
         try {
             // Recargar la colección en una nueva transacción
             Coleccion coleccion = coleccionRepository.findById(event.getColeccionId())
                     .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + event.getColeccionId()));
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, event.getFuenteId());
         }catch (Exception e){
-            System.err.println( "Error: no se pudo cargar los hechos de la fuente " + event.getFuenteId() + "  -   "+ e.getMessage());
+            System.err.println("("+event.getColeccionId()+")  -  "+ "Error: no se pudo cargar los hechos de la fuente " + event.getFuenteId() + "  -   "+ e.getMessage());
         }
         finally {
             fuenteMutexManager.unlock(event.getFuenteId());
-            System.out.println("Insercion de hechos finalizada exitosamente");
+            System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos finalizada exitosamente");
         }
 
     }
@@ -81,7 +83,7 @@ public class ColeccionAsyncService {
         Coleccion coleccion = coleccionRepository.findById(coleccionId)
                 .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + coleccionId));
 
-        System.out.println("Asociando hechos preexistentes de " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
+        System.out.println("("+coleccionId+")  -  "+"Asociando hechos preexistentes de " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
         List<Fuente> fuentes = coleccion.getFuentes();
         for (Fuente fuente : fuentes) {
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente.getId());
@@ -90,7 +92,7 @@ public class ColeccionAsyncService {
 
     @Transactional
     public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, String fuenteId){
-        System.out.println("Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con fuente " + fuenteId);
+        System.out.println("("+coleccion.getId()+")  -  "+"Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con fuente " + fuenteId);
         List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuenteId);
         List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
                 .filter(coleccion::cumpleCriterios)

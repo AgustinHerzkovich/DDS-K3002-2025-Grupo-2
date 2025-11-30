@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 @NoArgsConstructor
@@ -23,7 +24,7 @@ public class FuenteMutexManager {
     public void unlock(String key){
         getMutex(key).unlock();
     }
-    public void lockAll(List<String> keys) {
+    public void lockAll(Set<String> keys) {
         // Ordenar las claves para evitar deadlocks
         String[] sortedKeys = keys.toArray(new String[0]);
         Arrays.sort(sortedKeys);
@@ -44,30 +45,11 @@ public class FuenteMutexManager {
             throw e;
         }
     }
-    public void unlockAll(List<String> keys) {
-        String[] sortedKeys = keys.toArray(new String[0]);
-        Arrays.sort(sortedKeys);
-        List<ReentrantLock> tomados = new ArrayList<>();
-
-        try {
-            for (String key : sortedKeys) {
-                if (key == null) {
-                    throw new IllegalArgumentException("La clave no puede ser null");
-                }
-                ReentrantLock lock = getMutex(key);
-                lock.lock();
-                tomados.add(lock);
+    public void unlockAll(Set<String> locks) {
+        for (String lock : locks) {
+            if (getMutex(lock).isHeldByCurrentThread()) {
+                getMutex(lock).unlock();
             }
-
-            for (ReentrantLock lock : tomados) {
-                lock.unlock();
-            }
-
-        } catch (Exception e) {
-            for (ReentrantLock lock : tomados) {
-                lock.unlock();
-            }
-            throw e;
         }
     }
 }
