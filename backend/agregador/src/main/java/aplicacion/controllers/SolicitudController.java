@@ -67,7 +67,7 @@ public class SolicitudController {
         SolicitudEliminacion sol;
         Contribuyente contribuyente;
         String nuevoEstado = revisionSolicitudInputDto.getNuevoEstado();
-        Long adminId = revisionSolicitudInputDto.getAdminId();
+        String adminId = revisionSolicitudInputDto.getAdminId();
         try {
             solis = solicitudService.solicitudesRelacionadas(id);
             sol = solicitudService.obtenerSolicitud(id); // El primero es la solicitud a cambiar

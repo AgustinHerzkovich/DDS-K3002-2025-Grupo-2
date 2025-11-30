@@ -47,27 +47,26 @@ public class UsuarioService {
                     .anyMatch(role -> role.equalsIgnoreCase("admin"));
         }
 
-        ContribuyenteInputDto contribuyente = new ContribuyenteInputDto(esAdmin, identidad, oidcUser.getEmail());
-
         // Variable para almacenar el ID después del registro
-        Long contribuyenteId = null;
+        String contribuyenteId = oidcUser.getSubject();
+
+        ContribuyenteInputDto contribuyente = new ContribuyenteInputDto(contribuyenteId, esAdmin, identidad, oidcUser.getEmail());
 
         // 1. LLAMADA A API PÚBLICA (webClient)
         try {
-            // CAMBIO CLAVE: Esperamos que el backend devuelva el objeto ContribuyenteOutputDto
+            // Esperamos que el backend devuelva el objeto ContribuyenteOutputDto
             ContribuyenteOutputDto contribuyenteRegistrado = webClient.post()
                     .uri("/contribuyentes")
                     .bodyValue(contribuyente)
                     .retrieve()
-                    .bodyToMono(ContribuyenteOutputDto.class) // <--- Coge el cuerpo de la respuesta
+                    .bodyToMono(ContribuyenteOutputDto.class) // <--- Obtiene el cuerpo de la respuesta
                     .block();
 
             // 2. EXTRAEMOS EL ID Y LO GUARDAMOS EN LA SESIÓN
             if (contribuyenteRegistrado != null && contribuyenteRegistrado.getId() != null) {
-                contribuyenteId = contribuyenteRegistrado.getId();
-                // ¡Guardamos el ID en la sesión HTTP!
+                // Guardamos el ID en la sesión HTTP
                 request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteId);
-                System.out.println("✅ Contribuyente registrado y ID guardado en sesión: " + contribuyenteId);
+                System.out.println("Contribuyente registrado y ID guardado en sesión: " + contribuyenteId);
             } else {
                 System.err.println("Advertencia: Backend registró el usuario, pero no devolvió un ID de contribuyente válido.");
             }

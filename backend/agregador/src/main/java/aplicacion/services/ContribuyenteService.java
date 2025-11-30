@@ -4,7 +4,6 @@ import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.mappers.ContribuyenteInputMapper;
 import aplicacion.dto.mappers.ContribuyenteOutputMapper;
 import aplicacion.dto.mappers.IdentidadContribuyenteInputMapper;
-import aplicacion.dto.mappers.IdentidadContribuyenteOutputMapper;
 import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.excepciones.MailYaExisteException;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContribuyenteService {
@@ -25,13 +25,10 @@ public class ContribuyenteService {
     private final IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper;
     private final ContribuyenteInputMapper contribuyenteInputMapper;
     private final ContribuyenteOutputMapper contribuyenteOutputMapper;
-    private final IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper;
 
-
-    public ContribuyenteService(ContribuyenteRepository contribuyenteRepository, ContribuyenteOutputMapper contribuyenteOutputMapper, ContribuyenteInputMapper contribuyenteInputMapper, IdentidadContribuyenteOutputMapper identidadContribuyenteOutputMapper, IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {
+    public ContribuyenteService(ContribuyenteRepository contribuyenteRepository, ContribuyenteOutputMapper contribuyenteOutputMapper, ContribuyenteInputMapper contribuyenteInputMapper, IdentidadContribuyenteInputMapper identidadContribuyenteInputMapper) {
         this.contribuyenteRepository = contribuyenteRepository;
         this.identidadContribuyenteInputMapper = identidadContribuyenteInputMapper;
-        this.identidadContribuyenteOutputMapper = identidadContribuyenteOutputMapper;
         this.contribuyenteOutputMapper = contribuyenteOutputMapper;
         this.contribuyenteInputMapper = contribuyenteInputMapper;
     }
@@ -60,7 +57,7 @@ public class ContribuyenteService {
     }
 
     @Transactional
-    public Contribuyente obtenerContribuyentePorId(Long id) { // Lo usamos para cargar hechos
+    public Contribuyente obtenerContribuyentePorId(String id) { // Lo usamos para cargar hechos
         return contribuyenteRepository.findById(id)
                 .map(contribuyente -> {
                     Hibernate.initialize(contribuyente.getId());
@@ -70,13 +67,13 @@ public class ContribuyenteService {
                 })
                 .orElseGet(() -> { // TODO: Cambiar esto
                     // Si no existe, lo creamos
-                    Contribuyente nuevo = new Contribuyente(false, new IdentidadContribuyente("NombrePorDefecto", "ApellidoPorDefecto", null), "mailPorDefecto");
+                    Contribuyente nuevo = new Contribuyente(UUID.randomUUID().toString(), false, new IdentidadContribuyente("NombrePorDefecto", "ApellidoPorDefecto", null), "mailPorDefecto");
                     nuevo.setId(id);
                     return contribuyenteRepository.save(nuevo);
                 });
     }
 
-    public Contribuyente obtenerContribuyente(Long id) throws ContribuyenteNoConfiguradoException { // Lo usamos para consultar si un contribuyente existe a la hora de login
+    public Contribuyente obtenerContribuyente(String id) throws ContribuyenteNoConfiguradoException { // Lo usamos para consultar si un contribuyente existe a la hora de login
         return contribuyenteRepository.findById(id)
                 .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con ID: " + id));
     }
@@ -91,7 +88,7 @@ public class ContribuyenteService {
         return contribuyentes.stream().map(contribuyenteOutputMapper::map).toList();
     }
 
-    public ContribuyenteOutputDto modificarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
+    public ContribuyenteOutputDto modificarIdentidadAContribuyente(String id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
         IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(identidadContribuyenteInputDto);
         Contribuyente contribuyente = obtenerContribuyente(id);
         contribuyente.setIdentidad(identidad);

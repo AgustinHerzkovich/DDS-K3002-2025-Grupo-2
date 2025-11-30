@@ -125,7 +125,7 @@ public class HechoService {
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public List<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId ) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
         return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
     }

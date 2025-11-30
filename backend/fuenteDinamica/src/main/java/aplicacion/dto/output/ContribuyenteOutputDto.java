@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class ContribuyenteOutputDto {
-    private Long id;
+    private String id;
     private Boolean esAdministrador;
     private IdentidadContribuyenteOutputDto identidad;
     private String mail;

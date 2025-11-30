@@ -67,7 +67,7 @@ public class ContribuyenteService {
     }
 
 
-    public void actualizarIdentidad(Long contribuyenteId, IdentidadContribuyenteInputDto identidadDto, OidcUser principal) throws HttpClientErrorException {
+    public void actualizarIdentidad(String contribuyenteId, IdentidadContribuyenteInputDto identidadDto, OidcUser principal) throws HttpClientErrorException {
 
 
         try {

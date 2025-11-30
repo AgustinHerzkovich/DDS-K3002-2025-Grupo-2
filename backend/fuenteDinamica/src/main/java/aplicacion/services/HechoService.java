@@ -45,7 +45,7 @@ public class HechoService {
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public List<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId ) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
         return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
     }
@@ -71,7 +71,7 @@ public class HechoService {
 
     @Transactional //(readOnly = true)
     public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
-        Long identidadId = hechoInputDto.getAutor();
+        String identidadId = hechoInputDto.getAutor();
         Contribuyente autor = null;
         if (!hechoInputDto.getAnonimato() && identidadId == null) {
             throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");
@@ -104,7 +104,7 @@ public class HechoService {
         return hechoRevisadoOutputMapper.map(hecho);
     }
 
-    public void guardarRevision(String hechoId, Long administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
+    public void guardarRevision(String hechoId, String administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
         Hecho hecho = hechoRepository.findById(hechoId)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + hechoId));
         Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);

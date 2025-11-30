@@ -68,7 +68,7 @@ public class HechoController {
     @PatchMapping("/hechos/{id}/estadoRevision")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
                                                      @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
-                                                     @RequestHeader(value = "Administrador", required = false) Long administradorId) {
+                                                     @RequestHeader(value = "Administrador", required = false) String administradorId) {
         try {
             HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
             if (administradorId != null) {
