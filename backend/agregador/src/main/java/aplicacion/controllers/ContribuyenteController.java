@@ -37,7 +37,7 @@ public class ContribuyenteController {
             List<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id);
             return ResponseEntity.ok(hechos);
         } catch (IdInvalidoException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (ContribuyenteNoConfiguradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -48,7 +48,7 @@ public class ContribuyenteController {
         try {
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.guardarContribuyente(contribuyenteInputDto);
             System.out.println("Se ha creado el contribuyente: " + contribuyenteProcesado.getId()); // esto cuando se haga el front lo podemos sacar
-            return ResponseEntity.ok(contribuyenteProcesado);
+            return ResponseEntity.status(201).body(contribuyenteProcesado);
         } catch (MailYaExisteException e) {
             ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(contribuyenteInputDto.getMail());
             return ResponseEntity.ok(contribuyente);
@@ -69,7 +69,7 @@ public class ContribuyenteController {
                 ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(mail);
                 return ResponseEntity.ok(contribuyente);
             } catch (ContribuyenteNoConfiguradoException e) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
             }
         }
     }
