@@ -12,4 +12,5 @@ import lombok.Setter;
 public class FuenteOutputDto {
     private String id;
     private String alias;
+    private String tipo;
 }

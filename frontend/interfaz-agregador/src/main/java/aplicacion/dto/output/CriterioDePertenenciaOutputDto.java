@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CriterioDePertenenciaOutputDto {
     private Long id;
+    private String tipo;
 }
