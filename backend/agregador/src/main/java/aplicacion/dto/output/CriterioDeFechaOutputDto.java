@@ -12,7 +12,7 @@ public class CriterioDeFechaOutputDto extends CriterioDePertenenciaOutputDto{
     private LocalDateTime fechaFinal;
 
     public CriterioDeFechaOutputDto(Long id, LocalDateTime fechaInicial, LocalDateTime fechaFinal) {
-        super(id);
+        super(id, "FECHA");
         this.fechaInicial = fechaInicial;
         this.fechaFinal = fechaFinal;
     }
