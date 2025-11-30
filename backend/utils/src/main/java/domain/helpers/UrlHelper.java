@@ -35,4 +35,18 @@ public class UrlHelper {
 
         return url.toString();
     }
+
+    public static void appendHeaderParam(StringBuilder url, String headerName, String headerValue) {
+        if (headerValue != null && !headerValue.isEmpty()) {
+            if (url.indexOf("?") == -1) {
+                url.append("?");
+            } else {
+                url.append("&");
+            }
+            url.append("header_")
+                    .append(headerName)
+                    .append("=")
+                    .append(URLEncoder.encode(headerValue, StandardCharsets.UTF_8));
+        }
+    }
 }

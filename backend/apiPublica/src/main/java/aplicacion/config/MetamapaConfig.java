@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AgregadorConfig {
+public class MetamapaConfig {
     @JsonProperty("ip_agregador")
     private String ipAgregador;
     @JsonProperty("puerto_agregador")

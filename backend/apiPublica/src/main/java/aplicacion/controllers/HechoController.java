@@ -23,8 +23,9 @@ public class HechoController {
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
     private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
+
     public HechoController(ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrl();
+        this.urlBaseAgregador = configService.getUrlAgregador();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
