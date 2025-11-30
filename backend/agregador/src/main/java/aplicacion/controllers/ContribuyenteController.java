@@ -65,12 +65,8 @@ public class ContribuyenteController {
             List<ContribuyenteOutputDto> contribuyentes = contribuyenteService.obtenerContribuyentes();
             return ResponseEntity.ok(contribuyentes);
         } else {
-            try {
                 ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(mail);
                 return ResponseEntity.ok(contribuyente);
-            } catch (ContribuyenteNoConfiguradoException e) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            }
         }
     }
 
