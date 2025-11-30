@@ -34,7 +34,7 @@ public class GlobalModelAttributes {
                     .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase("ROLE_ADMIN"));
             model.addAttribute("isAdmin", isAdmin);
 
-            ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(oidcUser.getEmail());
+            ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(oidcUser);
             if (contribuyente != null) {
                 model.addAttribute("userId", contribuyente.getId()); // ID del usuario
             } else {

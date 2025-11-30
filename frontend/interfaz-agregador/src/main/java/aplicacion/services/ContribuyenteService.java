@@ -13,16 +13,20 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.*;
 
 @Service
 public class ContribuyenteService {
     private final RestTemplate restTemplate = new RestTemplate();
-
+    private final UsuarioService usuarioService;
     @Value("${keycloak.realm}")
     private String realm;
 
+    @Value("${api.agregador.contribuyentes.register-if-not-found}")
+    private Boolean registerIfNotFound;
     @Value("${keycloak.admin-client.id}")
     private String ADMIN_CLIENT_ID;
 
@@ -34,6 +38,11 @@ public class ContribuyenteService {
     private Integer apiPublicaPort;
     @Value("8082")
     private Integer fuenteDinamicaPort;
+
+    public ContribuyenteService(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
@@ -42,8 +51,10 @@ public class ContribuyenteService {
         this.fuenteDinamicaWebClient =WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
-    public ContribuyenteOutputDto obtenerContribuyentePorMail(String mail) {
+    public ContribuyenteOutputDto obtenerContribuyentePorMail(OidcUser oidcUser) {
         try {
+            // LO BUSCA EN AGREGADOR, NO VERIFICA QUE ESTE EN FUENTEDINAMICA
+            String mail = oidcUser.getEmail();
             ContribuyenteOutputDto contribuyente = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/contribuyentes")
@@ -56,10 +67,23 @@ public class ContribuyenteService {
             if (contribuyente != null) {
                 return contribuyente;
             } else {
-                System.err.println("No se encontro contribuyente con el email: " + mail);
-                return null;
+                throw new RuntimeException("Error: El servidor respondio 200 OK, pero no devolvio el usuario");
             }
-        } catch (Exception e) {
+        } catch (WebClientResponseException e){
+
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND){
+                if(registerIfNotFound){
+                    System.out.println("Usuario no encontrado en GET ( "+oidcUser.getEmail()+" / "+oidcUser.getSubject()+" ) \n Registrando nuevamente...");
+                    ContribuyenteOutputDto contribuyenteCreado = usuarioService.registrarUsuarioSiNoExiste(oidcUser);
+                    return contribuyenteCreado;
+                }else {
+                    System.err.println("Usuario no encontrado en GET ( "+oidcUser.getEmail()+" / "+oidcUser.getSubject()+" ) \n Registro automático desactivado. Devolviendo usuario null.");
+                }
+            }
+
+            throw e;
+        }
+        catch (Exception e) {
             System.err.println("Error al obtener contribuyente por mail: " + e.getMessage());
             e.printStackTrace();
             return null;

@@ -29,8 +29,9 @@ public class UsuarioService {
         this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
-    public void registrarUsuarioSiNoExiste(OidcUser oidcUser, HttpServletRequest request) {
+    public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {
         Optional<LocalDate> fechaNacimiento;
+        ContribuyenteOutputDto contribuyenteDevueltoDto = null;
         try{
             fechaNacimiento = Optional.of(LocalDate.parse(oidcUser.getClaimAsString("birthdate")));
         }catch (Exception ignored){
@@ -55,22 +56,13 @@ public class UsuarioService {
         // 1. LLAMADA A API PÚBLICA (webClient)
         try {
             // Esperamos que el backend devuelva el objeto ContribuyenteOutputDto
-            ContribuyenteOutputDto contribuyenteRegistrado = webClient.post()
+            contribuyenteDevueltoDto = webClient.post()
                     .uri("/contribuyentes")
                     .bodyValue(contribuyente)
                     .retrieve()
                     .bodyToMono(ContribuyenteOutputDto.class) // <--- Obtiene el cuerpo de la respuesta
                     .block();
-
-            // 2. EXTRAEMOS EL ID Y LO GUARDAMOS EN LA SESIÓN
-            if (contribuyenteRegistrado != null && contribuyenteRegistrado.getId() != null) {
-                // Guardamos el ID en la sesión HTTP
-                request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteId);
-                System.out.println("Contribuyente registrado y ID guardado en sesión: " + contribuyenteId);
-            } else {
-                System.err.println("Advertencia: Backend registró el usuario, pero no devolvió un ID de contribuyente válido.");
-            }
-
+            System.out.println("Se registro al usuario en Agregador");
         } catch (Exception e) {
             System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
         }
@@ -83,8 +75,11 @@ public class UsuarioService {
                     .retrieve()
                     .toBodilessEntity()
                     .block();
+            System.out.println("Se registro el usuario en fuenteDinamica");
         } catch (Exception e) {
             System.err.println("Error al registrar el usuario en Fuentes Dinámicas: " + e.getMessage());
         }
+        return contribuyenteDevueltoDto;
     }
+
 }

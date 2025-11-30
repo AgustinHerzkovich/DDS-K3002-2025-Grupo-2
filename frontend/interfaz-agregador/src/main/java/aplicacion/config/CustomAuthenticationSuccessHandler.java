@@ -1,5 +1,6 @@
 package aplicacion.config;
 
+import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.services.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if (authentication instanceof OAuth2AuthenticationToken) {
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
-            usuarioService.registrarUsuarioSiNoExiste(oidcUser, request);
+            ContribuyenteOutputDto contribuyenteCreado = usuarioService.registrarUsuarioSiNoExiste(oidcUser);
+            request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteCreado.getId());
+            System.out.println("Contribuyente registrado y ID guardado en sesión: " + contribuyenteCreado.getId());
         }
 
         System.out.println("=== Authorities del usuario ===");
