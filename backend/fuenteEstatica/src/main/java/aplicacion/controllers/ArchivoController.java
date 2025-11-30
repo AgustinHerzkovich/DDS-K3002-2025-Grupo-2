@@ -35,7 +35,7 @@ public class ArchivoController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivo subido correctamente desde URL al FileServer");
+        return ResponseEntity.status(201).body("Archivo subido correctamente desde URL al FileServer");
     }
 
     @PostMapping("/archivos")
@@ -47,6 +47,6 @@ public class ArchivoController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivos: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivos subidos correctamente al FileServer");
+        return ResponseEntity.status(201).body("Archivos subidos correctamente al FileServer");
     }
 }

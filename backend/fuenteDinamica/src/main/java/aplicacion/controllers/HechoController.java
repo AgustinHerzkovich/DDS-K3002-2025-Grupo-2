@@ -59,7 +59,7 @@ public class HechoController {
         try {
             hecho = hechoService.guardarHecho(hechoInputDto);
             System.out.println("Se ha agregado el hecho: " + hecho.getId());
-            return ResponseEntity.ok(hecho);
+            return ResponseEntity.status(201).body(hecho);
         }catch (ContribuyenteNoConfiguradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

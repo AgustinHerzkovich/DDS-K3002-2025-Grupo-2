@@ -39,7 +39,7 @@ public class FuenteProxyController {
     @PostMapping
     public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@Valid @RequestBody FuenteProxyInputDto fuenteProxyInputDto){
         FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
-        return ResponseEntity.ok(fuenteProxy);
+        return ResponseEntity.status(201).body(fuenteProxy);
     }
 
     @GetMapping
