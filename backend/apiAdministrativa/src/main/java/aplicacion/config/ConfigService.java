@@ -12,17 +12,25 @@ import java.io.IOException;
 @Getter
 @Setter
 public class ConfigService {
-    private final AgregadorConfig config;
+    private final MetamapaConfig config;
 
     public ConfigService() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         this.config = mapper.readValue(
                 new ClassPathResource("config.json").getFile(),
-                AgregadorConfig.class
+                MetamapaConfig.class
         );
     }
 
-    public String getUrl() {
+    public String getUrlAgregador() {
         return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
+    }
+
+    public String getUrlEstadisticas() {
+        return "http://" + config.getIpEstadisticas() + ":" + config.getPuertoEstadisticas() + "/estadisticas";
+    }
+
+    public String getUrlFuentesEstaticas() {
+        return "http://" + config.getIpFuenteEstatica() + ":" + config.getPuertoFuenteEstatica() + "/fuentesEstaticas";
     }
 }

@@ -8,17 +8,17 @@ import java.io.IOException;
 
 @Service
 public class ConfigService {
-    private final AgregadorConfig config;
+    private final MetamapaConfig config;
 
     public ConfigService() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         this.config = mapper.readValue(
                 new ClassPathResource("config.json").getFile(),
-                AgregadorConfig.class
+                MetamapaConfig.class
         );
     }
 
-    public String getUrl() {
+    public String getUrlAgregador() {
         return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
     }
 }

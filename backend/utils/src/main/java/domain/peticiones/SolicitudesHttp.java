@@ -31,6 +31,12 @@ public class SolicitudesHttp {
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
+    public <T> ResponseEntity<T> get(String path, HttpHeaders headers, Class<T> responseType) {
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        ResponseEntity<T> response = restTemplate.exchange(path, HttpMethod.GET, entity, responseType);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
     public <T> ResponseEntity<T> post(String path, Object body, Class<T> responseType) {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -53,6 +59,14 @@ public class SolicitudesHttp {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entity = new HttpEntity<>(body, headers);
         ResponseEntity<T> response = restTemplate.exchange(path, HttpMethod.PATCH, entity, responseType);
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
+    public <T> ResponseEntity<T> postMultipart(String path, Object body, Class<T> responseType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<Object> entity = new HttpEntity<>(body, headers);
+        ResponseEntity<T> response = restTemplate.postForEntity(path, entity, responseType);
         return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 }

@@ -14,7 +14,7 @@ public class ContribuyenteController {
     private final SolicitudesHttp solicitudesHttp;
 
     public ContribuyenteController(ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrl();
+        this.urlBaseAgregador = configService.getUrlAgregador();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
