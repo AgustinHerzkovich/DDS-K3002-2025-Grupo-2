@@ -1,7 +1,6 @@
 package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Etiqueta;
-import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.EtiquetaOutputMapper;
 import aplicacion.dto.output.EtiquetaOutputDTO;
@@ -15,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,12 +65,12 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<HechoOutputDto> obtenerHechoPorId(@PathVariable(name = "id") String id) {
+    public ResponseEntity<?> obtenerHechoPorId(@PathVariable(name = "id") String id) {
         try {
             HechoOutputDto hecho = hechoService.obtenerHechoDto(id);
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -78,19 +78,28 @@ public class HechoController {
     public ResponseEntity<HechoOutputDto> reportarHecho(@Valid @RequestBody HechoReporteInputDto hechoReporteInputDto) {
         HechoOutputDto hecho = hechoService.agregarHechoReportado(hechoReporteInputDto);
         System.out.println("Hecho creado: " + hecho.getId());
-        return ResponseEntity.ok(hecho);
+        return ResponseEntity.status(201).body(hecho);
     }
     @PostMapping("/hechos/{id}/tags")
-    public ResponseEntity<EtiquetaOutputDTO> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) throws HechoNoEncontradoException {
-        Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
-        System.out.println("Se agrego el tag: " + etiquetaName);
-        return ResponseEntity.ok(EtiquetaOutputMapper.map(etiqueta));
+    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
+        try {
+            Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
+            System.out.println("Se agrego el tag: " + etiquetaName);
+            return ResponseEntity.ok(EtiquetaOutputMapper.map(etiqueta));
+        } catch (HechoNoEncontradoException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
     }
     @DeleteMapping("/hechos/{hechoId}/tags/{tag}")
-    public ResponseEntity<Void> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
-        HechoOutputDto hecho = hechoService.eliminarEtiqueta(hechoId, etiquetaName);
-        System.out.println("Se elimino el tag: " + etiquetaName);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) {
+        try {
+            hechoService.eliminarEtiqueta(hechoId, etiquetaName);
+            System.out.println("Se elimino el tag: " + etiquetaName);
+            return ResponseEntity.noContent().build();
+        } catch (HechoNoEncontradoException | EtiquetaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 

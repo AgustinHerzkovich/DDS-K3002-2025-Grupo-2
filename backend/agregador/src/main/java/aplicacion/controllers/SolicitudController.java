@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,15 +35,15 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<SolicitudOutputDto> crearSolicitud(@Valid @RequestBody SolicitudInputDto solicitudDto) {
+    public ResponseEntity<?> crearSolicitud(@Valid @RequestBody SolicitudInputDto solicitudDto) {
         try {
             SolicitudOutputDto solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
             System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHechoId());
-            return ResponseEntity.ok(solicitud);
+            return ResponseEntity.status(201).body(solicitud);
         } catch (MotivoSolicitudException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (HechoNoEncontradoException e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -60,7 +61,7 @@ public class SolicitudController {
 
     @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
-    public ResponseEntity<Void> actualizarEstadoSolicitud(
+    public ResponseEntity<?> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
             @Valid @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){
         List<SolicitudEliminacion> solis;
@@ -73,7 +74,7 @@ public class SolicitudController {
             sol = solicitudService.obtenerSolicitud(id); // El primero es la solicitud a cambiar
             contribuyente = contribuyenteService.obtenerContribuyentePorId(adminId);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
         solicitudService.actualizarEstadoSolicitud(sol, nuevoEstado, contribuyente);

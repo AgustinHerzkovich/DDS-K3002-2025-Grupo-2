@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDto;
@@ -35,7 +36,7 @@ public class ColeccionController {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccionOutput.getId());
-        return ResponseEntity.ok(coleccionOutput);
+        return ResponseEntity.status(201).body(coleccionOutput);
     }
 
     // Operaciones READ sobre Colecciones
@@ -57,8 +58,8 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ColeccionOutputDto mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
-        return coleccionService.obtenerColeccionDTO(idColeccion);
+    public ResponseEntity<ColeccionOutputDto> mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
+        return ResponseEntity.ok(coleccionService.obtenerColeccionDTO(idColeccion));
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
@@ -131,39 +132,39 @@ public class ColeccionController {
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable(name = "id") String idColeccion,
+    public ResponseEntity<?> agregarFuente(@PathVariable(name = "id") String idColeccion,
                                                          @Valid @RequestBody FuenteInputDto fuenteInputDto) {
         ColeccionOutputDto coleccionOutputDto;
         try {
             coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
         }catch (ColeccionNoEncontradaException e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
         return ResponseEntity.ok(coleccionOutputDto);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
-    public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable(name = "id") String idColeccion,
+    public ResponseEntity<?> quitarFuente(@PathVariable(name = "id") String idColeccion,
                                              @PathVariable(name = "fuenteId") String fuenteId) {
         try {
             ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
             System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId);
             return ResponseEntity.ok(coleccion);
         } catch (ColeccionNoEncontradaException | FuenteNoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
-    public ResponseEntity<Void> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
+    public ResponseEntity<?> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);
             System.out.println("Coleccion: " + idColeccion + " eliminada");
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (ColeccionNoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     @GetMapping("/colecciones/index")
