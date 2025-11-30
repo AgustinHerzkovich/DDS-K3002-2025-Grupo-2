@@ -2,13 +2,17 @@ package domain.peticiones;
 
 import domain.excepciones.IdInvalidoException;
 
+import java.util.UUID;
+
 public class Validaciones {
     private Validaciones() {
     }
 
-    public static void validarId(Long id) throws IdInvalidoException {
-        if (id == null || id <= 0) {
-            throw new IdInvalidoException("El ID debe ser un número positivo y no nulo.");
+    public static void validarId(String id) throws IdInvalidoException {
+        try {
+            UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            throw new IdInvalidoException("El ID proporcionado no es válido: " + id);
         }
     }
 }

@@ -29,5 +29,5 @@ public class HechoReporteInputDto {
     private String contenidoTexto;
     private Boolean anonimato;
     private List<MultimediaInputDto> contenidoMultimedia;
-    private Long autor;
+    private String autor;
 }

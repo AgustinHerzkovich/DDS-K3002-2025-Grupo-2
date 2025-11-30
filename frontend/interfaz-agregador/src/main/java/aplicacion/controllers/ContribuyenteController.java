@@ -55,7 +55,7 @@ public class ContribuyenteController {
             HttpServletRequest request,
             @AuthenticationPrincipal OidcUser principal
     ) {
-        Long contribuyenteId = (Long) request.getSession().getAttribute("CONTRIBUYENTE_ID");
+        String contribuyenteId = (String) request.getSession().getAttribute("CONTRIBUYENTE_ID");
 
         if (contribuyenteId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

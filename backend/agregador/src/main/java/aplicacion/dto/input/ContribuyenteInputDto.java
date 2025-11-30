@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContribuyenteInputDto {
+    private String id;
     private Boolean esAdministrador;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private IdentidadContribuyenteInputDto identidad;

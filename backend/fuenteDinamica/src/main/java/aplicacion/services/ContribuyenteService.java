@@ -44,12 +44,12 @@ public class ContribuyenteService {
 
 
 
-    public Contribuyente obtenerContribuyente(Long id) throws ContribuyenteNoConfiguradoException {
+    public Contribuyente obtenerContribuyente(String id) throws ContribuyenteNoConfiguradoException {
         return contribuyenteRepository.findById(id)
                 .orElseThrow(() -> new ContribuyenteNoConfiguradoException("Contribuyente no encontrado con ID: " + id));
     }
 
-    public ContribuyenteOutputDto modificarIdentidadAContribuyente(Long id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
+    public ContribuyenteOutputDto modificarIdentidadAContribuyente(String id, IdentidadContribuyenteInputDto identidadContribuyenteInputDto) throws ContribuyenteNoConfiguradoException {
         IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(identidadContribuyenteInputDto);
         Contribuyente contribuyente = obtenerContribuyente(id);
         contribuyente.setIdentidad(identidad);

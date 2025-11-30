@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 public class RevisionSolicitudInputDto {
     @Size(max = 31, message = "El nuevo estado no puede tener más de 31 caracteres")
     private String nuevoEstado;
-    private Long adminId;
+    private String adminId;
 }

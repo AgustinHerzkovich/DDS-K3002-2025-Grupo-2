@@ -15,7 +15,7 @@ public class ContribuyenteInputMapper implements Mapper<ContribuyenteInputDto, C
 
     public Contribuyente map(ContribuyenteInputDto contribuyenteInputDto) {
         IdentidadContribuyente identidad = identidadContribuyenteInputMapper.map(contribuyenteInputDto.getIdentidad());
-        return new Contribuyente(contribuyenteInputDto.getEsAdministrador(), identidad, contribuyenteInputDto.getMail());
+        return new Contribuyente(contribuyenteInputDto.getId(), contribuyenteInputDto.getEsAdministrador(), identidad, contribuyenteInputDto.getMail());
     }
 }
 

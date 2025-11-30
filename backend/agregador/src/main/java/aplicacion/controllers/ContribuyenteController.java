@@ -31,15 +31,15 @@ public class ContribuyenteController {
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<List<HechoOutputDto>> obtenerHechosContribuyente(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id) {
         try {
             Validaciones.validarId(id);
             List<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id);
             return ResponseEntity.ok(hechos);
         } catch (IdInvalidoException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (ContribuyenteNoConfiguradoException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class ContribuyenteController {
     }
 
     @PatchMapping("/contribuyentes/{id}/identidad")
-    public ResponseEntity<?> modificarIdentidadAContribuyente(@Valid @RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto, @PathVariable(name = "id") Long id) {
+    public ResponseEntity<?> modificarIdentidadAContribuyente(@Valid @RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto, @PathVariable(name = "id") String id) {
         try {
             Validaciones.validarId(id);
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);

@@ -137,7 +137,7 @@ class HechoServiceTest
         Hecho hecho = HechoFactory.crearHechoAleatorio();
         hecho.setAutor(ContribuyenteFactory.crearContribuyenteAleatorio());
         hecho.getAutor().setId(123L);
-        Long contribuyenteId = hecho.getAutor().getId();
+        String contribuyenteId = hecho.getAutor().getId();
         when(contribuyenteService.obtenerContribuyente(contribuyenteId)).thenReturn(hecho.getAutor());
         when(repositorioDeHechos.findByAutorId(contribuyenteId)).thenReturn(List.of(hecho));
         when(hechoOutputMapper.map(hecho)).thenReturn(hechoOutputDto);

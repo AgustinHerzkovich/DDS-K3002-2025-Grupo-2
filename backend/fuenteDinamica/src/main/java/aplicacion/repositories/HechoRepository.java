@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface HechoRepository extends JpaRepository<Hecho, String> {
 
-    List<Hecho> findByAutorId(Long contribuyenteId);
+    List<Hecho> findByAutorId(String contribuyenteId);
 }

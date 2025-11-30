@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContribuyenteOutputDto {
-    private Long id;
+    private String id;
     private Boolean esAdministrador;
     private IdentidadContribuyenteOutputDto identidad;
     private String mail;
