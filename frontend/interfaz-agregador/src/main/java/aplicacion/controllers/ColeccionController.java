@@ -1,5 +1,6 @@
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.TipoAlgoritmoConsenso;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -26,6 +27,8 @@ public class ColeccionController {
                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
                                     @RequestParam(name = "size", defaultValue = "3") Integer size,
                                     Model model) {
+        TokenContext.addToken(model);
+
         PageWrapper<ColeccionOutputDto> pageWrapper = coleccionService
                 .obtenerColecciones(page, size, search)
                 .block();
@@ -64,6 +67,8 @@ public class ColeccionController {
                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                       Model model) {
+        TokenContext.addToken(model);
+
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosIrrestrictosDeColeccion(
                     id, categoria, fechaReporteDesde, fechaReporteHasta,
@@ -123,6 +128,7 @@ public class ColeccionController {
                                                  @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                  @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                  Model model) {
+        TokenContext.addToken(model);
 
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosCuradosDeColeccion(
@@ -171,6 +177,8 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/{id}")
     public String paginaColeccion(@PathVariable(name = "id") String id, Model model) {
+        TokenContext.addToken(model);
+
         ColeccionOutputDto coleccion = coleccionService.obtenerColeccion(id);
         if (coleccion == null) {
             return "error/404"; // Ver si está bien tirar esto o capaz convenga otra cosa

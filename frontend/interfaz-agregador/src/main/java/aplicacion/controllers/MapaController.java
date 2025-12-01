@@ -1,5 +1,6 @@
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.services.GeocodingService;
@@ -39,6 +40,7 @@ public class MapaController {
             @RequestParam(name = "size", defaultValue = "10") Integer size,
             Model model
     ) {
+        TokenContext.addToken(model);
 
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper;

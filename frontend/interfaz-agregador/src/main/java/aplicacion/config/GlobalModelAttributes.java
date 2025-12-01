@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
-
     private final ContribuyenteService contribuyenteService;
+
     private static final Logger log = LoggerFactory.getLogger(GlobalModelAttributes.class);
+
     public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
         this.contribuyenteService = contribuyenteService;
     }
@@ -57,9 +58,6 @@ public class GlobalModelAttributes {
             model.addAttribute("lastName", null);
             model.addAttribute("birthDate", null);
         }
-        log.info("Global model attributes set: isLoggedIn=" + model.getAttribute("isLoggedIn") +
-                ", isAdmin=" + model.getAttribute("isAdmin") +
-                ", userId=" + model.getAttribute("userId"));
     }
 }
 
