@@ -19,6 +19,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,19 +51,24 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudes")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                        @RequestParam(name = "size", defaultValue = "3") Integer size) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authorities: " + auth.getAuthorities());
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO(pageable));
     }
 
     @GetMapping("/solicitudes/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SolicitudOutputDto> obtenerSolicitud(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(solicitudService.obtenerSolicitudDTO(id));
     }
 
     @Transactional
     @PatchMapping ("/solicitudes/{id}/estado")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
             @Valid @RequestBody RevisionSolicitudInputDto revisionSolicitudInputDto){

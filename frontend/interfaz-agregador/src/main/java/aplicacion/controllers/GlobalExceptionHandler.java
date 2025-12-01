@@ -1,5 +1,7 @@
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -10,12 +12,16 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(WebClientRequestException.class)
-    public String handleWebClientRequestException(WebClientRequestException ex) {
+    public String handleWebClientRequestException(WebClientRequestException ex, Model model) {
+        TokenContext.addToken(model);
+
         return "error/502";
     }
 
     @ExceptionHandler(WebClientResponseException.class)
-    public String handleWebClientResponseException(WebClientResponseException ex) {
+    public String handleWebClientResponseException(WebClientResponseException ex, Model model) {
+        TokenContext.addToken(model);
+
         return "error/" + ex.getStatusCode().value();
     }
 }

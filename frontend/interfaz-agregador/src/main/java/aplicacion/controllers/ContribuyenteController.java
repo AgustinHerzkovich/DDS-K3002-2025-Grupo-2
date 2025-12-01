@@ -1,6 +1,7 @@
 // java
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.services.ContribuyenteService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.HttpClientErrorException;
@@ -53,8 +55,11 @@ public class ContribuyenteController {
     public ResponseEntity<?> modificarIdentidad(
             @RequestBody IdentidadContribuyenteInputDto identidadContribuyenteInputDto,
             HttpServletRequest request,
-            @AuthenticationPrincipal OidcUser principal
+            @AuthenticationPrincipal OidcUser principal,
+            Model model
     ) {
+        TokenContext.addToken(model);
+
         String contribuyenteId = (String) request.getSession().getAttribute("CONTRIBUYENTE_ID");
 
         if (contribuyenteId == null) {
