@@ -25,7 +25,7 @@ function agregarEtiqueta() {
 
     fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
         body: JSON.stringify(nombre)
     })
         .then(response => {
@@ -74,7 +74,8 @@ function eliminarEtiqueta(nombreEtiqueta) {
     const nombreCodificado = encodeURIComponent(nombreEtiqueta);
 
     fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
     })
         .then(response => {
             if (response.ok) {
