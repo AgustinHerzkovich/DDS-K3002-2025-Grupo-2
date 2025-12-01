@@ -94,12 +94,12 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
             ? 'http://localhost:8086/apiAdministrativa/hechos'
             : 'http://localhost:8082/fuentesDinamicas/hechos';
 
-        console.log("Token:", window.jwtToken); // TODO: Hacer que se obtenga el token
+        console.log("Token:", jwtToken); // TODO: Hacer que se obtenga el token
 
         // --- Envío al backend ---
         const backendResponse = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + window.jwtToken },
+            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
             body: JSON.stringify(hecho)
         });
 
