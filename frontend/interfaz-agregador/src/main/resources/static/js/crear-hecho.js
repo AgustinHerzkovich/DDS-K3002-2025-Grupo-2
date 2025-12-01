@@ -89,6 +89,7 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
             hecho.autor = window.autorData.id;
         }
 
+        // --- Selección del endpoint ---
         const endpoint = isAdmin
             ? 'http://localhost:8086/apiAdministrativa/hechos'
             : 'http://localhost:8082/fuentesDinamicas/hechos';
@@ -96,7 +97,7 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
         // --- Envío al backend ---
         const backendResponse = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
             body: JSON.stringify(hecho)
         });
 

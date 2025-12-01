@@ -21,7 +21,7 @@ function eliminarColeccion(id) {
 
     fetch('http://localhost:8086/apiAdministrativa/colecciones/' + id, {
         method: 'DELETE',
-        headers: getHeaders()
+        headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
     })
         .then(response => {
             if (response.ok) {

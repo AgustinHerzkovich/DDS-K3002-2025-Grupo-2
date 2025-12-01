@@ -1,4 +1,5 @@
 package aplicacion.controllers;
+import aplicacion.config.TokenContext;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.HechoService;
@@ -28,6 +29,8 @@ public class HechoController {
     @GetMapping("/hechos/{id}")
     public String paginaHecho(@PathVariable(name = "id") String id,
                              Model model) {
+        TokenContext.addToken(model);
+
         HechoOutputDto hecho = hechoService.obtenerHecho(id);
         if (hecho == null) {
             return "error/404"; // Ver si está bien tirar esto o capaz convenga otra cosa
@@ -41,8 +44,11 @@ public class HechoController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> gestionarSolicitud(
             @PathVariable(name = "id") String hechoId,
-            @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto // DTO que contiene ESTADO y SUGERENCIA
+            @RequestBody CambioEstadoRevisionInputDto cambioEstadoDto, // DTO que contiene ESTADO y SUGERENCIA
+            Model model
     ) {
+        TokenContext.addToken(model);
+
         try {
             ResponseEntity<String> response = this.hechoService.gestionarRevision(hechoId, cambioEstadoDto);
 
@@ -63,6 +69,8 @@ public class HechoController {
     @GetMapping("/hechos-pendientes")
     @PreAuthorize("hasRole('ADMIN')")
     public String showHechosPendientes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        TokenContext.addToken(model);
+
         model.addAttribute("principal", oidcUser);
 
 

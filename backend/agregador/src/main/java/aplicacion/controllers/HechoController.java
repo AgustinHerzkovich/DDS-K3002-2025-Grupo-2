@@ -14,8 +14,12 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
@@ -75,12 +79,17 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HechoOutputDto> reportarHecho(@Valid @RequestBody HechoReporteInputDto hechoReporteInputDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authorities: " + auth.getAuthorities());
         HechoOutputDto hecho = hechoService.agregarHechoReportado(hechoReporteInputDto);
         System.out.println("Hecho creado: " + hecho.getId());
         return ResponseEntity.status(201).body(hecho);
     }
+
     @PostMapping("/hechos/{id}/tags")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
         try {
             Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
@@ -92,6 +101,7 @@ public class HechoController {
 
     }
     @DeleteMapping("/hechos/{hechoId}/tags/{tag}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) {
         try {
             hechoService.eliminarEtiqueta(hechoId, etiquetaName);
