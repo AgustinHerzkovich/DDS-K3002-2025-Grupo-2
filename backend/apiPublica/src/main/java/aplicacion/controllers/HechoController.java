@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class HechoController {
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
-    private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
+    private final Cache<String, ResponseEntity<String>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public HechoController(ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
@@ -30,7 +30,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public ResponseEntity<Object> obtenerHechos(
+    public ResponseEntity<String> obtenerHechos(
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -114,25 +114,25 @@ public class HechoController {
 
         // Hacer la petición POST al endpoint GraphQL
         String graphqlUrl = urlBaseAgregador + "/graphql";
-        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
+        return solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class);
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<Object> obtenerHechoPorId(@PathVariable(name = "id") String id) {
+    public ResponseEntity<String> obtenerHechoPorId(@PathVariable(name = "id") String id) {
         String url = urlBaseAgregador + "/hechos/" + id;
-        return solicitudesHttp.get(url, Object.class);
+        return solicitudesHttp.get(url, String.class);
     }
 
     @GetMapping("/hechos/index")
-    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
+    public ResponseEntity<String> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
                                                          @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limite) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         String key = texto + "|" + limite;
-        ResponseEntity<Object> rta = cache.getIfPresent(key);
+        ResponseEntity<String> rta = cache.getIfPresent(key);
         if(rta == null){
-            ResponseEntity<Object> respuesta = solicitudesHttp.get(url.toString(), Object.class);
+            ResponseEntity<String> respuesta = solicitudesHttp.get(url.toString(), String.class);
             cache.put(key, respuesta);
             return respuesta;
         }
@@ -140,7 +140,7 @@ public class HechoController {
     }
     /*
     @GetMapping("/hechos")
-    public ResponseEntity<Object> obtenerHechos(
+    public ResponseEntity<String> obtenerHechos(
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
             @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -163,6 +163,6 @@ public class HechoController {
         UrlHelper.appendQueryParam(url, "search", textoLibre);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
-        return solicitudesHttp.get(url.toString(), Object.class);
+        return solicitudesHttp.get(url.toString(), String.class);
     }*/
 }

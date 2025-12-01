@@ -19,8 +19,8 @@ public class FuenteEstaticaController {
     }
 
     @PostMapping("/archivos/por-url")
-    public ResponseEntity<Object> subirArchivoPorUrl(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, Object.class);
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, String.class);
     }
 
     @PostMapping("/archivos")

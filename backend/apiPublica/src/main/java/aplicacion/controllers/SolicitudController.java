@@ -19,7 +19,7 @@ public class SolicitudController {
     }
 
     @PostMapping("/solicitudes")
-    public ResponseEntity<Object> crearSolicitud(@RequestBody Object body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/solicitudes", body, Object.class);
+    public ResponseEntity<String> crearSolicitud(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/solicitudes", body, String.class);
     }
 }

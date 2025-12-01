@@ -19,32 +19,32 @@ public class ColeccionController {
 
     // --- CREATE ---
     @PostMapping("/colecciones")
-    public ResponseEntity<Object> crearColeccion(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/colecciones", body, Object.class);
+    public ResponseEntity<String> crearColeccion(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/colecciones", body, String.class);
     }
 
     // --- UPDATE ---
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<Object> modificarAlgoritmo(@PathVariable(name = "id") String id,
+    public ResponseEntity<String> modificarAlgoritmo(@PathVariable(name = "id") String id,
                                                    @RequestBody String body) {
-        return solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/algoritmo", body, Object.class);
+        return solicitudesHttp.patch(urlBaseAgregador + "/colecciones/" + id + "/algoritmo", body, String.class);
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<Object> agregarFuente(@PathVariable(name = "id") String id,
+    public ResponseEntity<String> agregarFuente(@PathVariable(name = "id") String id,
                                               @RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, Object.class);
+        return solicitudesHttp.post(urlBaseAgregador + "/colecciones/" + id + "/fuentes", body, String.class);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
-    public ResponseEntity<Void> quitarFuente(@PathVariable(name = "id") String id,
+    public ResponseEntity<String> quitarFuente(@PathVariable(name = "id") String id,
                                              @PathVariable(name = "fuenteId") String fuenteId) {
-        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId, Void.class);
+        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id + "/fuentes/" + fuenteId, String.class);
     }
 
     // --- DELETE ---
     @DeleteMapping("/colecciones/{id}")
-    public ResponseEntity<Void> eliminarColeccion(@PathVariable(name = "id") String id) {
-        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id, void.class);
+    public ResponseEntity<String> eliminarColeccion(@PathVariable(name = "id") String id) {
+        return solicitudesHttp.delete(urlBaseAgregador + "/colecciones/" + id, String.class);
     }
 }
