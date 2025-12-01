@@ -19,23 +19,23 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<String> agregarContribuyente(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, String.class);
+    public ResponseEntity<Object> agregarContribuyente(@RequestBody Object body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, Object.class);
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<String> obtenerHechosContribuyente(@PathVariable(name = "id") String id) {
-        return solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", String.class);
+    public ResponseEntity<Object> obtenerHechosContribuyente(@PathVariable(name = "id") String id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/contribuyentes/" + id + "/hechos", Object.class);
     }
 
     @GetMapping("/contribuyentes")
-    public  ResponseEntity<String> obtenerContribuyentes(@RequestParam(name = "mail", required = false) String mail) {
+    public  ResponseEntity<Object> obtenerContribuyentes(@RequestParam(name = "mail", required = false) String mail) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/contribuyentes");
         UrlHelper.appendQueryParam(url, "mail", mail);
-        return solicitudesHttp.get(url.toString(), String.class);
+        return solicitudesHttp.get(url.toString(), Object.class);
     }
     @PatchMapping("/contribuyentes/{id}/identidad")
-    public ResponseEntity<String> modificarIdentidadAContribuyente(@RequestBody String body , @PathVariable(name = "id") String id) {
-        return solicitudesHttp.patch(urlBaseAgregador + "/contribuyentes/" + id + "/identidad", body, String.class);
+    public ResponseEntity<Object> modificarIdentidadAContribuyente(@RequestBody Object body , @PathVariable(name = "id") String id) {
+        return solicitudesHttp.patch(urlBaseAgregador + "/contribuyentes/" + id + "/identidad", body, Object.class);
     }
 }
