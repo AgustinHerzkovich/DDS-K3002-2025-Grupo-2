@@ -5,6 +5,7 @@ import java.util.List;
 import aplicacion.dto.input.SolicitudInputDto;
 import aplicacion.dto.mappers.SolicitudOutputMapper;
 import aplicacion.dto.output.SolicitudOutputDto;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.domain.hechos.Hecho;
@@ -78,7 +79,7 @@ public class SolicitudService {
     }
 
     @Transactional
-    public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
+    public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
         this.validarMotivoSolicitud(solicitudDto.getMotivo()); // Por las dudas, pero ya se valida antes
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());

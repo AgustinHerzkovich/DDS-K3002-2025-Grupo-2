@@ -57,20 +57,14 @@ public class ContribuyenteService {
     }
 
     @Transactional
-    public Contribuyente obtenerContribuyentePorId(String id) { // Lo usamos para cargar hechos
+    public Contribuyente obtenerContribuyentePorId(String id) throws ContribuyenteNoConfiguradoException { // Lo usamos para crear/actualizar solicitudes de eliminación
         return contribuyenteRepository.findById(id)
                 .map(contribuyente -> {
                     Hibernate.initialize(contribuyente.getId());
                     Hibernate.initialize(contribuyente.getIdentidad());
                     Hibernate.initialize(contribuyente.getSolicitudesEliminacion());
                     return contribuyente;
-                })
-                .orElseGet(() -> { // TODO: Cambiar esto
-                    // Si no existe, lo creamos
-                    Contribuyente nuevo = new Contribuyente(UUID.randomUUID().toString(), false, new IdentidadContribuyente("NombrePorDefecto", "ApellidoPorDefecto", null), "mailPorDefecto");
-                    nuevo.setId(id);
-                    return contribuyenteRepository.save(nuevo);
-                });
+                }).orElseThrow(() -> new ContribuyenteNoConfiguradoException("No existe el contribuyente con ID: " + id));
     }
 
     public Contribuyente obtenerContribuyente(String id) throws ContribuyenteNoConfiguradoException { // Lo usamos para consultar si un contribuyente existe a la hora de login

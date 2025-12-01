@@ -6,6 +6,7 @@ import aplicacion.domain.usuarios.Contribuyente;
 import aplicacion.dto.input.RevisionSolicitudInputDto;
 import aplicacion.dto.input.SolicitudInputDto;
 import aplicacion.dto.output.SolicitudOutputDto;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.services.ContribuyenteService;
@@ -45,7 +46,7 @@ public class SolicitudController {
             return ResponseEntity.status(201).body(solicitud);
         } catch (MotivoSolicitudException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (HechoNoEncontradoException e){
+        } catch (HechoNoEncontradoException | ContribuyenteNoConfiguradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
