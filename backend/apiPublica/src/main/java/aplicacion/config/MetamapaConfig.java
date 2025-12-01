@@ -11,4 +11,9 @@ public class MetamapaConfig {
     private String ipAgregador;
     @JsonProperty("puerto_agregador")
     private int puertoAgregador;
+
+    @JsonProperty("ip_estadisticas")
+    private String ipEstadisticas;
+    @JsonProperty("puerto_estadisticas")
+    private int puertoEstadisticas;
 }

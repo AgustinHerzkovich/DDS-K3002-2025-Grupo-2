@@ -14,11 +14,6 @@ public class MetamapaConfig {
     @JsonProperty("puerto_agregador")
     private int puertoAgregador;
 
-    @JsonProperty("ip_estadisticas")
-    private String ipEstadisticas;
-    @JsonProperty("puerto_estadisticas")
-    private int puertoEstadisticas;
-
     @JsonProperty("ip_fuente_estatica")
     private String ipFuenteEstatica;
     @JsonProperty("puerto_fuente_estatica")

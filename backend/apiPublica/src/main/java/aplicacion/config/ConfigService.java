@@ -21,4 +21,8 @@ public class ConfigService {
     public String getUrlAgregador() {
         return "http://" + config.getIpAgregador() + ":" + config.getPuertoAgregador() + "/agregador";
     }
+
+    public String getUrlEstadisticas() {
+        return "http://" + config.getIpEstadisticas() + ":" + config.getPuertoEstadisticas() + "/estadisticas";
+    }
 }

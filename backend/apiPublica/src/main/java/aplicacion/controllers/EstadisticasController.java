@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/apiAdministrativa")
+@RequestMapping("/apiPublica")
 public class EstadisticasController {
     private final String urlBaseEstadisticas;
     private final SolicitudesHttp solicitudesHttp;

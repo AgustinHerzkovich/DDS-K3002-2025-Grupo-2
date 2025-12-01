@@ -1,8 +1,6 @@
 {
   "ip_agregador": "localhost",
   "puerto_agregador": 8084,
-  "ip_estadisticas": "localhost",
-  "puerto_estadisticas": 8087,
   "ip_fuente_estatica": "localhost",
   "puerto_fuente_estatica": 8081,
   "ip_fuente_proxy": "localhost",

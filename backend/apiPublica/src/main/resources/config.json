@@ -1,4 +1,6 @@
 {
   "ip_agregador": "localhost",
-  "puerto_agregador": 8084
+  "puerto_agregador": 8084,
+  "ip_estadisticas": "localhost",
+  "puerto_estadisticas": 8087
 }
