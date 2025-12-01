@@ -31,7 +31,7 @@ async function crearColeccion() {
 
         const response = await fetch('http://localhost:8086/apiAdministrativa/colecciones', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
             body: JSON.stringify(payload)
         });
 

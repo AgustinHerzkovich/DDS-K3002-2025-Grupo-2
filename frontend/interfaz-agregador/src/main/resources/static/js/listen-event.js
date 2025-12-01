@@ -95,7 +95,7 @@ function listenCambiarAlgoritmoEditarColeccion() {
 
                 const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/algoritmo`, {
                     method: 'PATCH',
-                    headers: getHeaders(),
+                    headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
                     body: JSON.stringify({ algoritmoConsenso: nuevoAlgoritmo })
                 })
 
@@ -133,7 +133,7 @@ function listenEliminarFuenteEditarColeccion() {
 
                 const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/fuentes/${fuenteId}`, {
                     method: 'DELETE',
-                    headers: getHeaders()
+                    headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
                 })
 
                 if (!response.ok) {
@@ -183,7 +183,7 @@ function listenAgregarFuenteEditarColeccion() {
 
         fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccionId}/fuentes`, {
             method: 'POST',
-            headers: getHeaders(),
+            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
             body: JSON.stringify(nuevaFuente)
         })
             .then(response => {

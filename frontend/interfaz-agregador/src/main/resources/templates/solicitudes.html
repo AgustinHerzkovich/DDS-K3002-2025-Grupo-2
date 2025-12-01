@@ -19,9 +19,7 @@
         function modificarEstadoSolicitud(solicitudId, nuevoEstado) {
             fetch(`http://localhost:8086/apiAdministrativa/solicitudes/${solicitudId}/estado`, {
                 method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
                 body: JSON.stringify({ nuevoEstado: nuevoEstado, adminId: userId }),
             })
                     .then(response => {

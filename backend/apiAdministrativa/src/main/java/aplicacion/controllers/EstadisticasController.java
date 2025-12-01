@@ -23,7 +23,7 @@ public class EstadisticasController {
     public ResponseEntity<?> provinciasDeColeccion(@RequestParam(name = "idColeccion", required = false) String idColeccion,
                                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(name = "limit", defaultValue = "1") Integer limit,
-                                                   @RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+                                                   @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeColeccion");
         UrlHelper.appendQueryParam(url, "idColeccion", idColeccion);
         UrlHelper.appendQueryParam(url, "page", page);
@@ -38,7 +38,7 @@ public class EstadisticasController {
     @GetMapping("/categoriasConMasHechos")
     public ResponseEntity<?> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "limit", defaultValue = "1") Integer limit,
-                                                            @RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+                                                            @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasConMasHechos");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
@@ -53,7 +53,7 @@ public class EstadisticasController {
     public ResponseEntity<?> provinciaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "1") Integer limit,
-                                                              @RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+                                                              @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeCategoria");
         UrlHelper.appendQueryParam(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
@@ -69,7 +69,7 @@ public class EstadisticasController {
     public ResponseEntity<?> horaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                          @RequestParam(name = "limit", defaultValue = "1") Integer limit,
-                                                         @RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+                                                         @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/horaConMasHechosDeCategoria");
         UrlHelper.appendQueryParam(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
@@ -82,7 +82,7 @@ public class EstadisticasController {
     }
 
     @GetMapping("/solicitudesDeEliminacionSpam")
-    public ResponseEntity<?> solicitudesSpam(@RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+    public ResponseEntity<?> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/solicitudesDeEliminacionSpam");
 
         HttpHeaders headers = new HttpHeaders();

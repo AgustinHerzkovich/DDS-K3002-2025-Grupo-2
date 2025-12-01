@@ -4,6 +4,7 @@ import aplicacion.config.ConfigService;
 import domain.helpers.UrlHelper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class SolicitudController {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/solicitudes");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
+
         return solicitudesHttp.get(url.toString(), Object.class);
     }
 

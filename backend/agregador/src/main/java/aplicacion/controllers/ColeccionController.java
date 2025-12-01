@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDto;
 import java.net.URLDecoder;
@@ -32,6 +33,7 @@ public class ColeccionController {
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
@@ -124,6 +126,7 @@ public class ColeccionController {
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
                                                    @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
@@ -132,6 +135,7 @@ public class ColeccionController {
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> agregarFuente(@PathVariable(name = "id") String idColeccion,
                                                          @Valid @RequestBody FuenteInputDto fuenteInputDto) {
         ColeccionOutputDto coleccionOutputDto;
@@ -145,6 +149,7 @@ public class ColeccionController {
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> quitarFuente(@PathVariable(name = "id") String idColeccion,
                                              @PathVariable(name = "fuenteId") String fuenteId) {
         try {
@@ -158,6 +163,7 @@ public class ColeccionController {
 
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);
