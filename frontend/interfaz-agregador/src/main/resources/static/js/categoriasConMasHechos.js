@@ -92,7 +92,39 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error cargando categorías con más hechos:", err);
             });
     }
+    document.getElementById("btn-descargar-csv").addEventListener("click", () => {
 
+        fetch(`http://localhost:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`, {
+            method: "GET",
+            headers: {
+                "Accept": "text/csv" 
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("No se pudo descargar el CSV.");
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "estadisticas.csv";
+
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(err => {
+                console.error("Error descargando CSV:", err);
+                alert("Hubo un error al descargar el archivo.");
+            });
+
+    });
     actualizarSlider();
     cargarGrafico();
 });
