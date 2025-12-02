@@ -17,14 +17,14 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
     // Se puede usar para borrar todos los paths no manuales
-
+    /*
     @Bean
     public GroupedOpenApi manualApi() {
         return GroupedOpenApi.builder()
                 .group("manual")
                 .packagesToScan("")
                 .build();
-    }
+    }*/
     @Bean
     public OpenAPI customOpenAPI() {
 

@@ -90,4 +90,30 @@ public class EstadisticasController {
 
         return solicitudesHttp.get(url.toString(), headers, String.class);
     }
+
+
+    @GetMapping("/estadisticas/categorias")
+    public ResponseEntity<String> categoriasDisponibles(@RequestParam(name = "search", required = false) String search,
+                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
+        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/horaConMasHechosDeCategoria");
+        UrlHelper.appendQueryParam(url, "search", search);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "limit", limit);
+
+        return solicitudesHttp.get(url.toString(), String.class);
+    }
+
+
+    @GetMapping("/estadisticas/colecciones")
+    public ResponseEntity<String> coleccionesDisponibles(@RequestParam(name = "search", required = false) String search,
+                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
+        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/horaConMasHechosDeCategoria");
+        UrlHelper.appendQueryParam(url, "search", search);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "limit", limit);
+
+        return solicitudesHttp.get(url.toString(), String.class);
+    }
 }
