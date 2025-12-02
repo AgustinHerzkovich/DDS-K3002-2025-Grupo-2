@@ -12,7 +12,7 @@
                 <input type="text" id="input-busqueda-categorias" placeholder="Buscar categorías..." />
 
                 <ul id="lista-categorias" class="lista-categorias"></ul>
-
+                
                 <div class="paginacion-categorias">
                     <button id="btn-anterior" disabled>Anterior</button>
                     <span id="pagina-actual">1</span>
@@ -28,11 +28,12 @@
                     <div class="slider-container">
                         <label for="slider-limite-provincias">Mostrar hasta <span id="valor-slider">10</span> provincias</label>
                         <input type="range" id="slider-limite-provincias" min="1" max="50" value="10" />
-                        <button id="btn-actualizar-provincias">Actualizar gráfico</button>
+                        <button id="btn-actualizar-provincias" style="display:block; margin-bottom:10px;">Actualizar gráfico</button>
                     </div>
-
-
+                    
+                    
                     <canvas id="chart-provincias"></canvas>
+                    <button id="btn-descargar-csv" style="display:block;" class="btn-descargar-csv">Descargar como CSV</button>
                 </div>
 
                 <div class="tarjeta-grafico" id="tarjeta-hora" style="display:none;">
@@ -42,6 +43,6 @@
 
         </div>
 
-        <script src="/js/estadisticas-categorias.js" defer ></script>
+        <script type="module" src="/js/estadisticas-categorias.js" defer ></script>
     </main>
 </th:block>

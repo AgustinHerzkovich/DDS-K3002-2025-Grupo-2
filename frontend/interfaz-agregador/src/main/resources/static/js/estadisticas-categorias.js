@@ -1,3 +1,5 @@
+import { configurarDescargaCSV } from "./botonDescargarCSV.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     const listaCategorias = document.getElementById("lista-categorias");
     const inputBusqueda = document.getElementById("input-busqueda-categorias");
@@ -153,5 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarCategorias();
     });
 
+    configurarDescargaCSV("btn-descargar-csv", `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`, "estadisticas.csv")
+    
     cargarCategorias();
 });

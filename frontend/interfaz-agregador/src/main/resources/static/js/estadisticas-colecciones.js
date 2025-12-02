@@ -1,3 +1,5 @@
+import {configurarDescargaCSV} from './botonDescargarCSV.js'
+
 document.addEventListener("DOMContentLoaded", () => {
     const listaColecciones = document.getElementById("lista-colecciones");
     const inputBusqueda = document.getElementById("input-busqueda-colecciones");
@@ -132,6 +134,9 @@ document.addEventListener("DOMContentLoaded", () => {
         paginaActual = 0;
         cargarColecciones();
     });
+
+    configurarDescargaCSV("btn-descargar-csv", `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, "estadisticas.csv")
+
 
     cargarColecciones();
 });
