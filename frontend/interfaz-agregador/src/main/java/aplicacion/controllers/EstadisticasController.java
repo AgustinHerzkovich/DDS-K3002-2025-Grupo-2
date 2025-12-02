@@ -22,6 +22,11 @@ public class EstadisticasController {
         TokenContext.addToken(model);
         return "estadisticasCategorias";
     }
+    @GetMapping({"/stats/categoriasMasHechos"})
+    public String paginaEstadisticasCategoriasConMasHechos(Model model){
+        TokenContext.addToken(model);
+        return "estadisticasCategoriasMasHechos";
+    }
     @GetMapping({"/stats/solicitudes"})
     public String paginaEstadisticasSolicitudes(Model model){
         TokenContext.addToken(model);

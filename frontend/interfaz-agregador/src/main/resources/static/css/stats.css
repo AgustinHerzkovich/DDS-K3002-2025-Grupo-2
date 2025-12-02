@@ -1,6 +1,6 @@
 .contenedor-botones-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     width: 100%;
     max-width: 1400px;
@@ -51,6 +51,11 @@
 .btn-solicitudes-stats {
     background: #fff3e0;
     color: #e65100;
+}
+
+.btn-categorias-mas-hechos {
+    background: #fffdbe; 
+    color: #5e5f00
 }
 
 @media (max-width: 900px) {
