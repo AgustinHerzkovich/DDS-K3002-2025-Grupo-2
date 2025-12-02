@@ -18,19 +18,19 @@ public class HechoController {
     }
 
     @PostMapping("/hechos/{id}/tags")
-    public ResponseEntity<String> agregarEtiqueta(@PathVariable(name = "id") String id, @RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/hechos/" + id + "/tags", body, String.class);
+    public ResponseEntity<Object> agregarEtiqueta(@PathVariable(name = "id") String id, @RequestBody String body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/hechos/" + id + "/tags", body, Object.class);
     }
 
     @DeleteMapping("/hechos/{id}/tags/{nombreTag}")
-    public ResponseEntity<String> quitarEtiqueta(@PathVariable(name = "id") String id,
+    public ResponseEntity<Object> quitarEtiqueta(@PathVariable(name = "id") String id,
                                              @PathVariable(name = "nombreTag") String nombreTag) {
-        return solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, String.class);
+        return solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, Object.class);
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<String> reportarHecho(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseAgregador + "/hechos", body, String.class);
+    public ResponseEntity<Object> reportarHecho(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseAgregador + "/hechos", body, Object.class);
     }
 }
 
