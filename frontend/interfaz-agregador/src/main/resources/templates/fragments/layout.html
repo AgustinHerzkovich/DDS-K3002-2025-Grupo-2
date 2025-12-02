@@ -28,9 +28,10 @@
         <link rel="stylesheet" href="/css/form.css">
         <link rel="stylesheet" href="/css/button.css">
     </head>
-    <body  class="font-roboto bg-gray-50 min-h-screen">
+    <body class="font-roboto bg-gray-50 min-h-screen">
         <!-- Header -->
         <th:block th:replace="~{fragments/header :: navbar(${isMapPage})}" />
+
         <!-- Main -->
         <th:block th:replace="${contenido}" />
 
