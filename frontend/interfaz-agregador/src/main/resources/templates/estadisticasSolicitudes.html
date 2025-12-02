@@ -1,0 +1,87 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+</th:block>
+
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <h1 class="titulo-estadisticas">Estadísticas de Solicitudes</h1>
+
+        <div class="tarjeta-estadisticas-solicitudes">
+            <h2 class="subtitulo-estadisticas-solicitudes">Solicitudes de eliminación marcadas como spam</h2>
+
+            <div class="contenedor-grafico-solicitudes" id="contenedor-grafico-solicitudes">
+                <canvas id="grafico-solicitudes-spam"></canvas>
+            </div>
+
+            <div id="contenedor-no-solicitudes" class="contenedor-no-solicitudes" style="display:none;">
+                <p class="mensaje-sin-solicitudes">No hay solicitudes.</p>
+            </div>
+            
+            <div id="contenedor-error-solicitudes" class="contenedor-error-solicitudes" style="display:none;">
+                <p class="mensaje-error-solicitudes">Error al cargar las estadísticas.</p>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                fetch("http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam")
+                    .then(resp => resp.json())
+                    .then(data => {
+                        const spam = data.cantidadSolicitudesSpam;
+                        const total = data.cantidadSolicitudesTotales;
+
+                        if (total === 0) {
+                            document.getElementById("contenedor-grafico-solicitudes").style.display = "none";
+                            document.getElementById("contenedor-no-solicitudes").style.display = "flex";
+                            return;
+                        }
+
+                        const noSpam = total - spam;
+                        const ctx = document.getElementById("grafico-solicitudes-spam");
+
+                        new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: ['Spam', 'No spam'],
+                                datasets: [{
+                                    data: [spam, noSpam],
+                                    backgroundColor: ['#ef5350', '#66bb6a'],
+                                    borderColor: ['#c62828', '#2e7d32'],
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                layout: {
+                                    padding: {
+                                        top: 40,
+                                        bottom: 40,
+                                        left: 20,
+                                        right: 20
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: { 
+                                            font: { size: 14 },
+                                             padding: 50 
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.error("Error cargando datos:", err);
+                        document.getElementById("contenedor-grafico-solicitudes").style.display = "none";
+                        document.getElementById("contenedor-error-solicitudes").style.display = "flex";
+                    });
+            });
+        </script>
+
+    </main>
+</th:block>
