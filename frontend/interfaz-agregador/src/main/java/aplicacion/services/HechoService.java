@@ -22,15 +22,13 @@ import java.util.List;
 
 @Service
 public class HechoService {
-    @Value("8082")
-    private String fuenteDinamicaPort;
-
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
-    private final String FUENTE_DINAMICA_URL = "http://localhost:8082/fuentesDinamicas/hechos";
+    private WebClient webClientPublica;
 
-    private WebClient webClient;
-    private WebClient fuentesDinamicasWebClient;
+    @Value("${api.administrativa.port}")
+    private String apiAdministrativaPort;
+    private WebClient webClientAdministrativa;
 
     private final GeocodingService geocodingService;
 
@@ -40,7 +38,7 @@ public class HechoService {
 
     @PostConstruct
     public void init() {
-        this.webClient = WebClient.builder()
+        this.webClientPublica = WebClient.builder()
                 .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
@@ -49,12 +47,19 @@ public class HechoService {
                         )
                         .build())
                 .build();
-        this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
+        this.webClientAdministrativa = WebClient.builder()
+                .baseUrl("http://localhost:" + apiAdministrativaPort + "/apiAdministrativa")
+                .exchangeStrategies(ExchangeStrategies.builder()
+                        .codecs(configurer ->
+                                configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB
+                        )
+                        .build())
+                .build();
     }
 
     // Metodo que devuelve un Flux de hechos con direcciones calculadas
     public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechos(Integer page, Integer size) {
-        return webClient.get()
+        return webClientPublica.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/hechos")
                         .queryParam("page", page)
@@ -89,7 +94,7 @@ public class HechoService {
     }
 
     public HechoOutputDto obtenerHecho(String id) {
-        HechoOutputDto hecho = webClient.get()
+        HechoOutputDto hecho = webClientPublica.get()
                 .uri("/hechos/{id}", id)
                 .retrieve()
                 .bodyToMono(HechoOutputDto.class)
@@ -127,7 +132,7 @@ public class HechoService {
             Integer page,
             Integer size
     ) {
-        return webClient.get()
+        return webClientPublica.get()
                 .uri(uriBuilder -> {
                     uriBuilder.path("/hechos");
 
@@ -178,7 +183,7 @@ public class HechoService {
 
     public List<HechoOutputDto> obtenerHechosPendientes() {
         try {
-            List<HechoOutputDto> lista = fuentesDinamicasWebClient.get()
+            List<HechoOutputDto> lista = webClientAdministrativa.get()
                     .uri("/hechos?pendiente=true")
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
@@ -210,7 +215,7 @@ public class HechoService {
     public ResponseEntity<String> gestionarRevision(String hechoId, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HttpClientErrorException {
 
         try {
-            ResponseEntity<String> response = fuentesDinamicasWebClient.patch() // USAR fuentesDinamicasWebClient
+            ResponseEntity<String> response = webClientAdministrativa.patch() // USAR webClientAdministrativa
                     .uri("/hechos/{hechoId}/estadoRevision", hechoId) // URI relativo
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(cambioEstadoRevisionInputDto)

@@ -33,11 +33,8 @@ public class ContribuyenteService {
     @Value("${keycloak.admin-client.secret}")
     private String ADMIN_CLIENT_SECRET;
     private WebClient webClient;
-    private WebClient fuenteDinamicaWebClient;
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
-    @Value("8082")
-    private Integer fuenteDinamicaPort;
 
     public ContribuyenteService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -48,7 +45,6 @@ public class ContribuyenteService {
         this.webClient = WebClient.builder()
                 .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
                 .build();
-        this.fuenteDinamicaWebClient =WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
     public ContribuyenteOutputDto obtenerContribuyentePorMail(OidcUser oidcUser) {
@@ -137,25 +133,6 @@ public class ContribuyenteService {
         try {
 
             this.webClient.patch() // Usamos PATCH
-                    .uri( "/contribuyentes/{id}/identidad", contribuyenteId)
-                    .bodyValue(identidadDto)
-                    .retrieve()
-                    .toBodilessEntity()
-                    .block();
-
-        } catch (org.springframework.web.reactive.function.client.WebClientResponseException webClientEx) {
-
-            System.err.println("ERROR API de Identidad (" + webClientEx.getStatusCode() + "): " + webClientEx.getResponseBodyAsString());
-            throw new HttpClientErrorException(webClientEx.getStatusCode(), webClientEx.getResponseBodyAsString());
-
-        } catch (Exception e) {
-            System.err.println("ERROR al procesar identidad: " + e.getMessage());
-            throw new RuntimeException("Fallo de comunicación interna al actualizar la identidad.", e);
-        }
-
-        try {
-
-            this.fuenteDinamicaWebClient.patch() // Usamos PATCH
                     .uri( "/contribuyentes/{id}/identidad", contribuyenteId)
                     .bodyValue(identidadDto)
                     .retrieve()

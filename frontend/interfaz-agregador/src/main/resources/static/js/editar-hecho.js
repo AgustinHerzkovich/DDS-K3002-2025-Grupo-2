@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function guardarEdicion(hechoId) {
     try {
-        const response = await fetch(`http://localhost:8082/fuentesDinamicas/hechos/${hechoId}`, {
+        const response = await fetch(`http://localhost:8085/apiPublica/hechos/${hechoId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

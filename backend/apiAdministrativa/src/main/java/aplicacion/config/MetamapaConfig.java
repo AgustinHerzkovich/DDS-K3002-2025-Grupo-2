@@ -23,4 +23,9 @@ public class MetamapaConfig {
     private String ipFuenteProxy;
     @JsonProperty("puerto_fuente_proxy")
     private int puertoFuenteProxy;
+
+    @JsonProperty("ip_fuente_dinamica")
+    private String ipFuenteDinamica;
+    @JsonProperty("puerto_fuente_dinamica")
+    private int puertoFuenteDinamica;
 }

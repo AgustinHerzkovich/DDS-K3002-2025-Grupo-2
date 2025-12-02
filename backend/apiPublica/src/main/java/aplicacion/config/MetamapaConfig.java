@@ -16,4 +16,9 @@ public class MetamapaConfig {
     private String ipEstadisticas;
     @JsonProperty("puerto_estadisticas")
     private int puertoEstadisticas;
+
+    @JsonProperty("ip_fuente_dinamica")
+    private String ipFuenteDinamica;
+    @JsonProperty("puerto_fuente_dinamica")
+    private int puertoFuenteDinamica;
 }

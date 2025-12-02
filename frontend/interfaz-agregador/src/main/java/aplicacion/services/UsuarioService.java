@@ -4,7 +4,6 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -17,16 +16,12 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private WebClient webClient;
-    private WebClient fuentesDinamicasWebClient;
     @Value("${api.publica.port}")
     private Integer apiPublicaPort;
-    @Value("8082")
-    private String fuenteDinamicaPort;
+
     @PostConstruct
     public void init() {
-
         this.webClient = WebClient.create("http://localhost:" + apiPublicaPort + "/apiPublica");
-        this.fuentesDinamicasWebClient = WebClient.create("http://localhost:" + fuenteDinamicaPort + "/fuentesDinamicas");
     }
 
     public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {
@@ -62,23 +57,11 @@ public class UsuarioService {
                     .retrieve()
                     .bodyToMono(ContribuyenteOutputDto.class) // <--- Obtiene el cuerpo de la respuesta
                     .block();
-            System.out.println("Se registro al usuario en Agregador");
+            System.out.println("Se registro al usuario en Metamapa");
         } catch (Exception e) {
             System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
         }
 
-        // 3. LLAMADA A FUENTES DINÁMICAS (usando el mismo DTO de entrada)
-        try {
-            fuentesDinamicasWebClient.post()
-                    .uri("/contribuyentes")
-                    .bodyValue(contribuyente) // Usamos el mismo DTO de entrada (ContribuyenteInputDto)
-                    .retrieve()
-                    .toBodilessEntity()
-                    .block();
-            System.out.println("Se registro el usuario en fuenteDinamica");
-        } catch (Exception e) {
-            System.err.println("Error al registrar el usuario en Fuentes Dinámicas: " + e.getMessage());
-        }
         return contribuyenteDevueltoDto;
     }
 

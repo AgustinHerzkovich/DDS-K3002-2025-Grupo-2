@@ -25,4 +25,8 @@ public class ConfigService {
     public String getUrlEstadisticas() {
         return "http://" + config.getIpEstadisticas() + ":" + config.getPuertoEstadisticas() + "/estadisticas";
     }
+
+    public String getUrlFuentesDinamicas() {
+        return "http://" + config.getIpFuenteDinamica() + ":" + config.getPuertoFuenteDinamica() + "/fuentesDinamicas";
+    }
 }

@@ -92,7 +92,7 @@ async function publicarHecho(closeBtn, usarCoordenadasCheck) {
         // --- Selección del endpoint ---
         const endpoint = isAdmin
             ? 'http://localhost:8086/apiAdministrativa/hechos'
-            : 'http://localhost:8082/fuentesDinamicas/hechos';
+            : 'http://localhost:8085/apiPublica/hechos';
 
         // --- Envío al backend ---
         const backendResponse = await fetch(endpoint, {

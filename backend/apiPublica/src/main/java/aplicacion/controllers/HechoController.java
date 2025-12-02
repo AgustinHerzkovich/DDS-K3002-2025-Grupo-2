@@ -21,11 +21,13 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/apiPublica")
 public class HechoController {
     private final String urlBaseAgregador;
+    private final String urlBaseDinamicas;
     private final SolicitudesHttp solicitudesHttp;
     private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public HechoController(ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
+        this.urlBaseDinamicas = configService.getUrlFuentesDinamicas();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
@@ -138,6 +140,19 @@ public class HechoController {
         }
         return rta;
     }
+
+    @PostMapping("/hechos")
+    public ResponseEntity<Object> agregarHecho(@RequestBody String body) { // Para postear hechos como contribuyente
+        String url = urlBaseDinamicas + "/hechos";
+        return solicitudesHttp.post(url, body, Object.class);
+    }
+
+    @PatchMapping("/hechos/{id}")
+    public ResponseEntity<Object> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) { // Para editar hechos como contribuyente
+        String url = urlBaseDinamicas + "/hechos/" + id;
+        return solicitudesHttp.patch(url, body, Object.class);
+    }
+
     /*
     @GetMapping("/hechos")
     public ResponseEntity<String> obtenerHechos(

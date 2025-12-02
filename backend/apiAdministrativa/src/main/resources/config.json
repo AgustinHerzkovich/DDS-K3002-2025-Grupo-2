@@ -4,5 +4,7 @@
   "ip_fuente_estatica": "localhost",
   "puerto_fuente_estatica": 8081,
   "ip_fuente_proxy": "localhost",
-  "puerto_fuente_proxy": 8083
+  "puerto_fuente_proxy": 8083,
+  "ip_fuente_dinamica": "localhost",
+  "puerto_fuente_dinamica": 8082
 }

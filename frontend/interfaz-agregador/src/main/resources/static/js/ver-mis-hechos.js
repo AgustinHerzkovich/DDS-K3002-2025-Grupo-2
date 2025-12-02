@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeBtn = document.getElementById("salir-mis-hechos");
     const autorId = window.autorData.id;
     const listaMisHechos = document.getElementById("lista-mis-hechos")
-    const endpoint = isAdmin ? `http://localhost:8085/apiPublica/contribuyentes/${autorId}/hechos` : `http://localhost:8082/fuentesDinamicas/contribuyentes/${autorId}/hechos`;
+    const endpoint = isAdmin ? `http://localhost:8086/apiAdministrativa/contribuyentes/${autorId}/hechos` : `http://localhost:8085/apiPublica/contribuyentes/${autorId}/hechos`;
 
     if (allElementsFound([modal, openBtn, closeBtn, autorId, listaMisHechos], "ver mis hechos")) {
         fetch(endpoint)

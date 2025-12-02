@@ -33,4 +33,8 @@ public class ConfigService {
     public String getUrlFuentesProxy() {
         return "http://" + config.getIpFuenteProxy() + ":" + config.getPuertoFuenteProxy() + "/fuentesProxy";
     }
+
+    public String getUrlFuentesDinamicas() {
+        return "http://" + config.getIpFuenteDinamica() + ":" + config.getPuertoFuenteDinamica() + "/fuentesDinamicas";
+    }
 }
