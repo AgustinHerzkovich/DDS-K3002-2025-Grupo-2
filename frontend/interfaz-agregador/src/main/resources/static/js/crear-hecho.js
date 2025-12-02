@@ -3,116 +3,63 @@ document.addEventListener("DOMContentLoaded", function() {
     const openBtn = document.getElementById("menu-crear-hecho");
     const closeBtn = document.getElementById("salir-crear-hecho");
     const confirmBtn = document.getElementById("crear-hecho")
-    const usarCoordenadasCheck = document.getElementById("crear-hecho-usar-coordenadas");
+    const crearHechoTitle = document.getElementById("modal-crear-hecho-titulo")
     const multimediaCountObject = {multimediaCount : 0};
 
-    if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, usarCoordenadasCheck], "crear hecho")) {
+    if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear hecho")) {
         listenOpenModal(modal, openBtn, () => {
             document.getElementById("dropdown-menu").classList.add("hidden")
-            openBtn.parentElement.classList.remove("hidden")
+            crearHechoTitle.classList.remove("hidden")
+            confirmBtn.parentElement.classList.remove("hidden")
+            closeBtn.parentElement.classList.remove("hidden")
         })
-        listenCloseModal(modal, closeBtn, () => limpiarModalHecho(multimediaCountObject))
+        listenCloseModal(modal, closeBtn, () => {
+            limpiarModalHecho(modal, multimediaCountObject)
+            crearHechoTitle.classList.add("hidden")
+            confirmBtn.parentElement.classList.add("hidden")
+            closeBtn.parentElement.classList.add("hidden")
+        })
+        listenCamposUbicacionCrearHecho()
+        listenAgregarMultimediaModalHecho(multimediaCountObject)
+
+        confirmBtn.addEventListener('click', async function() {
+            const inputsObligatorios = validarFormularioModalHecho()
+
+            if(!document.querySelector('#form-modal-hecho .form-not-completed')) {
+                await publicarHecho(inputsObligatorios)
+            }
+        });
     }
 });
 
-async function publicarHecho(closeBtn, usarCoordenadasCheck) {
+async function publicarHecho(inputsObligatorios) {
     try {
         mostrarCargando("crear-hecho")
 
-        // --- Datos del formulario ---
-        const titulo = document.getElementById('crear-hecho-titulo').value.trim();
-        const descripcion = document.getElementById('crear-hecho-descripcion').value.trim();
-        const categoria = document.getElementById('crear-hecho-categoria').value.trim();
-        const fechaInput = document.getElementById('crear-hecho-fecha').value;
-        const contenidoTexto = document.getElementById('crear-hecho-contenido-texto').value.trim();
-        const anonimato = document.getElementById('crear-hecho-anonimato').checked;
-        let ubicacion = { latitud: null, longitud: null };
+        const payload = await getPayloadCrearHecho(inputsObligatorios)
+        console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
 
-        if (!fechaInput || !contenidoTexto) {
-            throw new Error('Por favor complete todos los campos obligatorios (*)');
-        }
-        // Validar campos obligatorios básicos
-        if (!titulo || !descripcion || !categoria) {
-            throw new Error('Por favor complete todos los campos obligatorios (*)');
-        }
-
-        const fechaAcontecimiento = fechaInput + ':00';
-        const urlsMultimedia = recopilarMultimediasEditarHecho();
-
-        // --- Ubicación ---
-        if (usarCoordenadasCheck) {
-            const latitud = parseFloat(document.getElementById('crear-hecho-latitud').value);
-            const longitud = parseFloat(document.getElementById('crear-hecho-longitud').value);
-            if (isNaN(latitud) || isNaN(longitud)) {
-                throw new Error('Debe ingresar una latitúd y longitúd válidas.');
-            }
-            ubicacion = { latitud, longitud };
-        } else {
-            const pais = document.getElementById('crear-hecho-pais').value.trim();
-            const provincia = document.getElementById('crear-hecho-provincia').value.trim();
-            const ciudad = document.getElementById('crear-hecho-ciudad').value.trim();
-            const calle = document.getElementById('crear-hecho-calle').value.trim();
-            const altura = document.getElementById('crear-hecho-altura').value.trim();
-
-            if (!pais || !provincia || !ciudad || !calle || !altura) {
-                throw new Error('Por favor complete todos los campos de dirección.');
-            }
-
-            const direccionCompleta = `${calle} ${altura}, ${ciudad}, ${provincia}, ${pais}`;
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`,
-                { headers: { "User-Agent": "MetaMapa/1.0" } }
-            );
-            const data = await response.json();
-
-            if (!data || data.length === 0) {
-                throw new Error('No se pudo obtener la ubicación geográfica. Verifique la dirección ingresada.');
-            }
-
-            ubicacion = { latitud: parseFloat(data[0].lat), longitud: parseFloat(data[0].lon) };
-        }
-
-        // --- Objeto Hecho ---
-        const hecho = {
-            titulo,
-            descripcion,
-            categoria: { nombre: categoria },
-            ubicacion,
-            fechaAcontecimiento,
-            origen: isAdmin ? 'CARGA_MANUAL' : 'CONTRIBUYENTE',
-            contenidoTexto,
-            contenidoMultimedia: urlsMultimedia,
-            anonimato
-        };
-
-        if (!anonimato && window.autorData) {
-            hecho.autor = window.autorData.id;
-        }
-
-        // --- Selección del endpoint ---
         const endpoint = isAdmin
             ? 'http://localhost:8086/apiAdministrativa/hechos'
             : 'http://localhost:8085/apiPublica/hechos';
 
-        // --- Envío al backend ---
-        const backendResponse = await fetch(endpoint, {
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
-            body: JSON.stringify(hecho)
+            body: JSON.stringify(payload)
         });
 
-        if (!backendResponse.ok) {
-            const text = await backendResponse.text();
-            throw new Error('Error al publicar el hecho: ' + (text || backendResponse.status));
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText ? `Error al publicar el hecho:\n${errorText}` : "Error al publicar el hecho")
         }
 
         alert('Hecho publicado exitosamente');
-        closeBtn.click();
-        location.reload();
-
+        document.getElementById("salir-crear-hecho").click();
+        window.location.reload();
     } catch (error) {
         console.error(error);
-        alert(`Error al publicar el hecho:\n${error.message}`);
+        alert(error.message);
     } finally {
         ocultarCargando("crear-hecho")
     }

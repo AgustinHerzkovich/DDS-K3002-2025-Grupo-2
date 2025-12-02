@@ -53,7 +53,6 @@ async function crearColeccion(inputsObligatorios) {
         mostrarCargando("crear-coleccion");
 
         const payload = getPayloadColeccion(inputsObligatorios)
-
         console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
 
         const response = await fetch('http://localhost:8086/apiAdministrativa/colecciones', {
@@ -70,7 +69,6 @@ async function crearColeccion(inputsObligatorios) {
         alert("Colección creada con éxito");
         document.getElementById("salir-crear-coleccion").click();
         window.location.reload()
-
     } catch (error) {
         console.error(error);
         alert(error.message);

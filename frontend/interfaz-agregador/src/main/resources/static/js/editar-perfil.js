@@ -21,9 +21,7 @@ function obtenerDatosPerfil() {
     document.getElementById('perfil-nombre').value = data.nombre || '';
     document.getElementById('perfil-apellido').value = data.apellido || '';
     document.getElementById('perfil-email').value = data.email || '';
-
-    const fechaNacimiento = data.fechaNacimiento;
-    document.getElementById('perfil-fecha-nacimiento').value = fechaNacimiento || '';
+    document.getElementById('perfil-fecha-nacimiento').value = data.fechaNacimiento || '';
 }
 
 function guardarPerfil() {

@@ -256,19 +256,19 @@ function listenScrollableArrowHome(scrollArrowBtn) {
     });
 }
 
-function listenAgregarMultimediaCrearHecho(object) {
-    const agregarMultimediaBtn = document.getElementById("crear-hecho-agregar-multimedia");
-    const container = document.getElementById('crear-hecho-multimedia-container');
+function listenAgregarMultimediaModalHecho(object) {
+    const agregarMultimediaBtn = document.getElementById("modal-hecho-agregar-multimedia");
+    const container = document.getElementById('modal-hecho-multimedia-container');
 
     agregarMultimediaBtn.addEventListener("click", function() {
         object.multimediaCount++;
 
         const multimediaDiv = document.createElement('div');
-        multimediaDiv.className = 'multimedia-item flex items-center gap-2 mb-[1rem]';
+        multimediaDiv.className = 'flex items-center gap-2 mb-[1rem]';
         multimediaDiv.id = `multimedia-${object.multimediaCount}`;
 
         multimediaDiv.innerHTML = `
-                <input type="text" class="form-input" maxlength="500"
+                <input type="text" class="form-input multimedia-input" maxlength="500"
                        id="url-${object.multimediaCount}"
                        placeholder="https://ejemplo.com/imagen.jpg" required>
                 <button id="eliminar-multimedia-${object.multimediaCount}" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
@@ -289,14 +289,14 @@ function listenAgregarMultimediaCrearHecho(object) {
 function listenUbicacionInputsCrearHecho(usarCoordenadasCheck) {
     usarCoordenadasCheck.addEventListener("click", function() {
         const direccionContainer = document.getElementById("direccion-container");
-        const coordenadasContainer = document.getElementById("crear-hecho-coordenadas-container");
-        const latitud = document.getElementById("crear-hecho-latitud");
-        const longitud = document.getElementById("crear-hecho-longitud");
-        const pais = document.getElementById("crear-hecho-pais");
-        const provincia = document.getElementById("crear-hecho-provincia");
-        const ciudad = document.getElementById("crear-hecho-ciudad");
-        const calle = document.getElementById("crear-hecho-calle");
-        const altura = document.getElementById("crear-hecho-altura");
+        const coordenadasContainer = document.getElementById("modal-hecho-coordenadas-container");
+        const latitud = document.getElementById("modal-hecho-latitud");
+        const longitud = document.getElementById("modal-hecho-longitud");
+        const pais = document.getElementById("modal-hecho-pais");
+        const provincia = document.getElementById("modal-hecho-provincia");
+        const ciudad = document.getElementById("modal-hecho-ciudad");
+        const calle = document.getElementById("modal-hecho-calle");
+        const altura = document.getElementById("modal-hecho-altura");
 
         if (usarCoordenadasCheck.checked) {
             // Mostrar coordenadas
@@ -329,4 +329,20 @@ function listenUbicacionInputsCrearHecho(usarCoordenadasCheck) {
             longitud.required = false;
         }
     });
+}
+
+function listenCamposUbicacionCrearHecho() {
+    const camposDireccion = document.getElementById("modal-hecho-direccion-container")
+    const camposCoordenadas = document.getElementById("modal-hecho-coordenadas-container")
+    const usarCoordenadasBtn = document.getElementById("modal-hecho-usar-coordenadas")
+
+    usarCoordenadasBtn.addEventListener("click", () => {
+        if(usarCoordenadasBtn.checked) {
+            camposDireccion.classList.add("hidden")
+            camposCoordenadas.classList.remove("hidden")
+        } else {
+            camposCoordenadas.classList.add("hidden")
+            camposDireccion.classList.remove("hidden")
+        }
+    })
 }
