@@ -1,0 +1,39 @@
+.titulo-estadisticas {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tarjeta-grafico {
+    margin: 0 auto;
+    max-width: 80%;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#slider-limit {
+    flex-grow: 1;
+}
+
+#btn-actualizar {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #42A5F5;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#btn-actualizar:hover {
+    background-color: #1E88E5;
+}
+
+#btn-actualizar:active {
+    transform: scale(0.95);
+}
+
+

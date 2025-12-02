@@ -1,0 +1,29 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/statsCategoriasConMasHechos.css}" />
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+
+        <h1 class="titulo-estadisticas">Categorías con más hechos</h1>
+
+        <div class="tarjeta-grafico" id="tarjeta-categorias-mas-hechos">
+            <div class="slider-container">
+                <label for="slider-limit">Mostrar hasta 
+                    <span id="slider-value">10</span> categorías
+                </label>
+
+                <input type="range" min="1" max="100" value="10" id="slider-limit">
+
+                <button id="btn-actualizar">Actualizar gráfico</button>
+            </div>
+
+            <canvas id="grafico-categorias-mas-hechos"></canvas>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/js/categoriasConMasHechos.js" defer></script>
+
+    </main>
+</th:block>
