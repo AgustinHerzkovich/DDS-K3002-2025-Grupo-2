@@ -21,7 +21,7 @@ public class ContribuyenteController {
     }
 
     @PostMapping("/contribuyentes")
-    public ResponseEntity<Object> agregarContribuyente(@RequestBody Object body) {
+    public ResponseEntity<Object> agregarContribuyente(@RequestBody String body) {
         solicitudesHttp.post(urlBaseDinamicas + "/contribuyentes", body, Object.class);
         return solicitudesHttp.post(urlBaseAgregador + "/contribuyentes", body, Object.class); // Se postea tanto en fuente dinámica como en agregador
     }
@@ -37,8 +37,9 @@ public class ContribuyenteController {
         UrlHelper.appendQueryParam(url, "mail", mail);
         return solicitudesHttp.get(url.toString(), Object.class);
     }
+
     @PatchMapping("/contribuyentes/{id}/identidad")
-    public ResponseEntity<Object> modificarIdentidadAContribuyente(@RequestBody Object body , @PathVariable(name = "id") String id) {
+    public ResponseEntity<Object> modificarIdentidadAContribuyente(@PathVariable(name = "id") String id, @RequestBody String body) {
         solicitudesHttp.patch(urlBaseDinamicas + "/contribuyentes/" + id + "/identidad", body, Object.class); // Se patchea tanto en fuente dinámica como en agregador
         return solicitudesHttp.patch(urlBaseAgregador + "/contribuyentes/" + id + "/identidad", body, Object.class);
     }

@@ -4,6 +4,7 @@ import aplicacion.config.ConfigService;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,18 +20,18 @@ public class FuenteEstaticaController {
     }
 
     @PostMapping("/archivos/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String body) {
-        return solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, String.class);
+    public ResponseEntity<Object> subirArchivoPorUrl(@RequestBody String body) {
+        return solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, Object.class);
     }
 
     @PostMapping("/archivos")
-    public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files) {
-        org.springframework.util.LinkedMultiValueMap<String, Object> body = new org.springframework.util.LinkedMultiValueMap<>();
+    public ResponseEntity<Object> subirArchivos(@RequestParam("files") MultipartFile[] files) {
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         for (MultipartFile file : files) {
             body.add("files", file.getResource());
         }
 
-        return solicitudesHttp.postMultipart(urlBaseEstaticas + "/archivos", body, String.class);
+        return solicitudesHttp.postMultipart(urlBaseEstaticas + "/archivos", body, Object.class);
     }
 }

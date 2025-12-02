@@ -21,7 +21,7 @@ public class FuenteProxyController {
     }
 
     @PostMapping("/fuentesProxy")
-    public ResponseEntity<String> guardarFuente(@RequestBody String body){
-        return solicitudesHttp.post(urlBaseProxy + "/fuentesProxy", body, String.class);
+    public ResponseEntity<Object> guardarFuente(@RequestBody String body){
+        return solicitudesHttp.post(urlBaseProxy + "/fuentesProxy", body, Object.class);
     }
 }

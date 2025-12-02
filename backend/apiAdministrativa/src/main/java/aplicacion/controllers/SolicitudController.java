@@ -19,24 +19,24 @@ public class SolicitudController {
     }
 
     @PatchMapping("/solicitudes/{id}/estado")
-    public ResponseEntity<String> actualizarEstadoSolicitud(
+    public ResponseEntity<Object> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
             @RequestBody String revisionSolicitud) {
-        return solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, String.class);
+        return solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, Object.class);
     }
 
     @GetMapping("/solicitudes")
-    public ResponseEntity<String> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<Object> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "3") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/solicitudes");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
 
-        return solicitudesHttp.get(url.toString(), String.class);
+        return solicitudesHttp.get(url.toString(), Object.class);
     }
 
     @GetMapping("/solicitudes/{id}")
-    public ResponseEntity<String> obtenerSolicitud(@PathVariable(name = "id") Long id) {
-        return solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, String.class);
+    public ResponseEntity<Object> obtenerSolicitud(@PathVariable(name = "id") Long id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, Object.class);
     }
 }
