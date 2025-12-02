@@ -150,3 +150,31 @@
     flex-direction: column;
     gap: 12px;
 }
+
+#btn-descargar-csv {
+    background: linear-gradient(to bottom, #e53935, #b71c1c);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin: 2%;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-weight: 600;
+    max-width: 20%;
+    align-self: center;
+}
+
+#btn-descargar-csv:hover {
+    background: linear-gradient(to bottom, #f44336, #c62828);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+#btn-descargar-csv:active {
+    background: linear-gradient(to bottom, #b71c1c, #7f0000);
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
