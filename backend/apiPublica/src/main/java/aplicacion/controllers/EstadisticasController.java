@@ -20,7 +20,7 @@ public class EstadisticasController {
     }
 
     @GetMapping("/provinciasConMasHechosDeColeccion")
-    public ResponseEntity<String> provinciasDeColeccion(@RequestParam(name = "idColeccion", required = false) String idColeccion,
+    public ResponseEntity<Object> provinciasDeColeccion(@RequestParam(name = "idColeccion", required = false) String idColeccion,
                                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                    @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -32,11 +32,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, String.class);
+        return solicitudesHttp.get(url.toString(), headers, Object.class);
     }
 
     @GetMapping("/categoriasConMasHechos")
-    public ResponseEntity<String> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
+    public ResponseEntity<Object> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                             @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasConMasHechos");
@@ -46,11 +46,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, String.class);
+        return solicitudesHttp.get(url.toString(), headers, Object.class);
     }
 
     @GetMapping("/provinciasConMasHechosDeCategoria")
-    public ResponseEntity<String> provinciaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
+    public ResponseEntity<Object> provinciaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                               @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -62,11 +62,11 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, String.class);
+        return solicitudesHttp.get(url.toString(), headers, Object.class);
     }
 
     @GetMapping("/horaConMasHechosDeCategoria")
-    public ResponseEntity<String> horaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
+    public ResponseEntity<Object> horaConMasHechosDeCategoria(@RequestParam(name = "nombreCategoria", required = false) String nombreCategoria,
                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                          @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                          @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
@@ -78,16 +78,16 @@ public class EstadisticasController {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, String.class);
+        return solicitudesHttp.get(url.toString(), headers, Object.class);
     }
 
     @GetMapping("/solicitudesDeEliminacionSpam")
-    public ResponseEntity<String> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
+    public ResponseEntity<Object> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/solicitudesDeEliminacionSpam");
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
 
-        return solicitudesHttp.get(url.toString(), headers, String.class);
+        return solicitudesHttp.get(url.toString(), headers, Object.class);
     }
 }

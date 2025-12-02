@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class ColeccionController {
     private final String urlBaseAgregador;
     private final SolicitudesHttp solicitudesHttp;
-    private final Cache<String, ResponseEntity<String>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
+    private final Cache<String, ResponseEntity<Object>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public ColeccionController(ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
@@ -31,7 +31,7 @@ public class ColeccionController {
 
     // --- READ ---
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public ResponseEntity<String> mostrarHechosIrrestrictos(
+    public ResponseEntity<Object> mostrarHechosIrrestrictos(
             @PathVariable(name = "id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
@@ -119,11 +119,11 @@ public class ColeccionController {
 
         // Hacer la petición POST al endpoint GraphQL
         String graphqlUrl = urlBaseAgregador + "/graphql";
-        return solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class);
+        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public ResponseEntity<String> mostrarHechosCurados(
+    public ResponseEntity<Object> mostrarHechosCurados(
             @PathVariable(name = "id") String id,
             @RequestParam(name = "categoria", required = false) String categoria,
             @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
@@ -210,36 +210,36 @@ public class ColeccionController {
 
         // Hacer la petición POST al endpoint GraphQL
         String graphqlUrl = urlBaseAgregador + "/graphql";
-        return solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class);
+        return solicitudesHttp.post(graphqlUrl, graphqlRequest, Object.class);
     }
 
     // --- READ ---
     @GetMapping("/colecciones")
-    public ResponseEntity<String> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
+    public ResponseEntity<Object> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
         UrlHelper.appendQueryParam(url, "search", textoBuscado);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
-        return solicitudesHttp.get(url.toString(), String.class);
+        return solicitudesHttp.get(url.toString(), Object.class);
     }
 
     @GetMapping("/colecciones/{id}")
-    public ResponseEntity<String> mostrarColeccion(@PathVariable(name = "id") String id) {
-        return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, String.class);
+    public ResponseEntity<Object> mostrarColeccion(@PathVariable(name = "id") String id) {
+        return solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, Object.class);
     }
 
     @GetMapping("/colecciones/index")
-    public ResponseEntity<String> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto,
+    public ResponseEntity<Object> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto,
                                                          @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
         StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         String key = texto + "|" + limite;
-        ResponseEntity<String> rta = cache.getIfPresent(key);
+        ResponseEntity<Object> rta = cache.getIfPresent(key);
         if(rta == null){
-            ResponseEntity<String> respuesta = solicitudesHttp.get(url.toString(), String.class);
+            ResponseEntity<Object> respuesta = solicitudesHttp.get(url.toString(), Object.class);
             cache.put(key, respuesta);
             return respuesta;
         }
