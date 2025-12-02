@@ -75,22 +75,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-        fetch(`http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}`)
+        fetch(`http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=100`)
             .then(resp => resp.json())
             .then(data => {
-                const contenedorHora = document.getElementById("tarjeta-hora");
+                const contenedorHora = document.getElementById("tarjeta-hora-texto");
                 const indicadorHora = document.getElementById("hora-mas-hechos");
-
+                const contenedorGrafico = document.getElementById("tarjeta-hora-grafico");
+                contenedorGrafico.style.display = "block";
+                const canvas = document.getElementById("chart-hora");
                 if (data.length === 0) {
                     contenedorHora.style.display = "none";
                     return;
                 }
+
+                const horas = Array.from({length: 24}, (_, i) => i); // 0 a 23
+                const valores = horas.map(h => {
+                    const item = data.find(d => d.horaConMasHechosDeCategoria === h);
+                    return item ? item.cantidadDeHechos : 0;
+                });
 
                 const hora = data[0].horaConMasHechosDeCategoria;
                 const cantidad = data[0].cantidadDeHechos;
 
                 indicadorHora.textContent = `Hora con más hechos: ${hora.toString().padStart(2,'0')}:00 (${cantidad} hechos)`;
                 contenedorHora.style.display = "block";
+
+                new Chart(canvas, {
+                    type: 'line',
+                    data: {
+                        labels: horas.map(h => h.toString().padStart(2, '0') + ':00'),
+                        datasets: [{
+                            label: 'Cantidad de hechos',
+                            data: valores,
+                            backgroundColor: '#42A5F5',
+                            borderColor: '#1E88E5',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        animation: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad de hechos'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Hora del día'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.parsed.y} hechos`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
             })
             .catch(err => console.error("Error cargando datos de hora:", err));
     }
@@ -154,8 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
         paginaActual = 0;
         cargarCategorias();
     });
-
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=${limiteProvincias}`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv-horas", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=100`, "estadisticas.csv")
     
     cargarCategorias();
 });
