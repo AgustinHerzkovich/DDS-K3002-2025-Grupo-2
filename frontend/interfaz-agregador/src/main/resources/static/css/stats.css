@@ -1,0 +1,134 @@
+.contenedor-botones-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto;
+    margin-bottom: 10%;
+    margin-top: 5%;
+    padding: 0 20px;
+}
+
+.boton-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 3rem 1rem;
+    border-radius: 20px;
+
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.boton-stats:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.icono-svg-stats {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+.btn-colecciones-stats {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
+.btn-categorias-stats {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.btn-solicitudes-stats {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+@media (max-width: 900px) {
+    .contenedor-botones-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.titulo-estadisticas {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.tarjeta-estadisticas-solicitudes {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fafafa;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.subtitulo-estadisticas-solicitudes {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+.contenedor-grafico-solicitudes {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.mensaje-sin-solicitudes {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #555;
+    padding: 2rem 0;
+}
+
+
+.contenedor-no-solicitudes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 3rem 1rem;
+    min-height: 250px;
+
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+.mensaje-sin-solicitudes {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #555;
+}
+.contenedor-error-solicitudes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 3rem 1rem;
+    min-height: 250px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+.mensaje-error-solicitudes {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #555;
+}

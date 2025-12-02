@@ -12,4 +12,19 @@ public class EstadisticasController {
         TokenContext.addToken(model);
         return "estadisticas";
     }
+    @GetMapping({"/stats/colecciones"})
+    public String paginaEstadisticasColecciones(Model model){
+        TokenContext.addToken(model);
+        return "estadisticasColecciones";
+    }
+    @GetMapping({"/stats/categorias"})
+    public String paginaEstadisticasCategorias(Model model){
+        TokenContext.addToken(model);
+        return "estadisticasCategorias";
+    }
+    @GetMapping({"/stats/solicitudes"})
+    public String paginaEstadisticasSolicitudes(Model model){
+        TokenContext.addToken(model);
+        return "estadisticasSolicitudes";
+    }
 }

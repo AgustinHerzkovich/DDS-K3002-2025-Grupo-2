@@ -25,7 +25,7 @@ public class EstadisticasController {
                                                    @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                    @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeColeccion");
-        UrlHelper.appendQueryParam(url, "idColeccion", idColeccion);
+        UrlHelper.appendQueryParamSinEncode(url, "idColeccion", idColeccion);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
@@ -55,7 +55,7 @@ public class EstadisticasController {
                                                               @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                               @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeCategoria");
-        UrlHelper.appendQueryParam(url, "nombreCategoria", nombreCategoria);
+        UrlHelper.appendQueryParamSinEncode(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
@@ -71,7 +71,7 @@ public class EstadisticasController {
                                                          @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                          @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
         StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/horaConMasHechosDeCategoria");
-        UrlHelper.appendQueryParam(url, "nombreCategoria", nombreCategoria);
+        UrlHelper.appendQueryParamSinEncode(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
@@ -89,5 +89,31 @@ public class EstadisticasController {
         headers.set(HttpHeaders.ACCEPT, accept);
 
         return solicitudesHttp.get(url.toString(), headers, Object.class);
+    }
+
+
+    @GetMapping("/estadisticas/categorias")
+    public ResponseEntity<String> categoriasDisponibles(@RequestParam(name = "search", required = false) String search,
+                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
+        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasDisponibles");
+        UrlHelper.appendQueryParamSinEncode(url, "search", search);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "limit", limit);
+
+        return solicitudesHttp.get(url.toString(), String.class);
+    }
+
+
+    @GetMapping("/estadisticas/colecciones")
+    public ResponseEntity<String> coleccionesDisponibles(@RequestParam(name = "search", required = false) String search,
+                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                              @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
+        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/coleccionesDisponibles");
+        UrlHelper.appendQueryParamSinEncode(url, "search", search);
+        UrlHelper.appendQueryParam(url, "page", page);
+        UrlHelper.appendQueryParam(url, "limit", limit);
+
+        return solicitudesHttp.get(url.toString(), String.class);
     }
 }

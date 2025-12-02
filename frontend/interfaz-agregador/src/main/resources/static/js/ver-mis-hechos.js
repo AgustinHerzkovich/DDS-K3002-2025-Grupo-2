@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error('Error al obtener los hechos:', error);
-                alert('Error al cargar los hechos');
+                //alert('Error al cargar los hechos');
             })
     }
 });

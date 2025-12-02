@@ -1,6 +1,39 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+</th:block>
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main>
-        <p>HOLA MUNDO!!!</p>
+        <h1 class="titulo-estadisticas">Que estadísticas estás buscando?</h1>
+
+        <div class="contenedor-botones-stats">
+
+            <!-- Botón: Estadísticas de colecciones -->
+            <a href="/stats/colecciones" class="boton-stats btn-colecciones-stats">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M0 0h1v15h15v1H0V0zm4 5h2v9H4V5zm4-3h2v12H8V2zm4 6h2v6h-2V8z"/>
+                </svg>
+                Estadísticas de colecciones
+            </a>
+
+            <!-- Botón: Estadísticas de categorías -->
+            <a href="/stats/categorias" class="boton-stats btn-categorias-stats">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M1 15V1h1v14H1zm3-6h2v6H4v-6zm3-4h2v10H7V5zm3 2h2v8h-2V7zm3-5h2v13h-2V2z"/>
+                </svg>
+                Estadísticas de categorías
+            </a>
+
+            <!-- Botón: Estadísticas de solicitudes -->
+            <a href="/stats/solicitudes" class="boton-stats btn-solicitudes-stats">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 0 8 8H8V0z"/>
+                    <path d="M15 8A7 7 0 0 0 8 1v7h7z" fill="white"/>
+                </svg>
+                Estadísticas de solicitudes
+            </a>
+
+        </div>
+
     </main>
 </th:block>
