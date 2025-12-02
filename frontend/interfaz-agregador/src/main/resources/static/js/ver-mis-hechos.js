@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
 
                     listaMisHechos.innerHTML = html;
-                    listenEditarHechoButtons(hechos)
+                    //listenEditarHechoButtons(hechos)
                 } else {
                     listaMisHechos.innerHTML = `
                         <div class="gap-[2rem] flex flex-col items-center py-[2rem]">
@@ -42,8 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <span>Crear Hecho</span>
                             </button>
                         </div>`;
-
-                    listenIrACrearHecho(closeBtn)
                 }
                 listenOpenModal(modal, openBtn, () => document.getElementById("dropdown-menu").classList.add("hidden"))
                 listenCloseModal(modal, closeBtn)

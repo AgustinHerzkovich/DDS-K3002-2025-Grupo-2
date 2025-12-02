@@ -1,3 +1,6 @@
+
+
+
 <div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="create-modal-header">
@@ -10,10 +13,10 @@
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
-			<form id="form-crear-hecho" class="form-body">
+			<form id="form-modal-hecho" class="form-body">
 				<div class="row g-2 mb-3">
 					<div class="col-md-8">
-						<label for="crear-hecho-titulo" class="form-label">
+						<label for="modal-hecho-titulo" class="form-label">
 							Título
 							<span class="form-obligatory-icon">
 								*
@@ -22,20 +25,20 @@
 								(Máx.200 caracteres)
 							</span>
 						</label>
-						<input type="text" maxlength="200" class="form-input" id="crear-hecho-titulo" placeholder="Ingrese el título del hecho" required>
+						<input type="text" maxlength="200" class="form-input" id="modal-hecho-titulo" placeholder="Ingrese el título del hecho" required>
 					</div>
 					<div class="col-md-4">
-						<label for="crear-hecho-categoria" class="form-label">
+						<label for="modal-hecho-categoria" class="form-label">
 							Categoría
 							<span class="form-obligatory-icon">
 								*
 							</span>
 						</label>
-						<input type="text" class="form-input" maxlength="50" id="crear-hecho-categoria" placeholder="Ej: Desastre Natural" required>
+						<input type="text" class="form-input" maxlength="50" id="modal-hecho-categoria" placeholder="Ej: Desastre Natural" required>
 					</div>
 				</div>
 				<div class="mb-3">
-					<label for="crear-hecho-descripcion" class="form-label">
+					<label for="modal-hecho-descripcion" class="form-label">
 						Descripción
 						<span class="form-obligatory-icon">
 							*
@@ -44,63 +47,63 @@
 							(Máx.1000 caracteres)
 						</span>
 					</label>
-					<textarea class="form-input" maxlength="1000" id="crear-hecho-descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
+					<textarea class="form-input" maxlength="1000" id="modal-hecho-descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
 				</div>
 				<div class="mb-3">
 					<label class="form-label">
 						Ubicación
 					</label>
 					<div class="mb-2 d-flex items-center">
-						<input type="checkbox" id="crear-hecho-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
+						<input type="checkbox" id="modal-hecho-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
 						<p class="ms-2 text-black">
 							Ingresar manualmente latitud y longitud
 						</p>
 					</div>
-					<div id="direccion-container" class="row g-2">
+					<div id="modal-hecho-direccion-container" class="row g-2">
 						<div class="col-md-6">
-							<label for="crear-hecho-pais" class="form-label">País<span class="form-obligatory-icon">*</span></label>
-							<input type="text" class="form-input" id="crear-hecho-pais" placeholder="Ej: Argentina" required>
+							<label for="modal-hecho-pais" class="form-label">País<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-pais" placeholder="Ej: Argentina" required>
 						</div>
 						<div class="col-md-6">
-							<label for="crear-hecho-provincia" class="form-label">Provincia<span class="form-obligatory-icon">*</span></label>
-							<input type="text" class="form-input" id="crear-hecho-provincia" placeholder="Ej: Buenos Aires" required>
+							<label for="modal-hecho-provincia" class="form-label">Provincia<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-provincia" placeholder="Ej: Buenos Aires" required>
 						</div>
 						<div class="col-md-4">
-							<label for="crear-hecho-ciudad" class="form-label">Ciudad<span class="form-obligatory-icon">*</span></label>
-							<input type="text" class="form-input" id="crear-hecho-ciudad" placeholder="Ej: La Plata" required>
+							<label for="modal-hecho-ciudad" class="form-label">Ciudad<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-ciudad" placeholder="Ej: La Plata" required>
 						</div>
 						<div class="col-md-5">
-							<label for="crear-hecho-calle" class="form-label">Calle<span class="form-obligatory-icon">*</span></label>
-							<input type="text" class="form-input" id="crear-hecho-calle" placeholder="Ej: Calle 7" required>
+							<label for="modal-hecho-calle" class="form-label">Calle<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-calle" placeholder="Ej: Calle 7" required>
 						</div>
 						<div class="col-md-3">
-							<label for="crear-hecho-altura" class="form-label">Altura<span class="form-obligatory-icon">*</span></label>
-							<input type="text" class="form-input" id="crear-hecho-altura" placeholder="Ej: 1234" required>
+							<label for="modal-hecho-altura" class="form-label">Altura<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-altura" placeholder="Ej: 1234" required>
 						</div>
 					</div>
-					<div id="crear-hecho-coordenadas-container" class="row g-2 hidden">
+					<div id="modal-hecho-coordenadas-container" class="row g-2 hidden">
 						<div class="col-md-6">
-							<label for="crear-hecho-latitud" class="form-label">Latitud<span class="form-obligatory-icon">*</span></label>
-							<input type="number" step="any" class="form-input" id="crear-hecho-latitud" placeholder="-34.603722">
+							<label for="modal-hecho-latitud" class="form-label">Latitud<span class="form-obligatory-icon">*</span></label>
+							<input type="number" step="any" class="form-input" id="modal-hecho-latitud" placeholder="-34.603722">
 						</div>
 						<div class="col-md-6">
-							<label for="crear-hecho-longitud" class="form-label">Longitud<span class="form-obligatory-icon">*</span></label>
-							<input type="number" step="any" class="form-input" id="crear-hecho-longitud" placeholder="-58.381592">
+							<label for="modal-hecho-longitud" class="form-label">Longitud<span class="form-obligatory-icon">*</span></label>
+							<input type="number" step="any" class="form-input" id="modal-hecho-longitud" placeholder="-58.381592">
 						</div>
 					</div>
 				</div>
 				<div class="row g-2 mb-3">
 					<div class="col-md-5">
-						<label for="crear-hecho-fecha" class="form-label">
+						<label for="modal-hecho-fecha" class="form-label">
 							Fecha y Hora
 							<span class="form-obligatory-icon">
 								*
 							</span>
 						</label>
-						<input id="crear-hecho-fecha" type="datetime-local" class="form-input" required>
+						<input id="modal-hecho-fecha" type="datetime-local" class="form-input cursor-pointer" required>
 					</div>
 					<div class="col-md-7">
-						<label for="crear-hecho-contenido-texto" class="form-label">
+						<label for="modal-hecho-contenido-texto" class="form-label">
 							Contenido de Texto
 							<span class="form-obligatory-icon">
 								*
@@ -109,7 +112,7 @@
 								(Máx.500 caracteres)
 							</span>
 						</label>
-						<textarea id="crear-hecho-contenido-texto" class="form-input" maxlength="500" rows="2" placeholder="Describa el hecho..." required></textarea>
+						<textarea id="modal-hecho-contenido-texto" class="form-input" maxlength="500" rows="2" placeholder="Describa el hecho..." required></textarea>
 					</div>
 				</div>
 				<div class="mb-3">
@@ -119,13 +122,13 @@
 								(Máx.500 caracteres)
 						</span>
 					</label>
-					<div id="crear-hecho-multimedia-container"></div>
-					<button id="crear-hecho-agregar-multimedia" type="button" class="btn-tertiary">
+					<div id="modal-hecho-multimedia-container"></div>
+					<button id="modal-hecho-agregar-multimedia" type="button" class="btn-primary">
 						+ Añadir Multimedia
 					</button>
 				</div>
 				<div class="mb-3 d-flex items-center">
-					<input type="checkbox" id="crear-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
+					<input type="checkbox" id="modal-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
 					<p class="ms-2 text-black">
 						Publicar de forma anónima
 					</p>

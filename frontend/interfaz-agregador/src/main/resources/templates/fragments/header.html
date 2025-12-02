@@ -4,6 +4,8 @@
 </th:block>
 
 <header th:fragment="navbar(isMapPage)" class="bg-black">
+
+    <!-- NAVBAR -->
     <nav class="px-8 py-2 grid grid-cols-3 items-center relative">
         <!-- Izquierda: Logo -->
         <a href="/" class="flex flex-col w-[5rem] align-items-center">
@@ -29,4 +31,29 @@
             <th:block th:replace="~{fragments/menu :: menu}" />
         </div>
     </nav>
+
+    <!-- TABBAR -->
+    <div class="w-full flex justify-center border-t border-gray-800">
+        <div class="flex space-x-10 text-sm font-medium">
+
+            <a th:href="@{/mapa}"
+               class="inline-block py-3 px-4 border-b-2 transition-colors duration-200"
+               th:classappend="${activeTab == 'mapa'} ? 'text-white border-red-700 bg-red-900/20' : 'text-gray-400 border-transparent hover:text-gray-200 hover:bg-red-900/30 hover:border-red-400'">
+                Mapa Interactivo
+            </a>
+
+            <a th:href="@{/colecciones}"
+               class="inline-block py-3 px-4 border-b-2 transition-colors duration-200"
+               th:classappend="${activeTab == 'colecciones'} ? 'text-white border-red-700 bg-red-900/20' : 'text-gray-400 border-transparent hover:text-gray-200 hover:bg-red-900/30 hover:border-red-400'">
+                Colecciones
+            </a>
+
+            <a th:if="${isAdmin}" th:href="@{/solicitudes}"
+               class="inline-block py-3 px-4 border-b-2 transition-colors duration-200"
+               th:classappend="${activeTab == 'colecciones'} ? 'text-white border-red-700 bg-red-900/20' : 'text-gray-400 border-transparent hover:text-gray-200 hover:bg-red-900/30 hover:border-red-400'">
+                Solicitudes
+            </a>
+
+        </div>
+    </div>
 </header>
