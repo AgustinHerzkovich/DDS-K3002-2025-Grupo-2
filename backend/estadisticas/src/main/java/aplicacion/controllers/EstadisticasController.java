@@ -5,6 +5,7 @@ import aplicacion.dtos.*;
 import aplicacion.services.EstadisticasService;
 import aplicacion.services.scheduler.ActualizacionEstadisticasScheduler;
 import org.apache.commons.lang3.function.TriFunction;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -93,11 +94,18 @@ public class EstadisticasController {
     }
 
     @GetMapping("/coleccionesDisponibles")
-    public ResponseEntity<List<ColeccionDisponibleDTO>> coleccionesDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+    public ResponseEntity<Page<ColeccionDisponibleDTO>> coleccionesDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, @RequestParam(value = "search", required = false) String search) {
         if(isPaginaYLimiteInvalid(page, limit)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(estadisticasService.obtenerColeccionesDisponibles(page, limit));
+        return ResponseEntity.ok(estadisticasService.obtenerColeccionesDisponibles(page, limit, search));
+    }
+    @GetMapping("/categoriasDisponibles")
+    public ResponseEntity<Page<CategoriaDisponibleDTO>> categoriasDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, @RequestParam(value = "search", required = false) String search) {
+        if(isPaginaYLimiteInvalid(page, limit)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(estadisticasService.obtenerCategoriasDisponibles(page, limit, search));
     }
 
     public boolean isPaginaYLimiteInvalid(Integer page, Integer limit){
