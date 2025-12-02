@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarColecciones();
     });
 
-    configurarDescargaCSV("btn-descargar-csv", `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, "estadisticas.csv")
 
 
     cargarColecciones();

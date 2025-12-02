@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarCategorias();
     });
 
-    configurarDescargaCSV("btn-descargar-csv", `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`, "estadisticas.csv")
     
     cargarCategorias();
 });

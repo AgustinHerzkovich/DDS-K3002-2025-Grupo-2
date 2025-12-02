@@ -1,4 +1,4 @@
-export function configurarDescargaCSV(botonId, url, nombreArchivo = "archivo.csv") {
+export function configurarDescargaCSV(botonId, urlOrFunction, nombreArchivo = "archivo.csv") {
 
     const boton = document.getElementById(botonId);
     if (!boton) {
@@ -7,6 +7,7 @@ export function configurarDescargaCSV(botonId, url, nombreArchivo = "archivo.csv
     }
 
     boton.addEventListener("click", () => {
+        const url = typeof urlOrFunction === "function" ? urlOrFunction() : urlOrFunction;
 
         fetch(url, {
             method: "GET",

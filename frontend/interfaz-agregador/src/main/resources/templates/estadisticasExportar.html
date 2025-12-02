@@ -1,0 +1,67 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/statsExportar.css}" />
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+        <h1 class="titulo-estadisticas">Exportar Estadísticas</h1>
+        <div class="contenedor-botones-stats">
+            <!-- Hechos por provincia (todas las colecciones) -->
+            <div class="tarjeta-exportar">
+                <h1 class="tarjeta-titulo">Hechos por provincia (todas las colecciones)</h1>
+                <div class="slider-container">
+                    <label for="slider-hechos-provincias">
+                        Exportar hasta <span id="valor-slider-hechos-provincias">10000</span> provincias por coleccion
+                    </label>
+                    <input type="range" id="slider-hechos-provincias" min="1" max="100" value="10">
+                </div>
+                <a href="#" class="boton-stats btn-exportar" id="btn-hechos-provincias">Descargar</a>
+            </div>
+
+            <!-- Hechos por categoría -->
+            <div class="tarjeta-exportar">
+                <h1 class="tarjeta-titulo">Hechos por categoría</h1>
+                <div class="slider-container">
+                    <label for="slider-hechos-categorias">
+                        Exportar hasta <span id="valor-slider-hechos-categorias">10000</span> categorías
+                    </label>
+                    <input type="range" id="slider-hechos-categorias" min="1" max="100" value="10">
+                </div>
+                <a href="#" class="boton-stats btn-exportar" id="btn-hechos-categorias">Descargar</a>
+            </div>
+
+            <!-- Hechos por provincia y categoría -->
+            <div class="tarjeta-exportar">
+                <h1 class="tarjeta-titulo">Hechos por provincia y categoría</h1>
+                <div class="slider-container">
+                    <label for="slider-hechos-provincia-categoria">
+                        Exportar hasta <span id="valor-slider-hechos-provincia-categoria">10000</span> provincias por categoria
+                    </label>
+                    <input type="range" id="slider-hechos-provincia-categoria" min="1" max="100" value="10">
+                </div>
+                <a href="#" class="boton-stats btn-exportar" id="btn-hechos-provincia-categoria">Descargar</a>
+            </div>
+
+            <!-- Hora con más hechos por categoría -->
+            <div class="tarjeta-exportar">
+                <h1 class="tarjeta-titulo"> Hechos por hora por categoría</h1>
+                <div class="slider-container">
+                    <label for="slider-hora-mas-hechos">
+                        Exportar hasta <span id="valor-slider-hora-mas-hechos">10000</span> categorías
+                    </label>
+                    <input type="range" id="slider-hora-mas-hechos" min="1" max="100" value="10">
+                </div>
+                <a href="#" class="boton-stats btn-exportar" id="btn-hora-mas-hechos">Descargar</a>
+            </div>
+
+            <!-- Cantidad de solicitudes de SPAM -->
+            <div class="tarjeta-exportar">
+                <h1 class="tarjeta-titulo">Cantidad de solicitudes de SPAM</h1>
+                <a href="#" class="boton-stats btn-exportar" id="btn-solicitudes-spam">Descargar</a>
+            </div>
+        </div>
+        <script type="module" src="/js/estadisticas-exportar.js"></script>
+    </main>
+
+</th:block>
