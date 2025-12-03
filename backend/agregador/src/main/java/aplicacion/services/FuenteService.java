@@ -107,8 +107,8 @@ public class FuenteService {
         return hashMap;
     }
 
-    public Long obtenerCantidadFuentesConHechos() {
-        return fuenteRepository.countWithHechos();
+    public Long obtenerCantidadFuentesConColecciones() {
+        return fuenteRepository.countWithColecciones();
     }
 
 
