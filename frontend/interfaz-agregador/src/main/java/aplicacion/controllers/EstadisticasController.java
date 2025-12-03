@@ -32,4 +32,9 @@ public class EstadisticasController {
         TokenContext.addToken(model);
         return "estadisticasSolicitudes";
     }
+    @GetMapping({"/stats/exportar"})
+    public String paginaExportarEstadisticas(Model model){
+        TokenContext.addToken(model);
+        return "estadisticasExportar";
+    }
 }
