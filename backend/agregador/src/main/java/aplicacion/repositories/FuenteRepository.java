@@ -20,8 +20,8 @@ public interface FuenteRepository extends JpaRepository<Fuente, String> {
     @Query("SELECT f FROM Fuente f WHERE TYPE(f) = :tipoClass")
     Page<Fuente> findByTipo(@Param("tipoClass") Class<? extends Fuente> tipoClass, PageRequest pageable);
 
-    @Query(value = "SELECT COUNT(DISTINCT fuente_id) FROM hecho_fuente ",
-            countQuery = "SELECT COUNT(DISTINCT fuente_id) FROM hecho_fuente ",
+    @Query(value = "SELECT COUNT(DISTINCT fuente_id) FROM fuente_coleccion ",
+            countQuery = "SELECT COUNT(DISTINCT fuente_id) FROM fuente_coleccion ",
             nativeQuery = true)
-    Long countWithHechos();
+    Long countWithColecciones();
 }
