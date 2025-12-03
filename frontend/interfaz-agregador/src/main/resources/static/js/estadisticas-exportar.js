@@ -1,0 +1,51 @@
+import {configurarDescargaCSV} from "./botonDescargarCSV.js"
+document.addEventListener("DOMContentLoaded", () => {
+
+    let limit1 = 10;
+    let limit2 = 10;
+    let limit3 = 10;
+    let limit4 = 10;
+    function configurarSlider(sliderId, valorSpanId, callback) {
+        const slider = document.getElementById(sliderId);
+        const valorSpan = document.getElementById(valorSpanId);
+
+        function actualizar() {
+            const valorCuadratico = Math.ceil(Math.pow(slider.value, 2)/10);
+            valorSpan.textContent = valorCuadratico;
+            if(slider.value == 100)
+                valorSpan.textContent = "todas las"
+            if (callback) callback((slider.value == 100? 2000000000 : valorCuadratico)); // Peak de la programacion
+        }
+
+        slider.addEventListener("input", actualizar);
+        actualizar(); // valor inicial
+    }
+
+    // Hechos por provincia
+    configurarSlider("slider-hechos-provincias", "valor-slider-hechos-provincias", (valor) => {
+        limit1 = valor
+    });
+
+    // Hechos por categoría
+    configurarSlider("slider-hechos-categorias", "valor-slider-hechos-categorias", (valor) => {
+        limit2=valor
+    });
+
+    // Hechos por provincia y categoría
+    configurarSlider("slider-hechos-provincia-categoria", "valor-slider-hechos-provincia-categoria", (valor) => {
+        limit3=valor
+    });
+
+    // Hora con más hechos por categoría
+    configurarSlider("slider-hora-mas-hechos", "valor-slider-hora-mas-hechos", (valor) => {
+        limit4=valor
+    });
+
+    configurarDescargaCSV("btn-hechos-provincias", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?limit=${limit1}`, "hechos_provincias.csv");
+    configurarDescargaCSV("btn-hechos-categorias", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?limit=${limit2}`, "hechos_categorias.csv");
+    configurarDescargaCSV("btn-hechos-provincia-categoria", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?limit=${limit3}`, "hechos_provincia_categoria.csv");
+    configurarDescargaCSV("btn-hora-mas-hechos", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?limit=${limit4}`, "hora_mas_hechos.csv");
+    configurarDescargaCSV("btn-solicitudes-spam", "http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam", "solicitudes_spam.csv");
+
+
+});

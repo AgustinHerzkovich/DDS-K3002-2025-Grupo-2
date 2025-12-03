@@ -1,6 +1,6 @@
 .contenedor-botones-stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     width: 100%;
     max-width: 1400px;
@@ -174,6 +174,81 @@
 }
 
 #btn-descargar-csv:active {
+    background: linear-gradient(to bottom, #b71c1c, #7f0000);
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.btn-exportar-csv {
+    background: #cbb4f9; /* púrpura pastel */
+    color: #4a2ca6;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-exportar-csv {
+    background: #e7dbff;
+    color: #6a4fbf;
+    padding: 3rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-exportar-csv:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.btn-exportar-csv:active {
+    transform: scale(0.97);
+}
+
+.btn-exportar-csv .icono-svg-stats {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+
+.btn-descargar-csv {
+    background: linear-gradient(to bottom, #e53935, #b71c1c);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin: 2%;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-weight: 600;
+    max-width: 20%;
+    align-self: center;
+}
+
+.btn-descargar-csv:hover {
+    background: linear-gradient(to bottom, #f44336, #c62828);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+.btn-descargar-csv:active {
     background: linear-gradient(to bottom, #b71c1c, #7f0000);
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
