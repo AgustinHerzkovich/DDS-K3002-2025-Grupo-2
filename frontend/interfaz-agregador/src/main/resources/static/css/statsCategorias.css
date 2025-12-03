@@ -2,12 +2,17 @@
     display: flex;
     gap: 20px;
     margin-top: 20px;
+    flex: 1 1 auto;
+    align-items: stretch;
+    min-height: calc(100vh - 200px);
 }
 
 .panel-categorias {
+    background-color: #ffffff;
     flex: 0 0 30%;
     display: flex;
     flex-direction: column;
+    height: 100%; 
 }
 
 .panel-categorias input[type="text"] {
@@ -22,9 +27,7 @@
     padding: 0;
     margin: 0;
     flex-grow: 1;
-    overflow-y:scroll;
-    max-height: 80%;
-    min-height: 800px;
+    overflow-y: scroll;
     border: 1px solid #ddd;
     border-radius: 6px;
 }
@@ -43,6 +46,8 @@
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
+    height: 60px;
 }
 
 .paginacion-categorias button {
@@ -63,6 +68,7 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 12px;
+    overflow-y: auto; 
 }
 
 .hora-mas-hechos {
