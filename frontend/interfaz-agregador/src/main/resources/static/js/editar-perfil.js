@@ -17,11 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function obtenerDatosPerfil() {
-    const data = window.autorData || {}
-    document.getElementById('perfil-nombre').value = data.nombre || '';
-    document.getElementById('perfil-apellido').value = data.apellido || '';
-    document.getElementById('perfil-email').value = data.email || '';
-    document.getElementById('perfil-fecha-nacimiento').value = data.fechaNacimiento || '';
+    document.getElementById('perfil-nombre').value = window.autorData.nombre
+    document.getElementById('perfil-apellido').value = window.autorData.apellido
+    document.getElementById('perfil-email').value = window.autorData.email
+    document.getElementById('perfil-fecha-nacimiento').value = window.autorData.fechaNacimiento
 }
 
 function guardarPerfil() {

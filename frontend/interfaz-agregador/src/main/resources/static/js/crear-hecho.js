@@ -37,7 +37,7 @@ async function publicarHecho(inputsObligatorios) {
         mostrarCargando("crear-hecho")
 
         const payload = await getPayloadCrearHecho(inputsObligatorios)
-        console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
+        console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
 
         const endpoint = isAdmin
             ? 'http://localhost:8086/apiAdministrativa/hechos'

@@ -83,6 +83,8 @@ async function getPayloadCrearHecho(inputsObligatorios) {
             ubicacion = { latitud: parseFloat(data[0].lat), longitud: parseFloat(data[0].lon) };
         }
 
+        const anonimato = inputsObligatorios.anonimato ? inputsObligatorios.anonimato.checked : true
+
         const hecho = {
             titulo: inputsObligatorios.titulo.value.trim(),
             descripcion: inputsObligatorios.descripcion.value.trim(),
@@ -91,21 +93,12 @@ async function getPayloadCrearHecho(inputsObligatorios) {
             fechaAcontecimiento,
             origen: isAdmin ? 'CARGA_MANUAL' : 'CONTRIBUYENTE',
             contenidoTexto: inputsObligatorios.contenido.value.trim(),
-            anonimato: inputsObligatorios.anonimato.checked,
+            anonimato,
             contenidoMultimedia
         };
 
-        if (!inputsObligatorios.anonimato.checked && window.autorData) {
-            hecho.autor = {
-                id: window.autorData.id,
-                esAdministrador: isAdmin,
-                identidad: {
-                    nombre: window.autorData.nombre,
-                    apellido: window.autorData.apellido,
-                    fechaNacimiento: window.autorData.fechaNacimiento
-                },
-                mail: window.autorData.email
-            }
+        if (!anonimato && window.autorData) {
+            hecho.autor = window.autorData.id
         }
 
         return hecho
