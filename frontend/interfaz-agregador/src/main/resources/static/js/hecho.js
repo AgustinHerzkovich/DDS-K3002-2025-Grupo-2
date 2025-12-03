@@ -44,6 +44,13 @@ function limpiarModalHecho(modal, multimediaCountObject) {
         campo.classList.remove("form-not-completed");
         campo.classList.add("form-input");
     });
+
+    const coordenadasContainer = document.getElementById("modal-hecho-coordenadas-container")
+    if(!coordenadasContainer.classList.contains("hidden")) {
+        coordenadasContainer.classList.add("hidden")
+        document.getElementById("modal-hecho-direccion-container").classList.remove("hidden")
+    }
+
     document.getElementById('form-modal-hecho').reset();
     document.getElementById('modal-hecho-multimedia-container').innerHTML = '';
     multimediaCountObject.multimediaCount = 0;

@@ -127,7 +127,7 @@
 						+ Añadir Multimedia
 					</button>
 				</div>
-				<div class="mb-3 d-flex items-center">
+				<div th:if="${isLoggedIn}" class="mb-3 d-flex items-center">
 					<input type="checkbox" id="modal-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
 					<p class="ms-2 text-black">
 						Publicar de forma anónima
