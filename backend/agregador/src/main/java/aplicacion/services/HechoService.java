@@ -235,7 +235,11 @@ public class HechoService {
     }
 
     public HechoOutputDto agregarHechoReportado(HechoReporteInputDto hechoReporteInputDto) throws ContribuyenteNoConfiguradoException {
-        Contribuyente contribuyente = contribuyenteService.obtenerContribuyente(hechoReporteInputDto.getAutor());
+        String autorId = hechoReporteInputDto.getAutor();
+        Contribuyente contribuyente = null;
+        if (autorId != null) {
+            contribuyente = contribuyenteService.obtenerContribuyente(hechoReporteInputDto.getAutor());
+        }
         Hecho hecho = hechoInputMapper.mapReporte(hechoReporteInputDto, contribuyente);
         normalizadorDeHechos.normalizar(hecho);
         hecho = hechoRepository.save(hecho);
