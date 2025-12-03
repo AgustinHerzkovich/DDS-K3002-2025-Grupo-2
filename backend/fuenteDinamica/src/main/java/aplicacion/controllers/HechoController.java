@@ -29,15 +29,23 @@ public class HechoController {
     @GetMapping("/hechos")
     public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
             @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente
     ) {
         List<HechoOutputDto> hechos;
-        if (fechaMayorA != null) {
+
+        // Combinar filtros de fechaMayorA y pendiente
+        if (fechaMayorA != null && pendiente) {
+            // Hechos pendientes con fecha mayor a
+            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA);
+        } else if (fechaMayorA != null) {
+            // Hechos aceptados con fecha mayor a
             hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
-        } else if(pendiente){
+        } else if (pendiente) {
+            // Todos los hechos pendientes
             hechos = hechoService.obtenerHechosPendientes();
-        }else{
+        } else {
+            // Todos los hechos aceptados
             hechos = hechoService.obtenerHechosAceptados();
         }
 

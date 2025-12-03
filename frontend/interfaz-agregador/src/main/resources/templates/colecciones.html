@@ -5,6 +5,7 @@
     <script src="/js/ver-coleccion.js" defer></script>
     <script th:if="${isAdmin}" src="/js/eliminar-coleccion.js" defer></script>
     <script src="/js/search-bar.js" defer></script>
+    <script th:if="${isAdmin}" src="/js/editar-coleccion.js" defer></script>
 </th:block>
 
 <th:block th:fragment="pageStyles">
@@ -78,5 +79,7 @@
                 @{/colecciones(page=${currentPage - 1}, size=${pageSize})},
                 @{/colecciones(page=${currentPage + 1}, size=${pageSize})}
             )}" />
+
+        <th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalEditarColeccion}" />
     </main>
 </th:block>

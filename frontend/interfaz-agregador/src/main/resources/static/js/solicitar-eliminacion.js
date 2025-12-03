@@ -2,49 +2,60 @@ document.addEventListener("DOMContentLoaded", function() {
     const modal = document.getElementById("modal-solicitud-eliminacion");
     const openBtn = document.getElementById("solicitar-eliminacion");
     const closeBtn = document.getElementById("salir-solicitar-eliminacion");
-    const enviarBtn = document.getElementById("enviar-solicitud-eliminacion");
+    const confirmBtn = document.getElementById("enviar-solicitud-eliminacion");
 
-    if(allElementsFound([modal, openBtn, closeBtn, enviarBtn], "solicitar eliminación de un hecho")) {
+    if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "solicitar eliminación de un hecho")) {
         listenOpenModal(modal, openBtn)
-        listenCloseModal(modal, closeBtn, () => document.getElementById('motivo-solicitud-eliminacion').value = '')
+        listenCloseModal(modal, closeBtn, () => {
+            document.querySelectorAll("#form-solicitud-eliminacion textarea").forEach(input => {
+                input.value = ''
+                input.classList.add("form-input");
+                input.classList.remove("form-not-completed");
+            })
+        })
 
-        enviarBtn.addEventListener("click", () => enviarSolicitudEliminacion(closeBtn));
+        confirmBtn.addEventListener("click", async function() {
+            const inputMotivo = document.getElementById('motivo-solicitud-eliminacion');
+
+            validarInputsObligatorios([inputMotivo]);
+
+            if(!inputMotivo.classList.contains("form-not-completed")) {
+                console.log("HOLA")
+                await enviarSolicitudEliminacion(inputMotivo)
+            }
+        });
     }
 });
 
-function enviarSolicitudEliminacion(closeBtn) {
-    const motivo = document.getElementById('motivo-solicitud-eliminacion').value;
+async function enviarSolicitudEliminacion(inputMotivo) {
+    try {
+        mostrarCargando("enviar-solicitud-eliminacion");
 
-    if (!motivo.trim()) {
-        alert('Por favor ingrese un motivo');
-        return;
-    }
-    if (!solicitanteId) {
-        alert('Debe estar logueado para enviar una solicitud de eliminación');
-        return;
-    }
-
-    fetch('http://localhost:8085/apiPublica/solicitudes', {
-        method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify({
+        const payload = {
             solicitanteId: solicitanteId,
             hechoId: hechoId,
-            motivo: motivo
+            motivo: inputMotivo.value
+        }
+        console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
+
+        const response = await fetch('http://localhost:8085/apiPublica/solicitudes', {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify(payload)
         })
-    })
-        .then(response => {
-            if (response.ok) {
-                alert('Solicitud enviada exitosamente');
-                closeBtn.click()
-            } else {
-                return response.text().then(text => {
-                    alert('Error al enviar la solicitud: ' + text);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error al enviar la solicitud');
-        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText ? `Error al solicitar la eliminación del hecho:\n${errorText}` : "Error al solicitar la eliminación del hecho")
+        }
+
+        alert('Solicitud de eliminación enviada exitosamente');
+        document.getElementById("salir-solicitar-eliminacion").click();
+        window.location.reload();
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    } finally {
+        ocultarCargando("enviar-solicitud-eliminacion");
+    }
 }

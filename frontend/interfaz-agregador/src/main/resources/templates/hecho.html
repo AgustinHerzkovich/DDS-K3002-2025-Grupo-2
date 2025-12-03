@@ -151,12 +151,12 @@
 
                     <!-- Botón Solicitar Eliminación (solo si está logueado) -->
                     <div th:if="${isLoggedIn}" style="position: relative;">
-                        <button id="solicitar-eliminacion" class="btn-solicitar mt-4">
+                        <button id="solicitar-eliminacion" class="btn-eliminar text-lg p-2">
                             Solicitar eliminación
                         </button>
 
                         <!-- Modal personalizado -->
-                        <th:block th:replace="~{fragments/modals :: modalSolicitudEliminacion}" />
+                        <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
                     </div>
                 </div>
             </div>

@@ -15,6 +15,16 @@
     text-align: center;
 }
 
+.metamapa-tabbar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem; /* py-3 px-4 */
+    border-bottom: 2px solid currentColor;
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+}
+
 ::-webkit-scrollbar {
     width: 6px; /* Achica la barra */
 }

@@ -5,24 +5,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class GraphQLHechosResponse {
+public class GraphQLHechosIrrestrictosResponse {
     private GraphQLData data;
 
     @Getter
     @Setter
     public static class GraphQLData {
-        @JsonProperty("getHechos")
-        private HechosEnMapaWrapper hechosEnMapa;
+        @JsonProperty("getHechosPorColeccion")
+        private HechosWrapper hechosPorColeccion;
     }
 
     @Getter
     @Setter
-    public static class HechosEnMapaWrapper {
-        private List<HechoMapaOutputDto> content;
+    public static class HechosWrapper {
+        private java.util.List<HechoMapaOutputDto> content;
         private PageInfo pageInfo;
     }
 

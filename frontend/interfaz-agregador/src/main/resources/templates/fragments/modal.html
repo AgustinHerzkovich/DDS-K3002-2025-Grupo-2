@@ -1,6 +1,3 @@
-
-
-
 <div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="create-modal-header">
@@ -258,7 +255,7 @@
 
 <div th:fragment="modalMisHechos" id="modal-mis-hechos" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
-		<div class="modal-header">
+		<div class="modal-header bg-black">
 			<h5 class="modal-title">Mis Hechos</h5>
 		</div>
 		<div class="modal-page-body">
@@ -273,7 +270,7 @@
 <div th:fragment="modalEditarPerfil" id="modal-editar-perfil" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-lg">
 
-		<div class="modal-header">
+		<div class="modal-header bg-black">
 			<h5 class="modal-title">Editar Perfil</h5>
 		</div>
 
@@ -376,8 +373,8 @@
 	</div>
 </div>
 
-<div th:fragment="modalFiltros" id="filtros-modal" class="panel">
-	<div class="flex justify-between items-center p-4 pb-3">
+<div th:fragment="modalFiltrosMapa" id="filtros-modal" class="panel">
+	<div class="flex justify-between items-center px-4 py-2">
 		<h3 class="text-lg font-bold">Filtros</h3>
 		<div class="flex items-center gap-2.5">
 			<button id="btn-aplicar-filtros" class="btn-secondary" aria-label="Aplicar Filtros">
@@ -393,7 +390,7 @@
 
 	<hr id="filtros-separator" class="mb-4">
 
-	<div id="filtros-content" class="px-4 pb-4">
+	<div id="filtros-content" class="px-4 pb-2">
 		<form id="form-filtros">
 			<div class="mb-4">
 				<label for="categoria" class="form-label">
@@ -405,7 +402,9 @@
 				<input type="text" id="categoria" name="categoria" maxlength="50" th:value="${categoria}" class="form-input" placeholder="Ingrese categoría...">
 			</div>
 			<div class="mb-4">
-				<label class="form-label">Fecha reporte</label>
+				<label class="form-label">
+					Fecha reporte
+				</label>
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-1 items-center">
 						<p class="text-xs font-light w-[36px]">
@@ -414,7 +413,9 @@
 						<input type="datetime-local" id="fechaReporteDesde" name="fechaReporteDesde" th:value="${fechaReporteDesde}" class="form-input" aria-label="Ingresar Fecha Inicial">
 					</div>
 					<div class="flex gap-1 items-center">
-						<p class="text-xs font-light w-[36px]">Hasta</p>
+						<p class="text-xs font-light w-[36px]">
+							Hasta
+						</p>
 						<input type="datetime-local" id="fechaReporteHasta" name="fechaReporteHasta" th:value="${fechaReporteHasta}" class="form-input" aria-label="Ingresar Fecha Final">
 					</div>
 				</div>
@@ -425,7 +426,9 @@
 				</label>
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-1 items-center">
-						<p class="text-xs font-light w-[36px]">Desde</p>
+						<p class="text-xs font-light w-[36px]">
+							Desde
+						</p>
 						<input type="datetime-local" id="fechaAcontecimientoDesde" name="fechaAcontecimientoDesde" th:value="${fechaAcontecimientoDesde}" class="form-input" aria-label="Ingresar Fecha Inicial">
 					</div>
 					<div class="flex gap-1 items-center">
@@ -437,17 +440,20 @@
 				</div>
 			</div>
 			<div class="mb-4">
-				<label class="form-label">
-					Ubicación (haz clic en el mapa)
-				</label>
+				<div class="flex gap-2">
+					<p class="form-label">
+						Ubicación
+					</p>
+					<p class="form-label text-xs">
+						(haz clic en el mapa)
+					</p>
+				</div>
 				<div class="grid grid-cols-2 gap-2 mb-2">
 					<div>
 						<label for="filtroLatitud" class="form-label">
 							Latitud
 						</label>
-						<input type="number" step="any" id="filtroLatitud" name="latitud"
-							   class="form-input"
-							   placeholder="-34.603722" readonly>
+						<input type="number" step="any" id="filtroLatitud" name="latitud" class="form-input" placeholder="-34.603722" readonly>
 					</div>
 					<div>
 						<label for="filtroLongitud" class="form-label">
@@ -494,23 +500,28 @@
 </div>
 
 <div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
-	<div class="modal-content custom-modal-solicitud modal-page-format max-w-2xl">
-		<div class="modal-solicitud-header">
+	<div class="modal-content modal-page-format max-w-2xl">
+		<div class="modal-header bg-[#dc2626]">
 			<h5 class="modal-title">
-				Usted va a solicitar la eliminación de este hecho
+				Solicitar eliminación de hecho
 			</h5>
 		</div>
-		<div class="px-[1.5rem] pb-[1.5rem] pt-[0.5rem]">
+		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
-			<form id="formSolicitud" class="mb-3">
-				<label for="motivo-solicitud-eliminacion" class="form-label text-xl">
-					Motivo
-					<span class="max-char-span text-xs">
-						(Mín.500 caracteres)
-						(Máx.2000 caracteres)
-					</span>
-				</label>
-				<textarea id="motivo-solicitud-eliminacion" class="form-input" maxlength="2000" minlength="500" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+			<form id="form-solicitud-eliminacion" class="form-body">
+				<div>
+					<label for="motivo-solicitud-eliminacion" class="form-label">
+						Motivo
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span text-xs">
+							(Mín.500 caracteres)
+							(Máx.2000 caracteres)
+						</span>
+					</label>
+					<textarea id="motivo-solicitud-eliminacion" class="form-input" maxlength="2000" minlength="500" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+				</div>
 			</form>
 		</div>
 		<div class="modal-footer">
@@ -519,3 +530,84 @@
 		</div>
 	</div>
 </div>
+
+<div th:fragment="modalEditarColeccion" id="modal-editar-coleccion" class="modal-page hidden">
+	<div class="modal-content modal-page-format max-w-4xl">
+		<div class="create-modal-header">
+			<h5 class="modal-title">
+				Editar Colección
+			</h5>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+
+			<!-- Información de la colección (solo lectura) -->
+			<div class="mb-4 p-4 bg-gray-100 rounded-lg">
+				<h6 class="font-semibold text-lg mb-3 text-black">Información de la Colección</h6>
+				<div class="row g-3">
+					<div class="col-md-12">
+						<label class="form-label font-semibold">Título:</label>
+						<p id="modal-coleccion-titulo" class="text-black mb-0">-</p>
+					</div>
+				</div>
+			</div>
+
+			<form id="form-editar-coleccion">
+				<!-- Algoritmo de Consenso (editable) -->
+				<div class="mb-4">
+					<label for="modal-coleccion-algoritmo" class="form-label">
+						Algoritmo de Consenso
+						<span class="form-obligatory-icon">*</span>
+					</label>
+					<select id="modal-coleccion-algoritmo" class="form-input" required>
+						<option value="">Seleccione un algoritmo</option>
+						<option value="ABSOLUTO">Absoluto</option>
+						<option value="IRRESTRICTO">Irrestricto</option>
+						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
+						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
+					</select>
+					<small class="text-gray-600">Este cambio se guardará al hacer clic en "Guardar Cambios"</small>
+				</div>
+
+				<!-- Gestión de Fuentes -->
+				<div class="mb-4">
+					<h6 class="font-semibold text-lg mb-3 text-black">Fuentes Asociadas</h6>
+
+					<!-- Lista de fuentes actuales -->
+					<div class="mb-3">
+						<label class="form-label font-semibold">Fuentes Actuales:</label>
+						<div id="lista-fuentes-actuales-editar" class="border rounded p-3 bg-white max-h-60 overflow-y-auto">
+							<!-- Se llenará dinámicamente -->
+						</div>
+					</div>
+
+					<!-- Agregar nueva fuente -->
+					<div class="mb-3">
+						<label class="form-label font-semibold">Agregar Nueva Fuente:</label>
+						<div id="fuentes-container-editar-coleccion" class="space-y-2 mb-2">
+							<!-- Se llenará dinámicamente con agregarFuenteAColeccionEditar() -->
+						</div>
+						<button type="button" id="btn-agregar-fuente-editar" class="btn-primary">
+							+ Agregar Fuente
+						</button>
+					</div>
+
+					<!-- Operaciones pendientes -->
+					<div id="operaciones-pendientes-container" class="hidden">
+						<label class="form-label font-semibold text-orange-600">Operaciones Pendientes:</label>
+						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto">
+							<!-- Se llenará dinámicamente -->
+						</div>
+						<small class="text-orange-600">Estas operaciones se ejecutarán al guardar los cambios</small>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-coleccion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerConfirmButton('Guardar Cambios', 'guardar-editar-coleccion')}" />
+		</div>
+	</div>
+</div>
+

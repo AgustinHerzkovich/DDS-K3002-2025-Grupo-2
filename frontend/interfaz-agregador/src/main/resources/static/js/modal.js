@@ -16,7 +16,7 @@ function validarInputsObligatorios(inputs) {
             } else if (input.type === "file") {
                 invalid = input.files.length === 0;
             } else {
-                invalid = input.value.trim() === "";
+                invalid = input.value.trim() === "" || (input.maxLength > 0 && input.maxLength < input.value.length) || (input.minLength > 0 && input.minLength > input.value.length);
             }
         }
 

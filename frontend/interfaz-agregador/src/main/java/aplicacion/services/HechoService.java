@@ -15,9 +15,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,7 +93,7 @@ public class HechoService {
                         return pageWrapper;
                     }
                     PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
-                    emptyWrapper.setContent(new java.util.ArrayList<>());
+                    emptyWrapper.setContent(new ArrayList<>());
                     return emptyWrapper;
                 })
                 .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
@@ -244,7 +246,7 @@ public class HechoService {
      * Método auxiliar para agregar los parámetros que especifican qué campos del Hecho queremos obtener.
      * Especificamos: id, titulo, latitud, longitud, categoria, fechaCarga
      */
-    private void agregarCamposHechoAUri(org.springframework.web.util.UriBuilder uriBuilder) {
+    private void agregarCamposHechoAUri(UriBuilder uriBuilder) {
         // Campos que queremos: id, titulo, latitud, longitud, categoria, fechaCarga
         uriBuilder.queryParam("includeId", true);
         uriBuilder.queryParam("includeTitulo", true);

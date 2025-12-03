@@ -34,24 +34,6 @@ body {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
-
-/* Botón Ver Detalle (btn-ver) - Aseguramos estilo para que sea visible */
-.btn-ver {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #10b981; /* Un color distintivo, como verde esmeralda */
-    color: #1f2937; /* Texto oscuro */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-ver:hover {
-    background-color: #059669;
-}
-
 .info-label {
     font-size: 0.875rem;
     font-weight: 600;

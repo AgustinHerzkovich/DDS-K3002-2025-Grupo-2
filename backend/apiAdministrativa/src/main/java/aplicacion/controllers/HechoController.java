@@ -41,11 +41,12 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public ResponseEntity<?> obtenerHechosPendientes(@RequestParam(value = "fechaMayorA", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA,
+    public ResponseEntity<?> obtenerHechosPendientes(@RequestParam(value = "fechaMayorA", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
                                                           @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente) {
         StringBuilder url = new StringBuilder(urlBaseDinamicas + "/hechos");
-        UrlHelper.appendQueryParam(url, "fechaMayorA", fechaMayorA);
-        UrlHelper.appendQueryParam(url, "pendiente", pendiente);
+        // No encodificar la fecha manualmente porque RestTemplate ya lo hace automáticamente
+        UrlHelper.appendQueryParamSinEncode(url, "fechaMayorA", fechaMayorA);
+        UrlHelper.appendQueryParamSinEncode(url, "pendiente", pendiente);
         return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));
     }
 

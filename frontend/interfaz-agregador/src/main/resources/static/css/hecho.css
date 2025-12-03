@@ -119,23 +119,6 @@
     margin-top: 1rem;
 }
 
-.modal-solicitud-header {
-    background-color: #b91c1c;
-    border-bottom: 2px solid #e5e7eb;
-    border-radius: 0.5rem 0.5rem 0 0;
-    padding: 1.25rem;
-}
-
-.custom-modal-solicitud {
-    margin-top: 0.5rem;
-    width: 100%;
-    background-color: white;
-    border-radius: 0.5rem;
-    border: 2px solid #e5e7eb;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-}
-
 .tag-list {
     padding-left: 0;
     list-style: none;

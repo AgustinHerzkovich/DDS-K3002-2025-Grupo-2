@@ -38,8 +38,8 @@
     transition: all 0.2s ease;
     background-color: #f9fafb;
     color: #1f2937 !important; /* Color negro para el texto */
-    appearance: auto;
-    -webkit-appearance: auto;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .form-input:hover {

@@ -26,13 +26,13 @@ public class FuenteEstaticaController {
     }
 
     @PostMapping("/archivos")
-    public ResponseEntity<Object> subirArchivos(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<?> subirArchivos(@RequestParam("files") MultipartFile[] files) {
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         for (MultipartFile file : files) {
             body.add("files", file.getResource());
         }
 
-        return solicitudesHttp.postMultipart(urlBaseEstaticas + "/archivos", body, Object.class);
+        return ResponseWrapper.wrapResponse(solicitudesHttp.postMultipart(urlBaseEstaticas + "/archivos", body, String.class));
     }
 }

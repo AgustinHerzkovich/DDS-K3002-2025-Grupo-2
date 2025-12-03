@@ -1,6 +1,7 @@
 package aplicacion.services;
 
-import aplicacion.dto.GraphQLColeccionHechosResponse;
+import aplicacion.dto.GraphQLHechosCuradosResponse;
+import aplicacion.dto.GraphQLHechosIrrestrictosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -69,14 +70,14 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(GraphQLColeccionHechosResponse.class)
+                .bodyToMono(GraphQLHechosIrrestrictosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
-                        graphqlResponse.getData().getHechosPorColeccionIrrestrictos() != null) {
+                        graphqlResponse.getData().getHechosPorColeccion() != null) {
 
-                        GraphQLColeccionHechosResponse.HechosWrapper wrapper =
-                            graphqlResponse.getData().getHechosPorColeccionIrrestrictos();
-                        GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLHechosIrrestrictosResponse.HechosWrapper wrapper =
+                            graphqlResponse.getData().getHechosPorColeccion();
+                        GraphQLHechosIrrestrictosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());
@@ -114,14 +115,14 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(GraphQLColeccionHechosResponse.class)
+                .bodyToMono(GraphQLHechosCuradosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
-                        graphqlResponse.getData().getHechosPorColeccionCurados() != null) {
+                        graphqlResponse.getData().getHechosPorColeccion() != null) {
 
-                        GraphQLColeccionHechosResponse.HechosWrapper wrapper =
-                            graphqlResponse.getData().getHechosPorColeccionCurados();
-                        GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLHechosCuradosResponse.HechosWrapper wrapper =
+                            graphqlResponse.getData().getHechosPorColeccion();
+                        GraphQLHechosCuradosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());

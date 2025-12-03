@@ -1,6 +1,7 @@
 package aplicacion.dto;
 
 import aplicacion.dto.output.HechoMapaOutputDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,9 @@ public class GraphQLColeccionHechosResponse {
     @Getter
     @Setter
     public static class GraphQLData {
+        @JsonProperty("getHechosPorColeccion")
         private HechosWrapper hechosPorColeccionIrrestrictos;
+        @JsonProperty("getHechosPorColeccion")
         private HechosWrapper hechosPorColeccionCurados;
     }
 

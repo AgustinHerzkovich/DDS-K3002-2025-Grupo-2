@@ -59,9 +59,17 @@ public class HechoService {
     public List<HechoOutputDto> obtenerHechosAceptados() {
         return this.obtenerHechos().stream().filter(Hecho::estaAceptado).map(hechoOutputMapper::map).toList();
     }
+
     @Transactional(readOnly = true)
     public List<HechoOutputDto> obtenerHechosPendientes() {
         return this.obtenerHechos().stream().filter(Hecho::estaPendiente).map(hechoOutputMapper::map).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA) {
+        return this.obtenerHechosPendientes().stream()
+                .filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA))
+                .toList();
     }
 
     @Transactional(readOnly = true)
