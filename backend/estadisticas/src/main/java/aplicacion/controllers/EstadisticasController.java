@@ -118,18 +118,10 @@ public class EstadisticasController {
         if (id == null) {
             List<String> identificadores = supplier.get();
             for (String identificador : identificadores) {
-                dtos.addAll(obtenerCosas.apply(identificador, 0, Integer.MAX_VALUE));
+                dtos.addAll(obtenerCosas.apply(identificador, page, limit));
             }
-            // Aplicar paginación al resultado final acumulado
-            int inicio = page * limit;
-            int fin = Math.min(inicio + limit, dtos.size());
-            if (inicio >= dtos.size()) {
-                return new ArrayList<>();
-            }
-            return dtos.subList(inicio, fin);
-        } else {
+        } else
             dtos.addAll(obtenerCosas.apply(id, page, limit));
-        }
         return dtos;
     }
 
