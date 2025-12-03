@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.dto.GraphQLHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
@@ -60,20 +61,23 @@ public class HechoService {
     // Metodo que devuelve un Flux de hechos con direcciones calculadas
     public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechos(Integer page, Integer size) {
         return webClientPublica.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/hechos")
-                        .queryParam("page", page)
-                        .queryParam("size", size)
-                        .build())
+                .uri(uriBuilder -> {
+                    uriBuilder.path("/hechos")
+                            .queryParam("page", page)
+                            .queryParam("size", size);
+                    // Especificar los campos que queremos obtener
+                    agregarCamposHechoAUri(uriBuilder);
+                    return uriBuilder.build();
+                })
                 .retrieve()
-                .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
+                .bodyToMono(GraphQLHechosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosEnMapa() != null) {
 
-                        aplicacion.dto.GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
+                        GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
                             graphqlResponse.getData().getHechosEnMapa();
-                        aplicacion.dto.GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());
@@ -149,17 +153,20 @@ public class HechoService {
                     uriBuilder.queryParam("page", page);
                     uriBuilder.queryParam("size", size);
 
+                    // Especificar los campos que queremos obtener
+                    agregarCamposHechoAUri(uriBuilder);
+
                     return uriBuilder.build();
                 })
                 .retrieve()
-                .bodyToMono(aplicacion.dto.GraphQLHechosResponse.class)
+                .bodyToMono(GraphQLHechosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosEnMapa() != null) {
 
-                        aplicacion.dto.GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
+                        GraphQLHechosResponse.HechosEnMapaWrapper wrapper =
                             graphqlResponse.getData().getHechosEnMapa();
-                        aplicacion.dto.GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());
@@ -231,5 +238,24 @@ public class HechoService {
             System.err.println("ERROR al gestionar revision para ID " + hechoId + ": " + e.getMessage());
             throw e;
         }
+    }
+
+    /**
+     * Método auxiliar para agregar los parámetros que especifican qué campos del Hecho queremos obtener.
+     * Especificamos: id, titulo, latitud, longitud, categoria, fechaCarga
+     */
+    private void agregarCamposHechoAUri(org.springframework.web.util.UriBuilder uriBuilder) {
+        // Campos que queremos: id, titulo, latitud, longitud, categoria, fechaCarga
+        uriBuilder.queryParam("includeId", true);
+        uriBuilder.queryParam("includeTitulo", true);
+        uriBuilder.queryParam("includeDescripcion", false);
+        uriBuilder.queryParam("includeLatitud", true);
+        uriBuilder.queryParam("includeLongitud", true);
+        uriBuilder.queryParam("includeCategoria", true);
+        uriBuilder.queryParam("includeFechaCarga", true);
+        uriBuilder.queryParam("includeFechaAcontecimiento", false);
+        uriBuilder.queryParam("includeFechaUltimaModificacion", false);
+        uriBuilder.queryParam("includeContenidoTexto", false);
+        uriBuilder.queryParam("includeAnonimato", false);
     }
 }

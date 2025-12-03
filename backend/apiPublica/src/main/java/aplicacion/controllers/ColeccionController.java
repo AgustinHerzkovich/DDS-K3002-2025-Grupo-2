@@ -44,20 +44,34 @@ public class ColeccionController {
             @RequestParam(name = "radio", required = false) Double radio,
             @RequestParam(name = "search", required = false) String textoLibre,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "100") Integer size
+            @RequestParam(name = "size", defaultValue = "100") Integer size,
+            // Parámetros para seleccionar campos del Hecho
+            @RequestParam(name = "includeId", defaultValue = "true") Boolean includeId,
+            @RequestParam(name = "includeTitulo", defaultValue = "true") Boolean includeTitulo,
+            @RequestParam(name = "includeDescripcion", defaultValue = "false") Boolean includeDescripcion,
+            @RequestParam(name = "includeLatitud", defaultValue = "true") Boolean includeLatitud,
+            @RequestParam(name = "includeLongitud", defaultValue = "true") Boolean includeLongitud,
+            @RequestParam(name = "includeCategoria", defaultValue = "true") Boolean includeCategoria,
+            @RequestParam(name = "includeFechaCarga", defaultValue = "true") Boolean includeFechaCarga,
+            @RequestParam(name = "includeFechaAcontecimiento", defaultValue = "false") Boolean includeFechaAcontecimiento,
+            @RequestParam(name = "includeFechaUltimaModificacion", defaultValue = "false") Boolean includeFechaUltimaModificacion,
+            @RequestParam(name = "includeContenidoTexto", defaultValue = "false") Boolean includeContenidoTexto,
+            @RequestParam(name = "includeAnonimato", defaultValue = "false") Boolean includeAnonimato
     )
     {
+        // Determinar los campos a solicitar
+        String camposHecho = obtenerCamposHecho(
+                includeId, includeTitulo, includeDescripcion, includeLatitud, includeLongitud,
+                includeCategoria, includeFechaCarga, includeFechaAcontecimiento,
+                includeFechaUltimaModificacion, includeContenidoTexto, includeAnonimato
+        );
+
         // Construir la query GraphQL
         String query = """
             query ObtenerHechosDeColeccionIrrestrictos($idColeccion: String, $curados: Boolean, $filtros: HechoFiltros, $page: Int, $limit: Int) {
                 getHechosPorColeccion(idColeccion: $idColeccion, curados: $curados, filtros: $filtros, page: $page, limit: $limit) {
                     content {
-                        id
-                        titulo
-                        latitud
-                        longitud
-                        categoria
-                        fechaCarga
+                        %s
                     }
                     pageInfo {
                         totalElements
@@ -69,7 +83,7 @@ public class ColeccionController {
                     }
                 }
             }
-            """;
+            """.formatted(camposHecho);
 
         // Construir el mapa de filtros
         Map<String, Object> filtros = new HashMap<>();
@@ -136,19 +150,33 @@ public class ColeccionController {
             @RequestParam(name = "radio", required = false) Double radio,
             @RequestParam(name = "search", required = false) String textoLibre,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "100") Integer size
+            @RequestParam(name = "size", defaultValue = "100") Integer size,
+            // Parámetros para seleccionar campos del Hecho
+            @RequestParam(name = "includeId", defaultValue = "true") Boolean includeId,
+            @RequestParam(name = "includeTitulo", defaultValue = "true") Boolean includeTitulo,
+            @RequestParam(name = "includeDescripcion", defaultValue = "false") Boolean includeDescripcion,
+            @RequestParam(name = "includeLatitud", defaultValue = "true") Boolean includeLatitud,
+            @RequestParam(name = "includeLongitud", defaultValue = "true") Boolean includeLongitud,
+            @RequestParam(name = "includeCategoria", defaultValue = "true") Boolean includeCategoria,
+            @RequestParam(name = "includeFechaCarga", defaultValue = "true") Boolean includeFechaCarga,
+            @RequestParam(name = "includeFechaAcontecimiento", defaultValue = "false") Boolean includeFechaAcontecimiento,
+            @RequestParam(name = "includeFechaUltimaModificacion", defaultValue = "false") Boolean includeFechaUltimaModificacion,
+            @RequestParam(name = "includeContenidoTexto", defaultValue = "false") Boolean includeContenidoTexto,
+            @RequestParam(name = "includeAnonimato", defaultValue = "false") Boolean includeAnonimato
     ) {
+        // Determinar los campos a solicitar
+        String camposHecho = obtenerCamposHecho(
+                includeId, includeTitulo, includeDescripcion, includeLatitud, includeLongitud,
+                includeCategoria, includeFechaCarga, includeFechaAcontecimiento,
+                includeFechaUltimaModificacion, includeContenidoTexto, includeAnonimato
+        );
+
         // Construir la query GraphQL
         String query = """
             query ObtenerHechosDeColeccionCurados($idColeccion: String, $curados: Boolean, $filtros: HechoFiltros, $page: Int, $limit: Int) {
                 getHechosPorColeccion(idColeccion: $idColeccion, curados: $curados, filtros: $filtros, page: $page, limit: $limit) {
                     content {
-                        id
-                        titulo
-                        latitud
-                        longitud
-                        categoria
-                        fechaCarga
+                        %s
                     }
                     pageInfo {
                         totalElements
@@ -160,7 +188,7 @@ public class ColeccionController {
                     }
                 }
             }
-            """;
+            """.formatted(camposHecho);
 
         // Construir el mapa de filtros
         Map<String, Object> filtros = new HashMap<>();
@@ -245,5 +273,41 @@ public class ColeccionController {
             return respuesta;
         }
         return rta;
+    }
+
+    private String obtenerCamposHecho(
+            Boolean includeId, Boolean includeTitulo, Boolean includeDescripcion,
+            Boolean includeLatitud, Boolean includeLongitud, Boolean includeCategoria,
+            Boolean includeFechaCarga, Boolean includeFechaAcontecimiento,
+            Boolean includeFechaUltimaModificacion, Boolean includeContenidoTexto,
+            Boolean includeAnonimato
+    ) {
+        StringBuilder camposBuilder = new StringBuilder();
+
+        if (includeId) agregarCampo(camposBuilder, "id");
+        if (includeTitulo) agregarCampo(camposBuilder, "titulo");
+        if (includeDescripcion) agregarCampo(camposBuilder, "descripcion");
+        if (includeLatitud) agregarCampo(camposBuilder, "latitud");
+        if (includeLongitud) agregarCampo(camposBuilder, "longitud");
+        if (includeCategoria) agregarCampo(camposBuilder, "categoria");
+        if (includeFechaCarga) agregarCampo(camposBuilder, "fechaCarga");
+        if (includeFechaAcontecimiento) agregarCampo(camposBuilder, "fechaAcontecimiento");
+        if (includeFechaUltimaModificacion) agregarCampo(camposBuilder, "fechaUltimaModificacion");
+        if (includeContenidoTexto) agregarCampo(camposBuilder, "contenidoTexto");
+        if (includeAnonimato) agregarCampo(camposBuilder, "anonimato");
+
+        // Si no se seleccionó ningún campo, devolver al menos el id
+        if (camposBuilder.isEmpty()) {
+            return "id";
+        }
+
+        return camposBuilder.toString();
+    }
+
+    private void agregarCampo(StringBuilder builder, String campo) {
+        if (!builder.isEmpty()) {
+            builder.append("\n                        ");
+        }
+        builder.append(campo);
     }
 }

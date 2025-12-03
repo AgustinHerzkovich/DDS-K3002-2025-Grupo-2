@@ -60,12 +60,17 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ResponseEntity<ColeccionOutputDto> mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
-        return ResponseEntity.ok(coleccionService.obtenerColeccionDTO(idColeccion));
+    public ResponseEntity<?> mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
+        try {
+            ColeccionOutputDto coleccion = coleccionService.obtenerColeccionDTO(idColeccion);
+            return ResponseEntity.ok(coleccion);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosIrrestrictos(@PathVariable(name = "id") String idColeccion,
+    public ResponseEntity<?> mostrarHechosIrrestrictos(@PathVariable(name = "id") String idColeccion,
                                                           @RequestParam(name = "categoria", required = false) String categoria,
                                                           @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                           @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -90,12 +95,16 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
-        return ResponseEntity.ok(hechosIrrestrictos);
+        try {
+            Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
+            return ResponseEntity.ok(hechosIrrestrictos);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosCurados(@PathVariable(name = "id") String idColeccion,
+    public ResponseEntity<?> mostrarHechosCurados(@PathVariable(name = "id") String idColeccion,
                                                      @RequestParam(name = "categoria", required = false) String categoria,
                                                      @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                      @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -120,32 +129,39 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
-        return ResponseEntity.ok(hechosCurados);
+        try {
+            Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
+            return ResponseEntity.ok(hechosCurados);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
+    public ResponseEntity<?> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
                                                    @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
-        ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
-        System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
-        return ResponseEntity.ok(coleccion);
+        try {
+            ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
+            System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
+            return ResponseEntity.ok(coleccion);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> agregarFuente(@PathVariable(name = "id") String idColeccion,
                                                          @Valid @RequestBody FuenteInputDto fuenteInputDto) {
-        ColeccionOutputDto coleccionOutputDto;
         try {
-            coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
+            ColeccionOutputDto coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
+            System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
+            return ResponseEntity.ok(coleccionOutputDto);
         }catch (ColeccionNoEncontradaException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
-        return ResponseEntity.ok(coleccionOutputDto);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")

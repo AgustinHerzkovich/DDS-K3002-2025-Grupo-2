@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.dto.GraphQLColeccionHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -68,14 +69,14 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
+                .bodyToMono(GraphQLColeccionHechosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosPorColeccionIrrestrictos() != null) {
 
-                        aplicacion.dto.GraphQLColeccionHechosResponse.HechosWrapper wrapper =
+                        GraphQLColeccionHechosResponse.HechosWrapper wrapper =
                             graphqlResponse.getData().getHechosPorColeccionIrrestrictos();
-                        aplicacion.dto.GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());
@@ -113,14 +114,14 @@ public class ColeccionService {
                     return getUri(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, search, page, size, uriBuilder);
                 })
                 .retrieve()
-                .bodyToMono(aplicacion.dto.GraphQLColeccionHechosResponse.class)
+                .bodyToMono(GraphQLColeccionHechosResponse.class)
                 .map(graphqlResponse -> {
                     if (graphqlResponse.getData() != null &&
                         graphqlResponse.getData().getHechosPorColeccionCurados() != null) {
 
-                        aplicacion.dto.GraphQLColeccionHechosResponse.HechosWrapper wrapper =
+                        GraphQLColeccionHechosResponse.HechosWrapper wrapper =
                             graphqlResponse.getData().getHechosPorColeccionCurados();
-                        aplicacion.dto.GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
+                        GraphQLColeccionHechosResponse.PageInfo pageInfo = wrapper.getPageInfo();
 
                         PageWrapper<HechoMapaOutputDto> pageWrapper = new PageWrapper<>();
                         pageWrapper.setContent(wrapper.getContent());
@@ -152,7 +153,30 @@ public class ColeccionService {
         if (search != null) uriBuilder.queryParam("search", search);
         uriBuilder.queryParam("page", page);
         uriBuilder.queryParam("size", size);
+
+        // Especificar los campos que queremos obtener de los hechos
+        agregarCamposHechoAUri(uriBuilder);
+
         return uriBuilder.build(idColeccion);
+    }
+
+    /**
+     * Método auxiliar para agregar los parámetros que especifican qué campos del Hecho queremos obtener.
+     * Especificamos: id, titulo, latitud, longitud, categoria, fechaCarga
+     */
+    private void agregarCamposHechoAUri(UriBuilder uriBuilder) {
+        // Campos que queremos: id, titulo, latitud, longitud, categoria, fechaCarga
+        uriBuilder.queryParam("includeId", true);
+        uriBuilder.queryParam("includeTitulo", true);
+        uriBuilder.queryParam("includeDescripcion", false);
+        uriBuilder.queryParam("includeLatitud", true);
+        uriBuilder.queryParam("includeLongitud", true);
+        uriBuilder.queryParam("includeCategoria", true);
+        uriBuilder.queryParam("includeFechaCarga", true);
+        uriBuilder.queryParam("includeFechaAcontecimiento", false);
+        uriBuilder.queryParam("includeFechaUltimaModificacion", false);
+        uriBuilder.queryParam("includeContenidoTexto", false);
+        uriBuilder.queryParam("includeAnonimato", false);
     }
 
     public ColeccionOutputDto obtenerColeccion(String idColeccion) {

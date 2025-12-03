@@ -112,10 +112,14 @@ public class HechoService {
         revisionRepository.save(revisionHecho);
     }
 
-    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException {
+    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto, String userId) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException, AutorizacionDenegadaException {
         Hecho hecho = hechoRepository.findById(id)
                     .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         this.validarHechoEditable(hecho);
+
+        if (!hecho.getAutor().getId().equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
+        }
 
         hecho.editar(hechoEdicionInputDto.getTitulo(),
                 hechoEdicionInputDto.getDescripcion(),

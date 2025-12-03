@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -69,6 +70,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
         );
     }
 
+    @Transactional
     public void curarHechos() {
         System.out.println("Se ha iniciado la curación de hechos. Esto puede tardar un rato.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
@@ -85,7 +87,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
             }
 
             Map<Hecho, Long> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
-            Long totalFuentes = fuenteService.obtenerCantidadFuentes();
+            Long totalFuentes = fuenteService.obtenerCantidadFuentesConHechos();
 
             List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(conteoHechos, totalFuentes);
             for (Hecho hecho : hechosCurados) {

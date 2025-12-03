@@ -10,6 +10,7 @@ import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
+import aplicacion.services.schedulers.EjecutarAlgoritmoConsensoScheduler;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,10 +33,12 @@ import java.util.List;
 public class HechoController {
     private final HechoService hechoService;
     private final CargarHechosScheduler cargarHechosScheduler;
+    private final EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler;
 
-    public HechoController(HechoService hechoService, CargarHechosScheduler cargarHechosScheduler) {
+    public HechoController(HechoService hechoService, CargarHechosScheduler cargarHechosScheduler, EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler) {
         this.hechoService = hechoService;
         this.cargarHechosScheduler = cargarHechosScheduler;
+        this.ejecutarAlgoritmoConsensoScheduler = ejecutarAlgoritmoConsensoScheduler;
     }
 
     @GetMapping("/hechos")
@@ -116,6 +119,12 @@ public class HechoController {
     @PostMapping("/cargarHechos")
     public ResponseEntity<Void> cargarHechos() { // Endpoint para disparar la carga de hechos manualmente (si es necesario)
         cargarHechosScheduler.cargarHechos();
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/curarHechos")
+    public ResponseEntity<Void> curarHechos() { // Endpoint para disparar la ejecución del algoritmo de consenso manualmente (si es necesario)
+        ejecutarAlgoritmoConsensoScheduler.curarHechos();
         return ResponseEntity.ok().build();
     }
 

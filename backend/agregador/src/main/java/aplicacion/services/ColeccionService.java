@@ -72,14 +72,14 @@ public class ColeccionService {
         return coleccionRepository.findAll();
     }
 
-    public Coleccion obtenerColeccion(String idColeccion) {
-        return coleccionRepository.findById(idColeccion).orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+    public Coleccion obtenerColeccion(String idColeccion) throws ColeccionNoEncontradaException {
+        return coleccionRepository.findById(idColeccion).orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + idColeccion));
     }
 
-    public ColeccionOutputDto obtenerColeccionDTO(String idColeccion) {
+    public ColeccionOutputDto obtenerColeccionDTO(String idColeccion) throws ColeccionNoEncontradaException {
          return coleccionRepository.findById(idColeccion)
                 .map(coleccionOutputMapper::map)
-                .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+                .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + idColeccion));
     }
 
     public Page<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
@@ -92,7 +92,8 @@ public class ColeccionService {
                                                                       Double longitud,
                                                                       Double radio,
                                                                       String textoLibre,
-                                                                      Pageable pageable) {
+                                                                      Pageable pageable) throws ColeccionNoEncontradaException {
+        this.obtenerColeccion(idColeccion); // Tira la excepción si no existe la colección
 
         return hechoService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
     }
@@ -107,22 +108,21 @@ public class ColeccionService {
                                                                  Double longitud,
                                                                  Double radio,
                                                                  String textoLibre,
-                                                                 Pageable pageable) {
+                                                                 Pageable pageable) throws ColeccionNoEncontradaException {
+        this.obtenerColeccion(idColeccion); // Tira la excepción si no existe la colección
 
         return hechoService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, textoLibre, pageable);
     }
 
-    public void eliminarColeccion(String idColeccion) throws ColeccionNoEncontradaException{
-        Coleccion coleccion = coleccionRepository.findById(idColeccion)
-                .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + idColeccion));
+    public void eliminarColeccion(String idColeccion) throws ColeccionNoEncontradaException {
+        Coleccion coleccion = obtenerColeccion(idColeccion);
         hechoService.borrarHechosPorColeccion(coleccion);
         coleccionRepository.delete(coleccion);
         System.out.println("Colección eliminada: " + idColeccion);
     }
 
-    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
-        Coleccion coleccion = coleccionRepository.findById(idColeccion)
-                .orElseThrow(() -> new IllegalArgumentException("Colección no encontrada con ID: " + idColeccion));
+    public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, ModificacionAlgoritmoInputDto nuevoAlgoritmo) throws ColeccionNoEncontradaException {
+        Coleccion coleccion = obtenerColeccion(idColeccion);
         coleccion.setTipoAlgoritmoConsenso(nuevoAlgoritmo.getAlgoritmoConsenso());
         Coleccion coleccionPersistida = coleccionRepository.save(coleccion); // Updatea en la base de datos la colección con el nuevo algoritmo
         return coleccionOutputMapper.map(coleccionPersistida);
@@ -142,7 +142,7 @@ public class ColeccionService {
     }
 
     @Transactional
-    public ColeccionOutputDto quitarFuenteDeColeccion(String idColeccion, String fuenteId) throws FuenteNoEncontradaException {
+    public ColeccionOutputDto quitarFuenteDeColeccion(String idColeccion, String fuenteId) throws ColeccionNoEncontradaException, FuenteNoEncontradaException {
         Coleccion coleccion = obtenerColeccion(idColeccion);
         Fuente fuente = fuenteService.obtenerFuentePorId(fuenteId);
 

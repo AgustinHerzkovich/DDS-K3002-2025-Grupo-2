@@ -41,7 +41,7 @@ public class EstadisticasController {
     }
 
     @GetMapping(value = "/provinciasConMasHechosDeColeccion", produces = { MediaType.APPLICATION_JSON_VALUE, "text/csv" })
-    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(value = "idColeccion", required = false) String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit, @RequestHeader(HttpHeaders.ACCEPT) String accept) throws Exception {
+    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(value = "idColeccion", required = false) String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit, @RequestHeader(HttpHeaders.ACCEPT) String accept) {
         if(isPaginaYLimiteInvalid(page, limit)) {
             return ResponseEntity.badRequest().build();
         }
@@ -118,10 +118,18 @@ public class EstadisticasController {
         if (id == null) {
             List<String> identificadores = supplier.get();
             for (String identificador : identificadores) {
-                dtos.addAll(obtenerCosas.apply(identificador, page, limit));
+                dtos.addAll(obtenerCosas.apply(identificador, 0, Integer.MAX_VALUE));
             }
-        } else
+            // Aplicar paginación al resultado final acumulado
+            int inicio = page * limit;
+            int fin = Math.min(inicio + limit, dtos.size());
+            if (inicio >= dtos.size()) {
+                return new ArrayList<>();
+            }
+            return dtos.subList(inicio, fin);
+        } else {
             dtos.addAll(obtenerCosas.apply(id, page, limit));
+        }
         return dtos;
     }
 

@@ -7,6 +7,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.services.HechoService;
 import aplicacion.excepciones.*;
+import domain.helpers.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -83,16 +84,31 @@ public class HechoController {
 
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
-                                         @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
+                                         @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto,
+                                         @RequestHeader(value = "Authorization", required = false) String token) {
         System.out.println("EDITANDO el hecho: " + id );
         try {
-            HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto);
-            System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")");
+            // Validar que el usuario sea el autor del hecho
+            if (token == null || token.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+            }
+
+            // Extraer el ID del usuario del token JWT
+            String userId = JwtUtil.extractUserId(token);
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+            }
+
+            // Si la validación pasa, proceder con la edición
+            HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto, userId);
+            System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")" + " por el usuario: " + userId);
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (PlazoEdicionVencidoException | AnonimatoException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (AutorizacionDenegadaException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 }

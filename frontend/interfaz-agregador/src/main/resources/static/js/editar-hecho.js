@@ -8,6 +8,7 @@ async function guardarEdicion(hechoId) {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwtToken
             },
             body: JSON.stringify(hechoEditado)
         });

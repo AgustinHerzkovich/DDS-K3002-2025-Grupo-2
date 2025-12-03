@@ -256,6 +256,7 @@ public class HechoService {
         return hechoRepository.findByCodigoHasheadoIn(codigosUnicos);
     }
 
+    @Transactional
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
         List<Fuente> fuentes = coleccion.getFuentes();
         List<Hecho> hechos = fuentes.stream().flatMap(fuente -> fuente.getHechos().stream()).toList();
