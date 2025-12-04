@@ -22,13 +22,15 @@ public class CargaDeColeccionesService {
     private final ColeccionRepository coleccionRepository;
     private final FactColeccionRepository factColeccionRepository;
     private final ColeccionFactProcesor coleccionFactProcesor;
+    private final DimensionColeccionRepository dimensionColeccionRepository;
     public CargaDeColeccionesService(HechoXColeccionRepository hechoXColeccionRepository,
                                      ColeccionRepository coleccionRepository, DimensionColeccionRepository dimensionColeccionRepository,
                                      DimensionCategoriaRepository dimensionCategoriaRepository,
                                      DimensionUbicacionRepository dimensionUbicacionRepository,
-                                     FactColeccionRepository factColeccionRepository) {
+                                     FactColeccionRepository factColeccionRepository, DimensionColeccionRepository dimensionColeccionRepository1) {
+        this.dimensionColeccionRepository = dimensionColeccionRepository1;
 
-    this.coleccionFactProcesor = new ColeccionFactProcesor(factColeccionRepository, dimensionUbicacionRepository, dimensionCategoriaRepository, dimensionColeccionRepository);
+        this.coleccionFactProcesor = new ColeccionFactProcesor(factColeccionRepository, dimensionUbicacionRepository, dimensionCategoriaRepository, dimensionColeccionRepository);
     this.hechoXColeccionRepository = hechoXColeccionRepository;
     this.coleccionRepository = coleccionRepository;
     this.factColeccionRepository = factColeccionRepository;
@@ -42,6 +44,7 @@ public class CargaDeColeccionesService {
         int c = 0;
         int q = 0;
         factColeccionRepository.deleteAll();
+        dimensionColeccionRepository.deleteAll();
         List<Coleccion> coleccions = coleccionRepository.findAll();
         do {
             Pageable pageable = PageRequest.of(c, tamañoPagina);
