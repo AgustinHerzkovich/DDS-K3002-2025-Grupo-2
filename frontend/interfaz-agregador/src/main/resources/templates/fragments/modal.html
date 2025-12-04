@@ -472,9 +472,9 @@
 <div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="modal-header bg-[#dc2626]">
-			<h3 class="modal-title">
+			<h2 class="modal-title">
 				Solicitar eliminación de hecho
-			</h3>
+			</h2>
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
@@ -513,10 +513,10 @@
 
 			<!-- Información de la colección (solo lectura) -->
 			<div class="mb-4 p-4 bg-gray-100 rounded-lg">
-				<h6 class="font-semibold text-lg mb-3 text-black">Información de la Colección</h6>
+				<h4 class="font-semibold text-lg mb-3 text-black">Información de la Colección</h4>
 				<div class="row g-3">
 					<div class="col-md-12">
-						<label class="form-label font-semibold">Título:</label>
+						<p class="form-label font-semibold">Título:</p>
 						<p id="modal-coleccion-titulo" class="text-black mb-0">-</p>
 					</div>
 				</div>
@@ -541,11 +541,11 @@
 
 				<!-- Gestión de Fuentes -->
 				<div class="mb-4">
-					<h6 class="font-semibold text-lg mb-3 text-black">Fuentes Asociadas</h6>
+					<h5 class="font-semibold text-lg mb-3 text-black">Fuentes Asociadas</h5>
 
 					<!-- Lista de fuentes actuales -->
 					<div class="mb-3">
-						<label class="form-label font-semibold">Fuentes Actuales:</label>
+						<p class="form-label font-semibold">Fuentes Actuales:</p>
 						<div id="lista-fuentes-actuales-editar" class="border rounded p-3 bg-white max-h-60 overflow-y-auto">
 							<!-- Se llenará dinámicamente -->
 						</div>
@@ -553,7 +553,7 @@
 
 					<!-- Agregar nueva fuente -->
 					<div class="mb-3">
-						<label class="form-label font-semibold">Agregar Nueva Fuente:</label>
+						<p class="form-label font-semibold">Agregar Nueva Fuente:</p>
 						<div id="fuentes-container-editar-coleccion" class="space-y-2 mb-2">
 							<!-- Se llenará dinámicamente con agregarFuenteAColeccionEditar() -->
 						</div>
@@ -564,7 +564,7 @@
 
 					<!-- Operaciones pendientes -->
 					<div id="operaciones-pendientes-container" class="hidden">
-						<label class="form-label font-semibold text-orange-600">Operaciones Pendientes:</label>
+						<h6 class="form-label font-semibold text-orange-600">Operaciones Pendientes</h6>
 						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto">
 							<!-- Se llenará dinámicamente -->
 						</div>

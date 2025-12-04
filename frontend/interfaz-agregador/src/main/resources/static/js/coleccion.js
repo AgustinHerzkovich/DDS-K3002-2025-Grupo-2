@@ -60,7 +60,7 @@ function agregarFuenteColeccion(numeroFuente) {
 
     fuenteDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
-            <span class="block text-xs font-medium text-gray-600">Tipo</span>
+            <label for="fuente-tipo-${numeroFuente}" class="block text-xs font-medium text-gray-600">Tipo</label>
             <button id="eliminar-fuente-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar py-1">
                 Eliminar
             </button>
