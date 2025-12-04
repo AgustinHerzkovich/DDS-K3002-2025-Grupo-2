@@ -340,57 +340,6 @@
 	</div>
 </div>
 
-<div th:fragment="modalHechosRecientes(hechos)" id="hechos-recientes-modal" class="panel">
-	<div class="flex justify-between items-center p-4 pb-3">
-		<h3 class="text-xl font-bold">
-			Hechos Recientes
-		</h3>
-		<button id="btn-toggle-hechos" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200">
-			<svg id="chevron-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-			</svg>
-		</button>
-	</div>
-
-	<hr id="hechos-separator" class="mb-4">
-
-	<div id="hechos-content" class="px-4 pb-4 max-h-96 overflow-y-auto">
-		<div class="space-y-2">
-			<a th:each="hecho : ${hechos}" th:href="@{/hechos/{id}(id=${hecho.id})}" class="block p-2 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
-				<div class="flex justify-between items-start">
-					<div class="flex-1 min-w-0">
-						<h3 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">
-							Título del hecho
-						</h3>
-						<p class="text-xs text-gray-600 truncate" th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
-							Dirección del hecho
-						</p>
-					</div>
-					<div class="text-right ml-3 flex-shrink-0">
-						<small class="text-xs text-gray-500 whitespace-nowrap">
-                                <span th:if="${hecho.fechaCarga != null}"
-									  th:with="ahora=${T(java.time.LocalDateTime).now()}, duracion=${T(java.time.Duration).between(hecho.fechaCarga, ahora)}">
-                                    <span th:if="${duracion.toDays() > 0}"
-										  th:text="${'Hace ' + duracion.toDays() + (duracion.toDays() == 1 ? ' día' : ' días')}"></span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() > 0}"
-										  th:text="${'Hace ' + duracion.toHours() + (duracion.toHours() == 1 ? ' hora' : ' horas')}"></span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() > 0}"
-										  th:text="${'Hace ' + duracion.toMinutes() + ' min'}"></span>
-                                    <span th:if="${duracion.toDays() == 0 && duracion.toHours() == 0 && duracion.toMinutes() == 0}">Hace un momento</span>
-                                </span>
-							<span th:unless="${hecho.fechaCarga != null}">
-								Fecha N/A
-							</span>
-						</small>
-					</div>
-				</div>
-			</a>
-		</div>
-		<div th:if="${hechos == null || hechos.isEmpty()}" class="text-center text-gray-500 py-4 text-sm">
-			No hay hechos recientes
-		</div>
-	</div>
-</div>
 
 <div th:fragment="modalFiltrosMapa" id="filtros-modal" class="panel">
 	<div class="flex justify-between items-center px-4 py-2">

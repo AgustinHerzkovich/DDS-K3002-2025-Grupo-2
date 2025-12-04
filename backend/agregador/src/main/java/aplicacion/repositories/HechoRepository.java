@@ -86,6 +86,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
           AND (:latitud IS NULL OR h.ubicacion.latitud BETWEEN (:latitud - :radio) AND (:latitud + :radio))
           AND (:longitud IS NULL OR h.ubicacion.longitud BETWEEN (:longitud - :radio) AND (:longitud + :radio))
              AND (h.visible = true )
+         ORDER BY h.fechaCarga DESC
     """)
     Page<Hecho> filtrarHechos(
             @Param("categoria") String categoria,

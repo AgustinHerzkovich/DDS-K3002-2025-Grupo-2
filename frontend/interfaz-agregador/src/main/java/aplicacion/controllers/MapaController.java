@@ -63,7 +63,6 @@ public class MapaController {
 
         if (pageWrapper == null || pageWrapper.getContent() == null) {
             model.addAttribute("hechos", List.of());
-            model.addAttribute("hechosRecientes", List.of());
             model.addAttribute("currentPage", 0);
             model.addAttribute("pageSize", size);
             model.addAttribute("hasNext", false);
@@ -97,16 +96,7 @@ public class MapaController {
             hechos = List.of();
         }
 
-        // Obtener los 5 hechos más recientes (con menor fechaCarga), sin duplicados
-        List<HechoMapaOutputDto> hechosRecientes = pageWrapper.getContent().stream()
-                .filter(h -> h.getFechaCarga() != null)
-                .distinct() // Elimina duplicados basándose en equals() y hashCode()
-                .sorted((h1, h2) -> h2.getFechaCarga().compareTo(h1.getFechaCarga()))
-                .limit(5)
-                .toList();
-
         model.addAttribute("hechos", hechos);
-        model.addAttribute("hechosRecientes", hechosRecientes);
         model.addAttribute("currentPage", pageWrapper.getNumber());
         model.addAttribute("pageSize", pageWrapper.getSize());
         model.addAttribute("hasNext", !pageWrapper.isLast());

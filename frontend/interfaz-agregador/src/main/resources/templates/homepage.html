@@ -71,6 +71,11 @@
                     <p class="text-xl font-semibold">Solicita la eliminación de un hecho</p>
                 </div>
             </div>
+
+            <!-- Cards de Hechos Recientes -->
+            <div class="mt-12 px-4">
+                <div th:replace="~{fragments/cards :: cardsHechosRecientes(${hechosRecientes})}"></div>
+            </div>
         </div>
     </main>
 </th:block>
