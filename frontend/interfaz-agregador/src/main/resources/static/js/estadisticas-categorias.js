@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const limite = 13;
     let busquedaActual = "";
     let chartProvincias = null;
+    let chartHoras = null;
     let limiteProvincias = 10;
 
     const sliderLimite = document.getElementById("slider-limite-provincias");
@@ -96,6 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+                if (chartHoras) {
+                    chartHoras.destroy();
+                }
+
                 const horas = Array.from({length: 24}, (_, i) => i); // 0 a 23
                 const valores = horas.map(h => {
                     const item = data.find(d => d.horaConMasHechosDeCategoria === h);
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 indicadorHora.textContent = `Hora con más hechos: ${hora.toString().padStart(2,'0')}:00 (${cantidad} hechos)`;
                 contenedorHora.style.display = "block";
 
-                new Chart(canvas, {
+                chartHoras = new Chart(canvas, {
                     type: 'line',
                     data: {
                         labels: horas.map(h => h.toString().padStart(2, '0') + ':00'),
