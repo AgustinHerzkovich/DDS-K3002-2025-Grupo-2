@@ -40,7 +40,12 @@ public class CargarHechosScheduler {
         this.descubrirFuentesService = descubrirFuentesService;
         this.fuenteMutexManager = fuenteMutexManager;
     }
-
+    @Scheduled(initialDelay = 0, fixedRate = 300000) // Se ejecuta cada 5 minutos
+    @Transactional
+    public void cargarFuentes() {
+        descubrirFuentesService.descubrirConexionesFuentes();
+        descubrirFuentesService.cargarFuentes();
+    }
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     @Transactional
     public void cargarHechos() {
