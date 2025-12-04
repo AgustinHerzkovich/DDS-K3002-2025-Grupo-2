@@ -8,6 +8,7 @@ export function configurarDescargaCSV(botonId, urlOrFunction, nombreArchivo = "a
 
     boton.addEventListener("click", () => {
         const url = typeof urlOrFunction === "function" ? urlOrFunction() : urlOrFunction;
+        const tituloArchivo = typeof nombreArchivo === "function" ? nombreArchivo() : nombreArchivo;
 
         fetch(url, {
             method: "GET",
@@ -26,7 +27,7 @@ export function configurarDescargaCSV(botonId, urlOrFunction, nombreArchivo = "a
 
                 const a = document.createElement("a");
                 a.href = urlBlob;
-                a.download = nombreArchivo;
+                a.download = tituloArchivo;
 
                 document.body.appendChild(a);
                 a.click();

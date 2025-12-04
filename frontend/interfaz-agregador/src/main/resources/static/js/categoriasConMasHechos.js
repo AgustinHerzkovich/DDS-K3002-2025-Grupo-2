@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`, () => `estadisticas - ${limit} categorias con mas hechos.csv`)
     
     actualizarSlider();
     cargarGrafico();

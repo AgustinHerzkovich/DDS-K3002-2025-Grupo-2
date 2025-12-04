@@ -221,8 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
         paginaActual = 0;
         cargarCategorias();
     });
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=${limiteProvincias}`, "estadisticas.csv")
-    configurarDescargaCSV("btn-descargar-csv-horas", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=100`, "estadisticas.csv")
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=${limiteProvincias}`, () => `estadisticas - ${limiteProvincias} provincias con mas hechos - categoria '${nombreCategoria.textContent}'.csv`)
+    configurarDescargaCSV("btn-descargar-csv-horas", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=100`, () => `estadisticas - hechos por hora - categoria '${nombreCategoria.textContent}'.csv`)
     
     cargarCategorias();
 });

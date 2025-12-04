@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
         limit4=valor
     }, 25, 1, 1); // 25 para no mostrar "todas" ni usar 2000000000 horas
 
-    configurarDescargaCSV("btn-hechos-provincias", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?limit=${limit1}`, "hechos_provincias.csv");
-    configurarDescargaCSV("btn-hechos-categorias", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?limit=${limit2}`, "hechos_categorias.csv");
-    configurarDescargaCSV("btn-hechos-provincia-categoria", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?limit=${limit3}`, "hechos_provincia_categoria.csv");
-    configurarDescargaCSV("btn-hora-mas-hechos", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?limit=${limit4}`, "hora_mas_hechos.csv");
-    configurarDescargaCSV("btn-solicitudes-spam", "http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam", "solicitudes_spam.csv");
+    configurarDescargaCSV("btn-hechos-provincias", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?limit=${limit1}`, () => `estadisticas - ${limit1 >= 2000000000 ? "todas las provincias" : limit1 + " provincias con mas hechos"} - todas las colecciones.csv`);
+    configurarDescargaCSV("btn-hechos-categorias", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?limit=${limit2}`, () => `estadisticas -  ${limit2 >= 2000000000 ? "todas las categorias" : limit2 + " categorias con mas hechos"}.csv`);
+    configurarDescargaCSV("btn-hechos-provincia-categoria", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?limit=${limit3}`, () => `estadisticas - ${limit3 >= 2000000000 ? "todas las provincias" : limit3 + " provincias con mas hechos"} - todas las categorias.csv`);
+    configurarDescargaCSV("btn-hora-mas-hechos", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?limit=${limit4}`, () => `estadisticas - ${limit4 >= 24 ? "las 24 horas" : limit4 + " horas con mas hechos"} - todas las categorias.csv`);
+    configurarDescargaCSV("btn-solicitudes-spam", "http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam", "estadisticas - solicitudes según estado.csv");
 
 
 });
