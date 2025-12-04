@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
         function actualizar() {
             const valorCuadratico = Math.ceil(Math.pow(slider.value, 2)/10);
             valorSpan.textContent = valorCuadratico;
+
+            const porcentaje = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, #42a5f5 0%, #42a5f5 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
+
             if(slider.value == 100)
                 valorSpan.textContent = "todas las"
             if (callback) callback((slider.value == 100? 2000000000 : valorCuadratico)); // Peak de la programacion
