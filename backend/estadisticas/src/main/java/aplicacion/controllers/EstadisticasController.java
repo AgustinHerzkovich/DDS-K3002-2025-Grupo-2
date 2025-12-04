@@ -14,6 +14,7 @@ import aplicacion.utils.CSVConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @RestController
@@ -78,19 +79,18 @@ public class EstadisticasController {
 
     @GetMapping(value = "/solicitudesDeEliminacionSpam", produces = { MediaType.APPLICATION_JSON_VALUE, "text/csv" })
     public ResponseEntity<?> solicitudesSpam(@RequestHeader(HttpHeaders.ACCEPT) String accept) {
-        List<CantidadSolicitudesSpamDTO> cantidad = new ArrayList<>();
-        cantidad.add(estadisticasService.obtenerCantidadSolicitudSpam());
+        List<CantidadSolicitudesPorTipo> cantidades = estadisticasService.obtenerCantidadSolicitudSpam();
         if(accept.contains("text/csv")) {
             try {
-                String csvData = CSVConverter.convert(cantidad);
+                String csvData = CSVConverter.convert(cantidades);
                 return ResponseEntity.status(200).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "solicitudesDeEliminacionSpam" + ".csv")
                         .body(csvData);
             } catch (Exception e) {
-                ResponseEntity.status(500).body("SE PUDRIO TODO");
+                ResponseEntity.status(500).body(Map.of("error", "Se produjo un error al producir el CSV"));
                 throw new RuntimeException(e);
             }
         }
-        return ResponseEntity.ok(estadisticasService.obtenerCantidadSolicitudSpam());
+        return ResponseEntity.ok(cantidades);
     }
 
     @GetMapping("/coleccionesDisponibles")

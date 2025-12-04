@@ -23,63 +23,113 @@
             <div id="contenedor-error-solicitudes" class="contenedor-error-solicitudes" style="display:none;">
                 <p class="mensaje-error-solicitudes">Error al cargar las estadísticas.</p>
             </div>
+            <button id="btn-descargar-csv" class="btn-descargar-csv">Descargar como CSV</button>
+
         </div>
 
-        <script>
+        <script type="module">
+            import { configurarDescargaCSV } from "../js/botonDescargarCSV.js";
             document.addEventListener("DOMContentLoaded", () => {
                 fetch("http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam")
                     .then(resp => resp.json())
                     .then(data => {
-                        const spam = data.cantidadSolicitudesSpam;
-                        const total = data.cantidadSolicitudesTotales;
 
-                        if (total === 0) {
+                        const nombreNormal = {
+                            "EstadoSolicitudSpam": "Spam",
+                            "EstadoSolicitudAceptada": "Aceptadas",
+                            "EstadoSolicitudPendiente": "Pendientes",
+                            "EstadoSolicitudRechazada": "Rechazadas",
+                            "EstadoSolicitudPrescripta": "Prescriptas"
+                        };
+
+                        const colorMap = {
+                            "EstadoSolicitudSpam": "#ef5350",
+                            "EstadoSolicitudAceptada": "#66bb6a",
+                            "EstadoSolicitudPendiente": "#42a5f5",
+                            "EstadoSolicitudRechazada": "#ffa726",
+                            "EstadoSolicitudPrescripta": "#ab47bc"
+                        };
+
+                        const borderColorMap = {
+                            "EstadoSolicitudSpam": "#c62828",
+                            "EstadoSolicitudAceptada": "#2e7d32",
+                            "EstadoSolicitudPendiente": "#1565c0",
+                            "EstadoSolicitudRechazada": "#ef6c00",
+                            "EstadoSolicitudPrescripta": "#6a1b9a"
+                        };
+
+                        // Muestro solo categorías con cantidad > 0
+                        const dataFiltrada = data.filter(x => x.cantidadSolicitudes > 0);
+
+                        if (dataFiltrada.length === 0) {
                             document.getElementById("contenedor-grafico-solicitudes").style.display = "none";
                             document.getElementById("contenedor-no-solicitudes").style.display = "flex";
                             return;
                         }
 
-                        const noSpam = total - spam;
+                        const labels = dataFiltrada.map(x => nombreNormal[x.tipoDeSolicitud] || x.tipoDeSolicitud);
+                        const values = dataFiltrada.map(x => x.cantidadSolicitudes);
+                        const backgroundColors = dataFiltrada.map(x => colorMap[x.tipoDeSolicitud]);
+                        const borderColors = dataFiltrada.map(x => borderColorMap[x.tipoDeSolicitud]);
+
                         const ctx = document.getElementById("grafico-solicitudes-spam");
 
                         new Chart(ctx, {
                             type: 'pie',
                             data: {
-                                labels: ['Spam', 'No spam'],
+                                labels: labels,
                                 datasets: [{
-                                    data: [spam, noSpam],
-                                    backgroundColor: ['#ef5350', '#66bb6a'],
-                                    borderColor: ['#c62828', '#2e7d32'],
+                                    data: values,
+                                    backgroundColor: backgroundColors,
+                                    borderColor: borderColors,
                                     borderWidth: 2
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 layout: {
-                                    padding: {
-                                        top: 40,
-                                        bottom: 40,
-                                        left: 20,
-                                        right: 20
-                                    }
+                                    padding: { top: 40, bottom: 40, left: 20, right: 20 }
                                 },
                                 plugins: {
                                     legend: {
                                         position: 'bottom',
-                                        labels: { 
+                                        labels: {
                                             font: { size: 14 },
-                                             padding: 50 
+                                            padding: 20
+                                        },
+                                        onClick: (e, legendItem, legend) => {
+                                            const chart = legend.chart;
+                                            chart.toggleDataVisibility(legendItem.index);
+                                            chart.update();
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: (tooltipItem) => {
+                                                const chart = tooltipItem.chart;
+                                                const dataset = tooltipItem.dataset;
+                                                const label = tooltipItem.label;
+                                                const value = tooltipItem.raw;
+                                                const totalVisible = dataset.data.reduce((acc, val, i) => {
+                                                    return chart.getDataVisibility(i) ? acc + val : acc;
+                                                }, 0);
+                                                const percentage = ((value / totalVisible) * 100).toFixed(1);
+                                                return `${label}: ${value} (${percentage}%)`;
+                                            }
                                         }
                                     }
                                 }
                             }
                         });
+
                     })
                     .catch(err => {
                         console.error("Error cargando datos:", err);
                         document.getElementById("contenedor-grafico-solicitudes").style.display = "none";
                         document.getElementById("contenedor-error-solicitudes").style.display = "flex";
                     });
+                configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam`, "solicitudes.csv")
+
             });
         </script>
 

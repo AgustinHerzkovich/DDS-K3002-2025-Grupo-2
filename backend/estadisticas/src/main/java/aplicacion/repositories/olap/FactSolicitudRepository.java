@@ -1,25 +1,19 @@
 package aplicacion.repositories.olap;
 
 import aplicacion.domain.facts.FactSolicitud;
+import aplicacion.dtos.CantidadSolicitudesPorTipo;
+import aplicacion.dtos.CantidadSolicitudesPorTipoInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface FactSolicitudRepository extends JpaRepository<FactSolicitud, String> {
     @Query(
             value = """
-            SELECT cantidadDeSolicitudes
-            FROM FactSolicitud
-            WHERE nombreEstado = 'EstadoSolicitudSpam'
-            """,
-            nativeQuery = true
-    )
-    Long obtenerCantidadSolicitudesSpam();
-    @Query(
-            value = """
-            SELECT SUM(cantidadDeSolicitudes) 
+            SELECT nombreEstado as tipoDeSolicitud, cantidadDeSolicitudes as cantidadSolicitudes 
             FROM FactSolicitud
             """,
-            nativeQuery = true
-    )
-    Long obtenerCantidadSolicitudesTotal();
+            nativeQuery = true)
+    List<CantidadSolicitudesPorTipoInterface> obtenerCantidadDeSolicitudesPorTipo();
 }

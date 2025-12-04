@@ -2,6 +2,7 @@ package aplicacion.services;
 
 import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
+import aplicacion.domain.hechosYSolicitudes.solicitudes.EstadoSolicitudSpam;
 import aplicacion.dtos.*;
 import aplicacion.repositories.olap.*;
 import org.springframework.data.domain.Page;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,12 +49,22 @@ public class EstadisticasService {
                 .getContent();
     }
 
-    public CantidadSolicitudesSpamDTO obtenerCantidadSolicitudSpam() {
-        Long solicitudes_spam = factSolicitudRepository.obtenerCantidadSolicitudesSpam();
-        Long solicitudes_totales = factSolicitudRepository.obtenerCantidadSolicitudesTotal();
-        if (solicitudes_spam == null) solicitudes_spam = 0L;
-        if (solicitudes_totales == null) solicitudes_totales = 0L;
-        return new CantidadSolicitudesSpamDTO(solicitudes_spam, solicitudes_totales);
+    public List<CantidadSolicitudesPorTipo> obtenerCantidadSolicitudSpam() {
+        List<String> tiposDeSolicitudes = List.of(
+                "EstadoSolicitudAceptada",
+                "EstadoSolicitudPendiente",
+                "EstadoSolicitudRechazada",
+                "EstadoSolicitudSpam",
+                "EstadoSolicitudPrescripta");
+        List<CantidadSolicitudesPorTipo> solicitudesPorTipos =
+                new ArrayList<>(factSolicitudRepository.obtenerCantidadDeSolicitudesPorTipo()
+                        .stream()
+                        .map(CantidadSolicitudesPorTipo::new)
+                        .toList());        for(String tipoDeSolicitud : tiposDeSolicitudes){
+            if(!solicitudesPorTipos.stream().map(CantidadSolicitudesPorTipo::getTipoDeSolicitud).toList().contains(tipoDeSolicitud))
+                solicitudesPorTipos.add(new CantidadSolicitudesPorTipo(tipoDeSolicitud, 0L));
+        }
+        return solicitudesPorTipos;
     }
 
     public List<String> obtenerTodasColeccionesDisponiblesIds() {
