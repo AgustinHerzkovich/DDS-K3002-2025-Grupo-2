@@ -89,25 +89,25 @@ public class ColeccionController {
         Map<String, Object> filtros = new HashMap<>();
         if (categoria != null) filtros.put("categoria", categoria);
         // Convertir las fechas a formato ISO-8601 con zona horaria
-        if (fechaReporteDesde != null) {
+        if (fechaReporteDesde != null && !fechaReporteDesde.isEmpty()) {
             String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteDesde, StandardCharsets.UTF_8))
                     .atOffset(ZoneOffset.UTC)
                     .toString();
             filtros.put("fechaReporteDesde", fecha);
         }
-        if (fechaReporteHasta != null) {
+        if (fechaReporteHasta != null && !fechaReporteHasta.isEmpty()) {
             String fecha = LocalDateTime.parse(URLDecoder.decode(fechaReporteHasta, StandardCharsets.UTF_8))
                     .atOffset(ZoneOffset.UTC)
                     .toString();
             filtros.put("fechaReporteHasta", fecha);
         }
-        if (fechaAcontecimientoDesde != null) {
+        if (fechaAcontecimientoDesde != null && !fechaAcontecimientoDesde.isEmpty() ) {
             String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoDesde, StandardCharsets.UTF_8))
                     .atOffset(ZoneOffset.UTC)
                     .toString();
             filtros.put("fechaAcontecimientoDesde", fecha);
         }
-        if (fechaAcontecimientoHasta != null) {
+        if (fechaAcontecimientoHasta != null && !fechaAcontecimientoHasta.isEmpty()) {
             String fecha = LocalDateTime.parse(URLDecoder.decode(fechaAcontecimientoHasta, StandardCharsets.UTF_8))
                     .atOffset(ZoneOffset.UTC)
                     .toString();

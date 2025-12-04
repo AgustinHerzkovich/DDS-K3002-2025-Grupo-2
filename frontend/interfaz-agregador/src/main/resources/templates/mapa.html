@@ -28,10 +28,10 @@
         </div>
 
         <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
-            @{/mapa(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria},
+            @{${currentUri}(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria},
             fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
             fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})},
-            @{/mapa(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria},
+            @{${currentUri}(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria},
             fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
             fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}
         )}" />

@@ -2,6 +2,7 @@ package aplicacion.config;
 
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.services.ContribuyenteService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +22,9 @@ public class GlobalModelAttributes {
     }
 
     @ModelAttribute
-    public void addGlobalAttributes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+    public void addGlobalAttributes(HttpServletRequest request, @AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        String currentUri = request.getRequestURI();
+        model.addAttribute("currentUri", currentUri);
         // Setear isLoggedIn globalmente para todos los controllers
         model.addAttribute("isLoggedIn", oidcUser != null);
 
