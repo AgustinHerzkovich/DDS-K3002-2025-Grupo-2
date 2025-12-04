@@ -108,10 +108,10 @@
 }
 
 .mensaje-sin-solicitudes {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     color: #555;
-    padding: 2rem 0;
+    padding: 1rem 0;
 }
 
 
@@ -129,8 +129,8 @@
 }
 
 .mensaje-sin-solicitudes {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     color: #555;
 }
 .contenedor-error-solicitudes {
@@ -144,8 +144,8 @@
     box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
 }
 .mensaje-error-solicitudes {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     color: #555;
 }
 

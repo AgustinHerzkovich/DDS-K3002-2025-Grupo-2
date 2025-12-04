@@ -6,19 +6,16 @@ import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.dto.input.HechoEdicionInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.input.HechoReporteInputDto;
-import aplicacion.dto.mappers.HechoInputMapper;
-import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.excepciones.CategoriaYaPresenteException;
-import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
-import aplicacion.excepciones.EtiquetaNoEncontradaException;
+import aplicacion.excepciones.*;
 import aplicacion.graphql.objects.HechoFiltros;
 import aplicacion.graphql.objects.HechoItem;
 import aplicacion.repositories.HechoRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
-import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
 import org.springframework.data.domain.Page;
@@ -39,8 +36,20 @@ public class HechoService {
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
+    private final CategoriaInputMapper categoriaInputMapper;
+    private final UbicacionInputMapper ubicacionInputMapper;
+    private final MultimediaInputMapper multimediaInputMapper;
 
-    public HechoService(HechoRepository hechoRepository, HechoXColeccionRepository hechoXColeccionRepository, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
+    public HechoService(HechoRepository hechoRepository,
+                        HechoXColeccionRepository hechoXColeccionRepository,
+                        HechoOutputMapper hechoOutputMapper,
+                        NormalizadorDeHechos normalizadorDeHechos,
+                        HechoInputMapper hechoInputMapper,
+                        ContribuyenteService contribuyenteService,
+                        EtiquetaService etiquetaService,
+                        CategoriaInputMapper categoriaInputMapper,
+                        UbicacionInputMapper ubicacionInputMapper,
+                        MultimediaInputMapper multimediaInputMapper) {
         this.hechoRepository = hechoRepository;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -48,6 +57,9 @@ public class HechoService {
         this.hechoInputMapper = hechoInputMapper;
         this.contribuyenteService = contribuyenteService;
         this.etiquetaService = etiquetaService;
+        this.categoriaInputMapper = categoriaInputMapper;
+        this.ubicacionInputMapper = ubicacionInputMapper;
+        this.multimediaInputMapper = multimediaInputMapper;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -288,6 +300,40 @@ public class HechoService {
         }
         return hechosDuplicados;
     }
+
+    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto, String userId) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException, AutorizacionDenegadaException {
+        Hecho hecho = hechoRepository.findById(id)
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
+        this.validarHechoEditable(hecho);
+
+        if (!hecho.getAutor().getId().equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
+        }
+
+        hecho.editar(hechoEdicionInputDto.getTitulo(),
+                hechoEdicionInputDto.getDescripcion(),
+                hechoEdicionInputDto.getCategoria() != null ? categoriaInputMapper.map(hechoEdicionInputDto.getCategoria()) : null,
+                hechoEdicionInputDto.getUbicacion() != null ? ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()) : null,
+                hechoEdicionInputDto.getFechaAcontecimiento(),
+                hechoEdicionInputDto.getContenidoTexto(),
+                hechoEdicionInputDto.getContenidoMultimedia() != null ? hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null);
+
+        hecho = hechoRepository.save(hecho);
+        return hechoOutputMapper.map(hecho);
+    }
+
+    private void validarHechoEditable(Hecho hecho) throws PlazoEdicionVencidoException, AnonimatoException {
+        LocalDateTime fechaCarga = hecho.getFechaCarga();
+        LocalDateTime fechaActual = LocalDateTime.now();
+        if (!fechaCarga.isAfter(fechaActual.minusWeeks(1))) { // Si pasó más de una semana desde que se subió, se arroja una excepción
+            throw new PlazoEdicionVencidoException();
+        }
+
+        if (hecho.getAnonimato()) {
+            throw new AnonimatoException();
+        }
+    }
+
     @Transactional
     public Etiqueta agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
         Etiqueta etiqueta;

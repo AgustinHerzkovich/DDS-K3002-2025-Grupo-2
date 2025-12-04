@@ -145,4 +145,29 @@ public class Hecho {
         return String.format("(Hecho){titulo: %s ; descripcion: %s ; id: %s}", titulo, descripcion, id);
     }
 
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
+        if (titulo != null) {
+            this.titulo = titulo;
+        }
+        if (descripcion != null) {
+            this.descripcion = descripcion;
+        }
+        if (categoria != null) {
+            this.categoria = categoria;
+        }
+        if (ubicacion != null) {
+            this.ubicacion = ubicacion;
+        }
+        if (fecha != null) {
+            this.fechaAcontecimiento = fecha;
+        }
+        if (contenidoTexto != null) {
+            this.contenidoTexto = contenidoTexto;
+        }
+        if (contenidoMultimedia != null) {
+            this.contenidoMultimedia = contenidoMultimedia;
+        }
+        this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
+    }
+
 }
