@@ -21,7 +21,7 @@
 
 .boton-stats.btn-exportar {
     background: #8e6adf;
-    color: #0b1220; /* texto oscuro para mejor contraste */
+    color: #0b1220;
     border: 2px solid #5b3fae;
     border-radius: 20px;
     margin-top: 15px;
@@ -45,4 +45,29 @@
 
 .slider-container input[type="range"] {
     width: 100%;
+    -webkit-appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #ccc;
+    outline: none;
 }
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+     appearance: none;
+     width: 20px;
+     height: 20px;
+     border-radius: 50%;
+     background: #42a5f5;
+     cursor: pointer;
+     border: none;
+ }
+
+ .slider-container input[type="range"]::-moz-range-thumb {
+     width: 20px;
+     height: 20px;
+     border-radius: 50%;
+     background: #42a5f5;
+     cursor: pointer;
+     border: none;
+ }
