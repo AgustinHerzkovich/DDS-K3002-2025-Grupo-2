@@ -13,6 +13,8 @@ import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
 import aplicacion.repositories.HechoRepository;
 import aplicacion.repositories.RevisionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +47,9 @@ public class HechoService {
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorId(contribuyenteId, pageable).map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
@@ -56,25 +58,35 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
-    public List<HechoOutputDto> obtenerHechosAceptados() {
-        return this.obtenerHechos().stream().filter(Hecho::estaAceptado).map(hechoOutputMapper::map).toList();
+    public Page<HechoOutputDto> obtenerHechosAceptados(Pageable pageable) {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.ACEPTADO, pageable)
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true)
-    public List<HechoOutputDto> obtenerHechosPendientes() {
-        return this.obtenerHechos().stream().filter(Hecho::estaPendiente).map(hechoOutputMapper::map).toList();
+    public Page<HechoOutputDto> obtenerHechosPendientes(Pageable pageable) {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.PENDIENTE, pageable)
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true)
-    public List<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA) {
-        return this.obtenerHechosPendientes().stream()
-                .filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA))
-                .toList();
+    public Page<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA, Pageable pageable) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.PENDIENTE,
+                        fechaMayorA,
+                        pageable
+                )
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true)
-    public List<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
-        return this.obtenerHechosAceptados().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
+    public Page<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA, Pageable pageable) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.ACEPTADO,
+                        fechaMayorA,
+                        pageable
+                )
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional //(readOnly = true)

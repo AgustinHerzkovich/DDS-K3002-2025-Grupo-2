@@ -32,7 +32,7 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
             nativeQuery = true)
     Page<Hecho> findByTextoLibre(@Param("textoLibre") String textoLibre, Pageable pageable);
 
-    List<Hecho> findByAutorId(String autorId);
+    Page<Hecho> findByAutorId(String autorId, Pageable pageable);
 
     @Query(value = """
     SELECT h.*, c.id as cat_id

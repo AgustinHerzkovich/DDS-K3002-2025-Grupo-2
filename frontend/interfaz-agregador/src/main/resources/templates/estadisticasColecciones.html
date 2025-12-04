@@ -9,6 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
             <div class="panel-colecciones">
+                <label for="input-busqueda-colecciones" class="sr-only">Buscar colecciones</label>
                 <input type="text" id="input-busqueda-colecciones" placeholder="Buscar colecciones..." />
 
                 <ul id="lista-colecciones" class="lista-colecciones"></ul>
@@ -21,8 +22,8 @@
             </div>
 
             <div class="panel-detalle-coleccion" id="panel-detalle-colecciones">
-                <h2 id="nombre-coleccion">Seleccione una coleccoin</h2>
-                <h2 id="desc-coleccion"></h2>
+                <h2 id="nombre-coleccion">Seleccione una colección</h2>
+                <h2 id="desc-coleccion" aria-label="Descripción de la colección"></h2>
 
                 <div class="tarjeta-grafico" id="tarjeta-provincias" style="display:none;">
                     <h3>Hechos por provincia</h3>

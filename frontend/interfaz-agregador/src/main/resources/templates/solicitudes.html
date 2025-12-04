@@ -40,7 +40,6 @@
 
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/solicitudes.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
 </th:block>
 
 
@@ -51,7 +50,7 @@
             <h1 class="page-title">Solicitudes Pendientes</h1>
             <div class="solicitudes-grid">
                 <div th:each="solicitud : ${solicitudes}" class="solicitud-card">
-                    <h3 class="card-title">Solicitud</h3>
+                    <h2 class="card-title">Solicitud</h2>
 
                     <!-- Botón para ver el hecho -->
                     <a th:href="@{/hechos/{id}(id=${solicitud.hechoId})}" class="btn-hecho">
@@ -64,21 +63,22 @@
                     <div class="card-content">
                         <!-- Motivo -->
                         <div class="info-section">
-                            <label class="info-label">Motivo:</label>
+                            <div class="info-label">Motivo:</div>
                             <p class="info-value" th:text="${solicitud.motivo}">Motivo de ejemplo</p>
                         </div>
 
                         <!-- Estado -->
                         <div class="info-section">
-                            <label class="info-label">Estado:</label>
+                            <div class="info-label">Estado:</div>
                             <p class="info-value" th:text="${solicitud.estado.estado}">PENDIENTE</p>
                         </div>
 
                         <!-- Fecha de Subida -->
                         <div class="info-section">
-                            <label class="info-label">Fecha de Subida:</label>
+                            <div class="info-label">Fecha de Subida:</div>
                             <p class="info-value" th:text="${#temporals.format(solicitud.fechaSubida, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</p>
                         </div>
+
                     </div>
 
                     <!-- Botones Aprobar y Rechazar -->

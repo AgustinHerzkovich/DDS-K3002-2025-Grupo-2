@@ -1,6 +1,6 @@
-<button th:fragment="spinnerConfirmButton(confirmBtnName, confirmBtnId)" th:id="${confirmBtnId}" class="btn-primary" type="button" aria-label="Confirmar">
-	<span th:text="${confirmBtnName}" th:id="|confirmar-${confirmBtnId}|"></span>
-	<div th:id="|confirmar-spinner-${confirmBtnId}|" class="w-5 h-5 hidden border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+<button th:fragment="spinnerButton(btnName, btnId)" th:id="${btnId}" class="btn-primary" type="button" aria-label="Haga Click">
+	<span th:text="${btnName}" th:id="|nombre-${btnId}|"></span>
+	<div th:id="|spinner-${btnId}|" class="w-5 h-5 hidden border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
 </button>
 
 <button th:fragment="exitModalButton(cancelBtnName, cancelBtnId)"

@@ -1,10 +1,12 @@
 <th:block th:fragment="pageScripts">
     <script th:inline="javascript">
+        const hecho = /*[[${hecho}]]*/ '';
         const hechoId = /*[[${hecho.id}]]*/ '';
         const solicitanteId = /*[[${userId}]]*/ '';
     </script>
     <script th:if="${isAdmin}" src="/js/etiqueta.js"></script>
     <script src="/js/solicitar-eliminacion.js"></script>
+    <script src="/js/editar-hecho.js"></script>
 </th:block>
 
 <th:block th:fragment="pageStyles">
@@ -57,7 +59,9 @@
                     </div>
                 </div>
                 <div class="right-section  w-[800px]" >
-                    <h1 class="fw-bold mb-3 display-6 text-black" style="color: black" th:text="*{titulo}">Título</h1>
+                    <h1 class="fw-bold mb-3 display-6 text-black" th:text="*{titulo}">
+                        Título
+                    </h1>
                     <div class="info-item">
                         <div class="hecho-info-label bold">
                             Descripción
@@ -67,26 +71,34 @@
                         </div>
                     </div>
                     <div class="info-item" >
-                        <div class="hecho-info-label">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline mr-1">
+                        <div class="hecho-info-label flex gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 inline">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                             </svg>
                             Ubicación
                         </div>
-                        <div class="hecho-info-value" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">Dirección completa</div>
+                        <div class="hecho-info-value" th:text="*{direccion != null ? direccion : 'Sin ubicación'}">
+                            Dirección completa
+                        </div>
                     </div>
                     <div class="info-item " th:if="*{etiquetas != null}">
-                        <div class="hecho-info-label bold">Etiquetas</div>
-                        <div class="hecho-info-value" th:if="${isAdmin}">
+                        <div class="hecho-info-label bold flex gap-2 items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+                            </svg>
+                            Etiquetas
+                        </div>
+                        <div th:if="${isAdmin}">
                             <ul id="lista-etiquetas" class="tag-list">
-                                <li th:each="etiqueta : *{etiquetas}"
-                                    th:data-nombre="${etiqueta.nombre}"
-                                    class="tag-item">
-                                    <span th:text="${etiqueta.nombre}">NombreEtiqueta</span>
-                                    <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="btn-eliminar eliminar-etiqueta">
-                                        X
-                                    </button>
+                                <li th:each="etiqueta : *{etiquetas}" th:data-nombre="${etiqueta.nombre}" class="tag-item">
+                                    <span th:text="${etiqueta.nombre}"></span>
+                                    <div class="btn-eliminar w-[1.4rem] h-[1.4rem] flex items-center justify-center">
+                                        <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="eliminar-etiqueta" aria-label="Eliminar Etiqueta">
+                                            X
+                                        </button>
+                                    </div>
                                 </li>
                             </ul>
                             <div class="agregar-tag gap-3">
@@ -98,9 +110,7 @@
                         </div>
                         <div class="hecho-info-value" th:if="${!isAdmin}">
                             <span th:each="etiqueta : *{etiquetas}">
-                                <span class="tag-item" th:text="${etiqueta.nombre}">
-                                    NombreEtiqueta
-                                </span>
+                                <span class="tag-item" th:text="${etiqueta.nombre}"></span>
                             </span>
                         </div>
                     </div>
@@ -108,9 +118,7 @@
                         <div class="hecho-info-label bold">
                             Origen
                         </div>
-                        <div class="hecho-info-value" th:text="*{origen}">
-                            Origen
-                        </div>
+                        <p class="hecho-info-value" th:text="*{origen}"></p>
                     </div>
                     <div class="info-item">
                         <div class="hecho-info-label bold">
@@ -126,22 +134,28 @@
                         </svg>
                         <span>
                             Editado por última vez:
-                            <span style="color: black" th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
+                            <span class="text-black" th:text="*{#temporals.format(fechaUltimaModificacion, 'dd/MM/yyyy HH:mm')}">
                                 01/01/2024 12:00
                             </span>
                         </span>
                     </div>
-                    <div th:if="${isLoggedIn}" style="position: relative;">
-                        <button id="solicitar-eliminacion" class="btn-eliminar text-lg p-2">
+                    <div th:if="${isLoggedIn}" class="relative flex items-center gap-4">
+                        <button id="solicitar-eliminacion" class="btn-solicitar">
                             Solicitar eliminación
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
+
+                        <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
                     </div>
                 </div>
             </div>
             <div class="contenido-texto" th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}">
-                <h3 class="fw-bold mb-3">Contenido Texto</h3>
-                <p th:text="*{contenidoTexto}">Aquí va el contenido de texto del hecho...</p>
+                <h3 class="fw-bold mb-3">
+                    Contenido Texto
+                </h3>
+                <p th:text="*{contenidoTexto}">
+                    Aquí va el contenido de texto del hecho...
+                </p>
             </div>
         </div>
     </main>

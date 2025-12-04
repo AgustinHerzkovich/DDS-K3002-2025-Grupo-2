@@ -1,18 +1,18 @@
 <div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="create-modal-header">
-			<h5 id="modal-crear-hecho-titulo" class="modal-title hidden">
+			<h3 id="modal-crear-hecho-titulo" class="modal-title hidden">
 				Crear Nuevo Hecho
-			</h5>
-			<h5 id="modal-editar-hecho-titulo" class="modal-title hidden">
+			</h3>
+			<h3 id="modal-editar-hecho-titulo" class="modal-title hidden">
 				Editar Hecho
-			</h5>
+			</h3>
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
 			<form id="form-modal-hecho" class="form-body">
 				<div class="row g-2 mb-3">
-					<div class="col-md-8">
+					<div class="col-md-7">
 						<label for="modal-hecho-titulo" class="form-label">
 							Título
 							<span class="form-obligatory-icon">
@@ -24,7 +24,7 @@
 						</label>
 						<input type="text" maxlength="200" class="form-input" id="modal-hecho-titulo" placeholder="Ingrese el título del hecho" required>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<label for="modal-hecho-categoria" class="form-label">
 							Categoría
 							<span class="form-obligatory-icon">
@@ -44,12 +44,12 @@
 							(Máx.1000 caracteres)
 						</span>
 					</label>
-					<textarea class="form-input" maxlength="1000" id="modal-hecho-descripcion" rows="2" placeholder="Ingrese la descripción del hecho" required></textarea>
+					<textarea class="form-input" maxlength="1000" id="modal-hecho-descripcion" rows="5" placeholder="Ingrese la descripción del hecho" required></textarea>
 				</div>
 				<div class="mb-3">
-					<label class="form-label">
+					<p class="form-label">
 						Ubicación
-					</label>
+					</p>
 					<div class="mb-2 d-flex items-center">
 						<input type="checkbox" id="modal-hecho-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
 						<p class="ms-2 text-black">
@@ -113,30 +113,38 @@
 					</div>
 				</div>
 				<div class="mb-3">
-					<label class="form-label">
+					<p class="form-label">
 						Contenido Multimedia
 						<span class="max-char-span">
 								(Máx.500 caracteres)
 						</span>
-					</label>
+					</p>
+					<p id="sin-multimedia-hecho" class="form-label text-s mb-2 text-muted-high">
+						No hay multimedia asociada al hecho
+					</p>
 					<div id="modal-hecho-multimedia-container"></div>
-					<button id="modal-hecho-agregar-multimedia" type="button" class="btn-primary">
+					<button id="modal-crear-hecho-agregar-multimedia" type="button" class="btn-primary hidden">
+						+ Añadir Multimedia
+					</button>
+					<button id="modal-editar-hecho-agregar-multimedia" type="button" class="btn-primary hidden">
 						+ Añadir Multimedia
 					</button>
 				</div>
-				<div th:if="${isLoggedIn}" class="mb-3 d-flex items-center">
-					<input type="checkbox" id="modal-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
-					<p class="ms-2 text-black">
-						Publicar de forma anónima
-					</p>
+				<div id="modal-hecho-anonimato-container" th:if="${isLoggedIn}" class="mb-3">
+					<div class="flex items-center">
+						<input type="checkbox" id="modal-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
+						<p class="ms-2 text-black">
+							Publicar de forma anónima
+						</p>
+					</div>
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer">
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-hecho')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerConfirmButton('Publicar', 'crear-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-hecho')}" class="hidden"></div>
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-hecho')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerConfirmButton('Guardar Cambios', 'editar-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-hecho')}" class="hidden"></div>
 		</div>
 	</div>
 </div>
@@ -144,14 +152,14 @@
 <div th:fragment="modalColeccion" id="modal-coleccion" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div id="modal-header-crear-coleccion" class="create-modal-header hidden">
-			<h5 class="modal-title">
+			<h3 class="modal-title">
 				Crear Nueva Colección
-			</h5>
+			</h3>
 		</div>
 		<div id="modal-header-ver-coleccion" class="modal-header bg-[#211bcf] hidden">
-			<h5 class="modal-title">
+			<h3 class="modal-title">
 				Ver Colección
-			</h5>
+			</h3>
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
@@ -225,7 +233,9 @@
 					<p class="form-label">
 						Fuentes
 					</p>
-					<p id="sin-fuentes-coleccion" class="form-label text-s mb-2 text-[#9ca3af]">No hay fuentes asociadas a esta colección</p>
+					<p id="sin-fuentes-coleccion" class="form-label text-s mb-2 text-[#9ca3af]">
+						No hay fuentes asociadas a esta colección
+					</p>
 					<div id="fuentes-container-coleccion" class="space-y-2"></div>
 					<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary hidden">
 						+ Agregar Fuente
@@ -247,7 +257,7 @@
 		</div>
 		<div class="modal-footer">
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerConfirmButton('Crear Colección', 'crear-coleccion')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion')}" class="hidden"></div>
 			<div th:insert="~{fragments/form :: exitModalButton('Volver', 'salir-ver-coleccion')}" class="hidden"></div>
 		</div>
 	</div>
@@ -256,12 +266,13 @@
 <div th:fragment="modalMisHechos" id="modal-mis-hechos" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
 		<div class="modal-header bg-black">
-			<h5 class="modal-title">
+			<h3 class="modal-title">
 				Mis Hechos
-			</h5>
+			</h3>
 		</div>
 		<div class="modal-page-body">
 			<div id="lista-mis-hechos" class="list-group"></div>
+			<th:block th:replace="~{fragments/pagination-controls :: jsPaginationControls('pagination-mis-hechos')}" />
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cerrar', 'salir-mis-hechos')}" />
@@ -273,9 +284,9 @@
 	<div class="modal-content modal-page-format max-w-lg">
 
 		<div class="modal-header bg-black">
-			<h5 class="modal-title">
+			<h3 class="modal-title">
 				Editar Perfil
-			</h5>
+			</h3>
 		</div>
 
 		<div class="modal-page-body">
@@ -312,7 +323,7 @@
 							(Máx.255 caracteres)
 						</span>
 					</label>
-					<input type="email" id="perfil-email" maxlength="255" class="form-input" required>
+					<input type="email" id="perfil-email" maxlength="255" class="form-input" disabled required>
 				</div>
 				<div>
 					<label for="perfil-fecha-nacimiento" class="form-label">
@@ -324,7 +335,7 @@
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-perfil')}" />
-			<th:block th:replace="~{fragments/form :: spinnerConfirmButton('Guardar Cambios', 'editar-perfil')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-perfil')}" />
 		</div>
 	</div>
 </div>
@@ -348,9 +359,9 @@
 			<a th:each="hecho : ${hechos}" th:href="@{/hechos/{id}(id=${hecho.id})}" class="block p-2 hover:bg-gray-50 rounded-lg transition-colors border-b last:border-b-0">
 				<div class="flex justify-between items-start">
 					<div class="flex-1 min-w-0">
-						<h5 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">
+						<h3 class="font-medium text-gray-900 mb-0.5 truncate" th:text="${hecho.titulo}">
 							Título del hecho
-						</h5>
+						</h3>
 						<p class="text-xs text-gray-600 truncate" th:text="${hecho.direccion != null ? hecho.direccion : 'Sin ubicación'}">
 							Dirección del hecho
 						</p>
@@ -412,9 +423,9 @@
 				<input type="text" id="categoria" name="categoria" maxlength="50" th:value="${categoria}" class="form-input" placeholder="Ingrese categoría...">
 			</div>
 			<div class="mb-4">
-				<label class="form-label">
-					Fecha reporte
-				</label>
+					<p class="form-label">
+						Fecha reporte
+					</p>
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-1 items-center">
 						<p class="text-xs font-light w-[36px]">
@@ -431,9 +442,9 @@
 				</div>
 			</div>
 			<div class="mb-4">
-				<label class="form-label">
-					Fecha acontecimiento
-				</label>
+					<p class="form-label">
+						Fecha acontecimiento
+					</p>
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-1 items-center">
 						<p class="text-xs font-light w-[36px]">
@@ -476,7 +487,7 @@
 					<label for="filtroRadio" class="form-label">
 						Radio: <span id="radio-value">5</span> km
 					</label>
-					<input type="range" id="filtroRadio" name="radio" min="1" max="100" value="5" step="1" class="form-input">
+					<input type="range" id="filtroRadio" name="radio" min="1" max="100" value="5" step="1">
 				</div>
 			</div>
 			<button type="button" id="btn-limpiar-filtros" class="form-input" aria-label="Limpiar Filtros">
@@ -489,7 +500,7 @@
 <div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
 	<div class="modal-content modal-pendientes-content">
 		<button class="modal-close" onclick="closeDetalle()">×</button>
-		<h2 id="modalTitulo"></h2>
+		<h2 id="modalTitulo"><span class="sr-only">Título del hecho</span></h2>
 		<p id="modalDescripcion"></p>
 		<div class="modal-meta">
 			<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
@@ -512,9 +523,9 @@
 <div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-2xl">
 		<div class="modal-header bg-[#dc2626]">
-			<h5 class="modal-title">
+			<h3 class="modal-title">
 				Solicitar eliminación de hecho
-			</h5>
+			</h3>
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
@@ -530,23 +541,23 @@
 							(Máx.2000 caracteres)
 						</span>
 					</label>
-					<textarea id="motivo-solicitud-eliminacion" class="form-input" maxlength="2000" minlength="500" rows="3" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+					<textarea id="motivo-solicitud-eliminacion" class="form-input" maxlength="2000" minlength="500" rows="10" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-solicitar-eliminacion')}" />
-			<th:block th:replace="~{fragments/form :: spinnerConfirmButton('Enviar', 'enviar-solicitud-eliminacion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Enviar', 'enviar-solicitud-eliminacion')}" />
 		</div>
 	</div>
 </div>
 
 <div th:fragment="modalEditarColeccion" id="modal-editar-coleccion" class="modal-page hidden">
 	<div class="modal-content modal-page-format max-w-4xl">
-		<div class="create-modal-header">
-			<h5 class="modal-title">
+		<div class="modal-header bg-black">
+			<h3 class="modal-title">
 				Editar Colección
-			</h5>
+			</h3>
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
@@ -616,8 +627,91 @@
 
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-coleccion')}" />
-			<th:block th:replace="~{fragments/form :: spinnerConfirmButton('Guardar Cambios', 'guardar-editar-coleccion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'guardar-editar-coleccion')}" />
 		</div>
 	</div>
 </div>
 
+<div th:fragment="modalFuente" id="modal-fuente" class="modal-page hidden">
+	<div class="modal-content modal-page-format max-w-2xl">
+		<div class="create-modal-header">
+			<h3 id="modal-crear-fuente-titulo" class="modal-title hidden">
+				Crear Nueva fuente
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="form-modal-fuente" class="form-body">
+				<div class="row g-2 mb-3">
+					<div class="col-md-6">
+						<label for="modal-fuente-tipo" class="form-label">
+							Tipo de Fuente
+							<span class="form-obligatory-icon">
+								*
+							</span>
+						</label>
+						<select class="form-input" id="modal-fuente-tipo" required>
+							<option value="">Seleccione un tipo</option>
+							<option value="estatica">Estática</option>
+							<option value="proxy">Proxy</option>
+						</select>
+					</div>
+				</div>
+
+				<div id="modal-fuente-proxy-container" class="row g-2 mb-3 hidden">
+					<div class="col-12">
+						<div class="alert alert-info">
+							<strong>TODO:</strong> Funcionalidad de fuente proxy aún no implementada.
+						</div>
+					</div>
+				</div>
+
+				<div id="modal-fuente-estatica-container" class="hidden">
+					<div class="row g-2 mb-3">
+						<div class="col-12">
+							<label class="form-check-label">
+								<input type="checkbox" id="modal-fuente-cargar-url" class="form-check-input">
+								Cargar mediante URL
+							</label>
+						</div>
+					</div>
+
+					<div id="modal-fuente-archivo-container" class="row g-2 mb-3">
+						<div class="col-12">
+							<label for="modal-fuente-archivos" class="form-label">
+								Archivos
+								<span class="form-obligatory-icon">
+									*
+								</span>
+							</label>
+							<div class="file-drop-zone" id="modal-fuente-drop-zone">
+								<div class="file-drop-content">
+									<i class="fas fa-cloud-upload-alt"></i>
+									<p>Arrastre los archivos aquí o haga clic para seleccionar</p>
+									<input type="file" id="modal-fuente-archivos" multiple accept=".csv,.json,.xml" class="file-input">
+								</div>
+							</div>
+							<div id="modal-fuente-archivos-lista" class="file-list mt-2"></div>
+						</div>
+					</div>
+
+					<div id="modal-fuente-url-container" class="row g-2 mb-3 hidden">
+						<div class="col-12">
+							<label for="modal-fuente-url" class="form-label">
+								URL del archivo
+								<span class="form-obligatory-icon">
+									*
+								</span>
+							</label>
+							<input type="url" class="form-input" id="modal-fuente-url" placeholder="https://ejemplo.com/archivo.csv">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-fuente')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-fuente')}" class="hidden"></div>
+		</div>
+	</div>
+</div>

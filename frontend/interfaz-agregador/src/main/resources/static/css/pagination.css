@@ -13,6 +13,20 @@
     margin-top: 5rem;
 }
 
+.pagination-controls-js {
+    bottom: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    z-index: 20;
+    padding: 0.25rem 0.5rem;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
 .pagination-btn {
     display: inline-flex;
     align-items: center;

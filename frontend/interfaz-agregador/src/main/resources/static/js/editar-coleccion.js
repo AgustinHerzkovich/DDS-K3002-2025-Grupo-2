@@ -104,13 +104,10 @@ function agregarFuenteAColeccionEditar(numeroFuente) {
             <div id="nombre-container-editar-${numeroFuente}" class="hidden">
                 <label for="fuente-nombre-editar-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
                     ID de la Fuente
-                    <span class="max-char-span">
-                        (Máx.255 caracteres)
-                    </span>
                 </label>
-                <input type="text" id="fuente-nombre-editar-${numeroFuente}" maxlength="255"
-                       class="form-input"
-                       placeholder="Ingrese el ID de la fuente">
+                <select id="fuente-nombre-editar-${numeroFuente}" class="form-input">
+                    <option value="">Cargando fuentes...</option>
+                </select>
             </div>
         </div>
     `;
@@ -126,17 +123,70 @@ function agregarFuenteAColeccionEditar(numeroFuente) {
 }
 
 function listenCamposFuenteModalEditarColeccion() {
-    document.addEventListener("change", e => {
+    document.addEventListener("change", async e => {
         if (e.target.matches("select[id^='fuente-tipo-editar']")) {
             const id = e.target.dataset.id;
             const tipo = e.target.value;
             const nombreContainer = document.getElementById(`nombre-container-${id}`);
 
             if (nombreContainer) {
-                nombreContainer.classList.toggle("hidden", !(tipo === "estatica" || tipo === "proxy"));
+                if (tipo === "estatica" || tipo === "proxy") {
+                    nombreContainer.classList.remove("hidden");
+                    await cargarFuentesPorTipoEditar(id, tipo);
+                } else if (tipo === "dinamica") {
+                    // Para dinámica, ocultar el container y cargar el ID en segundo plano
+                    nombreContainer.classList.add("hidden");
+                    await cargarFuentesPorTipoEditar(id, tipo);
+                } else {
+                    nombreContainer.classList.add("hidden");
+                }
             }
         }
     });
+}
+
+async function cargarFuentesPorTipoEditar(id, tipo) {
+    const selectNombre = document.getElementById(`fuente-nombre-${id}`);
+
+    if (!selectNombre) return;
+
+    try {
+        selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
+        selectNombre.disabled = true;
+
+        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
+            headers: { 'Authorization': 'Bearer ' + jwtToken }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las fuentes');
+        }
+
+        const data = await response.json();
+        const fuentes = data.content || [];
+
+        if (tipo === "dinamica") {
+            // Para dinámica, guardar el ID en un atributo data
+            if (fuentes.length > 0) {
+                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
+            }
+        } else {
+            // Para estática y proxy, mostrar el select con opciones
+            selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
+            fuentes.forEach(fuente => {
+                const option = document.createElement('option');
+                option.value = fuente.id;
+                option.textContent = `${fuente.id} ${fuente.alias !== 'Fuente sin titulo' ? '(' + fuente.alias + ')' : ''}`;
+                selectNombre.appendChild(option);
+            });
+        }
+
+        selectNombre.disabled = false;
+    } catch (error) {
+        console.error('Error al cargar fuentes:', error);
+        selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
+        selectNombre.disabled = true;
+    }
 }
 
 function renderizarFuentesActuales() {
@@ -243,16 +293,21 @@ async function guardarCambiosColeccion() {
 
             if (tipo) {
                 let fuenteId;
+                const selectNombre = document.getElementById(`fuente-nombre-editar-${id}`);
 
                 if (tipo === 'dinamica') {
-                    // Para dinámica, siempre es el ID fijo
-                    fuenteId = '675ad24ea9cdd83046fe9ccf';
+                    // Para dinámica, obtener el ID del atributo data
+                    fuenteId = selectNombre?.getAttribute('data-fuente-dinamica-id');
+
+                    if (!fuenteId) {
+                        throw new Error('No se pudo obtener el ID de la fuente dinámica');
+                    }
                 } else if (tipo === 'estatica' || tipo === 'proxy') {
-                    // Para estática o proxy, usar el ID ingresado
-                    fuenteId = document.getElementById(`fuente-nombre-editar-${id}`)?.value;
+                    // Para estática o proxy, usar el ID del select
+                    fuenteId = selectNombre?.value;
 
                     if (!fuenteId || fuenteId.trim() === '') {
-                        throw new Error(`Debe ingresar el ID de la fuente ${tipo}`);
+                        throw new Error(`Debe seleccionar una fuente ${tipo}`);
                     }
                 }
 
@@ -287,14 +342,13 @@ async function guardarCambiosColeccion() {
         for (const operacion of window.operacionesPendientes) {
             if (operacion.tipo === 'AGREGAR') {
                 console.log(`Agregando fuente ${operacion.fuenteId}...`);
-                const tipoFuente = document.getElementById(`fuente-tipo-editar-${id}`)?.value;
                 const responseAgregar = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${window.coleccionActual.id}/fuentes`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + jwtToken
                     },
-                    body: JSON.stringify({ tipo: tipoFuente, id: operacion.fuenteId })
+                    body: JSON.stringify({ tipo: operacion.tipoFuente, id: operacion.fuenteId })
                 });
 
                 if (!responseAgregar.ok) {

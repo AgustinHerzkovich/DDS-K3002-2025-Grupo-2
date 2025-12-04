@@ -49,8 +49,19 @@
 }
 
 .btn-solicitudes-stats {
+    /* Fondo claro pero texto más oscuro para mejorar contraste
+       Usamos !important para sobreescribir posibles estilos inline aplicados en runtime */
     background: #fff3e0;
     color: #e65100;
+}
+
+.btn-solicitudes-stats:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.btn-solicitudes-stats:focus {
+    outline: none;
 }
 
 .btn-categorias-mas-hechos {
@@ -253,3 +264,6 @@
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
+
+/* (restored) No forzamos fills/strokes globalmente para no romper SVGs con partes blancas;
+   los SVG mantienen su aspecto original del markup. */

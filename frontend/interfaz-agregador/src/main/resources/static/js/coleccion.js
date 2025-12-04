@@ -8,8 +8,8 @@ function validarFormularioModalColeccion() {
     const fechaIni = document.getElementById('criterio-fecha-inicial');
     const fechaFin = document.getElementById('criterio-fecha-final');
     const algoritmo = document.getElementById('algoritmo-coleccion');
-    const tiposFuentes = Array.from(document.querySelectorAll('#fuentes-container-coleccion .fuente-item select'));
-    const nombresFuentes = Array.from(document.querySelectorAll('#fuentes-container-coleccion .fuente-item input'));
+    const tiposFuentes = Array.from(document.querySelectorAll('#fuentes-container-coleccion .fuente-item select[id^="fuente-tipo-"]'));
+    const nombresFuentes = Array.from(document.querySelectorAll('#fuentes-container-coleccion .fuente-item select[id^="fuente-nombre-"]'));
     const inputsObligatoriosEstaticos = {
         titulo,
         descripcion,
@@ -22,7 +22,13 @@ function validarFormularioModalColeccion() {
         algoritmo
     }
 
-    validarInputsObligatorios([...Object.values(inputsObligatoriosEstaticos), ...tiposFuentes, ...nombresFuentes])
+    // Filtrar los nombres de fuentes para validar solo los que no son dinámicas o están visibles
+    const nombresParaValidar = nombresFuentes.filter((select, index) => {
+        const tipoFuente = tiposFuentes[index]?.value;
+        return tipoFuente === "estatica" || tipoFuente === "proxy";
+    });
+
+    validarInputsObligatorios([...Object.values(inputsObligatoriosEstaticos), ...tiposFuentes, ...nombresParaValidar])
 
     return {
         ...inputsObligatoriosEstaticos,
@@ -42,7 +48,7 @@ function limpiarModalColeccion(modal) {
     document.getElementById('fuentes-container-coleccion').innerHTML = "";
 }
 
-function agregarFuenteAColeccion(numeroFuente) {
+function agregarFuenteColeccion(numeroFuente) {
     const mensajeSinFuentes = document.getElementById("sin-fuentes-coleccion")
     if(!mensajeSinFuentes.classList.contains("hidden")) {
         mensajeSinFuentes.classList.add("hidden")
@@ -69,15 +75,12 @@ function agregarFuenteAColeccion(numeroFuente) {
             </select>
 
             <div id="nombre-container-${numeroFuente}" class="hidden">
-                <label th:for="fuente-nombre-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
-                    Nombre
-                    <span class="max-char-span">
-						(Máx.255 caracteres)
-					</span>
+                <label for="fuente-nombre-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
+                    ID de la Fuente
                 </label>
-                <input type="text" id="fuente-nombre-${numeroFuente}" maxlength="255"
-                       class="form-input"
-                       placeholder="Ingrese el nombre">
+                <select id="fuente-nombre-${numeroFuente}" class="form-input">
+                    <option value="">Cargando fuentes...</option>
+                </select>
             </div>
         </div>
         `;

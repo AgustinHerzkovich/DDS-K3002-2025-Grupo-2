@@ -125,9 +125,9 @@ public class HechoService {
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return hechoRepository.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorId(contribuyenteId, pageable).map(hechoOutputMapper::map);
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{

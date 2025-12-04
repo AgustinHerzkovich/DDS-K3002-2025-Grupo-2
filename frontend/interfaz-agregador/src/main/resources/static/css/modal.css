@@ -28,7 +28,8 @@
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid #e5e7eb;
-    background-color: #3498db;
+    /* Usar un azul más oscuro y forzarlo para superar inline styles si existen */
+    background-color: #1e40af !important; /* azul oscuro (mejor contraste) */
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 }
@@ -47,10 +48,18 @@
 }
 
 .modal-title {
-    color: white;
+    /* No forzar blanco: heredar color para evitar bajo contraste cuando el fondo es claro */
+    color: inherit;
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
+}
+
+/* Forzar blanco sólo en headers con fondo oscuro */
+.modal-header .modal-title,
+.create-modal-header .modal-title,
+.edit-modal-header .modal-title {
+    color: #ffffff;
 }
 
 .modal-page {

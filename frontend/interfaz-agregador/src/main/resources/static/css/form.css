@@ -56,7 +56,8 @@
 }
 
 .form-input::placeholder {
-    color: #9ca3af !important;
+    /* Color de placeholder con mayor contraste */
+    color: #6b7280 !important; /* gray-500 */
 }
 
 .form-input[disabled] {
@@ -68,8 +69,8 @@
     transition: all 0.2s ease;
     background-color: #ebeff5;
     color: #1f2937 !important; /* Color negro para el texto */
-    appearance: auto;
-    -webkit-appearance: auto;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .form-check-input {
@@ -77,7 +78,11 @@
 }
 
 .form-obligatory-icon {
-    color: red;
+    /* Color más oscuro para cumplir contraste WCAG */
+    color: #b91c1c; /* red-700 */
+    font-weight: 600;
+    display: inline-block;
+    line-height: 1;
 }
 
 .form-not-completed {
@@ -89,8 +94,8 @@
     transition: all 0.2s ease;
     background-color: #f9fafb;
     color: #1f2937 !important;
-    appearance: auto;
-    -webkit-appearance: auto;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .form-not-completed:focus {
@@ -107,4 +112,233 @@ input[type="checkbox"] {
     margin-right: 0.5rem;
     cursor: pointer;
     accent-color: #3b82f6;
+}
+
+/* Estilos para drag & drop de archivos */
+.file-drop-zone {
+    width: 100%;
+    padding: 2rem;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-drop-zone:hover {
+    border-color: #3b82f6;
+    background-color: #f8faff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.file-drop-zone.dragover {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+    border-style: solid;
+}
+
+.file-drop-zone.form-not-completed {
+    border-color: red;
+    background-color: #fef2f2;
+}
+
+.file-drop-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-drop-content i {
+    font-size: 2rem;
+    color: #9ca3af;
+}
+
+.file-drop-content p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.file-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #f3f4f6;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.file-name {
+    font-size: 0.9rem;
+    color: #374151;
+    word-break: break-all;
+}
+
+.remove-file {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid #dc2626;
+    background-color: transparent;
+    color: #dc2626;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-file:hover {
+    background-color: #dc2626;
+    color: white;
+}
+
+.max-char-span {
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+/* Estilos para input range (slider) */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #3b82f6 0%, #3b82f6 var(--range-progress, 5%), #e5e7eb var(--range-progress, 5%), #e5e7eb 100%);
+    outline: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 6px;
+    background: transparent;
+    border-radius: 3px;
+}
+
+/* Estilos para select de fuentes con scroll */
+select[id^="fuente-nombre-"] {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Utilidad para accesibilidad: texto solo visible para lectores de pantalla */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* Estilos específicos para el botón de búsqueda (ícono lupa) */
+.search-btn {
+    background-color: #111827; /* Gray-900: alto contraste */
+    color: #ffffff; /* icono en blanco */
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-btn svg {
+    color: inherit;
+    width: 20px;
+    height: 20px;
+}
+
+.search-btn:hover {
+    background-color: #0b1220; /* ligeramente más oscuro */
+}
+
+.search-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.25);
+}
+
+.search-btn:active {
+    opacity: 0.9;
+}
+
+/* Variante para textos pequeños: mantener contraste y aumentar peso */
+.form-obligatory-icon.text-xs {
+    color: #b91c1c;
+    font-weight: 700;
+    font-size: 0.75rem; /* 12px */
+}
+
+/* Texto muted con contraste mejorado para labels de ayuda */
+.text-muted-high {
+    color: #6b7280; /* gray-500 */
+}
+
+/* Asegurar contraste para el aviso de fuentes en crear colección */
+#sin-fuentes-coleccion {
+    color: #374151 !important; /* gray-700: mayor contraste sobre fondo blanco */
+    opacity: 1 !important;
+    background-color: transparent !important;
 }

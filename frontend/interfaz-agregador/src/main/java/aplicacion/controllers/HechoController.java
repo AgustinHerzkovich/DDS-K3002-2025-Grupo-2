@@ -10,12 +10,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -68,17 +66,24 @@ public class HechoController {
 
     @GetMapping("/hechos-pendientes")
     @PreAuthorize("hasRole('ADMIN')")
-    public String showHechosPendientes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+    public String showHechosPendientes(
+            @AuthenticationPrincipal OidcUser oidcUser,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
         TokenContext.addToken(model);
 
         model.addAttribute("principal", oidcUser);
 
+        aplicacion.dto.PageWrapper<HechoOutputDto> hechosPendientesPage = hechoService.obtenerHechosPendientes(page, size);
 
-        model.addAttribute("hechosPendientes", java.util.Collections.emptyList());
-        List<HechoOutputDto> hechosPendientes = hechoService.obtenerHechosPendientes();
+        model.addAttribute("hechosPendientes", hechosPendientesPage.getContent());
+        model.addAttribute("currentPage", hechosPendientesPage.getNumber());
+        model.addAttribute("totalPages", hechosPendientesPage.getTotalPages());
+        model.addAttribute("totalElements", hechosPendientesPage.getTotalElements());
+        model.addAttribute("hasPrevious", !hechosPendientesPage.isFirst());
+        model.addAttribute("hasNext", !hechosPendientesPage.isLast());
 
-
-        model.addAttribute("hechosPendientes",hechosPendientes);
         return "hechos-pendientes";
     }
 }

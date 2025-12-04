@@ -97,10 +97,6 @@
     color: black;
 }
 
-.hecho-info-value {
-    color: black;
-}
-
 .contenido-texto {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -131,7 +127,7 @@
     margin: 4px 4px 4px 0;
     background-color: #e6e6e6;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 1rem;
     font-size: 0.9rem;
 }
 

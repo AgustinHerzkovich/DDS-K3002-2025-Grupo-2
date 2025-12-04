@@ -3,24 +3,27 @@ document.addEventListener("DOMContentLoaded", function() {
     const openBtn = document.getElementById("menu-crear-hecho");
     const closeBtn = document.getElementById("salir-crear-hecho");
     const confirmBtn = document.getElementById("crear-hecho")
-    const crearHechoTitle = document.getElementById("modal-crear-hecho-titulo")
-    const multimediaCountObject = {multimediaCount : 0};
-
+    const modalTitle = document.getElementById("modal-crear-hecho-titulo")
+    const agregarBtn = document.getElementById("modal-crear-hecho-agregar-multimedia")
+    console.log(agregarBtn)
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear hecho")) {
         listenOpenModal(modal, openBtn, () => {
             document.getElementById("dropdown-menu").classList.add("hidden")
-            crearHechoTitle.classList.remove("hidden")
+            modalTitle.classList.remove("hidden")
+            agregarBtn.classList.remove("hidden")
             confirmBtn.parentElement.classList.remove("hidden")
             closeBtn.parentElement.classList.remove("hidden")
         })
         listenCloseModal(modal, closeBtn, () => {
-            limpiarModalHecho(modal, multimediaCountObject)
-            crearHechoTitle.classList.add("hidden")
+            limpiarModalHecho(modal)
+
+            modalTitle.classList.add("hidden")
+            agregarBtn.classList.add("hidden")
             confirmBtn.parentElement.classList.add("hidden")
             closeBtn.parentElement.classList.add("hidden")
         })
         listenCamposUbicacionCrearHecho()
-        listenAgregarMultimediaModalHecho(multimediaCountObject)
+        listenAgregarMultimediaModalHecho(agregarBtn)
 
         confirmBtn.addEventListener('click', async function() {
             const inputsObligatorios = validarFormularioModalHecho()

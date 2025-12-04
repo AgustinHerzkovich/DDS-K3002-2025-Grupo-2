@@ -7,6 +7,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class HechoService {
@@ -190,34 +189,38 @@ public class HechoService {
 
 
 
-    public List<HechoOutputDto> obtenerHechosPendientes() {
+    public PageWrapper<HechoOutputDto> obtenerHechosPendientes(int page, int size) {
         try {
-            List<HechoOutputDto> lista = webClientAdministrativa.get()
-                    .uri("/hechos?pendiente=true")
+            PageWrapper<HechoOutputDto> pageWrapper = webClientAdministrativa.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/hechos")
+                            .queryParam("pendiente", true)
+                            .queryParam("page", page)
+                            .queryParam("size", size)
+                            .build())
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), resp ->
                             resp.bodyToMono(String.class).flatMap(msg -> {
-                                System.err.println("Error 4xx en hechosPendientes pendientes: " + msg);
+                                System.err.println("Error 4xx en hechos pendientes: " + msg);
                                 return Mono.error(new RuntimeException(msg));
                             })
                     )
-                    .bodyToFlux(HechoOutputDto.class)
-                    .collectList()
+                    .bodyToMono(new ParameterizedTypeReference<PageWrapper<HechoOutputDto>>() {})
                     .block(Duration.ofSeconds(10));
 
-            if (lista == null) {
-                return Collections.emptyList();
+            if (pageWrapper == null || pageWrapper.getContent() == null) {
+                return new PageWrapper<>();
             }
-            System.out.println("Servicio: Cargadas " + lista.size() + " hechosPendientes pendientes.");
-            return lista;
+            System.out.println("Servicio: Cargados " + pageWrapper.getContent().size() + " hechos pendientes de " + pageWrapper.getTotalElements() + " totales.");
+            return pageWrapper;
         } catch (WebClientResponseException e) {
-            System.err.println("ERROR WebClient al obtener hechosPendientes pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+            System.err.println("ERROR WebClient al obtener hechos pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
         } catch (Exception e) {
-            System.err.println("ERROR al obtener hechosPendientes pendientes: " + e.getMessage());
+            System.err.println("ERROR al obtener hechos pendientes: " + e.getMessage());
         }
 
-        return Collections.emptyList();
+        return new PageWrapper<>();
     }
 
 

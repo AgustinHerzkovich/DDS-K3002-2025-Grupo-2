@@ -72,7 +72,7 @@ function verColeccion(coleccion) {
     })
 
     coleccion.fuentes.forEach((fuente, index) => {
-        agregarFuenteAColeccion(index)
+        agregarFuenteColeccion(index)
 
         document.getElementById(`eliminar-fuente-${index}`).classList.add("hidden")
 

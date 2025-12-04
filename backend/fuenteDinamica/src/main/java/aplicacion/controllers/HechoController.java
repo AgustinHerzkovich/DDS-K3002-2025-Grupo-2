@@ -9,6 +9,9 @@ import aplicacion.services.HechoService;
 import aplicacion.excepciones.*;
 import domain.helpers.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,26 +31,29 @@ public class HechoController {
     }
 
     @GetMapping("/hechos")
-    public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
+    public ResponseEntity<Page<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
-            @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente
+            @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
     ) {
-        List<HechoOutputDto> hechos;
+        Page<HechoOutputDto> hechos;
+        Pageable pageable = PageRequest.of(page, size);
 
         // Combinar filtros de fechaMayorA y pendiente
         if (fechaMayorA != null && pendiente) {
             // Hechos pendientes con fecha mayor a
-            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA);
+            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA, pageable);
         } else if (fechaMayorA != null) {
             // Hechos aceptados con fecha mayor a
-            hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
+            hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA, pageable);
         } else if (pendiente) {
             // Todos los hechos pendientes
-            hechos = hechoService.obtenerHechosPendientes();
+            hechos = hechoService.obtenerHechosPendientes(pageable);
         } else {
             // Todos los hechos aceptados
-            hechos = hechoService.obtenerHechosAceptados();
+            hechos = hechoService.obtenerHechosAceptados(pageable);
         }
 
         return ResponseEntity.ok(hechos);

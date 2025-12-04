@@ -27,9 +27,9 @@ function listenCloseModal(modal, closeBtn, closeAction = null) {
 }
 
 function listenOpenModal(modal, openBtn, openAction = null) {
-    openBtn.addEventListener('click', () => {
+    openBtn.addEventListener('click', async function() {
         if(openAction) {
-            openAction()
+            await openAction()
         }
 
         document.body.classList.add("overflow-hidden");
@@ -41,6 +41,7 @@ function listenLimpiarFiltrosMapa(inputsContainer) {
     const limpiarBtn = document.getElementById('btn-limpiar-filtros');
 
     limpiarBtn.addEventListener("click", function () {
+        // Limpiar los inputs del modal
         inputsContainer.querySelectorAll('input, select, textarea').forEach(input => {
             if (input.type === 'range') {
                 input.value = "5"; // Reset radio to default
@@ -50,6 +51,17 @@ function listenLimpiarFiltrosMapa(inputsContainer) {
                 input.value = "";
             }
         });
+
+        // Preservar el parámetro search si existe
+        const params = new URLSearchParams(window.location.search);
+        const searchParam = params.get('search');
+
+        // Construir URL limpia preservando search
+        if (searchParam) {
+            window.location.href = '/mapa?search=' + encodeURIComponent(searchParam);
+        } else {
+            window.location.href = '/mapa';
+        }
     });
 }
 
@@ -58,9 +70,23 @@ function listenRadioSliderMapa() {
     const radioValue = document.getElementById('radio-value');
 
     if (radioSlider && radioValue) {
+        // Función para actualizar el progreso visual del slider
+        const updateSliderProgress = () => {
+            const min = radioSlider.min || 0;
+            const max = radioSlider.max || 100;
+            const value = radioSlider.value;
+            const percentage = ((value - min) / (max - min)) * 100;
+            radioSlider.style.setProperty('--range-progress', `${percentage}%`);
+        };
+
+        // Actualizar el valor y el progreso visual
         radioSlider.addEventListener('input', function () {
             radioValue.textContent = this.value;
+            updateSliderProgress();
         });
+
+        // Inicializar el progreso visual
+        updateSliderProgress();
     }
 }
 
@@ -196,11 +222,11 @@ function listenAgregrFuenteEditarColeccion() {
 }
 
 function listenAgregarFuenteModalColeccion(agregarBtn) {
-    const contadorFuentesObject = {cantidadFuentes: 0}
+    let cantidadFuentes = 0
 
-    agregarBtn.addEventListener("click", function () {
-        contadorFuentesObject.cantidadFuentes++
-        agregarFuenteAColeccion(contadorFuentesObject.cantidadFuentes)
+    agregarBtn.addEventListener("click", function (e) {
+        cantidadFuentes++
+        agregarFuenteColeccion(cantidadFuentes)
     });
 }
 
@@ -233,15 +259,68 @@ function listenCamposCriterioModalColeccion() {
 }
 
 function listenCamposFuenteModalColeccion() {
-    document.addEventListener("change", e => {
+    document.addEventListener("change", async e => {
         if (e.target.matches("select[id^='fuente-tipo']")) {
             const id = e.target.dataset.id;
             const tipo = document.getElementById(`fuente-tipo-${id}`).value;
             const nombreContainer = document.getElementById(`nombre-container-${id}`);
 
-            nombreContainer.classList.toggle("hidden", !(tipo === "estatica" || tipo === "proxy"));
+            if (tipo === "estatica" || tipo === "proxy") {
+                nombreContainer.classList.remove("hidden");
+                await cargarFuentesPorTipo(id, tipo);
+            } else if (tipo === "dinamica") {
+                // Para dinámica, ocultar el container y cargar el ID en segundo plano
+                nombreContainer.classList.add("hidden");
+                await cargarFuentesPorTipo(id, tipo);
+            } else {
+                nombreContainer.classList.add("hidden");
+            }
         }
     });
+}
+
+async function cargarFuentesPorTipo(id, tipo) {
+    const selectNombre = document.getElementById(`fuente-nombre-${id}`);
+
+    if (!selectNombre) return;
+
+    try {
+        selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
+        selectNombre.disabled = true;
+
+        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
+            headers: { 'Authorization': 'Bearer ' + jwtToken }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las fuentes');
+        }
+
+        const data = await response.json();
+        const fuentes = data.content || [];
+
+        if (tipo === "dinamica") {
+            // Para dinámica, guardar el ID en un atributo data
+            if (fuentes.length > 0) {
+                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
+            }
+        } else {
+            // Para estática y proxy, mostrar el select con opciones
+            selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
+            fuentes.forEach(fuente => {
+                const option = document.createElement('option');
+                option.value = fuente.id;
+                option.textContent = `${fuente.id} ${fuente.alias !== 'Fuente sin titulo' ? '(' + fuente.alias + ')' : ''}`;
+                selectNombre.appendChild(option);
+            });
+        }
+
+        selectNombre.disabled = false;
+    } catch (error) {
+        console.error('Error al cargar fuentes:', error);
+        selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
+        selectNombre.disabled = true;
+    }
 }
 
 function listenScrollableArrowHome(scrollArrowBtn) {
@@ -256,33 +335,12 @@ function listenScrollableArrowHome(scrollArrowBtn) {
     });
 }
 
-function listenAgregarMultimediaModalHecho(object) {
-    const agregarMultimediaBtn = document.getElementById("modal-hecho-agregar-multimedia");
-    const container = document.getElementById('modal-hecho-multimedia-container');
+function listenAgregarMultimediaModalHecho(agregarBtn) {
+    let cantidadFuentes = 0
 
-    agregarMultimediaBtn.addEventListener("click", function() {
-        object.multimediaCount++;
-
-        const multimediaDiv = document.createElement('div');
-        multimediaDiv.className = 'flex items-center gap-2 mb-[1rem]';
-        multimediaDiv.id = `multimedia-${object.multimediaCount}`;
-
-        multimediaDiv.innerHTML = `
-                <input type="text" class="form-input multimedia-input" maxlength="500"
-                       id="url-${object.multimediaCount}"
-                       placeholder="https://ejemplo.com/imagen.jpg" required>
-                <button id="eliminar-multimedia-${object.multimediaCount}" type="button" class="text-red-500 hover:text-red-700 p-1 rounded-full bg-red-100 hover:bg-red-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-        `;
-
-        container.appendChild(multimediaDiv);
-
-        const eliminarMultimediaBtn = document.getElementById(`eliminar-multimedia-${object.multimediaCount}`)
-        const element = document.getElementById(`multimedia-${object.multimediaCount}`);
-        eliminarMultimediaBtn.addEventListener("click", () => element.remove());
+    agregarBtn.addEventListener("click", function() {
+        cantidadFuentes++
+        agregarMultimediaModalHecho(cantidadFuentes)
     });
 }
 

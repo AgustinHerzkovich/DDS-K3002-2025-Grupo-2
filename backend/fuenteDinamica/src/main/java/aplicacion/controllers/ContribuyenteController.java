@@ -11,6 +11,9 @@ import domain.peticiones.Validaciones;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.services.ContribuyenteService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +32,13 @@ public class ContribuyenteController {
     }
 
     @GetMapping("/contribuyentes/{id}/hechos")
-    public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id) {
+    public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id,
+                                                        @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                        @RequestParam(name = "size", defaultValue = "20") Integer size) {
         try {
             Validaciones.validarId(id);
-            List<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id);
+            Pageable pageable = PageRequest.of(page, size);
+            Page<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id, pageable);
             return ResponseEntity.ok(hechos);
         }
         catch (IdInvalidoException e) {

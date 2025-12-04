@@ -6,6 +6,8 @@
 	<script src="/js/crear-hecho.js" defer></script>
 	<script src="/js/coleccion.js" defer></script>
 	<script src="/js/hecho.js" defer></script>
+	<script src="/js/crear-fuente.js" defer></script>
+	<script src="/js/fuente.js" defer></script>
 </th:block>
 
 
@@ -33,7 +35,7 @@
 				</div>
 			</div>
 			<div class="dropdown-menu-section">
-				<h3 class="dropdown-menu-section-title">Acciones</h3>
+				<h2 class="dropdown-menu-section-title">Acciones</h2>
 				<button id="menu-crear-hecho" class="dropdown-menu-item dropdown-menu-button">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
 						 stroke="currentColor" class="w-5 h-5">
@@ -48,6 +50,14 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
 					</svg>
 					<span>Crear Colección</span>
+				</button>
+				<button th:if="${isAdmin}" id="menu-crear-fuente"
+						class="dropdown-menu-item dropdown-menu-button">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+						 stroke="currentColor" class="w-5 h-5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+					</svg>
+					<span>Crear Fuente</span>
 				</button>
 				<button th:if="${isLoggedIn}" id="menu-mis-hechos"
 						class="dropdown-menu-item dropdown-menu-button" data-is-admin="${isAdmin}">
@@ -101,6 +111,7 @@
 	</div>
 
 	<th:block th:replace="~{fragments/modal :: modalHecho}"/>
+	<th:block th:replace="~{fragments/modal :: modalFuente}"/>
 	<th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalColeccion}"/>
 	<th:block th:replace="~{fragments/modal :: modalMisHechos}"/>
 	<th:block th:replace="~{fragments/modal :: modalEditarPerfil}"/>
