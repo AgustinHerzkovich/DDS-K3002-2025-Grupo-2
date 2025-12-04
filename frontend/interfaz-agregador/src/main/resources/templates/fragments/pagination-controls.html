@@ -9,7 +9,6 @@
         Página
         <input type="number" min="1" th:max="${totalPages}" th:value="${totalPages > 0 ? currentPage + 1 : 0}" id="pageInput" style="width: 50px; text-align: center;" />
         de <span th:text="${totalPages}"></span>
-        <button id="goToPageBtn">Ir</button>
     </span>
     <a th:if="${hasNext}" th:href="${nextPageUrl}" class="pagination-btn">
         Siguiente →
@@ -28,23 +27,18 @@
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const pageInput = document.getElementById('pageInput');
-            const goBtn = document.getElementById('goToPageBtn');
-
-            goBtn.addEventListener('click', () => {
-                let page = parseInt(pageInput.value);
-                const totalPages = /*[[${totalPages}]]*/ 1;
-
-                if (page < 1) page = 1;
-                if (page > totalPages) page = totalPages;
-
-                let url = new URL(window.location.href);
-                url.searchParams.set('page', page - 1);
-                window.location.href = url.toString();
-            });
 
             pageInput.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    goBtn.click();
+                    let page = parseInt(pageInput.value);
+                    const totalPages = /*[[${totalPages}]]*/ 1;
+
+                    if (page < 1) page = 1;
+                    if (page > totalPages) page = totalPages;
+
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('page', page - 1);
+                    window.location.href = url.toString();
                 }
             });
         });
