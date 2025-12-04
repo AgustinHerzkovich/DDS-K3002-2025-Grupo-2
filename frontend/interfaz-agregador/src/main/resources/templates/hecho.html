@@ -145,7 +145,7 @@
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
 
-                        <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
+                        <th:block th:if="${hecho.autor != null and hecho.autor.id != null and hecho.autor.id == userId}" th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
                     </div>
                 </div>
             </div>

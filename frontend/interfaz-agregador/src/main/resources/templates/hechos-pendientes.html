@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<!-- Controles de paginación -->
-		<div th:if="${!#lists.isEmpty(hechosPendientes) and totalPages > 1}" style="margin-top: 2rem; display: flex; justify-content: center;">
+		<div th:if="${!#lists.isEmpty(hechosPendientes)}" style="margin-top: 2rem; display: flex; justify-content: center;">
 			<th:block th:replace="~{fragments/pagination-controls :: paginationControls('/hechos-pendientes?page=' + ${currentPage - 1} + '&size=10', '/hechos-pendientes?page=' + ${currentPage + 1} + '&size=10')}" />
 		</div>
 	</main>
