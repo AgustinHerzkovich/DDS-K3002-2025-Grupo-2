@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const actualizarSlider = () => {
             const porcentaje = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-            slider.style.background = `linear-gradient(to right, #42a5f5 0%, #42a5f5 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
+            slider.style.background = `linear-gradient(to right, #1565C0 0%, #1565C0 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
     }
 
     sliderLimite.addEventListener("input", () => {
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         datasets: [{
                             label: 'Cantidad de hechos',
                             data: cantidades,
-                            backgroundColor: '#42A5F5'
+                            backgroundColor: '#1565C0'
                         }]
                     },
                     options: {
@@ -120,8 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         datasets: [{
                             label: 'Cantidad de hechos',
                             data: valores,
-                            backgroundColor: '#42A5F5',
-                            borderColor: '#1E88E5',
+                            backgroundColor: '#1565C0',
+                            borderColor: '#0D47A1',
                             borderWidth: 1
                         }]
                     },
@@ -177,6 +177,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 listaCategorias.innerHTML = "";
 
                 if (data.content && data.content.length > 0) {
+                    // Validar que la página actual no exceda el total de páginas
+                    if (paginaActual >= data.totalPages && data.totalPages > 0) {
+                        paginaActual = 0;
+                        cargarCategorias(); // Volver a cargar con la página corregida
+                        return;
+                    }
+
                     data.content.forEach(cat => {
                         const li = document.createElement("li");
                         li.textContent = cat.categoria;

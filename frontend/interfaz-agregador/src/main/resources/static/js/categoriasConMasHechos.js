@@ -1,4 +1,4 @@
-import { configurarDescargaCSV } from "./botonDescargarCSV.js";
+ import { configurarDescargaCSV } from "./botonDescargarCSV.js";
 
 let chart = null
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const actualizarSlider = () => {
             const porcentaje = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-            slider.style.background = `linear-gradient(to right, #42a5f5 0%, #42a5f5 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
+            slider.style.background = `linear-gradient(to right, #1565C0 0%, #1565C0 ${porcentaje}%, #ccc ${porcentaje}%, #ccc 100%)`;
     }
 
     slider.addEventListener("input", () => {{
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         datasets: [{
                             label: "Cantidad de hechos",
                             data: valores,
-                            backgroundColor: '#42A5F5',
-                            borderColor: '#1E88E5',
+                            backgroundColor: '#1565C0',
+                            borderColor: '#0D47A1',
                             borderWidth: 1
                         }]
                     },

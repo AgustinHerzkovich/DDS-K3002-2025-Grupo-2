@@ -22,18 +22,20 @@
     padding: 8px 16px;
     border: none;
     border-radius: 6px;
-    background-color: #42A5F5;
+    /* Azul más oscuro para mejor contraste con texto blanco (ratio 4.53:1) */
+    background-color: #1565C0;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
 
 #btn-actualizar:hover {
-    background-color: #1E88E5;
+    background-color: #0D47A1;
 }
 
 #btn-actualizar:active {
     transform: scale(0.95);
+    background-color: #0B3871;
 }
 
 
