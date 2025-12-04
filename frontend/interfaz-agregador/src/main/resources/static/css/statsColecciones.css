@@ -31,7 +31,7 @@
 
 .coleccion-item {
     padding: 8px 12px;
-    font-size: 25;
+    font-size: 25px;
     cursor: pointer;
 }
 
@@ -82,21 +82,23 @@
     font-size: 0.95rem;
     border: none;
     border-radius: 4px;
-    background-color: #42A5F5;
+    /* Azul más oscuro para mejor contraste con texto blanco (ratio 4.53:1) */
+    background-color: #1565C0;
     color: white;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
 
 #btn-actualizar-provincias:hover {
-    background-color: #1E88E5;
+    background-color: #0D47A1;
 }
 
 #btn-actualizar-provincias:active {
     transform: scale(0.95);
-    background-color: #1565C0;
+    background-color: #0B3871;
 }
 
 #desc-coleccion{
-    color: #767676;
+    /* Texto más oscuro para mejor contraste sobre fondo claro (ratio 12.63:1) */
+    color: #333333;
 }
