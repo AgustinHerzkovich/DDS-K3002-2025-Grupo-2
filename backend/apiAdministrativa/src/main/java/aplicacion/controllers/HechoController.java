@@ -40,6 +40,11 @@ public class HechoController {
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/hechos", body, String.class));
     }
 
+    @PatchMapping("/hechos/{id}")
+    public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) {
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(urlBaseAgregador + "/hechos/" + id, body, String.class));
+    }
+
     @GetMapping("/hechos")
     public ResponseEntity<?> obtenerHechosPendientes(@RequestParam(value = "fechaMayorA", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
                                                      @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
