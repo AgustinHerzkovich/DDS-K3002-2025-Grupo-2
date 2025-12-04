@@ -17,11 +17,11 @@
             </div>
 
             <div id="contenedor-no-solicitudes" class="contenedor-no-solicitudes" style="display:none;">
-                <p class="mensaje-sin-solicitudes">No hay solicitudes.</p>
+                <div class="mensaje-sin-solicitudes" role="status" aria-live="polite">No hay solicitudes.</div>
             </div>
             
             <div id="contenedor-error-solicitudes" class="contenedor-error-solicitudes" style="display:none;">
-                <p class="mensaje-error-solicitudes">Error al cargar las estadísticas.</p>
+                <div class="mensaje-error-solicitudes" role="alert" aria-live="assertive">Error al cargar las estadísticas.</div>
             </div>
             <button id="btn-descargar-csv" class="btn-descargar-csv">Descargar como CSV</button>
 
