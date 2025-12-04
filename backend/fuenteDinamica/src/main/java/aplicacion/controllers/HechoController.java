@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -75,6 +76,7 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}/estadoRevision")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
                                                      @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
                                                      @RequestHeader(value = "Administrador", required = false) String administradorId) {
