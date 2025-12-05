@@ -8,18 +8,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const agregarBtn = document.getElementById("modal-editar-hecho-agregar-multimedia")
     let direccionHecho = {}
     let primeraVezEditando = true
-    /*
-    titulo, desxcipciom, categoria, ubiacion, fecha, contenido texto, contenido multimedia
-    */
 
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn, anonimatoContainer, agregarBtn], "editar hecho")) {
         listenOpenModal(modal, openBtn, async function() {
             if(primeraVezEditando) {
-                direccionHecho = await obtenerDireccionEditarHecho()
+                try {
+                    direccionHecho = await obtenerDireccionEditarHecho()
+                } catch (error) {
+                    console.error(error);
+                    return;
+                }
                 primeraVezEditando = false
             }
 
-            await autocompletarModalHecho(direccionHecho)
+            autocompletarModalHecho(direccionHecho)
 
             modalTitle.classList.remove("hidden")
             agregarBtn.classList.remove("hidden")
@@ -52,7 +54,13 @@ async function guardarEdicion(inputsObligatorios) {
     try {
         mostrarCargando("editar-hecho")
 
-        const payload = getPayloadEditarHecho(inputsObligatorios)
+        let payload;
+        try {
+            payload = await getPayloadModalHecho(inputsObligatorios)
+        } catch (error) {
+            console.error(error)
+            return
+        }
         console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
 
         const endpoint = isAdmin ? `http://localhost:8086/apiAdministrativa/hechos/${hechoId}` : `http://localhost:8085/apiPublica/hechos/${hechoId}`
@@ -68,11 +76,11 @@ async function guardarEdicion(inputsObligatorios) {
 
         if (!response.ok) {
             const errorText = await response.text()
-            throw new Error(errorText ? `Error al crear la colección:\n${errorText}` : "Error al crear la colección")
+            throw new Error(errorText ? `Error al editar el hecho:\n${errorText}` : "Error al editar el hecho")
         }
 
         alert("Hecho actualizado con éxito");
-        document.getElementById("salir-editar-coleccion").click();
+        document.getElementById("salir-editar-hecho").click();
         window.location.reload()
     } catch (error) {
         console.error('Error:', error);

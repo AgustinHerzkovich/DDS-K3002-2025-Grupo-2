@@ -3,6 +3,7 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
@@ -14,6 +15,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.*;
 import aplicacion.graphql.objects.HechoFiltros;
 import aplicacion.graphql.objects.HechoItem;
+import aplicacion.repositories.CategoriaRepository;
 import aplicacion.repositories.HechoRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
@@ -39,6 +41,7 @@ public class HechoService {
     private final CategoriaInputMapper categoriaInputMapper;
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
+    private final CategoriaRepository categoriaRepository;
 
     public HechoService(HechoRepository hechoRepository,
                         HechoXColeccionRepository hechoXColeccionRepository,
@@ -49,7 +52,8 @@ public class HechoService {
                         EtiquetaService etiquetaService,
                         CategoriaInputMapper categoriaInputMapper,
                         UbicacionInputMapper ubicacionInputMapper,
-                        MultimediaInputMapper multimediaInputMapper) {
+                        MultimediaInputMapper multimediaInputMapper,
+                        CategoriaRepository categoriaRepository) {
         this.hechoRepository = hechoRepository;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -60,6 +64,7 @@ public class HechoService {
         this.categoriaInputMapper = categoriaInputMapper;
         this.ubicacionInputMapper = ubicacionInputMapper;
         this.multimediaInputMapper = multimediaInputMapper;
+        this.categoriaRepository = categoriaRepository;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
@@ -137,9 +142,12 @@ public class HechoService {
     }
 
     @Transactional
-    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable) throws ContribuyenteNoConfiguradoException {
+    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable, String userId) throws ContribuyenteNoConfiguradoException, AutorizacionDenegadaException {
+        if (!contribuyenteId.equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para ver estos hechos.");
+        }
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return hechoRepository.findByAutorId(contribuyenteId, pageable).map(hechoOutputMapper::map);
+        return hechoRepository.findByAutorIdOrderByVisibleDescFechaCargaDesc(contribuyenteId, pageable).map(hechoOutputMapper::map);
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
@@ -313,9 +321,17 @@ public class HechoService {
             throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
         }
 
+        // Buscar o crear la categoría antes de asignarla
+        Categoria categoria = null;
+        if (hechoEdicionInputDto.getCategoria() != null) {
+            String nombreCategoria = hechoEdicionInputDto.getCategoria().getNombre();
+            categoria = categoriaRepository.findByNombre(nombreCategoria)
+                    .orElseGet(() -> categoriaRepository.save(new Categoria(nombreCategoria)));
+        }
+
         hecho.editar(hechoEdicionInputDto.getTitulo(),
                 hechoEdicionInputDto.getDescripcion(),
-                hechoEdicionInputDto.getCategoria() != null ? categoriaInputMapper.map(hechoEdicionInputDto.getCategoria()) : null,
+                categoria,
                 hechoEdicionInputDto.getUbicacion() != null ? ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()) : null,
                 hechoEdicionInputDto.getFechaAcontecimiento(),
                 hechoEdicionInputDto.getContenidoTexto(),

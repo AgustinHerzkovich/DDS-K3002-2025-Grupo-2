@@ -28,5 +28,6 @@ public class HechoOutputDto {
     private Boolean anonimato;
     private ContribuyenteOutputDto autor;
     private List<EtiquetaOutputDto> etiquetas;
+    private Boolean visible;
     private String direccion; // Dirección completa calculada con geocoding
 }

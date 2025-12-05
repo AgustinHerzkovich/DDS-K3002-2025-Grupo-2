@@ -138,13 +138,15 @@ class HechoServiceTest
         hecho.setAutor(ContribuyenteFactory.crearContribuyenteAleatorio());
         hecho.getAutor().setId(123L);
         String contribuyenteId = hecho.getAutor().getId();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Hecho> page = new PageImpl<>(List.of(hecho));
         when(contribuyenteService.obtenerContribuyente(contribuyenteId)).thenReturn(hecho.getAutor());
-        when(repositorioDeHechos.findByAutorId(contribuyenteId)).thenReturn(List.of(hecho));
+        when(repositorioDeHechos.findByAutorIdOrderByVisibleDesc(contribuyenteId, pageable)).thenReturn(page);
         when(hechoOutputMapper.map(hecho)).thenReturn(hechoOutputDto);
 
-        List<HechoOutputDto> resultado = hechoService.obtenerHechosDeContribuyente(contribuyenteId);
+        Page<HechoOutputDto> resultado = hechoService.obtenerHechosDeContribuyente(contribuyenteId, pageable);
 
-        assertEquals(1, resultado.size());
+        assertEquals(1, resultado.getContent().size());
         verify(contribuyenteService).obtenerContribuyente(contribuyenteId);
     }
 }

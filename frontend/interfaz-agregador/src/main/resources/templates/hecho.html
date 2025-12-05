@@ -23,12 +23,12 @@
                     <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">
                         Categoría
                     </div>
-                    <div id="carouselHecho" class="carousel slide carousel-container" data-bs-ride="carousel"
+                    <div id="carouselHecho" class="carousel slide carousel-container"
                          th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
                         <div class="carousel-inner">
                             <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
                                  th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" class="d-block w-100 max-h-[400px] object-contain">
+                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" class="d-block max-h-[400px] max-w-[400px] object-contain">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
@@ -144,17 +144,21 @@
                             Solicitar eliminación
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
-
-                        <th:block th:if="${hecho.autor != null and hecho.autor.id != null and hecho.autor.id == userId}" th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
+                        <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId}">
+                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}"></th:block>
+                        </th:block>
                     </div>
                 </div>
             </div>
-            <div class="contenido-texto" th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}">
-                <h3 class="fw-bold mb-3">
+            <div class="contenido-texto">
+                <h3 class="fw-bold">
                     Contenido Texto
                 </h3>
-                <p th:text="*{contenidoTexto}">
+                <p th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" th:text="*{contenidoTexto}">
                     Aquí va el contenido de texto del hecho...
+                </p>
+                <p th:unless="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" class="form-label text-s mb-2 text-muted-high">
+                    No hay contenido de texto en este hecho
                 </p>
             </div>
         </div>

@@ -88,7 +88,7 @@ function agregarMultimediaModalHecho(numeroMultimedia) {
     eliminarMultimediaBtn.addEventListener("click", () => element.remove());
 }
 
-async function autocompletarModalHecho(direccionObject) {
+function autocompletarModalHecho(direccionObject) {
     document.getElementById("modal-hecho-anonimato").value = hecho.anonimato
     document.getElementById("modal-hecho-descripcion").value = hecho.descripcion
     document.getElementById('modal-hecho-categoria').value = hecho.categoria.nombre
@@ -104,10 +104,10 @@ async function autocompletarModalHecho(direccionObject) {
     document.getElementById('modal-hecho-altura').value = direccionObject.altura;
     document.getElementById('modal-hecho-pais').value = direccionObject.pais;
 
-    hecho.contenidoMultimedia.forEach((url, index) => {
+    hecho.contenidoMultimedia.forEach((multimediaObject, index) => {
         agregarMultimediaModalHecho(index)
 
-        document.getElementById(`url-${index}`).value = url
+        document.getElementById(`url-${index}`).value = multimediaObject.url
     })
 }
 

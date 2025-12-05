@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MultimediaOutputDto {
     private Long id;
-    private String formato;
-    private Integer tamanio;
     private String url;
     private String tipo;
 }

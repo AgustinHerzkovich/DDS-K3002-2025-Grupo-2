@@ -4,9 +4,11 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
+import aplicacion.excepciones.AutorizacionDenegadaException;
 import aplicacion.excepciones.MailYaExisteException;
 import aplicacion.services.ContribuyenteService;
 import domain.excepciones.IdInvalidoException;
+import domain.helpers.JwtUtil;
 import domain.peticiones.Validaciones;
 import aplicacion.services.HechoService;
 import jakarta.validation.Valid;
@@ -36,16 +38,30 @@ public class ContribuyenteController {
     @GetMapping("/contribuyentes/{id}/hechos")
     public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id,
                                                         @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(name = "size", defaultValue = "20") Integer size) {
+                                                        @RequestParam(name = "size", defaultValue = "20") Integer size,
+                                                        @RequestHeader(name = "Authorization", required = false) String token) {
         try {
+            // Validar que el usuario sea el autor del hecho
+            if (token == null || token.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+            }
+
+            // Extraer el ID del usuario del token JWT
+            String userId = JwtUtil.extractUserId(token);
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+            }
+
             Validaciones.validarId(id);
             Pageable pageable = PageRequest.of(page, size);
-            Page<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id, pageable);
+            Page<HechoOutputDto> hechos = hechoService.obtenerHechosDeContribuyente(id, pageable, userId);
             return ResponseEntity.ok(hechos);
         } catch (IdInvalidoException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (ContribuyenteNoConfiguradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (AutorizacionDenegadaException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 
