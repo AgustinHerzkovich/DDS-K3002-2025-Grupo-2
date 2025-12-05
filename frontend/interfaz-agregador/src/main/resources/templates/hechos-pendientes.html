@@ -44,9 +44,11 @@
 					<div class="botones-revision">
 						<button type="button" class="btn-ver" th:attr="data-id=${hecho.id}">Ver Detalle</button>
 					</div>
-					<th:block th:replace="~{fragments/modal :: modalHechosPendientes}" />
 				</div>
 			</div>
+
+			<!-- Modal de detalle -->
+			<th:block th:if="${!#lists.isEmpty(hechosPendientes)}" th:replace="~{fragments/modal :: modalHechosPendientes}" />
 		</div>
 		<!-- Controles de paginación -->
 		<div th:if="${!#lists.isEmpty(hechosPendientes)}" style="margin-top: 2rem; display: flex; justify-content: center;">

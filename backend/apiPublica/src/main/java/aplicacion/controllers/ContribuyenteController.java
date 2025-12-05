@@ -42,8 +42,8 @@ public class ContribuyenteController {
     @GetMapping("/contribuyentes/{id}/hechos")
     public ResponseEntity<?> obtenerHechosContribuyente(@PathVariable(name = "id") String id,
                                                         @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                        @RequestParam(name = "size", defaultValue = "20") Integer size) { // Para que un usuario no admin vea sus hechos
-        StringBuilder url = new StringBuilder(urlBaseDinamicas + "/contribuyentes/" + id + "/hechos");
+                                                        @RequestParam(name = "size", defaultValue = "20") Integer size) { // Para que un usuario vea sus hechos
+        StringBuilder url = new StringBuilder(urlBaseAgregador + "/contribuyentes/" + id + "/hechos");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
         return ResponseWrapper.wrapResponse(solicitudesHttp.get(url.toString(), String.class));

@@ -28,4 +28,5 @@ public class HechoOutputDto {
     private Boolean anonimato;
     private ContribuyenteOutputDto autor;
     private List<EtiquetaOutputDTO> etiquetas;
+    private Boolean visible;
 }

@@ -7,7 +7,7 @@
 
     <span class="pagination-info">
         Página
-        <input type="number" min="1" th:max="${totalPages}" th:value="${totalPages > 0 ? currentPage + 1 : 0}" id="pageInput" style="width: 50px; text-align: center;" />
+        <input type="number" min="1" th:max="${totalPages}" th:value="${totalPages > 0 ? currentPage + 1 : 0}" id="pageInput" aria-label="Página actual" style="width: 50px; text-align: center; font-weight: 600;" />
         de <span th:text="${totalPages}"></span>
     </span>
     <a th:if="${hasNext}" th:href="${nextPageUrl}" class="pagination-btn">

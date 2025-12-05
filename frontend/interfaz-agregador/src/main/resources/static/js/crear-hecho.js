@@ -38,8 +38,20 @@ document.addEventListener("DOMContentLoaded", function() {
 async function publicarHecho(inputsObligatorios) {
     try {
         mostrarCargando("crear-hecho")
+        let payload;
 
-        const payload = await getPayloadCrearHecho(inputsObligatorios)
+        try {
+            payload = await getPayloadModalHecho(inputsObligatorios)
+        } catch (error) {
+            console.error(error)
+            return
+        }
+
+        payload.anonimato = inputsObligatorios.anonimato ? inputsObligatorios.anonimato.checked : true
+        if (!payload.anonimato && window.autorData) {
+            payload.autor = window.autorData.id
+        }
+
         console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
 
         const endpoint = isAdmin

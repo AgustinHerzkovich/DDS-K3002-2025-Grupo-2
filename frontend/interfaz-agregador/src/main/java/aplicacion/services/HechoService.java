@@ -1,5 +1,6 @@
 package aplicacion.services;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.GraphQLHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -191,6 +192,7 @@ public class HechoService {
 
     public PageWrapper<HechoOutputDto> obtenerHechosPendientes(int page, int size) {
         try {
+            String token = TokenContext.getToken();
             PageWrapper<HechoOutputDto> pageWrapper = webClientAdministrativa.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/hechos")
@@ -198,6 +200,7 @@ public class HechoService {
                             .queryParam("page", page)
                             .queryParam("size", size)
                             .build())
+                    .header("Authorization", "Bearer " + token)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), resp ->
@@ -227,8 +230,10 @@ public class HechoService {
     public ResponseEntity<String> gestionarRevision(String hechoId, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HttpClientErrorException {
 
         try {
+            String token = TokenContext.getToken();
             ResponseEntity<String> response = webClientAdministrativa.patch() // USAR webClientAdministrativa
                     .uri("/hechos/{hechoId}/estadoRevision", hechoId) // URI relativo
+                    .header("Authorization", "Bearer " + token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(cambioEstadoRevisionInputDto)
                     .retrieve()
