@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Hecho;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,16 @@ public class FuenteProxyService {
             listaDeHechosADevolver.addAll(fuente.importarHechos());
         }
        return listaDeHechosADevolver.stream().map(hechoOutputMapper::map).toList();
+    }
+
+    public List<HechoOutputDto> importarHechosConFechaMayorA(LocalDateTime fechaMayorA) {
+        List<FuenteProxy> fuentesProxy = fuenteProxyRepository.findAll();
+        List<Hecho> listaDeHechosADevolver = new ArrayList<>();
+
+        for (FuenteProxy fuente : fuentesProxy) {
+            listaDeHechosADevolver.addAll(fuente.importarHechos());
+        }
+        return listaDeHechosADevolver.stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).map(hechoOutputMapper::map).toList();
     }
 
     @Transactional

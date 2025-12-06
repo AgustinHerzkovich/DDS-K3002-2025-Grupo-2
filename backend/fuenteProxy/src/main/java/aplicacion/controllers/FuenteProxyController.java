@@ -7,11 +7,13 @@ import aplicacion.excepciones.FuenteNoEncontradaException;
 
 import aplicacion.services.FuenteProxyService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,7 +26,11 @@ public class FuenteProxyController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDto> obtenerHechos(){
+    public List<HechoOutputDto> obtenerHechos(@RequestParam(value = "fechaMayorA", required = false)
+                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA){
+        if (fechaMayorA != null) {
+            return fuenteProxyService.importarHechosConFechaMayorA(fechaMayorA);
+        }
         return fuenteProxyService.importarHechos();
     }
 
