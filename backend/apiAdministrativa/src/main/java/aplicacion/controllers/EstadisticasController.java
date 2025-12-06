@@ -21,7 +21,7 @@ public class EstadisticasController {
     }
 
     @PostMapping("/estadisticas/actualizar")
-    public ResponseEntity<?> subirArchivoPorUrl() {
+    public ResponseEntity<?> actualizarEstadisticas() {
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseEstadisticas + "/actualizar", null, String.class));
     }
 

@@ -5,6 +5,7 @@
     color: white;
     background-color: black;
     border-radius: 0.375rem;
+    width: fit-content;
 }
 
 .btn-primary:hover {
