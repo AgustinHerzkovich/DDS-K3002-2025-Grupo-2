@@ -50,7 +50,7 @@
             <h1 class="page-title">Solicitudes Pendientes</h1>
             <div class="solicitudes-grid">
                 <div th:each="solicitud : ${solicitudes}" class="solicitud-card">
-                    <h2 class="card-title">Solicitud</h2>
+                    <h2 class="solicitud-card-title">Solicitud</h2>
 
                     <!-- Botón para ver el hecho -->
                     <a th:href="@{/hechos/{id}(id=${solicitud.hechoId})}" class="btn-hecho">

@@ -15,8 +15,7 @@
 }
 
 /* Tarjeta de solicitud - FONDO OSCURO */
-.solicitud-card,
-.hechoPendiente-card {
+.solicitud-card {
     background-color: #1f2937 !important;
     border-radius: 12px;
     padding: 1.5rem;
@@ -27,14 +26,13 @@
     gap: 1rem;
 }
 
-.solicitud-card:hover,
-.hechoPendiente-card:hover {
+.solicitud-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Título de la tarjeta */
-.card-title {
+.solicitud-card-title {
     color: #ffffff;
     font-size: 1.5rem;
     font-weight: 700;

@@ -68,7 +68,7 @@ document.addEventListener('click', function (e) {
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('LOG 5: DOMContentLoaded ejecutado. Adjuntando listeners.');
-    const detailButtons = document.querySelectorAll('.btn-ver');
+    const detailButtons = document.querySelectorAll('.btn-ver-hecho-pendiente');
     detailButtons.forEach(button => {
         button.addEventListener('click', function() {
             console.log('LOG 6: Botón Ver Detalle clickeado.');

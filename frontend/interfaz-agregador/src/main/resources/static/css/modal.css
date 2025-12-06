@@ -149,8 +149,8 @@
 }
 
 .modal-pendientes-content {
-    background-color: #1f2937; /* Fondo oscuro de la tarjeta */
-    color: #ffffff;
+    background-color: #ffffff !important; /* Fondo blanco */
+    color: #000000 !important;
     padding: 2rem;
     border-radius: 12px;
     max-width: 600px;

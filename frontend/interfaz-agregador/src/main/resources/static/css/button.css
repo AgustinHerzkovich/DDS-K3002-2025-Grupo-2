@@ -58,7 +58,20 @@
     background-color: #e5e7eb;
 }
 
-.btn-ver {
+.btn-ver-hecho-pendiente {
+    background-color: #B91C1C;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+}
+
+.btn-ver-hecho-pendiente:hover {
+    background-color: #991B1B;
+}
+
+.btn-ver-coleccion {
     background-color: #211bcf;
     border: none;
     color: white;
@@ -67,11 +80,11 @@
     font-size: 0.8rem;
 }
 
-.btn-ver:hover {
-    background-color: #201c87;
+.btn-ver-coleccion:hover {
+    background-color: #211baf;
 }
 
-.btn-editar {
+.btn-editar-coleccion {
     background-color: black;
     border: none;
     color: white;
@@ -84,12 +97,40 @@
     opacity: 0.8;
 }
 
-.btn-eliminar {
+.btn-eliminar-coleccion {
+    padding: 5px;
     background-color: #dc2626;
     border: none;
     color: white;
     font-size: 0.875rem;
     border-radius: 50%;
+}
+
+.btn-eliminar-coleccion:hover {
+    background-color: #b91c1c;
+}
+
+.btn-eliminar-fuente {
+    background-color: #B91C1C;
+    padding: 3px 8px;
+    border: none;
+    color: white;
+    font-size: 0.875rem;
+    border-radius: 1rem;
+}
+
+.btn-eliminar-fuente:hover {
+    background-color: #991B1B;
+}
+
+.btn-eliminar-etiqueta {
+    background-color: #dc2626;
+    border: none;
+    color: white;
+    font-size: 0.875rem;
+    border-radius: 50%;
+    width: 1.4rem;
+    height: 1.4rem;
 }
 
 .btn-eliminar:hover {
@@ -173,6 +214,11 @@
     box-shadow: 0 6px 8px rgba(6, 78, 59, 0.18);
 }
 
+.btn-aceptar{
+    background-color: #000000;
+    color: white;
+}
+
 .btn-rechazar {
     background-color: #B91C1C; /* red */
     color: white; /* texto oscuro para contraste sobre el rojo */
@@ -187,4 +233,17 @@
 .btn-aprobar:active, .btn-rechazar:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#sugerencia {
+    background-color: white;
+    color: black;
+    border: 2px solid #374151
+}
+.modal-close{
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #111827;
+    padding: 6px 10px;
 }

@@ -94,11 +94,9 @@
                             <ul id="lista-etiquetas" class="tag-list">
                                 <li th:each="etiqueta : *{etiquetas}" th:data-nombre="${etiqueta.nombre}" class="tag-item">
                                     <span th:text="${etiqueta.nombre}"></span>
-                                    <div class="btn-eliminar w-[1.4rem] h-[1.4rem] flex items-center justify-center">
-                                        <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="eliminar-etiqueta" aria-label="Eliminar Etiqueta">
-                                            X
-                                        </button>
-                                    </div>
+                                    <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="btn-eliminar-etiqueta flex items-center justify-center" aria-label="Eliminar Etiqueta">
+                                        X
+                                    </button>
                                 </li>
                             </ul>
                             <div class="agregar-tag gap-3">
@@ -145,7 +143,7 @@
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
                         <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId}">
-                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}"></th:block>
+                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
                         </th:block>
                     </div>
                 </div>

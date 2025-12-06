@@ -85,12 +85,21 @@ public class HechoController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
                                                      @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
-                                                     @RequestHeader(value = "Administrador", required = false) String administradorId) {
+                                                     @RequestHeader(value = "Authorization", required = false) String token) {
         try {
-            HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
-            if (administradorId != null) {
-                hechoService.guardarRevision(id, administradorId);
+            // Validar que el usuario sea el autor del hecho
+            if (token == null || token.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
             }
+
+            // Extraer el ID del usuario del token JWT
+            String administradorId = JwtUtil.extractUserId(token);
+            if (administradorId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+            }
+
+            HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
+            hechoService.guardarRevision(id, administradorId);
             System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionInputDto.getEstado());
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {

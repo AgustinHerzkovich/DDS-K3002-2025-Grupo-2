@@ -61,7 +61,7 @@ function agregarFuenteColeccion(numeroFuente) {
     fuenteDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
             <label for="fuente-tipo-${numeroFuente}" class="block text-xs font-medium text-gray-600">Tipo</label>
-            <button id="eliminar-fuente-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar py-1">
+            <button id="eliminar-fuente-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-fuente">
                 Eliminar
             </button>
         </div>
@@ -132,3 +132,7 @@ function agregarFuenteColeccion(numeroFuente) {
 
     removeBtn.addEventListener("click", () => elemento.remove());
 }*/
+
+function autocompletarModalEditarColeccion() {
+
+}

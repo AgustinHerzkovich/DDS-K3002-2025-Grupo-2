@@ -1,13 +1,11 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const editarBtns = Array.from(document.querySelectorAll(".coleccion-card .editar-coleccion"));
+document.addEventListener('DOMContentLoaded', async function () {
+    const editarBtns = Array.from(document.querySelectorAll(".coleccion-card .btn-editar-coleccion"));
     const modal = document.getElementById("modal-editar-coleccion");
     const closeBtn = document.getElementById("salir-editar-coleccion");
 
-    if(allElementsFound([modal, closeBtn], "editar colecciones") && editarBtns.length > 0) {
+    if(allElementsFound([modal, closeBtn, editarBtns], "editar colecciones")) {
         colecciones.forEach((coleccion, index) => {
-            listenOpenModal(modal, editarBtns[index], () => {
-                abrirModalEditarColeccion(coleccion);
-            });
+            listenOpenModal(modal, editarBtns[index], () => abrirModalEditarColeccion(coleccion));
         });
 
         listenCloseModal(modal, closeBtn, () => {
@@ -38,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Event listener para guardar cambios
         const btnGuardar = document.getElementById('guardar-editar-coleccion');
         if (btnGuardar) {
-            btnGuardar.addEventListener('click', guardarCambiosColeccion);
+            btnGuardar.addEventListener('click', async function(){await guardarCambiosColeccion});
         }
     }
 });
@@ -52,9 +50,6 @@ function abrirModalEditarColeccion(coleccion) {
     window.algoritmoOriginal = coleccion.tipoAlgoritmoConsenso;
     window.algoritmoActual = window.algoritmoOriginal;
     window.fuentesNuevas = []; // Para las fuentes agregadas con el nuevo sistema
-
-    // Rellenar información de solo lectura
-    document.getElementById('modal-coleccion-titulo').textContent = coleccion.titulo || '-';
 
     // Seleccionar algoritmo actual
     document.getElementById('modal-coleccion-algoritmo').value = coleccion.tipoAlgoritmoConsenso || '';
@@ -87,13 +82,13 @@ function agregarFuenteAColeccionEditar(numeroFuente) {
     fuenteDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
             <span class="block text-xs font-medium text-gray-600">Nueva Fuente</span>
-            <button id="eliminar-fuente-editar-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar py-1">
+            <button id="eliminar-fuente-editar-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-fuente py-1">
                 Eliminar
             </button>
         </div>
 
         <div class="space-y-2">
-            <label class="block text-xs font-medium text-gray-600 mb-1">Tipo</label>
+            <label for="fuente-tipo-editar-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">Tipo</label>
             <select id="fuente-tipo-editar-${numeroFuente}" class="form-input" data-id="editar-${numeroFuente}">
                 <option value="">Seleccione el tipo de fuente</option>
                 <option value="estatica">Estática</option>
@@ -381,4 +376,3 @@ async function guardarCambiosColeccion() {
         if (spinner) spinner.classList.add('hidden');
     }
 }
-

@@ -14,7 +14,7 @@
         </a>
 
         <!-- Centro: Puede ser título, barra de búsqueda, etc -->
-        <th:block th:if="${!isMapPage}">
+        <th:block th:unless="${isMapPage}">
             <h1 class="text-5xl font-semibold text-white text-center">METAMAPA</h1>
         </th:block>
         <th:block th:if="${isMapPage}">

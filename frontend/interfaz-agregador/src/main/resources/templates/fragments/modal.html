@@ -1,5 +1,5 @@
 <div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-2xl">
+	<div class="relative modal-page-format max-w-2xl">
 		<div class="create-modal-header">
 			<h3 id="modal-crear-hecho-titulo" class="modal-title hidden">
 				Crear Nuevo Hecho
@@ -150,7 +150,7 @@
 </div>
 
 <div th:fragment="modalColeccion" id="modal-coleccion" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-2xl">
+	<div class="relative modal-page-format max-w-2xl">
 		<div id="modal-header-crear-coleccion" class="create-modal-header hidden">
 			<h3 class="modal-title">
 				Crear Nueva Colección
@@ -264,7 +264,7 @@
 </div>
 
 <div th:fragment="modalMisHechos" id="modal-mis-hechos" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
+	<div class="relative modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
 		<div class="modal-header bg-black">
 			<h3 class="modal-title">
 				Mis Hechos
@@ -281,7 +281,7 @@
 </div>
 
 <div th:fragment="modalEditarPerfil" id="modal-editar-perfil" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-lg">
+	<div class="relative modal-page-format max-w-lg">
 
 		<div class="modal-header bg-black">
 			<h3 class="modal-title">
@@ -445,32 +445,41 @@
 		</form>
 	</div>
 </div>
+<!------------->
 
 <div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
-	<div class="modal-content modal-pendientes-content">
-		<button class="modal-close" onclick="closeDetalle()">×</button>
-		<h2 id="modalTitulo"><span class="sr-only">Título del hecho</span></h2>
-		<p id="modalDescripcion"></p>
-		<div class="modal-meta">
-			<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
-			<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
-			<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
+	<div class="relative modal-page-format max-w-2xl">
+		<div class="modal-header bg-[#dc2626]">
+			<h2 id="modalTitulo" class="modal-title"><span class="sr-only">Título del hecho</span></h2>
+
 		</div>
-
-		<div class="gestion">
-			<label for="sugerencia">Sugerencia / Observación</label>
-			<textarea id="sugerencia" rows="3" placeholder="Opcional..."></textarea>
-
-			<div class="gestion-buttons">
-				<button id="aceptarBtn" class="btn-aceptar" onclick="gestionar('ACEPTADO')">Aceptar</button>
-				<button id="rechazarBtn" class="btn-rechazar" onclick="gestionar('RECHAZADO')">Rechazar</button>
+		<!--<button class="modal-close" onclick="closeDetalle()">Volver</button>-->
+		<div class="modal-page-body">
+			<div>
+				<p id="modalDescripcion"></p>
 			</div>
+			<div class="modal-meta">
+				<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
+				<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
+				<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
+			</div>
+			<div>
+				<label for="sugerencia" class="form-label">
+					Observación
+				</label>
+				<textarea id="sugerencia" class="form-input" rows="3" placeholder="Ingrese una Observación"></textarea>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn-quaternary" onclick="closeDetalle()">Volver</button>
+			<button id="rechazarBtn" class="btn-secondary" onclick="gestionar('RECHAZADO')">Rechazar</button>
+			<button id="aceptarBtn" class="btn-primary" onclick="gestionar('ACEPTADO')">Aceptar</button>
 		</div>
 	</div>
 </div>
-
+<!------------->
 <div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-2xl">
+	<div class="relative modal-page-format max-w-2xl">
 		<div class="modal-header bg-[#dc2626]">
 			<h2 class="modal-title">
 				Solicitar eliminación de hecho
@@ -500,9 +509,9 @@
 		</div>
 	</div>
 </div>
-
+<!-------------->
 <div th:fragment="modalEditarColeccion" id="modal-editar-coleccion" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-4xl">
+	<div class="relative modal-page-format max-w-4xl">
 		<div class="modal-header bg-black">
 			<h3 class="modal-title">
 				Editar Colección
@@ -510,18 +519,6 @@
 		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
-
-			<!-- Información de la colección (solo lectura) -->
-			<div class="mb-4 p-4 bg-gray-100 rounded-lg">
-				<h4 class="font-semibold text-lg mb-3 text-black">Información de la Colección</h4>
-				<div class="row g-3">
-					<div class="col-md-12">
-						<p class="form-label font-semibold">Título:</p>
-						<p id="modal-coleccion-titulo" class="text-black mb-0">-</p>
-					</div>
-				</div>
-			</div>
-
 			<form id="form-editar-coleccion">
 				<!-- Algoritmo de Consenso (editable) -->
 				<div class="mb-4">
@@ -541,8 +538,6 @@
 
 				<!-- Gestión de Fuentes -->
 				<div class="mb-4">
-					<h5 class="font-semibold text-lg mb-3 text-black">Fuentes Asociadas</h5>
-
 					<!-- Lista de fuentes actuales -->
 					<div class="mb-3">
 						<p class="form-label font-semibold">Fuentes Actuales:</p>
@@ -573,16 +568,15 @@
 				</div>
 			</form>
 		</div>
-
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-coleccion')}" />
-			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'guardar-editar-coleccion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-coleccion')}" />
 		</div>
 	</div>
 </div>
 
 <div th:fragment="modalFuente" id="modal-fuente" class="modal-page hidden">
-	<div class="modal-content modal-page-format max-w-2xl">
+	<div class="relative modal-page-format max-w-2xl">
 		<div class="create-modal-header">
 			<h3 id="modal-crear-fuente-titulo" class="modal-title hidden">
 				Crear Nueva fuente

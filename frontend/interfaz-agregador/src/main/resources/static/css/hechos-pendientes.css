@@ -1,25 +1,12 @@
-body {
-    color: #ffffff;
-}
-
-/* Contenedor principal */
-.hechosPendientes-container {
-    max-width: 1400px;
-    margin: 2rem auto;
-    padding: 0 2rem;
-}
-
-/* Grilla de hechosPendientes - (Tomado de hechosPendientes.css) */
-.hechosPendientes-grid {
+.hechos-pendientes-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    margin: 0 10rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
-    margin-bottom: 2rem;
 }
 
-/* Tarjeta de solicitud - FONDO OSCURO */
-.hechoPendiente-card {
-    background-color: #1f2937;
+.hechos-pendientes-card {
+    background-color: #ebebeb;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -29,7 +16,7 @@ body {
     gap: 1rem;
 }
 
-.hechoPendiente-card:hover {
+.hechos-pendientes-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
@@ -44,33 +31,7 @@ body {
 
 .info-value {
     font-size: 1rem;
-    color: #ffffff; /* Blanco para valores */
+    color: #000000; /* Blanco para valores */
     margin: 0;
     line-height: 1.5;
-}
-
-/* --- Estilos para la sección "No hay hechosPendientes" --- */
-.no-hechosPendientes {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: #000000;
-    background: transparent;
-}
-
-.no-hechosPendientes .icon-large {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 1.5rem;
-    color: #6b7280;
-    stroke: #6b7280;
-}
-
-.no-hechosPendientes p {
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: #000000;
 }

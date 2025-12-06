@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const verBtns = Array.from(document.querySelectorAll(".coleccion-card .ver-coleccion"));
+    const verBtns = Array.from(document.querySelectorAll(".coleccion-card .btn-ver-coleccion"));
     const modal = document.getElementById("modal-coleccion");
     const modalHeader = document.getElementById("modal-header-ver-coleccion")
     const closeBtn = document.getElementById("salir-ver-coleccion")

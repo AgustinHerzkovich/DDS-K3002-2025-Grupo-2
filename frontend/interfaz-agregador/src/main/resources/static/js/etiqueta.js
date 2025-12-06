@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const agregarBtn = document.getElementById("btn-agregar-etiqueta");
-    const eliminarEtiquetaBtns = document.getElementsByClassName("eliminar-etiqueta");
+    const eliminarEtiquetaBtns = document.getElementsByClassName("btn-eliminar-etiqueta");
 
     if(allElementsFound([agregarBtn], "agregar etiqueta")) {
         agregarBtn.addEventListener("click", agregarEtiqueta);
@@ -47,7 +47,7 @@ function agregarEtiqueta() {
 
                 const btnEliminar = document.createElement("button");
                 btnEliminar.textContent = "X";
-                btnEliminar.className = "btn-eliminar";
+                btnEliminar.className = "btn-eliminar-etiqueta";
                 btnEliminar.dataset.nombre = data.nombre;
 
                 li.appendChild(span);
