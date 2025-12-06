@@ -62,7 +62,7 @@ public abstract class Fuente {
     }
 
     public List<HechoInputDto> getHechosUltimaPeticion(DiscoveryClient discoveryClient, LoadBalancerClient loadBalancerClient) {
-
+        //todo comentar/eliminar
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

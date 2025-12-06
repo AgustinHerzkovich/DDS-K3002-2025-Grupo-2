@@ -10,6 +10,10 @@ import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.excepciones.TipoDeFuenteErroneoException;
 import aplicacion.repositorios.RepositorioDeFuentes;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.cloud.client.ServiceInstance;
@@ -18,10 +22,13 @@ import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -99,8 +106,12 @@ public class FuenteService {
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
         System.out.println("cantidad de fuentes" + fuentes.size());
 
+
+
         for (Fuente fuente : fuentes) {
-            List<HechoInputDto> hechosDto = fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
+            String uri = this.obtenerUri(fuente);//todo trycatchear
+            List<HechoInputDto> hechosDto = getHechosUltimaPeticion(uri, fuente);
+                    //fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
             List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
             guardarFuente(fuente); // Updateo la fuente
             //entityManager.flush(); // En teoria fuerza la actualizacion
@@ -110,10 +121,64 @@ public class FuenteService {
         return hashMap;
     }
 
+    private List<HechoInputDto> getHechosUltimaPeticion(String uri, Fuente fuente) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+
+        LocalDateTime fechaAnterior = fuente.getUltimaPeticion();
+        List<HechoInputDto> hechos = new ArrayList<>();
+
+        String url = uri;
+
+
+        if (fechaAnterior != null) {
+            url += "?fechaMayorA=" + fechaAnterior;
+        }
+
+        fuente.setUltimaPeticion(LocalDateTime.now());
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<String> response;
+            String json;
+            System.out.println(url);
+            response = restTemplate.getForEntity(url, String.class);
+            json = response.getBody();
+            hechos = mapper.readValue(json, new TypeReference<>() {});
+            System.out.println("Se recibieron correctamente los hechos de la fuente " + fuente.getId() + " " + fuente.getAlias());
+        } catch (Exception e) {
+            fuente.setUltimaPeticion(fechaAnterior); // rollback si falla
+            System.err.println("⚠️ Error al consumir la API en fuente " + fuente.getId() + ": " + e.getMessage());
+        }
+
+        return hechos;
+    }
+
     public Long obtenerCantidadFuentes() {
         return repositorioDeFuentes.count();
     }
 
+    private String obtenerUri(Fuente fuente) {
+        ServiceInstance instance = discoveryClient.getInstances("CARGADOR"). //TODO CAMBIAR SERVICES NAMES A CARGADOR
+                stream()
+                .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId())) //TODO cambiar metadata en fuenteDinamica y fuenteProxy
+                .findFirst()
+                .orElse(null);
+        if (instance != null) {
+            String uri = instance.getUri().toString();
+            switch (fuente.getClass().getSimpleName()) {
+                case "FuenteEstatica" -> uri = uri + "/fuentesEstaticas/" + fuente.getId() + "/hechos";
+                case "FuenteDinamica" -> uri = uri + "/fuentesDinamicas/hechos";
+                case "FuenteProxy" -> uri = uri + "/fuentesProxy/"+ fuente.getId() + "/hechos";
+            }
+            return uri;
+        } else {
+            throw new RuntimeException("No se pudo encontrar una instancia del servicio 'agregador-fuentes'");
+        }
+    }
 
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(String idFuente) {
