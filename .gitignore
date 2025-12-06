@@ -52,3 +52,4 @@ estadisticas/src/main/resources/provincias.geojson
 csvs/
 
 amazonKeys.env
+compilados/
