@@ -75,3 +75,31 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* Estilos para tarjetas de hechos recientes */
+#hechos-recientes-section a {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#hechos-recientes-section a > div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Título del hecho - altura fija para 2 líneas */
+#hechos-recientes-section h3 {
+    min-height: 3.5rem; /* Aproximadamente 2 líneas */
+}
+
+/* Contenedor de dirección - altura fija para 2 líneas */
+#hechos-recientes-section .flex.items-start.mb-3 {
+    min-height: 3rem; /* Aproximadamente 2 líneas */
+}
+
+/* Información de tiempo - empujar hacia abajo */
+#hechos-recientes-section .flex.items-center.text-xs {
+    margin-top: auto;
+}

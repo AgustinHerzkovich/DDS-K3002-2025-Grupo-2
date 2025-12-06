@@ -149,23 +149,18 @@
 	</div>
 </div>
 
-<div th:fragment="modalColeccion" id="modal-coleccion" class="modal-page hidden">
+<div th:fragment="modalCrearColeccion" id="modal-crear-coleccion" class="modal-page hidden">
 	<div class="relative modal-page-format max-w-2xl">
-		<div id="modal-header-crear-coleccion" class="create-modal-header hidden">
+		<div id="modal-header-crear-coleccion" class="create-modal-header">
 			<h3 class="modal-title">
 				Crear Nueva Colección
 			</h3>
 		</div>
-		<div id="modal-header-ver-coleccion" class="modal-header bg-[#211bcf] hidden">
-			<h3 class="modal-title">
-				Ver Colección
-			</h3>
-		</div>
 		<div class="modal-page-body">
 			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
-			<form id="form-modal-coleccion" class="form-body">
+			<form id="form-modal-crear-coleccion" class="form-body">
 				<div>
-					<label for="titulo-coleccion" class="form-label">
+					<label for="titulo-crear-coleccion" class="form-label">
 						Título
 						<span class="form-obligatory-icon">
 							*
@@ -174,10 +169,10 @@
 							(Máx.50 caracteres)
 						</span>
 					</label>
-					<input type="text" id="titulo-coleccion" maxlength="50" class="form-input" placeholder="Ingrese el título de la colección" required>
+					<input type="text" id="titulo-crear-coleccion" maxlength="50" class="form-input" placeholder="Ingrese el título de la colección" required>
 				</div>
 				<div>
-					<label for="descripcion-coleccion" class="form-label">
+					<label for="descripcion-crear-coleccion" class="form-label">
 						Descripción
 						<span class="form-obligatory-icon">
 							*
@@ -186,18 +181,24 @@
 							(Máx.150 caracteres)
 						</span>
 					</label>
-					<textarea id="descripcion-coleccion" rows="3" maxlength="150" class="form-input" placeholder="Describa la colección" required></textarea>
+					<textarea id="descripcion-crear-coleccion" rows="3" maxlength="150" class="form-input" placeholder="Describa la colección" required></textarea>
 				</div>
-				<div th:insert="~{fragments/form :: agregarCriterio('crear-coleccion')}"></div>
-				<div th:insert="~{fragments/form :: agregarFuente('crear-coleccion')}"></div>
+				<th:block th:replace="~{fragments/form :: containerCriterios('crear-coleccion')}" />
+				<button id="agregar-criterio-crear-coleccion" type="button" class="btn-primary flex-none" aria-label="Agregar Criterio">
+					+ Agregar Criterio
+				</button>
+				<th:block th:replace="~{fragments/form :: containerFuentes('crear-coleccion')}" />
+				<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary flex-none" aria-label="Agregar Fuente">
+					+ Agregar Fuente
+				</button>
 				<div>
-					<label for="algoritmo-coleccion" class="form-label">
+					<label for="algoritmo-crear-coleccion" class="form-label">
 						Algoritmo de Consenso
 						<span class="form-obligatory-icon">
 							*
 						</span>
 					</label>
-					<select id="algoritmo-coleccion" class="form-input">
+					<select id="algoritmo-crear-coleccion" class="form-input">
 						<option value="">Seleccione un algoritmo</option>
 						<option value="ABSOLUTO">Absoluto</option>
 						<option value="IRRESTRICTO">Irrestricto</option>
@@ -208,9 +209,45 @@
 			</form>
 		</div>
 		<div class="modal-footer">
-			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: exitModalButton('Volver', 'salir-ver-coleccion')}" class="hidden"></div>
+			<th:block th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" />
+			<th:block th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion')}" />
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalVerColeccion" id="modal-ver-coleccion" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div id="modal-header-ver-coleccion" class="modal-header bg-[#211bcf]">
+			<h3 class="modal-title">
+				Ver Colección
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<form id="form-modal-ver-coleccion" class="form-body">
+				<div>
+					<p class="form-label">
+						Título:
+					</p>
+					<p id="titulo-ver-coleccion" class="form-info-value"></p>
+				</div>
+				<div>
+					<p class="form-label">
+						Descripción:
+					</p>
+					<p id="descripcion-ver-coleccion" class="form-info-value"></p>
+				</div>
+				<th:block th:replace="~{fragments/form :: containerCriterios('ver-coleccion')}" />
+				<th:block th:replace="~{fragments/form :: containerFuentes('ver-coleccion')}" />
+				<div>
+					<p class="form-label">
+						Algoritmo de Consenso:
+					</p>
+					<p id="algoritmo-ver-coleccion" class="form-info-value"></p>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Volver', 'salir-ver-coleccion')}" />
 		</div>
 	</div>
 </div>
@@ -492,16 +529,19 @@
 				</div>
 				<div class="mb-4">
 					<div class="mb-3">
-						<p class="form-label font-semibold">
+						<h4 class="form-label font-semibold">
 							Fuentes Actuales:
-						</p>
+						</h4>
 						<div id="fuentes-actuales-editar-coleccion" class="border rounded p-3 bg-white max-h-60 overflow-y-auto"></div>
 					</div>
-					<div th:insert="~{fragments/form :: agregarFuente('editar-coleccion')}" class="mb-3"></div>
+					<div th:insert="~{fragments/form :: containerFuentes('editar-coleccion')}" class="mb-3"></div>
+					<button id="agregar-fuente-ver-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
+						+ Agregar Fuente
+					</button>
 					<div id="operaciones-pendientes-container" class="hidden">
-						<h6 class="form-label font-semibold text-orange-600">
+						<h4 class="form-label font-bold text-orange-600">
 							Operaciones Pendientes
-						</h6>
+						</h4>
 						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto"></div>
 						<small class="text-orange-600">
 							Estas operaciones se ejecutarán al guardar los cambios

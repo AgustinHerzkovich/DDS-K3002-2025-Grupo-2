@@ -24,14 +24,21 @@
 .coleccion-titulo {
     font-weight: bold;
     font-size: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 .coleccion-detalles {
     display: flex;
     flex-direction: column;
-    align-items: space-between;
+    justify-content: space-between;
     color: black;
     gap: 0.5rem;
+    height: 90%;
 }
 
 .coleccion-descripcion{
@@ -39,6 +46,12 @@
     font-weight: 400;
     color: #555;
     margin: 0.3rem 0 0.8rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .coleccion-tipo-hechos {

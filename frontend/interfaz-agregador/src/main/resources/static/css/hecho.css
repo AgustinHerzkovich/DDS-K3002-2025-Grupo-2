@@ -1,7 +1,14 @@
+.hecho-container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .hecho-components {
     display: flex;
     gap: 2rem;
     justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .hecho-left-section {
@@ -64,6 +71,14 @@
     color: black;
 }
 
+.hecho-info-value {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+}
+
 .contenido-texto {
     margin-top: 2rem;
     padding: 0 1.5rem;
@@ -71,6 +86,11 @@
     border-radius: 0.5rem;
     line-height: 1.75;
     color: #374151;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
 }
 
 .ultima-modificacion {
@@ -115,4 +135,10 @@
     border-radius: 4px;
     border: 1px solid #ccc;
     font-size: 0.9rem;
+}
+
+.right-section {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
