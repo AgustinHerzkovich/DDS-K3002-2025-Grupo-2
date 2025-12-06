@@ -64,9 +64,25 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosAceptados() {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.ACEPTADO)
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public Page<HechoOutputDto> obtenerHechosPendientes(Pageable pageable) {
         return hechoRepository.findByEstadoRevision(EstadoRevision.PENDIENTE, pageable)
                 .map(hechoOutputMapper::map);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosPendientes() {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.PENDIENTE)
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -80,6 +96,17 @@ public class HechoService {
     }
 
     @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.PENDIENTE,
+                        fechaMayorA
+                )
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public Page<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA, Pageable pageable) {
         return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
                         EstadoRevision.ACEPTADO,
@@ -87,6 +114,17 @@ public class HechoService {
                         pageable
                 )
                 .map(hechoOutputMapper::map);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.ACEPTADO,
+                        fechaMayorA
+                )
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
     }
 
     @Transactional //(readOnly = true)

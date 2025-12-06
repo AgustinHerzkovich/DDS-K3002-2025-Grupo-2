@@ -30,8 +30,8 @@ public class HechoController {
         this.hechoService = hechoService;
     }
 
-    @GetMapping("/hechos")
-    public ResponseEntity<Page<HechoOutputDto>> obtenerHechos(
+    @GetMapping("/hechosPaginados")
+    public ResponseEntity<Page<HechoOutputDto>> obtenerHechosPaginados(
             @RequestParam(value = "fechaMayorA", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
             @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
@@ -54,6 +54,32 @@ public class HechoController {
         } else {
             // Todos los hechos aceptados
             hechos = hechoService.obtenerHechosAceptados(pageable);
+        }
+
+        return ResponseEntity.ok(hechos);
+    }
+
+    @GetMapping("/hechos")
+    public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
+            @RequestParam(value = "fechaMayorA", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
+            @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente
+    ) {
+        List<HechoOutputDto> hechos;
+
+        // Combinar filtros de fechaMayorA y pendiente
+        if (fechaMayorA != null && pendiente) {
+            // Hechos pendientes con fecha mayor a
+            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA);
+        } else if (fechaMayorA != null) {
+            // Hechos aceptados con fecha mayor a
+            hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
+        } else if (pendiente) {
+            // Todos los hechos pendientes
+            hechos = hechoService.obtenerHechosPendientes();
+        } else {
+            // Todos los hechos aceptados
+            hechos = hechoService.obtenerHechosAceptados();
         }
 
         return ResponseEntity.ok(hechos);
