@@ -1,4 +1,4 @@
-package aplicacion.domain;
+package aplicacion.domain.lectores;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
