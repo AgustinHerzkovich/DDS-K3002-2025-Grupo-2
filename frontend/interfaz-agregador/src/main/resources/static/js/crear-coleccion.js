@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmBtn.addEventListener("click", async function() {
             const inputsObligatorios = validarFormularioModalCrearColeccion()
 
-            if(!document.querySelector('#form-modal-coleccion .form-not-completed') && document.getElementById("sin-criterios-modal-coleccion").classList.contains("hidden")) {
+            if(!document.querySelector('#form-modal-coleccion .form-not-completed') && document.getElementById("sin-criterios-crear-coleccion").classList.contains("hidden")) {
                 await crearColeccion(inputsObligatorios)
             }
         })
