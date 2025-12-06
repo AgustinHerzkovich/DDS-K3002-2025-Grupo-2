@@ -16,7 +16,7 @@
 
 /* Tarjeta de solicitud - FONDO OSCURO */
 .solicitud-card {
-    background-color: #1f2937 !important;
+    background-color: #f0f0f0 !important;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@
 
 /* Título de la tarjeta */
 .solicitud-card-title {
-    color: #ffffff;
+    color: black;
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0 0 1rem 0;
@@ -52,7 +52,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background-color: #4f46e5;
+    background-color: #B91C1C; /* Rojo oscuro con buen contraste (ratio 5.14:1) */
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -62,7 +62,7 @@
 }
 
 .btn-hecho:hover {
-    background-color: #4338ca;
+    background-color: #991B1B; /* Rojo aún más oscuro para hover */
 }
 
 .btn-hecho .icon {
@@ -75,21 +75,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-}
-
-.info-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.info-value {
-    font-size: 1rem;
-    color: #ffffff;
-    margin: 0;
-    line-height: 1.5;
 }
 
 /* Badge de estado */

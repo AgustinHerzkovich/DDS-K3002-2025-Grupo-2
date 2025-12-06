@@ -221,25 +221,60 @@ function listenAgregrFuenteEditarColeccion() {
     });
 }
 
-function listenAgregarCriterioModalColeccion(agregarBtn) {
+function listenCriteriosModalColeccion(agregarBtn, sufix) {
     let cantidadCriterios = 0
 
-    agregarBtn.addEventListener("click", function (e) {
+    agregarBtn.addEventListener("click", function () {
         cantidadCriterios++
-        agregarCriterioColeccion(cantidadCriterios, 'crear-coleccion')
+        agregarCriterioColeccion(cantidadCriterios, sufix)
+        listenCriterioColeccion(cantidadCriterios, sufix)
     });
 }
 
-function listenAgregarFuenteModalColeccion(agregarBtn) {
+function listenFuentesModalCrearColeccion(agregarBtn, sufix) {
     let cantidadFuentes = 0
 
-    agregarBtn.addEventListener("click", function (e) {
+    agregarBtn.addEventListener("click", function () {
         cantidadFuentes++
-        agregarFuenteColeccion(cantidadFuentes, 'crear-coleccion')
+        agregarFuenteColeccion(cantidadFuentes, sufix)
+        listenFuenteColeccion(cantidadFuentes, sufix)
     });
 }
 
-function listenCamposFuenteModalColeccion() {
+function listenFuenteColeccion(numeroFuente, sufix) {
+    document.getElementById(`eliminar-fuente-${numeroFuente}`).addEventListener("click", () => {
+        document.getElementById(`fuente-${numeroFuente}`).remove();
+
+        if (document.querySelectorAll(`#fuentes-container-${sufix} .fuente-item`).length === 0) {
+            document.getElementById(`sin-fuentes-${sufix}`).classList.remove("hidden");
+        }
+    });
+}
+
+function listenCriterioColeccion(numeroCriterio, sufix) {
+    document.getElementById(`eliminar-criterio-${numeroCriterio}`).addEventListener("click", () => {
+        document.getElementById(`criterio-${numeroCriterio}`).remove();
+
+        if (document.querySelectorAll(`#criterios-container-${sufix} .criterio-item`).length === 0) {
+            document.getElementById(`sin-criterios-${sufix}`).classList.remove("hidden");
+        }
+    });
+
+    document.getElementById(`criterio-tipo-${numeroCriterio}`).addEventListener("change", () => {
+        if(document.getElementById(`criterio-tipo-${numeroCriterio}`).value === "DISTANCIA") {
+            document.getElementById(`campos-distancia-${numeroCriterio}`).classList.remove("hidden");
+            document.getElementById(`campos-fecha-${numeroCriterio}`).classList.add("hidden");
+        } else if(document.getElementById(`criterio-tipo-${numeroCriterio}`).value === "FECHA") {
+            document.getElementById(`campos-fecha-${numeroCriterio}`).classList.remove("hidden");
+            document.getElementById(`campos-distancia-${numeroCriterio}`).classList.add("hidden");
+        } else {
+            document.getElementById(`campos-distancia-${numeroCriterio}`).classList.add("hidden");
+            document.getElementById(`campos-fecha-${numeroCriterio}`).classList.add("hidden");
+        }
+    })
+}
+
+function listenCamposFuenteModalCrearColeccion() {
     document.addEventListener("change", async e => {
         if (e.target.matches("select[id^='fuente-tipo']")) {
             const fullId = e.target.id; // ej: "fuente-tipo-1-crear-coleccion"

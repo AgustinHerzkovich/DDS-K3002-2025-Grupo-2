@@ -1,59 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById("modal-coleccion")
-    const modalTitleHeader = document.getElementById("modal-header-crear-coleccion")
+    const modal = document.getElementById("modal-crear-coleccion")
     const openBtn = document.getElementById("menu-crear-coleccion")
     const agregarCriterioBtn = document.getElementById("agregar-criterio-crear-coleccion")
     const agregarFuenteBtn = document.getElementById("agregar-fuente-crear-coleccion")
     const confirmBtn = document.getElementById("crear-coleccion");
     const closeBtn = document.getElementById("salir-crear-coleccion");
 
-    if(allElementsFound([modal, modalTitleHeader, openBtn, agregarCriterioBtn, agregarFuenteBtn, confirmBtn, closeBtn], "crear colección")) {
-        listenOpenModal(modal, openBtn, () => {
-            document.getElementById("dropdown-menu").classList.add("hidden")
-
-            const mensajeSinCriterios = document.getElementById("sin-criterios-crear-coleccion")
-            if(mensajeSinCriterios.classList.contains("hidden")) {
-                mensajeSinCriterios.classList.remove("hidden")
-            }
-
-            const mensajeSinFuentes = document.getElementById("sin-fuentes-crear-coleccion")
-            if(mensajeSinFuentes.classList.contains("hidden")) {
-                mensajeSinFuentes.classList.remove("hidden")
-            }
-
-            modalTitleHeader.classList.remove("hidden")
-            agregarCriterioBtn.classList.remove("hidden")
-            agregarFuenteBtn.classList.remove("hidden")
-            confirmBtn.parentElement.classList.remove("hidden")
-            closeBtn.parentElement.classList.remove("hidden")
-        })
-        listenCloseModal(modal, closeBtn, () => {
-            limpiarModalColeccion(modal)
-
-            const mensajeSinCriterios = document.getElementById("sin-criterios-crear-coleccion")
-            if(!mensajeSinCriterios.classList.contains("hidden")) {
-                mensajeSinCriterios.classList.add("hidden")
-            }
-
-            const mensajeSinFuentes = document.getElementById("sin-fuentes-crear-coleccion")
-            if(!mensajeSinFuentes.classList.contains("hidden")) {
-                mensajeSinFuentes.classList.add("hidden")
-            }
-
-            modalTitleHeader.classList.add("hidden")
-            agregarCriterioBtn.classList.add("hidden")
-            agregarFuenteBtn.classList.add("hidden")
-            confirmBtn.parentElement.classList.add("hidden")
-            closeBtn.parentElement.classList.add("hidden")
-        })
-        listenAgregarCriterioModalColeccion(agregarCriterioBtn);
-        listenAgregarFuenteModalColeccion(agregarFuenteBtn);
-        listenCamposFuenteModalColeccion();
+    if(allElementsFound([modal, openBtn, agregarCriterioBtn, agregarFuenteBtn, confirmBtn, closeBtn], "crear colección")) {
+        listenOpenModal(modal, openBtn, () => document.getElementById("dropdown-menu").classList.add("hidden"))
+        listenCloseModal(modal, closeBtn, () => limpiarModalColeccion(modal, 'crear-coleccion'))
+        listenCriteriosModalColeccion(agregarCriterioBtn, 'crear-coleccion');
+        listenFuentesModalCrearColeccion(agregarFuenteBtn, 'crear-coleccion');
+        listenCamposFuenteModalCrearColeccion();
 
         confirmBtn.addEventListener("click", async function() {
-            const inputsObligatorios = validarFormularioModalColeccion()
+            const inputsObligatorios = validarFormularioModalCrearColeccion()
 
-            if(!document.querySelector('#form-modal-coleccion .form-not-completed') && document.getElementById("sin-criterios-crear-coleccion").classList.contains("hidden")) {
+            if(!document.querySelector('#form-modal-coleccion .form-not-completed') && document.getElementById("sin-criterios-modal-coleccion").classList.contains("hidden")) {
                 await crearColeccion(inputsObligatorios)
             }
         })

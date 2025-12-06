@@ -20,18 +20,3 @@
     transform: translateY(-4px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
-
-.info-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #9ca3af; /* Gris claro para etiquetas */
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.info-value {
-    font-size: 1rem;
-    color: #000000; /* Blanco para valores */
-    margin: 0;
-    line-height: 1.5;
-}

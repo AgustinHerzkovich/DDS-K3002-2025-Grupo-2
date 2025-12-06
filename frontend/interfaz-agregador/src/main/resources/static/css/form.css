@@ -326,3 +326,39 @@ select[id^="fuente-nombre-"] {
 .text-muted-high {
     color: #6b7280; /* gray-500 */
 }
+
+.info-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: black;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-info-value {
+    min-width: 0;
+    font-size: 1rem;
+    color: black;
+    margin: 0;
+    line-height: 1.5;
+    width: auto;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.info-value {
+    min-width: 0;
+    font-size: 1rem;
+    color: black;
+    margin: 0;
+    line-height: 1.5;
+    width: auto;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}

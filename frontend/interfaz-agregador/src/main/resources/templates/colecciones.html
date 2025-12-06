@@ -34,6 +34,7 @@
                 @{/colecciones(page=${currentPage + 1}, size=${pageSize})}
             )}" />
 
+            <th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalVerColeccion}" />
             <th:block th:if="${isAdmin}" th:replace="~{fragments/modal :: modalEditarColeccion}" />
         </div>
 

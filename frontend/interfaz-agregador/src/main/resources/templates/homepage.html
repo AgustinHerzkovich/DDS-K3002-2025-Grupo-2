@@ -74,9 +74,6 @@
 
             <!-- Cards de Hechos Recientes -->
             <div class="mt-12 px-4">
-                <h2 class="text-3xl font-bold text-center mb-8">
-                    Hechos Recientes
-                </h2>
                 <div th:replace="~{fragments/cards :: cardsHechosRecientes(${hechosRecientes})}"></div>
                 <div th:if="${hechosRecientes == null || hechosRecientes.isEmpty()}" class="text-center text-gray-500 py-12 text-base">
                     No hay hechos recientes disponibles

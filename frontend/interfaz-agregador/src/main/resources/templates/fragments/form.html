@@ -14,31 +14,25 @@
 	(*): Campo obligatorio
 </span>
 
-<th:block th:fragment="agregarFuente(sufix)">
+<div th:fragment="containerFuentes(sufix)">
 	<p class="form-label">
 		Fuentes
 	</p>
-	<p th:id="|sin-fuentes-${sufix}|" class="no-container-message">
+	<p th:id="|sin-fuentes-${sufix}|" class="no-content-container">
 		No hay fuentes asociadas a esta colección
 	</p>
 	<div th:id="|fuentes-container-${sufix}|" class="space-y-2"></div>
-	<button th:id="|agregar-fuente-${sufix}|" type="button" class="btn-primary" aria-label="Agregar Fuente">
-		+ Agregar Fuente
-	</button>
-</th:block>
+</div>
 
-<th:block th:fragment="agregarCriterio(sufix)">
+<div th:fragment="containerCriterios(sufix)">
 	<p class="form-label">
 		Criterios de Pertenencia
 		<span class="form-obligatory-icon">
 			*
 		</span>
 	</p>
-	<p th:id="|sin-criterios-${sufix}|" class="obligatory-container-message">
-		Debe agregar un criterio de pertenencia
+	<p th:id="|sin-criterios-${sufix}|" class="no-content-container">
+		No hay criterios de pertenencia definidos
 	</p>
 	<div th:id="|criterios-container-${sufix}|" class="space-y-2"></div>
-	<button th:id="|agregar-criterio-${sufix}|" type="button" class="btn-primary" aria-label="Agregar Criterio">
-		+ Agregar Criterio
-	</button>
-</th:block>
+</div>

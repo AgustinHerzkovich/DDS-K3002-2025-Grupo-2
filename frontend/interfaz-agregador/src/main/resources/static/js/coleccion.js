@@ -1,30 +1,27 @@
-function validarFormularioModalColeccion() {
-    const titulo = document.getElementById('titulo-coleccion')
-    const descripcion = document.getElementById('descripcion-coleccion')
-    const algoritmo = document.getElementById('algoritmo-coleccion');
+function validarFormularioModalCrearColeccion() {
+    const titulo = document.getElementById('titulo-crear-coleccion')
+    const descripcion = document.getElementById('descripcion-crear-coleccion')
+    const algoritmo = document.getElementById('algoritmo-crear-coleccion');
+    const inputsObligatoriosBasicos = [titulo, descripcion, algoritmo];
 
-    // Obtener todos los criterios dinámicos
     const criteriosItems = Array.from(document.querySelectorAll('#criterios-container-crear-coleccion .criterio-item'));
     const tiposFuentes = Array.from(document.querySelectorAll('#fuentes-container-crear-coleccion .fuente-item select[id^="fuente-tipo-"]'));
     const nombresFuentes = Array.from(document.querySelectorAll('#fuentes-container-crear-coleccion .fuente-item select[id^="fuente-nombre-"]'));
 
-    const inputsObligatoriosBasicos = [titulo, descripcion, algoritmo];
-
-    // Validar cada criterio
     const criteriosParaValidar = [];
-    criteriosItems.forEach((criterioItem) => {
-        const criterioId = criterioItem.id.match(/criterio-(\d+)-/)[1];
-        const tipoCriterio = document.getElementById(`criterio-tipo-${criterioId}-crear-coleccion`);
+    criteriosItems.forEach(criterioItem => {
+        const criterioId = criterioItem.dataset.id
+        const tipoCriterio = document.getElementById(`criterio-tipo-${criterioId}`);
         criteriosParaValidar.push(tipoCriterio);
 
         if (tipoCriterio.value === 'DISTANCIA') {
-            const lat = document.getElementById(`criterio-latitud-${criterioId}-crear-coleccion`);
-            const lon = document.getElementById(`criterio-longitud-${criterioId}-crear-coleccion`);
-            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}-crear-coleccion`);
+            const lat = document.getElementById(`criterio-latitud-${criterioId}`);
+            const lon = document.getElementById(`criterio-longitud-${criterioId}`);
+            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}`);
             criteriosParaValidar.push(lat, lon, dist);
         } else if (tipoCriterio.value === 'FECHA') {
-            const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}-crear-coleccion`);
-            const fechaFin = document.getElementById(`criterio-fecha-final-${criterioId}-crear-coleccion`);
+            const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}`);
+            const fechaFin = document.getElementById(`criterio-fecha-final-${criterioId}`);
             criteriosParaValidar.push(fechaIni, fechaFin);
         }
     });
@@ -47,15 +44,14 @@ function validarFormularioModalColeccion() {
     }
 }
 
-function limpiarModalColeccion(modal) {
-    modal.querySelectorAll('input, select, textarea').forEach(campo => {
-        campo.value = "";
-        campo.classList.remove("form-not-completed");
-        campo.classList.add("form-input");
-    });
+function limpiarModalColeccion(modal, sufix) {
+    document.getElementById(`criterios-container-${sufix}`).innerHTML = "";
+    document.getElementById(`sin-criterios-${sufix}`).classList.remove("hidden")
 
-    document.getElementById('criterios-container-crear-coleccion').innerHTML = "";
-    document.getElementById('fuentes-container-crear-coleccion').innerHTML = "";
+    document.getElementById(`fuentes-container-${sufix}`).innerHTML = "";
+    document.getElementById(`sin-fuentes-${sufix}`).classList.remove("hidden")
+
+    document.getElementById(`form-modal-${sufix}`).reset();
 }
 
 function agregarCriterioColeccion(numeroCriterio, sufix) {
@@ -66,94 +62,82 @@ function agregarCriterioColeccion(numeroCriterio, sufix) {
 
     const criterioDiv = document.createElement('div');
     criterioDiv.className = 'criterio-item border border-gray-300 rounded-md py-2 px-3 bg-gray-50 mb-2';
-    criterioDiv.id = `criterio-${numeroCriterio}-${sufix}`;
+    criterioDiv.dataset.id = numeroCriterio;
+    criterioDiv.id = `criterio-${numeroCriterio}`;
 
     criterioDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
-            <label for="criterio-tipo-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600">Tipo de Criterio</label>
-            <button id="eliminar-criterio-${numeroCriterio}-${sufix}" type="button" data-id="${numeroCriterio}" class="btn-eliminar-container">
+            <label for="criterio-tipo-${numeroCriterio}" class="block text-xs font-medium text-gray-600">
+                Tipo de Criterio
+            </label>
+            <button id="eliminar-criterio-${numeroCriterio}" type="button" data-id="${numeroCriterio}" class="btn-eliminar-container">
                 Eliminar
             </button>
         </div>
 
         <div class="space-y-2">
-            <select id="criterio-tipo-${numeroCriterio}-${sufix}" class="form-input criterio-tipo-select" data-id="${numeroCriterio}">
+            <select id="criterio-tipo-${numeroCriterio}" class="form-input criterio-tipo-select" data-id="${numeroCriterio}">
                 <option value="">Seleccione un criterio</option>
                 <option value="DISTANCIA">Distancia</option>
                 <option value="FECHA">Fecha</option>
             </select>
 
-            <div id="campos-distancia-${numeroCriterio}-${sufix}" class="space-y-2 hidden">
+            <div id="campos-distancia-${numeroCriterio}" class="space-y-2 hidden">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label for="criterio-latitud-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
+                        <label for="criterio-latitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
                             Latitud Base
-                            <span class="form-obligatory-icon">*</span>
+                            <span class="form-obligatory-icon">
+                                *
+                            </span>
                         </label>
-                        <input type="number" step="any" id="criterio-latitud-${numeroCriterio}-${sufix}" class="form-input" placeholder="-34.603722">
+                        <input type="number" step="any" id="criterio-latitud-${numeroCriterio}" class="form-input" placeholder="-34.603722">
                     </div>
                     <div>
-                        <label for="criterio-longitud-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
+                        <label for="criterio-longitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
                             Longitud Base
-                            <span class="form-obligatory-icon">*</span>
+                            <span class="form-obligatory-icon">
+                                *
+                            </span>
                         </label>
-                        <input type="number" step="any" id="criterio-longitud-${numeroCriterio}-${sufix}" class="form-input" placeholder="-58.381592">
+                        <input type="number" step="any" id="criterio-longitud-${numeroCriterio}" class="form-input" placeholder="-58.381592">
                     </div>
                 </div>
                 <div>
-                    <label for="criterio-distancia-minima-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
+                    <label for="criterio-distancia-minima-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
                         Distancia Mínima (km)
-                        <span class="form-obligatory-icon">*</span>
+                        <span class="form-obligatory-icon">
+                            *
+                        </span>
                     </label>
-                    <input type="number" step="any" id="criterio-distancia-minima-${numeroCriterio}-${sufix}" class="form-input" placeholder="100">
+                    <input type="number" step="any" id="criterio-distancia-minima-${numeroCriterio}" class="form-input" placeholder="100">
                 </div>
             </div>
 
-            <div id="campos-fecha-${numeroCriterio}-${sufix}" class="space-y-2 hidden">
+            <div id="campos-fecha-${numeroCriterio}" class="space-y-2 hidden">
                 <div>
-                    <label for="criterio-fecha-inicial-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
+                    <label for="criterio-fecha-inicial-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
                         Fecha Inicial
-                        <span class="form-obligatory-icon">*</span>
+                        <span class="form-obligatory-icon">
+                            *
+                        </span>
                     </label>
-                    <input type="datetime-local" id="criterio-fecha-inicial-${numeroCriterio}-${sufix}" class="form-input hover:cursor-pointer">
+                    <input type="datetime-local" id="criterio-fecha-inicial-${numeroCriterio}" class="form-input hover:cursor-pointer">
                 </div>
                 <div>
-                    <label for="criterio-fecha-final-${numeroCriterio}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
+                    <label for="criterio-fecha-final-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
                         Fecha Final
-                        <span class="form-obligatory-icon">*</span>
+                        <span class="form-obligatory-icon">
+                            *
+                        </span>
                     </label>
-                    <input type="datetime-local" id="criterio-fecha-final-${numeroCriterio}-${sufix}" class="form-input hover:cursor-pointer">
+                    <input type="datetime-local" id="criterio-fecha-final-${numeroCriterio}" class="form-input hover:cursor-pointer">
                 </div>
             </div>
         </div>
     `;
 
     document.getElementById(`criterios-container-${sufix}`).appendChild(criterioDiv);
-
-    const removeBtn = document.getElementById(`eliminar-criterio-${numeroCriterio}-${sufix}`);
-    const elemento = document.getElementById(`criterio-${numeroCriterio}-${sufix}`);
-
-    removeBtn.addEventListener("click", () => {
-        elemento.remove();
-        // Mostrar mensaje si no quedan criterios
-        const criteriosRestantes = document.querySelectorAll(`#criterios-container-${sufix} .criterio-item`);
-        if (criteriosRestantes.length === 0) {
-            mensajeSinCriterios.classList.remove("hidden");
-        }
-    });
-
-    document.getElementById(`criterio-tipo-${numeroCriterio}-${sufix}`).addEventListener("change", () => {
-        if(document.getElementById(`criterio-tipo-${numeroCriterio}-${sufix}`).value === "DISTANCIA") {
-            document.getElementById(`campos-distancia-${numeroCriterio}-${sufix}`).classList.remove("hidden");
-            document.getElementById(`campos-fecha-${numeroCriterio}-${sufix}`).classList.add("hidden");
-        } else if(document.getElementById(`criterio-tipo-${numeroCriterio}-${sufix}`).value === "FECHA") {
-            document.getElementById(`campos-fecha-${numeroCriterio}-${sufix}`).classList.remove("hidden");
-            document.getElementById(`campos-distancia-${numeroCriterio}-${sufix}`).classList.add("hidden");
-        } else {
-            document.getElementById(`campos-distancia-${numeroCriterio}-${sufix}`).classList.add("hidden");
-            document.getElementById(`campos-fecha-${numeroCriterio}-${sufix}`).classList.add("hidden");
-        }
-    })
 }
 
 function agregarFuenteColeccion(numeroFuente, sufix) {
@@ -164,56 +148,12 @@ function agregarFuenteColeccion(numeroFuente, sufix) {
 
     const fuenteDiv = document.createElement('div');
     fuenteDiv.className = 'fuente-item border border-gray-300 rounded-md py-2 px-3 bg-gray-50 mb-2';
-    fuenteDiv.id = `fuente-${numeroFuente}-${sufix}`;
+    fuenteDiv.id = `fuente-${numeroFuente}`;
 
     fuenteDiv.innerHTML = `
         <div class="flex justify-between items-center mb-1">
-            <label for="fuente-tipo-${numeroFuente}-${sufix}" class="block text-xs font-medium text-gray-600">Tipo</label>
-            <button id="eliminar-fuente-${numeroFuente}-${sufix}" type="button" data-id="${numeroFuente}" class="btn-eliminar-container">
-                Eliminar
-            </button>
-        </div>
-
-        <div class="space-y-2">
-            <select id="fuente-tipo-${numeroFuente}-${sufix}" class="form-input" data-id="${numeroFuente}">
-                <option value="">Seleccione el tipo de fuente</option>
-                <option value="estatica">Estática</option>
-                <option value="dinamica">Dinámica</option>
-                <option value="proxy">Proxy</option>
-            </select>
-
-            <div id="nombre-container-${numeroFuente}-${sufix}" class="hidden">
-                <label for="fuente-nombre-${numeroFuente}-${sufix}" class="block text-xs font-medium text-gray-600 mb-1">
-                    ID de la Fuente
-                </label>
-                <select id="fuente-nombre-${numeroFuente}-${sufix}" class="form-input">
-                    <option value="">Cargando fuentes...</option>
-                </select>
-            </div>
-        </div>
-        `;
-    document.getElementById(`fuentes-container-${sufix}`).appendChild(fuenteDiv);
-
-    const removeBtn = document.getElementById(`eliminar-fuente-${numeroFuente}-${sufix}`);
-    const elemento = document.getElementById(`fuente-${numeroFuente}-${sufix}`);
-
-    removeBtn.addEventListener("click", () => {
-        elemento.remove();
-        const criteriosRestantes = document.querySelectorAll(`#fuentes-container-${sufix} .fuente-item`);
-        if (criteriosRestantes.length === 0) {
-            mensajeSinFuentes.classList.remove("hidden");
-        }
-    });
-}
-
-/*function agregarCriterioAColeccion(numeroCriterio) {
-    const criterioDiv = document.createElement('div');
-    criterioDiv.id = `criterio-${numeroCriterio}`;
-
-    criterioDiv.innerHTML = `
-        <div class="flex justify-between items-center mb-1">
-            <span class="block text-xs font-medium text-gray-600">Tipo</span>
-            <button id="eliminar-fuente-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar">
+            <label for="fuente-tipo-${numeroFuente}" class="block text-xs font-medium text-gray-600">Tipo</label>
+            <button id="eliminar-fuente-${numeroFuente}" type="button" data-id="${numeroFuente}" class="btn-eliminar-container">
                 Eliminar
             </button>
         </div>
@@ -227,40 +167,83 @@ function agregarFuenteColeccion(numeroFuente, sufix) {
             </select>
 
             <div id="nombre-container-${numeroFuente}" class="hidden">
-                <label th:for="fuente-nombre-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
-                    Nombre
-                    <span class="max-char-span">
-						(Máx.255 caracteres)
-					</span>
+                <label for="fuente-nombre-${numeroFuente}" class="block text-xs font-medium text-gray-600 mb-1">
+                    ID de la Fuente
                 </label>
-                <input type="text" id="fuente-nombre-${numeroFuente}" maxlength="255"
-                       class="form-input"
-                       placeholder="Ingrese el nombre">
+                <select id="fuente-nombre-${numeroFuente}" class="form-input">
+                    <option value="">Cargando fuentes...</option>
+                </select>
             </div>
         </div>
         `;
-    document.getElementById('#fuentes-container-modal-coleccion').appendChild(fuenteDiv);
 
-    const removeBtn = document.getElementById(`eliminar-fuente-${numeroFuente}`);
-    const elemento = document.getElementById(`fuente-${numeroFuente}`);
+    document.getElementById(`fuentes-container-${sufix}`).appendChild(fuenteDiv);
+}
 
-    removeBtn.addEventListener("click", () => elemento.remove());
-}*/
-
-function autocompletarFuentesColeccion(coleccion, sufix) {
+function autocompletarFuentesColeccion(coleccion) {
     coleccion.fuentes.forEach((fuente, index) => {
-        agregarFuenteColeccion(index, sufix)
+        agregarFuenteColeccion(index, 'ver-coleccion')
 
-        document.getElementById(`eliminar-fuente-${index}-${sufix}`).classList.add("hidden")
-
-        const tipoFuente = document.getElementById(`fuente-tipo-${index}-${sufix}`)
-        tipoFuente.value = fuente.tipo
+        const fuenteTipo = document.getElementById(`fuente-tipo-${index}`)
+        fuenteTipo.value = fuente.tipo
+        fuenteTipo.disabled = true
 
         if(fuente.tipo !== "dinamica") {
-            const nombreFuente = document.getElementById(`fuente-nombre-${index}-${sufix}`)
-            nombreFuente.value = fuente.id
-            document.getElementById(`nombre-container-${index}-${sufix}`).classList.remove("hidden")
+            const fuenteNombreSelect = document.getElementById(`fuente-nombre-${index}`)
+
+            const nuevaOpcion = document.createElement("option");
+            nuevaOpcion.value = fuente.id;
+            nuevaOpcion.innerText = fuente.id;
+            nuevaOpcion.selected = true;
+
+            fuenteNombreSelect.appendChild(nuevaOpcion);
+
+            fuenteNombreSelect.disabled = true
+
+            document.getElementById(`nombre-container-${index}`).classList.remove("hidden")
         }
+
+        document.getElementById(`eliminar-fuente-${index}`).classList.add("hidden")
+    })
+}
+
+function autocompletarCriteriosColeccion(coleccion) {
+    coleccion.criteriosDePertenencia.forEach((criterioDePertenencia, index) => {
+        agregarCriterioColeccion(index, 'ver-coleccion')
+
+        const criterioTipo = document.getElementById(`criterio-tipo-${index}`);
+        criterioTipo.value = criterioDePertenencia.tipo
+        criterioTipo.disabled = true;
+
+        if(criterioDePertenencia.tipo === 'DISTANCIA') {
+            const latitud = document.getElementById(`criterio-latitud-${index}`)
+            latitud.value = criterioDePertenencia.ubicacionBase.latitud
+            latitud.disabled = true;
+
+            const longitud = document.getElementById(`criterio-longitud-${index}`)
+            longitud.value = criterioDePertenencia.ubicacionBase.longitud
+            longitud.disabled = true;
+
+            const distanciaMinima = document.getElementById(`criterio-distancia-minima-${index}`)
+            distanciaMinima.value = criterioDePertenencia.distanciaMinima;
+            distanciaMinima.disabled = true
+
+            document.getElementById(`campos-distancia-${index}`).classList.remove("hidden");
+
+        } else  if(criterioDePertenencia.tipo === 'FECHA') {
+            const fechaInicial = document.getElementById(`criterio-fecha-inicial-${index}`)
+            fechaInicial.value = criterioDePertenencia.fechaInicial;
+            fechaInicial.disabled = true;
+
+            const fechaFinal = document.getElementById(`criterio-fecha-final-${index}`)
+            fechaFinal.value = criterioDePertenencia.fechaFinal;
+            fechaFinal.disabled = true;
+
+            document.getElementById(`campos-fecha-${index}`).classList.remove("hidden");
+        }
+
+        document.getElementById(`eliminar-criterio-${index}`).remove()
+        document.querySelectorAll("#modal-ver-coleccion .form-obligatory-icon").forEach(icon => icon.remove())
     })
 }
 
