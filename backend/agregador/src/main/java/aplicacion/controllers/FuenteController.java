@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/agregador")
@@ -29,6 +30,11 @@ public class FuenteController {
     @PatchMapping("/fuentes/{id}")
     public ResponseEntity<FuenteOutputDto> renameFuente(@RequestBody FuenteAliasDto fuenteAliasDto, @PathVariable(name = "id") String id){
         return ResponseEntity.ok(fuenteOutputMapper.map(fuenteService.cambiarAlias(id, fuenteAliasDto)));
+    }
+
+    @GetMapping("/fuentesDisponibles") // mostrar fuentes dispobibles en el eurekaServer pero no todas estan agregadas/cargadas al agregador
+    public ResponseEntity<Set<String>> getFuentesDisponibles(){
+        return ResponseEntity.ok(fuenteService.obtenerFuentesDisponiblesEnEureka());
     }
 
 }

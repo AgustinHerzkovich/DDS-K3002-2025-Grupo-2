@@ -15,12 +15,15 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositorios.RepositorioDeColecciones;
 import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +37,9 @@ public class ColeccionService {
     private final HechoOutputMapper hechoOutputMapper;
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
+    private final DiscoveryClient discoveryClient;
 
-    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper) {
+    public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, RepositorioDeColecciones repositorioDeColecciones, HechoService hechoService, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, @Qualifier("compositeDiscoveryClient") DiscoveryClient discoveryClient) {
         this.repositorioDeColecciones = repositorioDeColecciones;
         this.hechoService = hechoService;
         this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
@@ -44,12 +48,17 @@ public class ColeccionService {
         this.hechoOutputMapper = hechoOutputMapper;
         this.fuenteService = fuenteService;
         this.fuenteInputMapper = fuenteInputMapper;
+        this.discoveryClient = discoveryClient;
     }
     @Transactional
     public ColeccionOutputDto guardarColeccion(ColeccionInputDto coleccion) {
-        List<Fuente> fuentes = coleccion.getFuentes().stream().map(fuente -> fuenteService.obtenerFuentePorId(fuente.getId())).toList(); // Verifica que existan o tira fuenteNotFound
+        List<Fuente> fuentes= coleccion.getFuentes().stream().map(fuenteInputMapper::map).toList();
+        List<Fuente> fuentesEnSistema = new ArrayList<>();
+        for( Fuente fuente : fuentes) {
+            fuentesEnSistema.add(fuenteService.obtenerFuentePorId(fuente.getId()));
+        }
         Coleccion coleccionLocal = coleccionInputMapper.map(coleccion);
-        coleccionLocal.setFuentes(fuentes);
+        coleccionLocal.setFuentes(fuentesEnSistema);
         Coleccion coleccionGuardada = repositorioDeColecciones.save(coleccionLocal);
         this.asociarHechosPreexistentes(coleccionGuardada);
         return coleccionOutputMapper.map(coleccionGuardada);

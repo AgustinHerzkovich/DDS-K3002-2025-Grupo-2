@@ -36,7 +36,7 @@ public class EurekaMetadataConfig {
 
         String fuentesConcatenadas = String.join(",", fuentes);
         appInfoManager.getInfo().getMetadata().put("fuentesDisponibles", fuentesConcatenadas);
-
+        appInfoManager.getInfo().getMetadata().put("tipoFuente", "proxy");
         appInfoManager.registerAppMetadata(appInfoManager.getInfo().getMetadata());
         appInfoManager.setInstanceStatus(InstanceInfo.InstanceStatus.UP);
     }
