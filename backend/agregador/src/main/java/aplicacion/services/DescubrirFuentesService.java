@@ -40,7 +40,7 @@ public class DescubrirFuentesService {
 
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) + " - Descubriendo fuentes");
         conexionService.agregarOActualizarConexion(new ConexionFuenteEstatica("conexionFuenteEstaticaUnicaDeEjemploID", "localhost", 8081));
-        conexionService.agregarOActualizarConexion(new ConexionFuenteDinamica("conexionFuenteDinamicaUnicaDeEjemploID", "localhost", 8082));
+        conexionService.agregarOActualizarConexion(new ConexionFuenteDinamica("conexionFuenteDinamicaUnicaDeEjemploID", "localhost", 9082));
         conexionService.agregarOActualizarConexion(new ConexionFuenteProxy("conexionFuenteProxyUnicaDeEjemploID", "localhost", 8083));
         System.out.println("3 fuentes descubiertas");
     }

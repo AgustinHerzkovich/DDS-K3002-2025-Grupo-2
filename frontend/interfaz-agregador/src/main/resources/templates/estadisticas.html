@@ -5,6 +5,84 @@
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
     <main>
         <h1 class="titulo-estadisticas">¿Qué estás buscando?</h1>
+        <div id="confirm-overlay" class="confirm-overlay" style="display:none;">
+            <div class="confirm-box">
+                <p class="confirm-title">¿Esta seguro que desea actualizar las estadísticas?</p>
+                <p class="confirm-subtitle">
+                Este proceso se realiza de forma automática cada 1 semana y puede tardar bastante.
+                </p>
+            </span>
+                </p>
+
+                <div class="confirm-buttons">
+                    <button id="confirm-yes" class="btn-confirm">Actualizar</button>
+                    <button id="confirm-no" class="btn-cancel">Cancelar</button>
+                </div>
+            </div>
+            <div id="spinner-overlay" class="spinner-overlay" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+
+        <script>
+
+            function mostrarConfirmacion() {
+                document.getElementById("confirm-overlay").style.display = "flex";
+            }
+
+            function ocultarConfirmacion() {
+                document.getElementById("confirm-overlay").style.display = "none";
+            }
+
+            function mostrarSpinner() {
+                document.getElementById("spinner-overlay").style.display = "flex";
+            }
+
+            function ocultarSpinner() {
+                document.getElementById("spinner-overlay").style.display = "none";
+            }
+
+            function actualizarEstadisticas() {
+                mostrarConfirmacion();
+
+                const btnYes = document.getElementById("confirm-yes");
+                const btnNo = document.getElementById("confirm-no");
+
+                btnYes.onclick = null;
+                btnNo.onclick = null;
+
+                btnYes.onclick = function () {
+                    mostrarSpinner();
+
+                    fetch('http://localhost:8086/apiAdministrativa/estadisticas/actualizar', {
+                        method: "POST",
+                        headers: { 'Authorization': 'Bearer ' + jwtToken },
+                    })
+                    .then(response => {
+                        ocultarSpinner();
+                        ocultarConfirmacion();
+                        if (response.ok) {
+                            alert("Estadísticas actualizadas correctamente");
+                        } else {
+                            alert("Error al actualizar las estadísticas");
+                        }
+                    })
+                    .catch(error => {
+                        ocultarSpinner();
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor");
+                    });
+                };
+
+                btnNo.onclick = ocultarConfirmacion;
+            }
+
+        </script>
+
+        <div th:if="${isAdmin}" class="btn-update-wrapper">
+            <button class="btn-update" onclick="actualizarEstadisticas()">Actualizar estadísticas</button>
+        </div>
 
         <div class="contenedor-botones-stats">
 

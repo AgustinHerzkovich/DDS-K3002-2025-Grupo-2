@@ -12,8 +12,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,22 +23,23 @@ import java.util.Map;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
     @Getter
     @Value("${security.active}")
     boolean seguridadActiva;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if(!seguridadActiva){
-            http.csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(auth -> auth
-                            .anyRequest().permitAll()
+            http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
                     );
             return http.build();
         }
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.PATCH , "/hechos/**").authenticated()
+                        .requestMatchers(HttpMethod.POST , "/actualizar").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -72,9 +73,9 @@ public class SecurityConfig {
                 List<String> realmRoles = (List<String>) realmAccess.get("roles");
                 if (realmRoles != null) {
                     authorities.addAll(
-                        realmRoles.stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                            .toList()
+                            realmRoles.stream()
+                                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                                    .toList()
                     );
                 }
             }
@@ -91,9 +92,9 @@ public class SecurityConfig {
                             List<String> clientRoles = (List<String>) resourceMap.get("roles");
                             if (clientRoles != null) {
                                 authorities.addAll(
-                                    clientRoles.stream()
-                                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                                        .toList()
+                                        clientRoles.stream()
+                                                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                                                .toList()
                                 );
                             }
                         }

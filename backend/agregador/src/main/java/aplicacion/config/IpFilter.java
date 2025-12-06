@@ -3,6 +3,7 @@ package aplicacion.config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Component
 public class IpFilter implements Filter {
+
+    @Value("${security.active}")
+    boolean seguridadActiva;
     // =========================================================================
     // 1. LISTA NEGRA (BLACKLIST)
     // Las IPs en esta lista serán rechazadas inmediatamente.
@@ -33,9 +37,12 @@ public class IpFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        if(!seguridadActiva){
+            chain.doFilter(request, response);
+            return;
+        }
 
         // Obtenemos la IP de quien nos llama
         String clientIp = httpRequest.getRemoteAddr();

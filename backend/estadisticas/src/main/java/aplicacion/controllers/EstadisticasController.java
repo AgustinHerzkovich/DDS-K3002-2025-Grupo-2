@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.utils.CSVConverter;
 
@@ -30,6 +31,7 @@ public class EstadisticasController {
 
 
     @PostMapping("/actualizar")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<Void> actualizarEstadisticas() {
         System.out.println("Actualizando estadisticas...");
         actualizacionEstadisticasScheduler.actualizarEstadisticas(); // Tarea scheduleada de inmediato

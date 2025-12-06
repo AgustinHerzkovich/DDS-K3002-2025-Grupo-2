@@ -264,3 +264,141 @@
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
+.btn-update-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.btn-update {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-update::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    z-index: 0;
+}
+
+.btn-update span, .btn-update svg {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-update:hover::before {
+    background-color: rgba(127, 29, 29, 0.3);
+    border-color: #f87171;
+}
+
+.btn-update.active::before {
+    background-color: rgba(127, 29, 29, 0.2);
+    border-color: #b91c1c;
+}
+
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.confirm-box {
+    background: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirm-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.confirm-subtitle {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-confirm, .btn-cancel {
+    width: 48%;
+    padding: 8px 0;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    background-color: #000000;
+    color: white;
+}
+.btn-confirm:hover {
+    background-color: #330000;
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: #222;
+}
+.btn-cancel:hover {
+    background-color: #bbb;
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 55px;
+    height: 55px;
+    border: 6px solid #ccc;
+    border-top: 6px solid #0047AB;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}

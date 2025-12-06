@@ -47,6 +47,9 @@ public class CargarHechosScheduler {
         descubrirFuentesService.cargarFuentes();
     }
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
+    public void scheduledCargarHechos(){
+        cargarHechos();
+    }
     @Transactional
     public void cargarHechos() {
 
@@ -58,14 +61,16 @@ public class CargarHechosScheduler {
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         Set<Fuente> fuenteSet = new HashSet<>();
         if(hechosSeCarganSoloSiEstanEnUnaColeccion){
-        for (Coleccion coleccion : colecciones){
-            fuenteSet.addAll(coleccion.getFuentes());
-        }
+            for (Coleccion coleccion : colecciones){
+                fuenteSet.addAll(coleccion.getFuentes());
+            }
         }else{
             fuenteSet.addAll(fuenteService.obtenerTodasLasFuentes());
         }
         fuenteSet = fuenteSet.stream().filter(fuente -> fuente.getConexion().isOnlineUltimaVez()).collect(Collectors.toSet());
-        fuenteMutexManager.lockAll(fuenteSet.stream().map(Fuente::getId).collect(Collectors.toSet()));
+
+        Set<String> locks = fuenteSet.stream().map(Fuente::getId).collect(Collectors.toSet());
+        fuenteMutexManager.lockAll(locks);
         try {
 
             System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
@@ -119,7 +124,7 @@ public class CargarHechosScheduler {
             System.err.println("No se pudo concretar la asignacion de hechos scheduleada");
             e.printStackTrace();
         }finally {
-            fuenteMutexManager.unlockAll(fuenteSet.stream().map(Fuente::getId).collect(Collectors.toSet()));
+            fuenteMutexManager.unlockAll(locks);
         }
         System.out.println("""
                 

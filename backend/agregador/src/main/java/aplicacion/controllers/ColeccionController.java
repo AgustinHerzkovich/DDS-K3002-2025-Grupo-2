@@ -33,7 +33,7 @@ public class ColeccionController {
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
@@ -139,7 +139,7 @@ public class ColeccionController {
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
                                                    @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         try {
@@ -165,7 +165,7 @@ public class ColeccionController {
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> quitarFuente(@PathVariable(name = "id") String idColeccion,
                                              @PathVariable(name = "fuenteId") String fuenteId) {
         try {
@@ -179,7 +179,7 @@ public class ColeccionController {
 
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);

@@ -13,6 +13,7 @@ import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
 import aplicacion.repositories.HechoRepository;
 import aplicacion.repositories.RevisionRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class HechoService {
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
     private final RevisionRepository revisionRepository;
-
+    @Value("${security.active}")
+    boolean seguridadActiva;
 
     public HechoService(HechoRepository hechoRepository, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RevisionRepository revisionRepository) {
         this.hechoRepository = hechoRepository;
@@ -157,16 +159,22 @@ public class HechoService {
         if (estadoRevision == EstadoRevision.ACEPTADO && sugerencia != null) {
             hecho.setSugerencia(sugerencia);
         }
+        hecho.setFechaUltimaModificacion(LocalDateTime.now());
 
         hecho = hechoRepository.save(hecho);
         return hechoRevisadoOutputMapper.map(hecho);
     }
 
     public void guardarRevision(String hechoId, String administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
+        RevisionHecho revisionHecho;
         Hecho hecho = hechoRepository.findById(hechoId)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + hechoId));
-        Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
-        RevisionHecho revisionHecho = new RevisionHecho(administrador, hecho);
+        if(seguridadActiva){
+            Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
+            revisionHecho = new RevisionHecho(administrador, hecho);
+        }else {
+            revisionHecho = new RevisionHecho(null, hecho);
+        }
         revisionRepository.save(revisionHecho);
     }
 
@@ -175,7 +183,7 @@ public class HechoService {
                     .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         this.validarHechoEditable(hecho);
 
-        if (!hecho.getAutor().getId().equals(userId)) {
+        if (seguridadActiva && !hecho.getAutor().getId().equals(userId)) {
             throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
         }
 

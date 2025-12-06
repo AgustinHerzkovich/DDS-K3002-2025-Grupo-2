@@ -80,7 +80,7 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<HechoOutputDto> reportarHecho(@Valid @RequestBody HechoReporteInputDto hechoReporteInputDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("Authorities: " + auth.getAuthorities());
@@ -90,7 +90,7 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
                                          @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto,
                                          @RequestHeader(name = "Authorization", required = false) String token) {
@@ -121,7 +121,7 @@ public class HechoController {
     }
 
     @PostMapping("/hechos/{id}/tags")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
         try {
             Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
@@ -133,7 +133,7 @@ public class HechoController {
 
     }
     @DeleteMapping("/hechos/{hechoId}/tags/{tag}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) {
         try {
             hechoService.eliminarEtiqueta(hechoId, etiquetaName);

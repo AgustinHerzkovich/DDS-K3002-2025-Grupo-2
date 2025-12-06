@@ -9,6 +9,7 @@ import aplicacion.services.HechoService;
 import aplicacion.excepciones.*;
 import domain.helpers.JwtUtil;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,9 @@ import java.util.List;
 @RequestMapping("/fuentesDinamicas")
 public class HechoController {
     private final HechoService hechoService;
+
+    @Value("${security.active}")
+    boolean seguridadActiva;
 
     public HechoController(HechoService hechoService) {
         this.hechoService = hechoService;
@@ -108,20 +112,25 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}/estadoRevision")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
                                                      @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
                                                      @RequestHeader(value = "Authorization", required = false) String token) {
         try {
-            // Validar que el usuario sea el autor del hecho
-            if (token == null || token.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
-            }
+            String administradorId = null;
+            if(seguridadActiva){
+                // Validar que el usuario sea el autor del hecho
+                if (token == null || token.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
 
-            // Extraer el ID del usuario del token JWT
-            String administradorId = JwtUtil.extractUserId(token);
-            if (administradorId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                // Extraer el ID del usuario del token JWT
+                administradorId = JwtUtil.extractUserId(token);
+                if (administradorId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
+            }else {
+                administradorId = null;
             }
 
             HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
@@ -138,18 +147,20 @@ public class HechoController {
                                          @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto,
                                          @RequestHeader(value = "Authorization", required = false) String token) {
         System.out.println("EDITANDO el hecho: " + id );
+        String userId = null;
         try {
-            // Validar que el usuario sea el autor del hecho
-            if (token == null || token.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
-            }
+            if(seguridadActiva) {
+                // Validar que el usuario sea el autor del hecho
+                if (token == null || token.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
 
-            // Extraer el ID del usuario del token JWT
-            String userId = JwtUtil.extractUserId(token);
-            if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                // Extraer el ID del usuario del token JWT
+                userId = JwtUtil.extractUserId(token);
+                if (userId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
             }
-
             // Si la validación pasa, proceder con la edición
             HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto, userId);
             System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")" + " por el usuario: " + userId);

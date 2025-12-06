@@ -37,4 +37,8 @@ public class ConfigService {
     public String getUrlFuentesDinamicas() {
         return "http://" + config.getIpFuenteDinamica() + ":" + config.getPuertoFuenteDinamica() + "/fuentesDinamicas";
     }
+
+    public String getUrlEstadisticas() {
+        return "http://" + config.getIpEstadisticas() + ":" + config.getPuertoEstadisticas() + "/estadisticas";
+    }
 }
