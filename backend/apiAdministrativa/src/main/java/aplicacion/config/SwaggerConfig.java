@@ -803,6 +803,31 @@ public class SwaggerConfig {
                 )
         );
 
+        // ============= ESTADÍSTICAS =============
+        paths.addPathItem("/apiAdministrativa/estadisticas/actualizar", new PathItem()
+                .post(new Operation()
+                        .tags(List.of("estadisticas-controller"))
+                        .summary("Actualizar estadísticas")
+                        .description("Solicita al servicio de estadísticas que actualice todos los cálculos y métricas del sistema")
+                        .responses(new ApiResponses()
+                                .addApiResponse("200", new ApiResponse()
+                                        .description("Estadísticas actualizadas exitosamente")
+                                        .content(new Content()
+                                                .addMediaType("application/json",
+                                                        new MediaType()
+                                                                .schema(new StringSchema()
+                                                                        .example("Estadísticas actualizadas correctamente")
+                                                                )
+                                                )
+                                        )
+                                )
+                                .addApiResponse("500", new ApiResponse()
+                                        .description("Error al actualizar las estadísticas")
+                                )
+                        )
+                )
+        );
+
         // ============= MODIFICAR ESTADO DE REVISIÓN =============
         paths.addPathItem("/apiAdministrativa/hechos/{id}/estadoRevision", new PathItem()
                 .patch(new Operation()
@@ -876,6 +901,7 @@ public class SwaggerConfig {
                                 * **Gestión de hechos**: Reportar hechos manualmente y administrar etiquetas
                                 * **Carga de fuentes estáticas**: Subir archivos CSV desde URLs o directamente
                                 * **Registro de fuentes proxy**: Conectar fuentes externas para importar hechos
+                                * **Actualización de estadísticas**: Solicitar recálculo de métricas y estadísticas del sistema
                                 
                                 #### Tipos de Algoritmos de Consenso:
                                 * **IRRESTRICTO**: Muestra todos los hechos sin filtrado

@@ -183,15 +183,18 @@
 					</label>
 					<textarea id="descripcion-crear-coleccion" rows="3" maxlength="150" class="form-input" placeholder="Describa la colección" required></textarea>
 				</div>
-				<
-				<th:block th:replace="~{fragments/form :: containerCriterios('crear-coleccion')}" />
-				<button id="agregar-criterio-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Criterio">
-					+ Agregar Criterio
-				</button>
-				<th:block th:replace="~{fragments/form :: containerFuentes('crear-coleccion')}" />
-				<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
-					+ Agregar Fuente
-				</button>
+				<div>
+					<th:block th:replace="~{fragments/form :: containerCriterios('crear-coleccion')}" />
+					<button id="agregar-criterio-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Criterio">
+						+ Agregar Criterio
+					</button>
+				</div>
+				<div>
+					<th:block th:replace="~{fragments/form :: containerFuentes('crear-coleccion')}" />
+					<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
+						+ Agregar Fuente
+					</button>
+				</div>
 				<div>
 					<label for="algoritmo-crear-coleccion" class="form-label">
 						Algoritmo de Consenso
