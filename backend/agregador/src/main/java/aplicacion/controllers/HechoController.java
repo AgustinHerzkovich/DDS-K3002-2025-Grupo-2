@@ -146,6 +146,7 @@ public class HechoController {
 
 
     @PostMapping("/cargarHechos")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<Void> cargarHechos() { // Endpoint para disparar la carga de hechos manualmente (si es necesario)
         cargarHechosScheduler.cargarHechos();
         return ResponseEntity.ok().build();

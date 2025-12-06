@@ -5,6 +5,7 @@
     <script th:if="${isAdmin}" src="/js/ver-coleccion.js" defer></script>
     <script th:if="${isAdmin}" src="/js/eliminar-coleccion.js" defer></script>
     <script th:if="${isAdmin}" src="/js/editar-coleccion.js" defer></script>
+    <script th:if="${isAdmin}" src="/js/cargarHechos.js" defer></script>
     <script src="/js/search-bar.js" defer></script>
 </th:block>
 
@@ -45,6 +46,30 @@
             <p class="no-content-message">
                 No hay colecciones disponibles
             </p>
+        </div>
+
+
+        <div id="confirm-overlay" class="confirm-overlay" style="display:none;">
+            <div class="confirm-box">
+                <p class="confirm-title">¿Está seguro que desea cargar los hechos?</p>
+                <p class="confirm-subtitle">
+                    Este proceso se realiza de forma automática cada 1 hora. Puede tardar bastante.
+                </p>
+                </span>
+                </p>
+
+                <div class="confirm-buttons">
+                    <button id="confirm-yes" class="btn-confirm">Actualizar</button>
+                    <button id="confirm-no" class="btn-cancel">Cancelar</button>
+                </div>
+            </div>
+            <div id="spinner-overlay" class="spinner-overlay" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <div th:if="${isAdmin}" class="btn-update-wrapper">
+            <button class="btn-update" onclick="cargarHechos()">Actualizar estadísticas</button>
         </div>
     </main>
 </th:block>

@@ -39,6 +39,10 @@ public class HechoController {
     public ResponseEntity<?> reportarHecho(@RequestBody String body) {
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/hechos", body, String.class));
     }
+    @PostMapping("/cargarHechos")
+    public ResponseEntity<?> cargarHechos() {
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/cargarHechos", null, String.class));
+    }
 
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) {
