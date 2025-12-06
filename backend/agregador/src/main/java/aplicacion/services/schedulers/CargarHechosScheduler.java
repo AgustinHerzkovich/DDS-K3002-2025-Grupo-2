@@ -53,16 +53,16 @@ public class CargarHechosScheduler {
     public void cargarHechos() {
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
         // Pedirle a eureka las instancias
-        List<ServiceInstance> proxyInstances = discoveryClient.getInstances("fuenteProxy");
+        /*List<ServiceInstance> proxyInstances = discoveryClient.getInstances("fuenteProxy");
         List<ServiceInstance> estaticaInstances = discoveryClient.getInstances("fuenteEstatica");
         List<ServiceInstance> dinamicaInstances = discoveryClient.getInstances("fuenteDinamica");
         List<ServiceInstance> services = new ArrayList<>();
         services.addAll(proxyInstances);
         services.addAll(estaticaInstances);
-        services.addAll(dinamicaInstances);
+        services.addAll(dinamicaInstances);*/
 
-
-        RestTemplate restTemplate = new RestTemplate();
+        // ESTO ES CODIGO PARA PEDIR FUENTES DE TODOS LOS LADOS Y GUARDARLAS SI NO ESTAN
+        /*RestTemplate restTemplate = new RestTemplate();
         for(ServiceInstance instance : services) {
             String serviceName = switch (instance.getServiceId()) {
                 case "FUENTEPROXY" -> "/fuentesProxy";
@@ -101,7 +101,7 @@ public class CargarHechosScheduler {
                     }
             );
 
-        }
+        }*/
 
         // Buscamos las fuentes que estamos usando en colecciones
 
@@ -119,6 +119,10 @@ public class CargarHechosScheduler {
 
         System.out.println("Se pediran hechos de " + fuenteSet.size() + " fuentes");
 
+        //todo hacer que cada cargador muestre las fuentes que conoce
+        // las fuentes se van cargando segun se incluyan en las colecciones
+
+        //Las fuentes se cargan al postear colecciones
 
         // Pedimos los hechos a cada fuente
         Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet);

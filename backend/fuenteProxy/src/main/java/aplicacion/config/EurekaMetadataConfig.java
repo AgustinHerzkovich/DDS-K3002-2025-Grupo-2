@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.util.List;
 
 @Configuration
@@ -20,6 +22,16 @@ public class EurekaMetadataConfig {
 
     @PostConstruct
     public void inicializarMetadata() {
+        actualizarMetadata();
+        appInfoManager.setInstanceStatus(InstanceInfo.InstanceStatus.UP);
+    }
+
+    @Scheduled(fixedRate = 30000) // cada 30 segundos
+    public void actualizarMetadataPeriodicamente() { // todo cambiar a que se actualice solo cuando haya cambios. Preguntar a herzkovich
+        actualizarMetadata();
+    }
+
+    private void actualizarMetadata() {
         List<String> fuentes = fuenteProxyService.obtenerFuentesDisponibles();
 
         String fuentesConcatenadas = String.join(",", fuentes);
@@ -28,4 +40,6 @@ public class EurekaMetadataConfig {
         appInfoManager.registerAppMetadata(appInfoManager.getInfo().getMetadata());
         appInfoManager.setInstanceStatus(InstanceInfo.InstanceStatus.UP);
     }
+
+
 }

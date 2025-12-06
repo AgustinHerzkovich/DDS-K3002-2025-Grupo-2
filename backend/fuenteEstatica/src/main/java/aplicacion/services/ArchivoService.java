@@ -30,7 +30,6 @@ public class ArchivoService {
     public void subirArchivo(MultipartFile file) throws Exception {
         fileServerService.cargarArchivo(file);
     }
-
     public void subirArchivoDesdeUrl(String urlString) throws Exception {
         urlString = urlString.trim().replaceAll("^\"|\"$", "");
 
