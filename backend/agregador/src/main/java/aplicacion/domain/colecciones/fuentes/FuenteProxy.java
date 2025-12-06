@@ -17,10 +17,7 @@ import java.util.List;
 public class FuenteProxy extends Fuente {
 
     public FuenteProxy(String id) {
-        super(id,"FUENTEPROXY");
-    }
-    public FuenteProxy(String id, String nombreServicio) {
-        super(id, nombreServicio);
+        super(id);
     }
 
     @Override

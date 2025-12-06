@@ -3,8 +3,10 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.fuentes.*;
 import aplicacion.dto.input.FuenteAliasDto;
 import aplicacion.dto.input.FuenteInputDto;
+import aplicacion.dto.input.FuenteProxyInputDto;
 import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
+import aplicacion.dto.mappers.FuenteProxyInputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
@@ -30,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FuenteService {
@@ -186,7 +189,75 @@ public class FuenteService {
     }
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
-        return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
+        try{
+            return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
+        } catch (FuenteNoEncontradaException e){
+            try{
+            String tipoFuente = discoveryClient.getInstances("CARGADOR")
+                   .stream()
+                   .filter(instance -> {
+                       String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
+                       return fuentesDisponibles != null && Arrays.asList(fuentesDisponibles.split(",")).contains(fuenteId);
+                   })
+                   .findFirst()
+                    .map(instance -> instance.getMetadata().get("tipoDeFuente"))
+                   .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka"));
+            switch (tipoFuente) {
+                case "estatica" -> {
+                    return new FuenteEstatica(fuenteId);
+                }
+                case "dinamica" -> {
+                    return new FuenteDinamica(fuenteId);
+                }
+                case "proxy" -> {
+                    return new FuenteProxy(fuenteId);
+                }
+                default -> {
+                    throw new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada y no se pudo determinar su tipo");
+                }
+            }
+            }catch (FuenteNoEncontradaException ex){
+                String agregadorId = discoveryClient.getInstances("AGREGADOR")
+                        .stream()
+                        .filter(instance -> instance.getMetadata().get("agregadorID").equals(fuenteId))
+                        .findFirst()
+                        .map(instance -> instance.getMetadata().get("agregadorID"))
+                        .orElseThrow(() -> new FuenteNoEncontradaException(fuenteId));
+                // ahora tenemos el agregadorId, tenemos que crear la fuente metamapa
+
+                FuenteProxy fuenteProxy;
+                try {
+                     String fuenteEnProxyId = discoveryClient.getInstances("CARGADOR")
+                            .stream()
+                            .filter(instance -> {
+                                String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
+                                return fuentesDisponibles != null && Arrays.asList(fuentesDisponibles.split(",")).contains("agregador-" + agregadorId);
+                            })
+                            .findFirst()
+                            .map(instance -> "agregador-" + agregadorId)
+                            .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
+                     fuenteProxy = new FuenteProxy(fuenteEnProxyId);
+                } catch(FuenteNoEncontradaException exe){
+                    ServiceInstance instancia = discoveryClient.getInstances("CARGADOR")
+                            .stream()
+                            .filter(instance -> instance.getMetadata().get("tipoFuente").equals("proxy"))
+                            .findFirst()
+                            .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
+                    String uri = instancia.getUri().toString() + "/fuentesProxy/fuentesMetamapa";
+
+                    RestTemplate restTemplate = new RestTemplate();
+
+                    FuenteProxyInputDto response = restTemplate.getForObject(uri, FuenteProxyInputDto.class);
+
+
+
+                    FuenteProxyInputMapper fuenteProxyInputMapper = new FuenteProxyInputMapper();
+                    fuenteProxy = fuenteProxyInputMapper.map(response);
+                }
+                return this.guardarFuente(fuenteProxy);
+            }
+
+        }
     }
 
     public List<Fuente> obtenerTodasLasFuentes(){
@@ -198,5 +269,25 @@ public class FuenteService {
         fuente.setAlias(fuenteAliasDto.getAlias());
         repositorioDeFuentes.save(fuente);
         return fuente;
+    }
+
+    public Set<String> obtenerFuentesDisponiblesEnEureka( ) {//todo agregar informacion necesaria para elegir las fuentes en metadatos
+        List<String> fuentesIds;
+
+        fuentesIds = discoveryClient.getInstances("CARGADOR")
+                .stream()
+                .map(instance -> instance.getMetadata().get("fuentesDisponibles"))
+                .toList();
+        List <String> agregadores;
+        agregadores = discoveryClient.getInstances("AGREGADOR")
+                .stream()
+                .map(instance -> instance.getMetadata().get("agregadorID"))
+                .map(agregadorid -> "agregador-"+agregadorid)
+                .toList();
+
+        Set<String> setFuentesIds = new HashSet<>(fuentesIds);
+        setFuentesIds.addAll(agregadores);
+        setFuentesIds.addAll(this.obtenerTodasLasFuentes().stream().map(Fuente::getId).collect(Collectors.toSet()));
+        return setFuentesIds;
     }
 }
