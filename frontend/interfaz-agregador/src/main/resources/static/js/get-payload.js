@@ -2,15 +2,14 @@ function getPayloadColeccion(inputsObligatorios) {
     const criteriosDePertenencia = [];
     const fuentes = [];
 
-    // Procesar cada criterio dinámico
-    inputsObligatorios.criteriosItems.forEach((criterioItem) => {
-        const criterioId = criterioItem.id.match(/criterio-(\d+)-/)[1];
-        const tipoCriterio = document.getElementById(`criterio-tipo-${criterioId}-crear-coleccion`);
+    inputsObligatorios.criteriosItems.forEach(criterioItem => {
+        const criterioId = criterioItem.dataset.id;
+        const tipoCriterio = document.getElementById(`criterio-tipo-${criterioId}`);
 
         if (tipoCriterio.value === "DISTANCIA") {
-            const lat = document.getElementById(`criterio-latitud-${criterioId}-crear-coleccion`);
-            const lon = document.getElementById(`criterio-longitud-${criterioId}-crear-coleccion`);
-            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}-crear-coleccion`);
+            const lat = document.getElementById(`criterio-latitud-${criterioId}`);
+            const lon = document.getElementById(`criterio-longitud-${criterioId}`);
+            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}`);
 
             if(lat.value && lon.value && dist.value) {
                 criteriosDePertenencia.push({
@@ -20,8 +19,8 @@ function getPayloadColeccion(inputsObligatorios) {
                 });
             }
         } else if (tipoCriterio.value === "FECHA") {
-            const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}-crear-coleccion`);
-            const fechaFin = document.getElementById(`criterio-fecha-final-${criterioId}-crear-coleccion`);
+            const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}`);
+            const fechaFin = document.getElementById(`criterio-fecha-final-${criterioId}`);
 
             if (fechaIni.value && fechaFin.value) {
                 criteriosDePertenencia.push({
@@ -33,16 +32,13 @@ function getPayloadColeccion(inputsObligatorios) {
         }
     });
 
-    // Procesar fuentes
     inputsObligatorios.tiposFuentes.forEach((tipo, index) => {
         const selectNombre = inputsObligatorios.nombresFuentes[index];
         let nombre;
 
         if (tipo.value === "dinamica") {
-            // Para dinámica, obtener el ID del atributo data
             nombre = selectNombre.getAttribute('data-fuente-dinamica-id');
         } else {
-            // Para estática y proxy, obtener del value del select
             nombre = selectNombre.value;
         }
 
@@ -59,8 +55,8 @@ function getPayloadColeccion(inputsObligatorios) {
     return {
         titulo: inputsObligatorios.titulo.value,
         descripcion: inputsObligatorios.descripcion.value,
-        criteriosDePertenencia: criteriosDePertenencia,
-        fuentes: fuentes,
+        criteriosDePertenencia,
+        fuentes,
         tipoAlgoritmoConsenso: inputsObligatorios.algoritmo.value
     };
 }
