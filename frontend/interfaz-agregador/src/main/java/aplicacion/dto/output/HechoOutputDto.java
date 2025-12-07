@@ -30,4 +30,26 @@ public class HechoOutputDto {
     private List<EtiquetaOutputDto> etiquetas;
     private Boolean visible;
     private String direccion; // Dirección completa calculada con geocoding
+
+    @Override
+    public String toString(){
+        return "HechoOutputDto{" +
+                "id='" + id + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", categoria=" + categoria +
+                ", ubicacion=" + ubicacion +
+                ", fechaAcontecimiento=" + fechaAcontecimiento +
+                ", fechaCarga=" + fechaCarga +
+                ", fechaUltimaModificacion=" + fechaUltimaModificacion +
+                ", origen=" + origen +
+                ", contenidoTexto='" + contenidoTexto + '\'' +
+                ", contenidoMultimedia=" + contenidoMultimedia +
+                ", anonimato=" + anonimato +
+                ", autor=" + autor +
+                ", etiquetas=" + etiquetas +
+                ", visible=" + visible +
+                ", direccion='" + direccion + '\'' +
+                '}';
+    }
 }

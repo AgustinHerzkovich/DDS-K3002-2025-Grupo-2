@@ -100,14 +100,33 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<?> agregarHecho(@Valid @RequestBody HechoInputDto hechoInputDto) {
+    public ResponseEntity<?> agregarHecho(@Valid @RequestBody HechoInputDto hechoInputDto,
+                                          @RequestHeader(value = "Authorization", required = false) String token) {
         HechoOutputDto hecho;
         try {
-            hecho = hechoService.guardarHecho(hechoInputDto);
+            String userId = null;
+            if(seguridadActiva){
+                // Validar que el usuario sea el autor del hecho
+                if (!hechoInputDto.getAnonimato() && (token == null || token.isEmpty())) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
+
+                // Extraer el ID del usuario del token JWT
+                userId = JwtUtil.extractUserId(token);
+                if (!hechoInputDto.getAnonimato() && userId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
+            }else {
+                userId = null;
+            }
+
+            hecho = hechoService.guardarHecho(hechoInputDto, userId);
             System.out.println("Se ha agregado el hecho: " + hecho.getId());
             return ResponseEntity.status(201).body(hecho);
         }catch (ContribuyenteNoConfiguradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (AutorizacionDenegadaException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class HechoService {
@@ -130,8 +131,13 @@ public class HechoService {
     }
 
     @Transactional //(readOnly = true)
-    public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
+    public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto, String userId) throws ContribuyenteNoConfiguradoException, AutorizacionDenegadaException {
         String identidadId = hechoInputDto.getAutor();
+
+        if (!Objects.equals(identidadId, userId)) {
+            throw new AutorizacionDenegadaException("El usuario no tiene permiso para guardar un hecho en nombre de otro usuario.");
+        }
+
         Contribuyente autor = null;
         if (!hechoInputDto.getAnonimato() && identidadId == null) {
             throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");

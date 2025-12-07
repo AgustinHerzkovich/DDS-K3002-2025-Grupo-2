@@ -195,12 +195,12 @@ async function cargarFuentesPorTipo(numero, tipo) {
         const fuentes = data.content || [];
 
         if (tipo === "dinamica") {
-            // Para dinámica, guardar el ID en un atributo data
-            if (fuentes.length > 0) {
-                selectNombre.setAttribute('data-fuente-dinamica-id', fuentes[0].id);
-            }
+            selectNombre.innerHTML = ''
+            const option = document.createElement('option');
+            option.value = fuentes[0].id;
+            option.textContent = `${fuentes[0].alias !== 'Fuente sin titulo' ? fuentes[0].alias : ''}`;
+            selectNombre.appendChild(option);
         } else {
-            // Para estática y proxy, mostrar el select con opciones
             selectNombre.innerHTML = '<option value="">Seleccione una fuente</option>';
             fuentes.forEach(fuente => {
                 const option = document.createElement('option');
@@ -208,9 +208,8 @@ async function cargarFuentesPorTipo(numero, tipo) {
                 option.textContent = `${fuente.alias !== 'Fuente sin titulo' ? fuente.alias : ''}`;
                 selectNombre.appendChild(option);
             });
+            selectNombre.disabled = false;
         }
-
-        selectNombre.disabled = false;
     } catch (error) {
         console.error('Error al cargar fuentes:', error);
         selectNombre.innerHTML = '<option value="">Error al cargar fuentes</option>';
@@ -289,6 +288,7 @@ function autocompletarCriteriosColeccion(coleccion, sufix) {
 }
 
 function cargarFuenteColeccion(fuente) {
+    const fuentesActualesContainer = document.getElementById("fuentes-actuales-editar-coleccion")
     const fuenteLi = document.createElement('li');
     fuenteLi.className = 'flex justify-between items-center';
     fuenteLi.id = `fuente-actual-${fuente.id}`;
@@ -300,7 +300,9 @@ function cargarFuenteColeccion(fuente) {
             X Quitar
         </button>
     `;
-    document.getElementById("fuentes-actuales-editar-coleccion").appendChild(fuenteLi);
+    fuentesActualesContainer.appendChild(fuenteLi);
+
+    window.coleccionActual.fuentes.push(fuente)
 
     document.getElementById(`quitar-fuente-actual-${fuente.id}`).addEventListener('click', (e) => {
         const idFuenteQuitada = e.target.dataset.id;
@@ -309,7 +311,7 @@ function cargarFuenteColeccion(fuente) {
     })
 }
 
-function limpiarModalEditarColeccion() {
+function limpiarModalEditarColeccion(agregarFuenteBtn) {
     document.getElementById('fuentes-actuales-editar-coleccion').innerHTML = '';
     document.getElementById("fuente-nueva-container-editar-coleccion").innerHTML = '';
     document.getElementById('form-editar-coleccion').reset();

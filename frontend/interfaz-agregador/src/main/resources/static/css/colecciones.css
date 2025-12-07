@@ -97,10 +97,41 @@
 
 
 
+/* Estilos para mensaje de no hay contenido */
+.no-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    width: 100%;
+    min-height: 300px;
+    flex-shrink: 0;
+}
+
+.no-content-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+    stroke: #6b7280;
+}
+
+.no-content-message {
+    font-size: 1.125rem;
+    margin: 0;
+    color: #4b5563;
+}
+
 .btn-update-wrapper {
     display: flex;
     justify-content: center;
     padding: 10px 0;
+    margin-top: 2rem;
+    width: 100%;
+    position: relative;
+    z-index: 10;
 }
 
 .btn-update {

@@ -58,9 +58,19 @@ async function publicarHecho(inputsObligatorios) {
             ? 'http://localhost:8086/apiAdministrativa/hechos'
             : 'http://localhost:8085/apiPublica/hechos';
 
+        const headers = {
+            'Content-Type': 'application/json',
+        }
+
+        if (isAdmin) {
+            headers['Authorization'] = 'Bearer ' + jwtToken;
+        } else if (!payload.anonimato) {
+            headers['Authorization'] = 'Bearer ' + jwtToken;
+        }
+
         const response = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
+            headers: headers,
             body: JSON.stringify(payload)
         });
 
