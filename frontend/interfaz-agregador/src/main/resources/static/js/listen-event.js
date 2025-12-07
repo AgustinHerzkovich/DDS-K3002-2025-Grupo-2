@@ -249,18 +249,33 @@ function listenFuentesColeccion(agregarBtn, sufix) {
     });
 }
 
+function listenFuentesActualesColeccion() {
+    document.getElementById("agregar-fuente-editar-coleccion").addEventListener("click", function () {
+        const select = document.getElementById("fuente-nombre-0");
+        const alias = select.options[select.selectedIndex].textContent;
+
+        const fuenteIngresada = {
+            id: document.getElementById("fuente-nombre-0").value,
+            alias,
+            tipo: document.getElementById("fuente-tipo-0").value
+        }
+
+        cargarFuenteColeccion(fuenteIngresada)
+
+        document.getElementById("fuente-tipo-0").selectedIndex = 0;
+        document.getElementById("fuente-nombre-0").innerHTML = "";
+        document.getElementById("nombre-container-0").classList.add("hidden");
+    });
+}
+
 function listenCambiosTipoFuenteColeccion(numeroFuente) {
     const nombreContainer = document.getElementById(`nombre-container-${numeroFuente}`);
 
     document.getElementById(`fuente-tipo-${numeroFuente}`).addEventListener('change', async function(e) {
         const tipoFuente = e.target.value
 
-        if (tipoFuente === "estatica" || tipoFuente === "proxy") {
+        if (tipoFuente === "estatica" || tipoFuente === "proxy" || tipoFuente === "dinamica") {
             nombreContainer.classList.remove("hidden");
-            await cargarFuentesPorTipo(numeroFuente, tipoFuente);
-        } else if (tipoFuente === "dinamica") {
-            // Para dinámica, ocultar el container y cargar el ID en segundo plano
-            nombreContainer.classList.add("hidden");
             await cargarFuentesPorTipo(numeroFuente, tipoFuente);
         } else {
             nombreContainer.classList.add("hidden");

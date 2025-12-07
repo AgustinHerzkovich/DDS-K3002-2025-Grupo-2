@@ -26,22 +26,31 @@
 }
 
 .no-content-container {
+    display: flex;
     flex-direction: column;
-    color: #4b5563; /* text-black */
-    background-color: transparent; /* bg-transparent */
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    width: 100%;
+    min-height: 300px;
+    color: #4b5563;
+    background-color: transparent;
     margin-bottom: 0.5rem;
 }
 
 .no-content-message {
-    font-size: 1.2rem;
+    font-size: 1.125rem;
+    margin: 0;
     color: #4b5563;
 }
 
 .no-content-icon {
-    width: 100px;
-    height: 100px;
-    color: #4b5563;
-    opacity: 0.4;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+    stroke: #6b7280;
 }
 
 ::-webkit-scrollbar {

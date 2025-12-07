@@ -11,7 +11,7 @@ function openDetalle(id) {
         document.getElementById('modalFecha').textContent = hecho.fechaAcontecimiento ? new Date(hecho.fechaAcontecimiento).toLocaleString() : '';
         document.getElementById('modalUbicacion').textContent = hecho.ubicacion ? (hecho.ubicacion.latitud + ', ' + hecho.ubicacion.longitud) : 'N/D';
         console.log('LOG 3: Mostrando modal de detalle.');
-        document.getElementById('modalAutor').textContent = hecho.autor.identidad.nombre + ' ' + hecho.autor.identidad.apellido || 'Anónimo';
+        document.getElementById('modalAutor').textContent = hecho.autor != null ? hecho.autor.identidad.nombre + ' ' + hecho.autor.identidad.apellido : 'Anónimo';
     } else {
         // LOG 2b: Si no encuentra el objeto (posible problema de tipo de dato del ID)
         console.error('LOG 2b: Error, Hecho no encontrado para ID:', id);

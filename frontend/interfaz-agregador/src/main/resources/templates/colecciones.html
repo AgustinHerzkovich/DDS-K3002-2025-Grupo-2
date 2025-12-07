@@ -1,15 +1,15 @@
-<th:block th:unless="${colecciones == null || colecciones.isEmpty()}" th:fragment="pageScripts">
-    <script th:inline="javascript">
+<th:block th:fragment="pageScripts">
+    <script th:unless="${colecciones == null || colecciones.isEmpty()}" th:inline="javascript">
         let colecciones = /*[[${colecciones}]]*/ {};
     </script>
-    <script th:if="${isAdmin}" src="/js/ver-coleccion.js" defer></script>
-    <script th:if="${isAdmin}" src="/js/eliminar-coleccion.js" defer></script>
-    <script th:if="${isAdmin}" src="/js/editar-coleccion.js" defer></script>
+    <script th:if="${isAdmin && !(colecciones == null || colecciones.isEmpty())}" src="/js/ver-coleccion.js" defer></script>
+    <script th:if="${isAdmin && !(colecciones == null || colecciones.isEmpty())}" src="/js/eliminar-coleccion.js" defer></script>
+    <script th:if="${isAdmin && !(colecciones == null || colecciones.isEmpty())}" src="/js/editar-coleccion.js" defer></script>
     <script th:if="${isAdmin}" src="/js/cargarHechos.js" defer></script>
-    <script src="/js/search-bar.js" defer></script>
+    <script th:unless="${colecciones == null || colecciones.isEmpty()}" src="/js/search-bar.js" defer></script>
 </th:block>
 
-<th:block th:unless="${colecciones == null || colecciones.isEmpty()}" th:fragment="pageStyles">
+<th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/colecciones.css}" />
 </th:block>
 
@@ -20,11 +20,9 @@
         <h1 class="page-title">
             Colecciones
         </h1>
-
+        <div th:replace="~{fragments/search-bar :: searchBar('colecciones')}" class="justify-content-center"></div>
         <div th:unless="${colecciones == null || colecciones.isEmpty()}" class="flex flex-col justify-center">
-            <div th:replace="~{fragments/search-bar :: searchBar('colecciones')}" class="justify-content-center"></div>
-
-            <div class="colecciones-container">
+                        <div class="colecciones-container">
                 <div th:each="coleccion : ${colecciones}" class="coleccion-card" th:data-id="${coleccion.id}">
                     <th:block th:replace="~{fragments/cards :: cardColeccion(${coleccion})}" />
                 </div>

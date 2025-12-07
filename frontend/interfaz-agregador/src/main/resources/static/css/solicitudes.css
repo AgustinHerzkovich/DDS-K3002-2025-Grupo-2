@@ -77,6 +77,14 @@
     gap: 0.25rem;
 }
 
+.info-value {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+}
+
 /* Badge de estado */
 .estado-badge {
     display: inline-block;
@@ -117,8 +125,10 @@
     justify-content: center;
     padding: 4rem 2rem;
     text-align: center;
-    color: #000000;
+    color: #4b5563;
     background: transparent;
+    width: 100%;
+    min-height: 300px;
 }
 
 .no-solicitudes .icon-large {
@@ -132,7 +142,7 @@
 .no-solicitudes p {
     font-size: 1.125rem;
     margin: 0;
-    color: #000000;
+    color: #4b5563;
 }
 
 /* Responsive */

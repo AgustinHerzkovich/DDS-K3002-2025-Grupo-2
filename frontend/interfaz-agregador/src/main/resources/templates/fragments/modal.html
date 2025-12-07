@@ -511,7 +511,12 @@
 			</h3>
 		</div>
 		<div class="modal-page-body">
-			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<div class="flex flex-col">
+				<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+				<small class="text-gray-600">
+					Los cambios se guardarán al hacer click en "Guardar Cambios"
+				</small>
+			</div>
 			<form id="form-editar-coleccion">
 				<div class="mb-4">
 					<label for="algoritmo-editar-coleccion" class="form-label">
@@ -521,15 +526,11 @@
 						</span>
 					</label>
 					<select id="algoritmo-editar-coleccion" class="form-input" required>
-						<option value="">Seleccione un algoritmo</option>
 						<option value="ABSOLUTO">Absoluto</option>
 						<option value="IRRESTRICTO">Irrestricto</option>
 						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
 						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
 					</select>
-					<small class="text-gray-600">
-						Este cambio se guardará al hacer clic en "Guardar Cambios"
-					</small>
 				</div>
 				<div class="mb-4">
 					<div class="mb-3">
