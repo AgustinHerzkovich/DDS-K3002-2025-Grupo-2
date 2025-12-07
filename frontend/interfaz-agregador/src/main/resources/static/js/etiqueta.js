@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         for (let i = 0; i < eliminarEtiquetaBtns.length; i++) {
             const etiquetaNombre = eliminarEtiquetaBtns[i].dataset.nombre;
+            const btnId = `btn-eliminar-${etiquetaNombre}`;
             console.log(`Nombre etiqueta ${i+1}: ${etiquetaNombre}`)
 
             const borrarBtn = document.getElementById(`eliminar-etiqueta-${etiquetaNombre}`)
-            borrarBtn.addEventListener("click", () => eliminarEtiqueta(etiquetaNombre));
+            borrarBtn.addEventListener("click", () => eliminarEtiqueta(etiquetaNombre, btnId));
         }
     }
 });
@@ -22,6 +23,8 @@ function agregarEtiqueta() {
         alert("Ingrese un nombre para la etiqueta");
         return;
     }
+
+    mostrarCargando("btn-agregar-etiqueta");
 
     fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
         method: 'POST',
@@ -46,15 +49,32 @@ function agregarEtiqueta() {
                 span.textContent = data.nombre;
 
                 const btnEliminar = document.createElement("button");
-                btnEliminar.textContent = "X";
+                const btnId = `btn-eliminar-${data.nombre}`;
+                btnEliminar.id = btnId;
                 btnEliminar.className = "btn-eliminar-etiqueta";
                 btnEliminar.dataset.nombre = data.nombre;
+                btnEliminar.style.display = "flex";
+                btnEliminar.style.alignItems = "center";
+                btnEliminar.style.justifyContent = "center";
+
+                const spanNombre = document.createElement("span");
+                spanNombre.id = `nombre-${btnId}`;
+                spanNombre.textContent = "X";
+
+                const spinnerDiv = document.createElement("div");
+                spinnerDiv.id = `spinner-${btnId}`;
+                spinnerDiv.className = "hidden border-2 border-white border-t-transparent rounded-full animate-spin";
+                spinnerDiv.style.width = "0.75rem";
+                spinnerDiv.style.height = "0.75rem";
+
+                btnEliminar.appendChild(spanNombre);
+                btnEliminar.appendChild(spinnerDiv);
 
                 li.appendChild(span);
                 li.appendChild(btnEliminar);
                 ul.appendChild(li);
 
-                btnEliminar.addEventListener("click", () => eliminarEtiqueta(data.nombre));
+                btnEliminar.addEventListener("click", () => eliminarEtiqueta(data.nombre, btnId));
 
                 input.value = ""; // limpiar input
             } else {
@@ -64,14 +84,19 @@ function agregarEtiqueta() {
         .catch(err => {
             console.error(err);
             alert("Error al agregar la etiqueta");
+        })
+        .finally(() => {
+            ocultarCargando("btn-agregar-etiqueta");
         });
 }
 
-function eliminarEtiqueta(nombreEtiqueta) {
+function eliminarEtiqueta(nombreEtiqueta, btnId) {
     if (!confirm(`¿Seguro que quieres eliminar la etiqueta ${nombreEtiqueta}?`))
         return;
 
     const nombreCodificado = encodeURIComponent(nombreEtiqueta);
+
+    mostrarCargando(btnId);
 
     fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
         method: 'DELETE',
@@ -89,5 +114,8 @@ function eliminarEtiqueta(nombreEtiqueta) {
         .catch(err => {
             console.error(err);
             alert("Error al eliminar la etiqueta");
+        })
+        .finally(() => {
+            ocultarCargando(btnId);
         });
 }
