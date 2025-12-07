@@ -30,10 +30,15 @@ async function gestionar(estado) {
     const sugerencia = document.getElementById('sugerencia').value || null;
     const payload = { estado: estado, sugerencia: sugerencia };
 
+    const btnId = estado === 'ACEPTADO' ? 'aceptarBtn' : 'rechazarBtn';
+
     try {
         const aceptarBtn = document.getElementById('aceptarBtn');
         const rechazarBtn = document.getElementById('rechazarBtn');
-        aceptarBtn.disabled = true; rechazarBtn.disabled = true;
+        aceptarBtn.disabled = true;
+        rechazarBtn.disabled = true;
+
+        mostrarCargando(btnId);
 
         const resp = await fetch('/gestionar-solicitud/' + currentId, {
             method: 'POST',
@@ -54,6 +59,7 @@ async function gestionar(estado) {
         console.error(e);
         alert('Error de comunicación: ' + e.message);
     } finally {
+        ocultarCargando(btnId);
         document.getElementById('aceptarBtn').disabled = false;
         document.getElementById('rechazarBtn').disabled = false;
     }
@@ -77,5 +83,18 @@ document.addEventListener('DOMContentLoaded', function() {
             openDetalle(id);
         });
     });
+
+    // Event listeners para los botones de aceptar y rechazar
+    const aceptarBtn = document.getElementById('aceptarBtn');
+    const rechazarBtn = document.getElementById('rechazarBtn');
+
+    if (aceptarBtn) {
+        aceptarBtn.addEventListener('click', () => gestionar('ACEPTADO'));
+    }
+
+    if (rechazarBtn) {
+        rechazarBtn.addEventListener('click', () => gestionar('RECHAZADO'));
+    }
+
     console.log('LOG 7: Lista de hechos del servidor:', hechosPendientes);
 });

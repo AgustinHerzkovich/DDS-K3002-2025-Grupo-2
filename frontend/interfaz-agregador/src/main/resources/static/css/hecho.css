@@ -81,7 +81,7 @@
 
 .contenido-texto {
     margin-top: 2rem;
-    padding: 0 1.5rem;
+    padding: 1.5rem;
     background-color: #f9fafb;
     border-radius: 0.5rem;
     line-height: 1.75;
@@ -91,6 +91,20 @@
     overflow-wrap: break-word;
     white-space: pre-wrap;
     max-width: 100%;
+}
+
+.contenido-texto h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.contenido-texto p {
+    margin: 0;
+}
+
+.contenido-vacio {
+    color: #9ca3af;
+    font-style: italic;
 }
 
 .ultima-modificacion {

@@ -142,9 +142,9 @@
 		</div>
 		<div class="modal-footer">
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-hecho')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-hecho', null)}" class="hidden"></div>
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-hecho')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-hecho', null)}" class="hidden"></div>
 		</div>
 	</div>
 </div>
@@ -214,7 +214,7 @@
 		</div>
 		<div class="modal-footer">
 			<th:block th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" />
-			<th:block th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion')}" />
+			<th:block th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion', null)}" />
 		</div>
 	</div>
 </div>
@@ -328,7 +328,7 @@
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-perfil')}" />
-			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-perfil')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-perfil', null)}" />
 		</div>
 	</div>
 </div>
@@ -465,8 +465,8 @@
 		</div>
 		<div class="modal-footer">
 			<button class="btn-quaternary" onclick="closeDetalle()">Volver</button>
-			<button id="rechazarBtn" class="btn-secondary" onclick="gestionar('RECHAZADO')">Rechazar</button>
-			<button id="aceptarBtn" class="btn-primary" onclick="gestionar('ACEPTADO')">Aceptar</button>
+			<th:block th:replace="~{fragments/form :: spinnerButton('Rechazar', 'rechazarBtn', 'btn-secondary')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Aceptar', 'aceptarBtn', 'btn-primary')}" />
 		</div>
 	</div>
 </div>
@@ -498,7 +498,7 @@
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-solicitar-eliminacion')}" />
-			<th:block th:replace="~{fragments/form :: spinnerButton('Enviar', 'enviar-solicitud-eliminacion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Enviar', 'enviar-solicitud-eliminacion', null)}" />
 		</div>
 	</div>
 </div>
@@ -557,7 +557,7 @@
 		</div>
 		<div class="modal-footer">
 			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-coleccion')}" />
-			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-coleccion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-coleccion', null)}" />
 		</div>
 	</div>
 </div>
@@ -641,7 +641,7 @@
 		</div>
 		<div class="modal-footer">
 			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-fuente')}" class="hidden"></div>
-			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-fuente')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-fuente', null)}" class="hidden"></div>
 		</div>
 	</div>
 </div>

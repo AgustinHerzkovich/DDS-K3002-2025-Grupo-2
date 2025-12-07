@@ -94,16 +94,15 @@
                             <ul id="lista-etiquetas" class="tag-list">
                                 <li th:each="etiqueta : *{etiquetas}" th:data-nombre="${etiqueta.nombre}" class="tag-item">
                                     <span th:text="${etiqueta.nombre}"></span>
-                                    <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="btn-eliminar-etiqueta flex items-center justify-center" aria-label="Eliminar Etiqueta">
-                                        X
+                                    <button th:id="|eliminar-etiqueta-${etiqueta.nombre}|" type="button" th:data-nombre="${etiqueta.nombre}" class="btn-eliminar-etiqueta" aria-label="Eliminar Etiqueta" style="display: flex; align-items: center; justify-content: center;">
+                                        <span th:id="|nombre-btn-eliminar-${etiqueta.nombre}|">X</span>
+                                        <div th:id="|spinner-btn-eliminar-${etiqueta.nombre}|" class="hidden border-2 border-white border-t-transparent rounded-full animate-spin" style="width: 0.75rem; height: 0.75rem;"></div>
                                     </button>
                                 </li>
                             </ul>
                             <div class="agregar-tag gap-3">
                                 <input id="nuevaEtiqueta" type="text" maxlength="20" placeholder="Agregar nueva etiqueta" class="input-tag max-w-[250px] w-auto" aria-label="Agregar Nueva Etiqueta"/>
-                                <button id="btn-agregar-etiqueta" type="button" class="btn-tertiary" aria-label="Agregar Etiqueta">
-                                    Agregar
-                                </button>
+                                <th:block th:replace="~{fragments/form :: spinnerButton('Agregar', 'btn-agregar-etiqueta', 'btn-tertiary')}" />
                             </div>
                         </div>
                         <div class="lista-etiquetas" th:if="${!isAdmin}">
@@ -143,7 +142,7 @@
                         </button>
                         <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
                         <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId}">
-                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar')}" />
+                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar', null)}" />
                         </th:block>
                     </div>
                 </div>
@@ -155,7 +154,7 @@
                 <p th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" th:text="*{contenidoTexto}">
                     Aquí va el contenido de texto del hecho...
                 </p>
-                <p th:unless="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" class="form-label text-s mb-2 text-muted-high">
+                <p th:unless="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" class="contenido-vacio">
                     No hay contenido de texto en este hecho
                 </p>
             </div>
