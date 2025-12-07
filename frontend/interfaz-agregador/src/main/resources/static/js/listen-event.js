@@ -52,16 +52,16 @@ function listenLimpiarFiltrosMapa(inputsContainer) {
             }
         });
 
-        // Preservar el parámetro search si existe
+        // Quitar los query params de filtros específicos
         const params = new URLSearchParams(window.location.search);
-        const searchParam = params.get('search');
+        const filtrosToRemove = ['categoria', 'fechaAcontecimientoDesde', 'fechaAcontecimientoHasta',
+                                  'fechaReporteDesde', 'fechaReporteHasta', 'latitud', 'longitud', 'radio'];
 
-        // Construir URL limpia preservando search
-        if (searchParam) {
-            window.location.href = '/mapa?search=' + encodeURIComponent(searchParam);
-        } else {
-            window.location.href = '/mapa';
-        }
+        filtrosToRemove.forEach(param => params.delete(param));
+
+        // Construir la nueva URL manteniendo el pathname actual y los demás query params
+        const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+        window.location.href = newUrl;
     });
 }
 

@@ -20,6 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
         function cargarHechos(page) {
             const endpoint = `${baseEndpoint}?page=${page}&size=${pageSize}`;
 
+            // Mostrar spinner mientras se cargan los hechos
+            listaMisHechos.innerHTML = `
+                <style>
+                    @keyframes spin-hechos {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+                <div class="flex justify-center items-center py-[3rem]">
+                    <div style="width: 55px; height: 55px; border: 6px solid #d1d5db; border-top: 6px solid #0047AB; border-radius: 50%; animation: spin-hechos 0.8s linear infinite;"></div>
+                </div>`;
+            paginationControls.classList.add("hidden");
+
             fetch(endpoint, {headers: {'Authorization': 'Bearer ' + jwtToken}})
                 .then(response => response.json())
                 .then(data => {
@@ -88,6 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch(error => {
                     console.error('Error al obtener los hechos:', error);
+                    listaMisHechos.innerHTML = `
+                        <div class="gap-[2rem] flex flex-col items-center py-[2rem]">
+                            <div class="flex flex-col items-center gap-[0.5rem]">
+                                <h4 class="font-bold text-xl text-red-600">Error al cargar los hechos</h4>
+                                <h5 class="text-l">Por favor, intente nuevamente</h5>
+                            </div>
+                        </div>`;
+                    paginationControls.classList.add("hidden");
                 });
         }
 

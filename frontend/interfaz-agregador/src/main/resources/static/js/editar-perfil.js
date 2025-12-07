@@ -39,6 +39,8 @@ function guardarPerfil() {
         return;
     }
 
+    mostrarCargando("editar-perfil");
+
     fetch('/editarIdentidad', {
         method: 'POST',
         headers:  getHeaders(),
@@ -59,5 +61,8 @@ function guardarPerfil() {
         .catch(err => {
             console.error('Error de comunicación:', err);
             alert('Error de comunicación al intentar guardar el perfil. Verifique la conexión del servidor.');
+        })
+        .finally(() => {
+            ocultarCargando("editar-perfil");
         })
 }

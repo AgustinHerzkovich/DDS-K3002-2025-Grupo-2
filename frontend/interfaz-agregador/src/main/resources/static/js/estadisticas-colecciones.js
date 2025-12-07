@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarColecciones();
     });
 
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, () => `estadisticas - ${limiteColecciones} provincias con mas hechos - coleccion '${nombreColeccion.textContent}'.csv`)
+    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, () => `estadisticas-${limiteColecciones}_provincias_con_mas_hechos-coleccion_${nombreColeccion.textContent}.csv`)
 
 
     cargarColecciones();
