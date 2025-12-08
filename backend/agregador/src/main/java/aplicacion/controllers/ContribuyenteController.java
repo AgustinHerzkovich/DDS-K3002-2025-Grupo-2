@@ -7,11 +7,14 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.AutorizacionDenegadaException;
 import aplicacion.excepciones.MailYaExisteException;
 import aplicacion.services.ContribuyenteService;
+import aplicacion.services.FuenteMutexManager;
 import domain.excepciones.IdInvalidoException;
 import domain.helpers.JwtUtil;
 import domain.peticiones.Validaciones;
 import aplicacion.services.HechoService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ContribuyenteController {
     private final ContribuyenteService contribuyenteService;
     private final HechoService hechoService;
+    private final Logger logger = LoggerFactory.getLogger(ContribuyenteController.class);
 
     public ContribuyenteController(ContribuyenteService contribuyenteService, HechoService hechoService) {
         this.contribuyenteService = contribuyenteService;
@@ -69,7 +73,7 @@ public class ContribuyenteController {
     public ResponseEntity<ContribuyenteOutputDto> crearContribuyente(@Valid @RequestBody ContribuyenteInputDto contribuyenteInputDto) {
         try {
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.guardarContribuyente(contribuyenteInputDto);
-            System.out.println("Se ha creado el contribuyente: " + contribuyenteProcesado.getId()); // esto cuando se haga el front lo podemos sacar
+            logger.info("Se ha creado el contribuyente: {}", contribuyenteProcesado.getId()); // esto cuando se haga el front lo podemos sacar
             return ResponseEntity.status(201).body(contribuyenteProcesado);
         } catch (MailYaExisteException e) {
             ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(contribuyenteInputDto.getMail());
@@ -101,7 +105,7 @@ public class ContribuyenteController {
         try {
             Validaciones.validarId(id);
             ContribuyenteOutputDto contribuyenteProcesado = contribuyenteService.modificarIdentidadAContribuyente(id, identidadContribuyenteInputDto);
-            System.out.println("Se ha modificado la identidad: " + identidadContribuyenteInputDto.getNombre() + " " + identidadContribuyenteInputDto.getApellido() + " al contribuyente: " + id);
+            logger.info("Se ha modificado la identidad: {} {} al contribuyente: {}", identidadContribuyenteInputDto.getNombre(), identidadContribuyenteInputDto.getApellido(), id);
             return ResponseEntity.ok(contribuyenteProcesado);
         } catch (IdInvalidoException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

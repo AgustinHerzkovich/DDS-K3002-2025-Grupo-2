@@ -8,7 +8,10 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.ColeccionService;
+import aplicacion.services.FuenteMutexManager;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,7 @@ import java.util.List;
 @RequestMapping
 public class ColeccionController {
     private final ColeccionService coleccionService;
+    private final Logger logger = LoggerFactory.getLogger(ColeccionController.class);
 
     public ColeccionController(ColeccionService coleccionService) {
         this.coleccionService = coleccionService;
@@ -37,7 +41,7 @@ public class ColeccionController {
     public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
-        System.out.println("Colección creada: " + coleccionOutput.getId());
+        logger.info("Colección creada: {}", coleccionOutput.getId());
         return ResponseEntity.status(201).body(coleccionOutput);
     }
 
@@ -144,7 +148,7 @@ public class ColeccionController {
                                                    @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
         try {
             ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
-            System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
+            logger.info("Coleccion: {}, nuevo algoritmo: {}", idColeccion, nuevoAlgoritmo);
             return ResponseEntity.ok(coleccion);
         } catch (ColeccionNoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -157,7 +161,7 @@ public class ColeccionController {
                                                          @Valid @RequestBody FuenteInputDto fuenteInputDto) {
         try {
             ColeccionOutputDto coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
-            System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
+            logger.info("Coleccion: {}, nueva fuente: id: {}", idColeccion, fuenteInputDto.getId());
             return ResponseEntity.ok(coleccionOutputDto);
         }catch (ColeccionNoEncontradaException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -170,7 +174,7 @@ public class ColeccionController {
                                              @PathVariable(name = "fuenteId") String fuenteId) {
         try {
             ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
-            System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId);
+            logger.info("Coleccion: {}, fuente quitada: id: {}", idColeccion, fuenteId);
             return ResponseEntity.ok(coleccion);
         } catch (ColeccionNoEncontradaException | FuenteNoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -183,7 +187,7 @@ public class ColeccionController {
     public ResponseEntity<?> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);
-            System.out.println("Coleccion: " + idColeccion + " eliminada");
+            logger.info("Coleccion: {} eliminada", idColeccion);
             return ResponseEntity.noContent().build();
         } catch (ColeccionNoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

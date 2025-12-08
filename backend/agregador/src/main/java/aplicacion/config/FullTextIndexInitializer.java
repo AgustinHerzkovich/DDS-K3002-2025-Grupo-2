@@ -1,6 +1,9 @@
 package aplicacion.config;
 
+import aplicacion.controllers.HechoController;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class FullTextIndexInitializer {
 
     private final JdbcTemplate jdbcTemplate;
+    private final Logger logger = LoggerFactory.getLogger(FullTextIndexInitializer.class);
 
     public FullTextIndexInitializer(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -38,9 +42,9 @@ public class FullTextIndexInitializer {
                 jdbcTemplate.execute("CREATE FULLTEXT INDEX idx_fulltext_coleccion ON coleccion (titulo, descripcion)");
             }
 
-            System.out.println("FullText indexes checked/created successfully!");
+            logger.info("FullText indexes checked/created successfully!");
         } catch (Exception e) {
-            System.err.println("Error creating FullText indexes: " + e.getMessage());
+            logger.warn("Error creating FullText indexes: {}", e.getMessage());
         }
     }
     @PostConstruct
@@ -68,9 +72,9 @@ public class FullTextIndexInitializer {
                 jdbcTemplate.execute("CREATE FULLTEXT INDEX idx_fulltext_coleccion_titulo ON coleccion (titulo)");
             }
 
-            System.out.println("FullText indexes checked/created successfully!");
+            logger.info("FullText indexes checked/created successfully!");
         } catch (Exception e) {
-            System.err.println("Error creating FullText indexes: " + e.getMessage());
+            logger.warn("Error creating FullText indexes: {}", e.getMessage());
         }
     }
 }
