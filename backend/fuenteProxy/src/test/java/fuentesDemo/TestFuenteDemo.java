@@ -5,28 +5,30 @@ import aplicacion.domain.fuentesProxy.fuentesDemo.ConexionPrueba;
 import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
 import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.domain.hechos.Hecho;
+import aplicacion.repositories.FuenteProxyRepository;
+import aplicacion.services.FuenteProxyService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 
-public class TestFuenteDemo {
-    // Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
-    public static void main(String[] args) {
-        Conexion conexionPrueba = new ConexionPrueba();
-        FuenteDemo fuente = new FuenteDemo(conexionPrueba, "http://fake-url.com");
+@SpringBootTest
+class ServiceTest{
+    @Autowired
+    private FuenteProxyService fuenteProxyService;
 
-        fuente.pedirHechos();
 
-        /*System.out.println("Hechos importados:");
-        for (Hecho h : fuente.importarHechos()) {
-            System.out.println(h.getTitulo() + " - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
+    @Test
+    void testPedirHechosFuenteDemo() {
+        FuenteDemo fuenteDemo = new FuenteDemo( new ConexionPrueba(),"http://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292");
+        fuenteProxyService.pedirHechosFuente(fuenteDemo);
+        for (Hecho hecho : fuenteDemo.getHechos()) {
+            assert hecho != null;
+            assert hecho.getTitulo().equals("Primer hecho") ;
         }
-
-        FuenteMetamapa fuenteMetamapa= new FuenteMetamapa("http://localhost:8084/agregador/hechos");
-        System.out.println("Hechos importados:");
-        for (Hecho h : fuenteMetamapa.importarHechos()) {
-            System.out.println(h.getTitulo() + " - "+ h.getOrigen() +" - " + h.getDescripcion() + " - " + h.getFechaAcontecimiento());
-        }*/
     }
 }
-
 /*{
         "titulo": "Coleccion 1",
         "descripcion": "Coleccion de colecciones jijo",

@@ -38,7 +38,7 @@ public class FuenteDemo extends FuenteProxy {
     public FuenteDemo() {
         this.hechoBuilder = new HechoBuilder();
     }
-
+    /*
     @Override
     public void pedirHechos() {
         // basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
@@ -55,5 +55,7 @@ public class FuenteDemo extends FuenteProxy {
     @Override
     public List<Hecho> importarHechos(DiscoveryClient discoveryClient) {
         return hechos;
-    }
+    }*/
+
+
 }
