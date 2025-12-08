@@ -36,7 +36,7 @@ public class ColeccionController {
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
-    //@PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());

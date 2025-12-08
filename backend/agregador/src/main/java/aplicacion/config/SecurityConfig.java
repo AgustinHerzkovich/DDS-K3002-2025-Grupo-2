@@ -39,7 +39,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers(HttpMethod.POST , "/colecciones").authenticated()
+                        .requestMatchers(HttpMethod.POST , "/colecciones").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/colecciones/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/colecciones/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/colecciones/**").authenticated()
