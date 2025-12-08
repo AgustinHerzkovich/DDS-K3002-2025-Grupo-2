@@ -52,9 +52,6 @@ public class FactHecho {
 
 
 
-    public void sumarOcurrencia() {
-        cantidadDeHechos++;
-    }
     public void sumarOcurrencias(Long i) {
         cantidadDeHechos += i;
     }

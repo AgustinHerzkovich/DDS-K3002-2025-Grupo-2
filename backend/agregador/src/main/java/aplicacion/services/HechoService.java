@@ -156,7 +156,7 @@ public class HechoService {
 
     public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException, HechoNoVisibleException {
         Hecho hecho = obtenerHechoPorId(idHecho);
-        if (!hecho.esVisible()) {
+        if (!hecho.getVisible()) {
             throw new HechoNoVisibleException("El hecho con id: " + idHecho + " no está visible.");
         }
         return hechoOutputMapper.map(hecho);

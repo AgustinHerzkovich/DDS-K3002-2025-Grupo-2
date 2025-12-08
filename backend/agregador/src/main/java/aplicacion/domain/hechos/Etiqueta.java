@@ -18,8 +18,4 @@ public class Etiqueta {
     public Etiqueta(String nombre){
         this.nombre = nombre;
     }
-
-    public boolean esIdenticaA(String etiquetaNombre) {
-        return this.nombre.equals(etiquetaNombre);
-    }
 }

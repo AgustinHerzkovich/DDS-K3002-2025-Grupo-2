@@ -93,11 +93,4 @@ public class Hecho {
         this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
         this.estadoRevision = EstadoRevision.PENDIENTE; // Cada vez que se edita, vuelve a estar pendiente de revisión
     }
-
-    public boolean estaAceptado() {
-        return this.estadoRevision == EstadoRevision.ACEPTADO;
-    }
-    public boolean estaPendiente() {
-        return this.estadoRevision == EstadoRevision.PENDIENTE;
-    }
 }
