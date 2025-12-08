@@ -1,5 +1,7 @@
 package aplicacion.utils;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -15,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -39,18 +42,23 @@ import java.util.Scanner;
 
 public class IdentificadorDeUbicacion {
 
-    private static IdentificadorDeUbicacion instance;
-    private final List<Provincia> provinciasCache = new ArrayList<>();
+    private static final Cache<String, IdentificadorDeUbicacion> instancia =  Caffeine.newBuilder()
+            .expireAfterAccess(30, TimeUnit.SECONDS)
+            .maximumSize(1)
+            .softValues()
+            .build();
+    private final Cache<String, Provincia> cacheUbicaciones =  Caffeine.newBuilder()
+            .expireAfterAccess(30, TimeUnit.SECONDS)
+            .maximumSize(50000)
+            .build();
+    private final List<Provincia> provincias = new ArrayList<>();
     private final Provincia defaultProvincia = new Provincia(null, "Desconocida", "Desconocido", "XX");
     // Lista de provincias en memoria
     private final GeometryFactory gf = new GeometryFactory();
     // Factory necesario para crear puntos y evaluarlos
 
     public static IdentificadorDeUbicacion getInstance() {
-        if (instance == null) {
-            instance = new IdentificadorDeUbicacion();
-        }
-        return instance;
+        return instancia.get("singleton", k -> new IdentificadorDeUbicacion());
     }
 
     private IdentificadorDeUbicacion() {
@@ -81,7 +89,7 @@ public class IdentificadorDeUbicacion {
             String pais = (String) feature.getProperties().get("COUNTRY");
             String iso = (String) feature.getProperties().get("ISO_1");
             // Busca el nombre de la provincia
-            provinciasCache.add(new Provincia(geomJts, provincia, pais, iso));
+            provincias.add(new Provincia(geomJts, provincia, pais, iso));
             // Guarda la provincia, sus nombres y geometria convertida a memoria
         }
 
@@ -101,15 +109,32 @@ public class IdentificadorDeUbicacion {
     }
 
     public Provincia identificar(double latitud, double longitud) {
-        Point punto = gf.createPoint(new Coordinate(longitud, latitud));
-        // Crea un punto en la ubicacion para ver si esta en una provincia
-        for (Provincia provincia : provinciasCache) {
-            if (provincia.getGeom().contains(punto)) {
-                return provincia;
-                // Si esta devuelve la provincia
+        return cacheUbicaciones.get(latitud + "|" + longitud, (k) -> {
+            Point punto = gf.createPoint(new Coordinate(longitud, latitud));
+
+            for (Provincia provincia : provincias) {
+                if (provincia.getGeom().contains(punto)) {
+                    return provincia;
+                }
             }
-        }
-        return defaultProvincia;
-        // Si llegue aca, es que no esta en el mapa
+
+            Provincia provinciaMasCercana = null;
+            double distanciaMinima = Double.MAX_VALUE;
+            double distanciaMaximaGrados = 0.5; // ~55 km en grados
+
+            for (Provincia provincia : provincias) {
+                double distancia = provincia.getGeom().distance(punto);
+                if (distancia < distanciaMinima) {
+                    distanciaMinima = distancia;
+                    provinciaMasCercana = provincia;
+                }
+            }
+
+            if (provinciaMasCercana != null && distanciaMinima <= distanciaMaximaGrados) {
+                return provinciaMasCercana;
+            }
+
+            return defaultProvincia;
+        });
     }
 }
