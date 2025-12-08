@@ -20,6 +20,6 @@ public abstract class FuenteProxy{
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    public abstract void pedirHechos();
-    public abstract List<Hecho> importarHechos(DiscoveryClient discoveryClient);
+    /*public abstract void pedirHechos();
+    public abstract List<Hecho> importarHechos(DiscoveryClient discoveryClient);*/
 }

@@ -10,9 +10,10 @@ public class TestFuenteDemo {
     // Crear una fuente demo con una biblioteca de prueba que devuelva 2 hechos
     public static void main(String[] args) {
         Conexion conexionPrueba = new ConexionPrueba();
+        
         FuenteDemo fuente = new FuenteDemo(conexionPrueba, "http://fake-url.com");
 
-        fuente.pedirHechos();
+        //fuente.pedirHechos();
 
         /*System.out.println("Hechos importados:");
         for (Hecho h : fuente.importarHechos()) {
