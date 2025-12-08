@@ -3,6 +3,7 @@ package aplicacion.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 
@@ -20,8 +21,17 @@ public class ConfigService {
         this.discoveryClient = discoveryClient;
     }
 
+    @Value("${agregador.id}")
+    private String agregadorID;
+
     public String getUrlAgregador() {
-        return getUrl("agregador");
+        return discoveryClient.getInstances(agregadorID)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + agregadorID +  " registradas"))
+                .getUri()
+                .toString()
+                .concat("/" + agregadorID);
     }
 
     public String getUrlFuentesEstaticas() {

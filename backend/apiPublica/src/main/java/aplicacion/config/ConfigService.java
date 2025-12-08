@@ -1,6 +1,7 @@
 package aplicacion.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.core.io.ClassPathResource;
@@ -16,9 +17,18 @@ public class ConfigService {
     public ConfigService(DiscoveryClient discoveryClient) throws IOException {
         this.discoveryClient = discoveryClient;
     }
+    @Value("${agregador.id}")
+    private String agregadorID;
 
     public String getUrlAgregador() {
-        return getUrl("agregador");
+        return discoveryClient.getInstances("agregador")
+                .stream()
+                .filter(instance -> instance.getMetadata().get("agregadorID") != agregadorID)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + "agregador" +  " registradas"))
+                .getUri()
+                .toString()
+                .concat("/" + "agregador");
     }
 
     public String getUrlEstadisticas() {
