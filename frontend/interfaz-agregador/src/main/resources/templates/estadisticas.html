@@ -1,0 +1,139 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+        <h1 class="titulo-estadisticas">¿Qué estás buscando?</h1>
+        <div id="confirm-overlay" class="confirm-overlay" style="display:none;">
+            <div class="confirm-box">
+                <p class="confirm-title">¿Está seguro que desea actualizar las estadísticas?</p>
+                <p class="confirm-subtitle">
+                Este proceso se realiza de forma automática cada 1 semana y puede tardar bastante.
+                </p>
+            </span>
+                </p>
+
+                <div class="confirm-buttons">
+                    <button id="confirm-yes" class="btn-confirm">Actualizar</button>
+                    <button id="confirm-no" class="btn-cancel">Cancelar</button>
+                </div>
+            </div>
+            <div id="spinner-overlay" class="spinner-overlay" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+
+        <script>
+
+            function mostrarConfirmacion() {
+                document.getElementById("confirm-overlay").style.display = "flex";
+            }
+
+            function ocultarConfirmacion() {
+                document.getElementById("confirm-overlay").style.display = "none";
+            }
+
+            function mostrarSpinner() {
+                document.getElementById("spinner-overlay").style.display = "flex";
+            }
+
+            function ocultarSpinner() {
+                document.getElementById("spinner-overlay").style.display = "none";
+            }
+
+            function actualizarEstadisticas() {
+                mostrarConfirmacion();
+
+                const btnYes = document.getElementById("confirm-yes");
+                const btnNo = document.getElementById("confirm-no");
+
+                btnYes.onclick = null;
+                btnNo.onclick = null;
+
+                btnYes.onclick = function () {
+                    mostrarSpinner();
+
+                    fetch('http://localhost:8086/apiAdministrativa/estadisticas/actualizar', {
+                        method: "POST",
+                        headers: { 'Authorization': 'Bearer ' + jwtToken },
+                    })
+                    .then(response => {
+                        ocultarSpinner();
+                        ocultarConfirmacion();
+                        if (response.ok) {
+                            alert("Estadísticas actualizadas correctamente");
+                        } else {
+                            alert("Error al actualizar las estadísticas");
+                        }
+                    })
+                    .catch(error => {
+                        ocultarSpinner();
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor");
+                    });
+                };
+
+                btnNo.onclick = ocultarConfirmacion;
+            }
+
+        </script>
+
+        <div th:if="${isAdmin}" class="btn-update-wrapper">
+            <button class="btn-update" onclick="actualizarEstadisticas()">Actualizar estadísticas</button>
+        </div>
+
+        <div class="contenedor-botones-stats">
+
+            <!-- Botón: Estadísticas de colecciones -->
+            <a href="/stats/colecciones" class="boton-stats btn-colecciones-stats">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M0 0h1v15h15v1H0V0zm4 5h2v9H4V5zm4-3h2v12H8V2zm4 6h2v6h-2V8z"/>
+                </svg>
+                Estadísticas de colecciones
+            </a>
+
+            <!-- Botón: Estadísticas de categorías -->
+            <a href="/stats/categorias" class="boton-stats btn-categorias-stats">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path d="M1 15V1h1v14H1zm3-6h2v6H4v-6zm3-4h2v10H7V5zm3 2h2v8h-2V7zm3-5h2v13h-2V2z"/>
+                </svg>
+                Estadísticas de categorías
+            </a>
+
+            
+            <!-- Botón: Categorías con más hechos -->
+            <a href="/stats/categoriasMasHechos" class="boton-stats btn-categorias-mas-hechos">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M2 20 L8 10 L12 14 L16 8 L22 20 H2 Z"/>
+                </svg>
+                Categorías con más hechos
+            </a>
+
+            <!-- Botón: Estadísticas de solicitudes -->
+            <a href="/stats/solicitudes" class="boton-stats btn-solicitudes-stats" style="opacity: 1; color: #8B3A00; background-color: rgb(255, 243, 224);">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                    <path fill="#000000" d="M8 0a8 8 0 1 0 8 8H8V0z"/>
+                    <path d="M15 8A7 7 0 0 0 8 1v7h7z" fill="white"/>
+                </svg>
+                Estadísticas de solicitudes
+            </a>
+
+            <!-- Botón: Exportar como CSV -->
+            <a href="/stats/exportar" id="btn-exportar-csv" class="boton-stats btn-exportar-csv">
+                <svg class="icono-svg-stats" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="60" height="60">
+                    <path d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/>
+                    <rect x="8" y="10" width="8" height="1" fill="white"/>
+                    <rect x="8" y="13" width="8" height="1" fill="white"/>
+                    <rect x="8" y="16" width="5" height="1" fill="white"/>
+                    <text x="12" y="7" text-anchor="middle" dominant-baseline="middle" fill="white" font-family="Arial, sans-serif" font-size="4" letter-spacing="0.2">
+                        CSV
+                    </text>
+                </svg>
+                Exportar como CSV
+            </a>
+        </div>
+
+    </main>
+</th:block>

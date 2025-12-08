@@ -1,7 +1,7 @@
 package aplicacion.services;
 
 import aplicacion.domain.conexiones.Conexion;
-import aplicacion.repositorios.RepositorioDeConexiones;
+import aplicacion.repositories.ConexionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Service
 public class ConexionService {
-    private final RepositorioDeConexiones conexionRepository;
+    private final ConexionRepository conexionRepository;
 
-    public ConexionService(RepositorioDeConexiones conexionRepository) {
+    public ConexionService(ConexionRepository conexionRepository) {
         this.conexionRepository = conexionRepository;
     }
 

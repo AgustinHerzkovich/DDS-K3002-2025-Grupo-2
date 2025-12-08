@@ -18,7 +18,7 @@ public class HechoTest {
     @Test
     @DisplayName("Debe poderse instanciar")
     public void sePuedeInstanciarUnHecho(){
-        new Hecho("titulo", "descripcion", new Categoria("categoria"), new Ubicacion(2d, 2d), LocalDateTime.now(), Origen.DATASET, "contenidoTexto", List.of(new Multimedia(RandomThingsGenerator.generarLinkYoutubeAleatorio())), true, new Contribuyente(true, null, "mail"));
+        new Hecho(null, "titulo", "descripcion", new Categoria("categoria"), new Ubicacion(2d, 2d), LocalDateTime.now(), Origen.DATASET, "contenidoTexto", List.of(new Multimedia(RandomThingsGenerator.generarLinkYoutubeAleatorio())), true, new Contribuyente(true, null, "mail"));
     }
     @Test
     @DisplayName("Debe generar una clave unica")

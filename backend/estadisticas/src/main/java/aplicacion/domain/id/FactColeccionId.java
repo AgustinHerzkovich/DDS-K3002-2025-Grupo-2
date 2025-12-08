@@ -23,8 +23,7 @@ public class FactColeccionId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FactColeccionId)) return false;
-        FactColeccionId that = (FactColeccionId) o;
+        if (!(o instanceof FactColeccionId that)) return false;
         return Objects.equals(coleccionId, that.coleccionId) &&
                 Objects.equals(ubicacionId, that.ubicacionId) &&
                 Objects.equals(categoriaId, that.categoriaId);

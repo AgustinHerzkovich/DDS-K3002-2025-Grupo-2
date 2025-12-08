@@ -25,7 +25,7 @@ Aceptar uno de los hechos (con sugerencia) y rechazar el otro
 Pedir los hechos y validar que solo se devuelva aquel que fue aceptado
 
 Ejemplo:
-POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: { "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, "mail": "mail@gmail.com" }
+POST http://localhost:8082/fuentesDinamicas/contribuyentes -> body: {  "id" : "93849fae-2c60-4d97-821c-8064ada25b67", "esAdministrador": true, "identidad": { "nombre": "Lucas", "apellido": "Piacentini", "fechaNacimiento": "1990-01-01" }, "mail": "mail@gmail.com" }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo",
                                              "descripcion": "Descripcion ejemplo",
@@ -45,7 +45,27 @@ POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                                }
                                              ],
                                              "anonimato": false,
-                                             "contribuyenteId": 1
+                                             "contribuyenteId": {
+                                                                                                             "titulo": "Titulo ejemplo",
+                                                                                                             "descripcion": "Descripcion ejemplo",
+                                                                                                             "categoria": {
+                                                                                                               "nombre": "Categoria ejemplo"
+                                                                                                             },
+                                                                                                             "ubicacion": {
+                                                                                                               "latitud": 0,
+                                                                                                               "longitud": 0
+                                                                                                             },
+                                                                                                             "fechaAcontecimiento": "2019-07-10T19:28:54.832Z",
+                                                                                                             "origen": "CONTRIBUYENTE",
+                                                                                                             "contenidoTexto": "Contenido texto ejemplo",
+                                                                                                             "contenidoMultimedia": [
+                                                                                                               {
+                                                                                                                 "url": "urlVideo"
+                                                                                                               }
+                                                                                                             ],
+                                                                                                             "anonimato": false,
+                                                                                                             "autor": "93849fae-2c60-4d97-821c-8064ada25b67"
+                                                                                                           }
                                            }
 POST http://localhost:8082/fuentesDinamicas/hechos -> body: {
                                              "titulo": "Titulo ejemplo 2",

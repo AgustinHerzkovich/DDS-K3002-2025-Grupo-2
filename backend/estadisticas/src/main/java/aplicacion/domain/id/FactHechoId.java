@@ -28,8 +28,7 @@ public class FactHechoId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FactHechoId)) return false;
-        FactHechoId that = (FactHechoId) o;
+        if (!(o instanceof FactHechoId that)) return false;
         return Objects.equals(ubicacionId, that.ubicacionId) &&
                 Objects.equals(tiempoId, that.tiempoId) &&
                 Objects.equals(categoriaId, that.categoriaId);

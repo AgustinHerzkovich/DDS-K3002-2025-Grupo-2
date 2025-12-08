@@ -7,8 +7,8 @@ import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.dto.mappers.HechoOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.HechoNoEncontradoException;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.ContribuyenteService;
 import aplicacion.services.HechoService;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
@@ -19,13 +19,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import testUtils.ContribuyenteFactory;
 import testUtils.HechoFactory;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +35,9 @@ class HechoServiceTest
 {
 
     @Mock
-    private RepositorioDeHechos repositorioDeHechos;
+    private HechoRepository repositorioDeHechos;
     @Mock
-    private RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private HechoXColeccionRepository repositorioDeHechosXColeccion;
     @Mock
     private HechoOutputMapper hechoOutputMapper;
     @Mock
@@ -141,14 +137,16 @@ class HechoServiceTest
         Hecho hecho = HechoFactory.crearHechoAleatorio();
         hecho.setAutor(ContribuyenteFactory.crearContribuyenteAleatorio());
         hecho.getAutor().setId(123L);
-        Long contribuyenteId = hecho.getAutor().getId();
+        String contribuyenteId = hecho.getAutor().getId();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Hecho> page = new PageImpl<>(List.of(hecho));
         when(contribuyenteService.obtenerContribuyente(contribuyenteId)).thenReturn(hecho.getAutor());
-        when(repositorioDeHechos.findByAutorId(contribuyenteId)).thenReturn(List.of(hecho));
+        when(repositorioDeHechos.findByAutorIdOrderByVisibleDesc(contribuyenteId, pageable)).thenReturn(page);
         when(hechoOutputMapper.map(hecho)).thenReturn(hechoOutputDto);
 
-        List<HechoOutputDto> resultado = hechoService.obtenerHechosDeContribuyente(contribuyenteId);
+        Page<HechoOutputDto> resultado = hechoService.obtenerHechosDeContribuyente(contribuyenteId, pageable);
 
-        assertEquals(1, resultado.size());
+        assertEquals(1, resultado.getContent().size());
         verify(contribuyenteService).obtenerContribuyente(contribuyenteId);
     }
 }

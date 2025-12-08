@@ -1,21 +1,39 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout(~{fragments/top-content :: searchBar('hechos')}, ~{::main}, ~{fragments/right-menu :: map(${isLoggedIn}, ${isAdmin})})}">
-
-<th:block th:fragment="pageStyles">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/mapa.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/crear-hecho.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/pagination.css}" />
+<th:block th:fragment="pageScripts">
+    <script th:inline="javascript">
+        let hechos = /*[[${hechos}]]*/ [];
+    </script>
+    <script src="/js/mapa.js" defer></script>
+    <script src="/js/filtrar-mapa.js" defer></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/js/search-bar.js" defer></script>
 </th:block>
 
-<body>
-<main style="position: relative;">
-    <div th:replace="~{fragments/mid-content :: mapa(${hechos})}"></div>
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <style>
+        .pagination-controls {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</th:block>
 
-    <!-- Contenedor para los paneles laterales -->
-    <div style="position: absolute; top: 100px; left: 10px; z-index: 1000; display: flex; flex-direction: column; gap: 16px; max-width: 380px;">
-        <div th:replace="~{fragments/mid-content :: hechosRecientes(${hechosRecientes})}"></div>
-        <div th:replace="~{fragments/mid-content :: filtros}"></div>
-    </div>
-</main>
-</body>
-</html>
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, ${true})}">
+    <main class="relative h-[86vh] w-full">
+        <div id="map" class="h-full w-full m-0 p-0 z-[1] relative"></div>
+
+        <div class="absolute top-2.5 left-2.5 z-[1000] max-w-[380px]">
+            <th:block th:replace="~{fragments/modal :: modalFiltrosMapa}"/>
+        </div>
+
+        <th:block th:replace="~{fragments/pagination-controls :: paginationControls(
+            @{${currentUri}(page=${currentPage - 1}, size=${pageSize}, categoria=${categoria},
+            fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
+            fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})},
+            @{${currentUri}(page=${currentPage + 1}, size=${pageSize}, categoria=${categoria},
+            fechaReporteDesde=${fechaReporteDesde}, fechaReporteHasta=${fechaReporteHasta},
+            fechaAcontecimientoDesde=${fechaAcontecimientoDesde}, fechaAcontecimientoHasta=${fechaAcontecimientoHasta}, search=${search})}
+        )}" />
+    </main>
+</th:block>

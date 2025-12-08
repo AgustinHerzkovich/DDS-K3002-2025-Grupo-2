@@ -1,0 +1,404 @@
+.contenedor-botones-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto;
+    margin-bottom: 10%;
+    margin-top: 5%;
+    padding: 0 20px;
+}
+
+.boton-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 3rem 1rem;
+    border-radius: 20px;
+
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.boton-stats:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.icono-svg-stats {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+.btn-colecciones-stats {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
+.btn-categorias-stats {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.btn-solicitudes-stats {
+    /* Fondo claro pero texto más oscuro para mejorar contraste
+       Usamos !important para sobreescribir posibles estilos inline aplicados en runtime */
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.btn-solicitudes-stats:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.btn-solicitudes-stats:focus {
+    outline: none;
+}
+
+.btn-categorias-mas-hechos {
+    background: #fffdbe; 
+    color: #5e5f00
+}
+
+@media (max-width: 900px) {
+    .contenedor-botones-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.titulo-estadisticas {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.tarjeta-estadisticas-solicitudes {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fafafa;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.subtitulo-estadisticas-solicitudes {
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+.contenedor-grafico-solicitudes {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.mensaje-sin-solicitudes {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+    padding: 1rem 0;
+}
+
+
+.contenedor-no-solicitudes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 3rem 1rem;
+    min-height: 250px;
+
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+.mensaje-sin-solicitudes {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+}
+.contenedor-error-solicitudes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 3rem 1rem;
+    min-height: 250px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+.mensaje-error-solicitudes {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.tarjeta-grafico {
+    background-color: #fff;
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 16px;
+    margin: 10px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#btn-descargar-csv {
+    background: linear-gradient(to bottom, #e53935, #b71c1c);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin: 2%;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-weight: 600;
+    max-width: 20%;
+    align-self: center;
+}
+
+#btn-descargar-csv:hover {
+    background: linear-gradient(to bottom, #f44336, #c62828);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+#btn-descargar-csv:active {
+    background: linear-gradient(to bottom, #b71c1c, #7f0000);
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.btn-exportar-csv {
+    background: #cbb4f9; /* púrpura pastel */
+    color: #4a2ca6;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-exportar-csv {
+    background: #e7dbff;
+    color: #6a4fbf;
+    padding: 3rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-exportar-csv:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.btn-exportar-csv:active {
+    transform: scale(0.97);
+}
+
+.btn-exportar-csv .icono-svg-stats {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+
+.btn-descargar-csv {
+    background: linear-gradient(to bottom, #e53935, #b71c1c);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin: 2%;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    font-weight: 600;
+    max-width: 20%;
+    align-self: center;
+}
+
+.btn-descargar-csv:hover {
+    background: linear-gradient(to bottom, #f44336, #c62828);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+.btn-descargar-csv:active {
+    background: linear-gradient(to bottom, #b71c1c, #7f0000);
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.btn-update-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.btn-update {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn-update::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 5px;
+    z-index: 0;
+}
+
+.btn-update span, .btn-update svg {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-update:hover::before {
+    background-color: rgba(127, 29, 29, 0.3);
+    border-color: #f87171;
+}
+
+.btn-update.active::before {
+    background-color: rgba(127, 29, 29, 0.2);
+    border-color: #b91c1c;
+}
+
+.confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.confirm-box {
+    background: white;
+    padding: 22px 28px;
+    border-radius: 10px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirm-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.confirm-subtitle {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-confirm, .btn-cancel {
+    width: 48%;
+    padding: 8px 0;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    background-color: #000000;
+    color: white;
+}
+.btn-confirm:hover {
+    background-color: #330000;
+}
+
+.btn-cancel {
+    background-color: #ccc;
+    color: #222;
+}
+.btn-cancel:hover {
+    background-color: #bbb;
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 55px;
+    height: 55px;
+    border: 6px solid #ccc;
+    border-top: 6px solid #0047AB;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}

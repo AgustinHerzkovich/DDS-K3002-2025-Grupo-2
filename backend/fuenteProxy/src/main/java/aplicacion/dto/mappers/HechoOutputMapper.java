@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class HechoOutputMapper {
     public HechoOutputDto map(Hecho hecho) {
-        return new HechoOutputDto(hecho.getTitulo(),
+        return new HechoOutputDto(
+                hecho.getId(),
+                hecho.getTitulo(),
                 hecho.getDescripcion(),
                 hecho.getCategoria(),
                 hecho.getUbicacion(),

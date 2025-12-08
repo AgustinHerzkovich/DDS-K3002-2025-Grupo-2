@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "aplicacion.repositorios.olap",
+        basePackages = "aplicacion.repositories.olap",
         entityManagerFactoryRef = "estadisticasEntityManagerFactory",
         transactionManagerRef = "estadisticasTransactionManager"
 )

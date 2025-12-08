@@ -3,6 +3,7 @@ package aplicacion.controllers;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.ArchivoService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,13 +19,13 @@ public class HechoController {
     }
 
     @GetMapping("/{fuente}/hechos")
-    public List<HechoOutputDto> obtenerHechos(@PathVariable("fuente") String fuente,
-                                              @RequestParam(value = "fechaMayorA", required = false)
+    public ResponseEntity<List<HechoOutputDto>> obtenerHechos(@PathVariable(name = "fuente") String fuente,
+                                                              @RequestParam(value = "fechaMayorA", required = false)
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA) {
         if (fechaMayorA == null) {
-            return archivoService.leerHechos(fuente);
+            return ResponseEntity.ok(archivoService.leerHechos(fuente));
         } else {
-            return archivoService.leerHechosConFechaMayorA(fuente, fechaMayorA);
+            return ResponseEntity.ok(archivoService.leerHechosConFechaMayorA(fuente, fechaMayorA));
         }
     }
 }

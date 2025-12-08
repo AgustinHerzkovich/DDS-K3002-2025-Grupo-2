@@ -2,20 +2,24 @@ package aplicacion.services;
 
 import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
+import aplicacion.domain.hechosYSolicitudes.solicitudes.EstadoSolicitudSpam;
 import aplicacion.dtos.*;
-import aplicacion.repositorios.olap.*;
+import aplicacion.repositories.olap.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EstadisticasService {
     private final DimensionCategoriaRepository dimensionCategoriaRepository;
-    private FactHechoRepository factHechoRepository;
-    private FactColeccionRepository factColeccionRepository;
-    private FactSolicitudRepository factSolicitudRepository;
-    private DimensionColeccionRepository dimensionColeccionRepository;
+    private final FactHechoRepository factHechoRepository;
+    private final FactColeccionRepository factColeccionRepository;
+    private final FactSolicitudRepository factSolicitudRepository;
+    private final DimensionColeccionRepository dimensionColeccionRepository;
 
     public EstadisticasService(FactHechoRepository factHechoRepository, FactColeccionRepository factColeccionRepository, FactSolicitudRepository factSolicitudRepository, DimensionColeccionRepository dimensionColeccionRepository, DimensionCategoriaRepository dimensionCategoriaRepository) {
         this.factSolicitudRepository = factSolicitudRepository;
@@ -45,22 +49,43 @@ public class EstadisticasService {
                 .getContent();
     }
 
-    public CantidadSolicitudesSpamDTO obtenerCantidadSolicitudSpam() {
-        Long solicitudes_spam = factSolicitudRepository.obtenerCantidadSolicitudesSpam();
-        Long solicitudes_totales = factSolicitudRepository.obtenerCantidadSolicitudesTotal();
-        if (solicitudes_spam == null) solicitudes_spam = 0L;
-        if (solicitudes_totales == null) solicitudes_totales = 0L;
-        return new CantidadSolicitudesSpamDTO(solicitudes_spam, solicitudes_totales);
-    }
-
-    public List<ColeccionDisponibleDTO> obtenerColeccionesDisponibles(int page, int limit) {
-        return dimensionColeccionRepository.findAll(PageRequest.of(page, limit)).getContent().stream().map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion())).toList();
+    public List<CantidadSolicitudesPorTipo> obtenerCantidadSolicitudSpam() {
+        List<String> tiposDeSolicitudes = List.of(
+                "EstadoSolicitudAceptada",
+                "EstadoSolicitudPendiente",
+                "EstadoSolicitudRechazada",
+                "EstadoSolicitudSpam",
+                "EstadoSolicitudPrescripta");
+        List<CantidadSolicitudesPorTipo> solicitudesPorTipos =
+                new ArrayList<>(factSolicitudRepository.obtenerCantidadDeSolicitudesPorTipo()
+                        .stream()
+                        .map(CantidadSolicitudesPorTipo::new)
+                        .toList());        for(String tipoDeSolicitud : tiposDeSolicitudes){
+            if(!solicitudesPorTipos.stream().map(CantidadSolicitudesPorTipo::getTipoDeSolicitud).toList().contains(tipoDeSolicitud))
+                solicitudesPorTipos.add(new CantidadSolicitudesPorTipo(tipoDeSolicitud, 0L));
+        }
+        return solicitudesPorTipos;
     }
 
     public List<String> obtenerTodasColeccionesDisponiblesIds() {
         return dimensionColeccionRepository.findAll().stream().map(DimensionColeccion::getIdColeccionAgregador).toList();
     }
+
     public List<String> obtenerTodasCategoriasDisponiblesIds() {
         return dimensionCategoriaRepository.findAll().stream().map(DimensionCategoria::getNombre).toList();
+    }
+
+    public Page<ColeccionDisponibleDTO> obtenerColeccionesDisponibles(int page, int limit, String search) {
+        if(search == null)
+            return dimensionColeccionRepository.findAll(PageRequest.of(page, limit)).map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion()));
+        else
+            return dimensionColeccionRepository.findSearch(search, PageRequest.of(page, limit)).map(dimensionColeccion -> new ColeccionDisponibleDTO(dimensionColeccion.getIdColeccionAgregador(), dimensionColeccion.getTitulo(), dimensionColeccion.getDescripcion()));
+    }
+
+    public Page<CategoriaDisponibleDTO> obtenerCategoriasDisponibles(Integer page, Integer limit, String search) {
+        if(search == null)
+            return dimensionCategoriaRepository.findAll(PageRequest.of(page, limit)).map(dimensionCategoria -> new CategoriaDisponibleDTO(dimensionCategoria.getNombre()));
+        else
+            return dimensionCategoriaRepository.findSearch(search, PageRequest.of(page, limit)).map(dimensionCategoria -> new CategoriaDisponibleDTO(dimensionCategoria.getNombre()));
     }
 }

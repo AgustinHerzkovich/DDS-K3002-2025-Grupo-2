@@ -18,7 +18,7 @@ public class RevisionHecho {
     private Long id;
     @ManyToOne
     private Contribuyente administrador;
-    @OneToOne
+    @ManyToOne
     private Hecho hecho;
     private LocalDateTime fecha;
 

@@ -2,7 +2,7 @@ package testUnitarios.services;
 
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeCategorias;
+import aplicacion.repositories.CategoriaRepository;
 import aplicacion.services.CategoriaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class CategoriaServiceTest {
 
     @Mock
-    private RepositorioDeCategorias repositorioDeCategorias;
+    private CategoriaRepository repositorioDeCategorias;
 
     @InjectMocks
     private CategoriaService categoriaService;

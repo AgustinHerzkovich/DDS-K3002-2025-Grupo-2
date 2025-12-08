@@ -1,0 +1,67 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.logout-card {
+    background-color: #1e1e1e;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    text-align: center;
+    max-width: 400px;
+    width: 90vw;
+}
+
+.logout-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+.btn-logout {
+    background-color: #ff3b3f;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.btn-logout:hover {
+    background-color: #e03236;
+}
+
+.btn-cancel {
+    display: inline-block;
+    color: #bb86fc;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    color: #d0aaff;
+}

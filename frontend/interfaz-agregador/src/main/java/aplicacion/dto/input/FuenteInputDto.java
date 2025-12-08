@@ -16,13 +16,11 @@ import lombok.NoArgsConstructor;
         property = "tipo"                // nombre del campo que indica el tipo concreto
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = FuenteEstaticaInputDto.class, name = "estatica"),
-        @JsonSubTypes.Type(value = FuenteDinamicaInputDto.class, name = "dinamica"),
-        @JsonSubTypes.Type(value = FuenteProxyInputDto.class, name = "proxy")
+        @JsonSubTypes.Type(value = FuenteEstaticaInputDto.class, name = "ESTATICA"),
+        @JsonSubTypes.Type(value = FuenteDinamicaInputDto.class, name = "DINAMICA"),
+        @JsonSubTypes.Type(value = FuenteProxyInputDto.class, name = "PROXY")
 })
 @AllArgsConstructor
 public class FuenteInputDto {
     private String id;
-    private String ip;
-    private Integer puerto;
 }

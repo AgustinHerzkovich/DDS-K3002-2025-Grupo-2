@@ -1,10 +1,12 @@
 package aplicacion.dto.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Getter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoriaInputDto {
+    @Size(max = 50, message = "El nombre de la categoría no puede tener más de 50 caracteres")
     private String nombre;
 }

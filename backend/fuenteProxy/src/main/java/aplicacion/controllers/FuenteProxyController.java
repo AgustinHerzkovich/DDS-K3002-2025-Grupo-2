@@ -2,16 +2,19 @@ package aplicacion.controllers;
 
 import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
 import aplicacion.dto.input.FuenteProxyInputDto;
-import aplicacion.dto.output.FuenteDisponibleOutputDto;
 import aplicacion.dto.output.FuenteProxyOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.services.excepciones.FuenteNoEncontradaException;
+import aplicacion.excepciones.FuenteNoEncontradaException;
 
 import aplicacion.services.FuenteProxyService;
+import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,12 +27,16 @@ public class FuenteProxyController {
     }
 
     @GetMapping("/hechos")
-    public List<HechoOutputDto> obtenerHechos(){
+    public List<HechoOutputDto> obtenerHechos(@RequestParam(value = "fechaMayorA", required = false)
+                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA){
+        if (fechaMayorA != null) {
+            return fuenteProxyService.importarHechosConFechaMayorA(fechaMayorA);
+        }
         return fuenteProxyService.importarHechos();
     }
 
     @GetMapping("/{id}/hechos")
-    public ResponseEntity<?> obtenerHechosDeFuente(@PathVariable("id") String id){
+    public ResponseEntity<?> obtenerHechosDeFuente(@PathVariable(name = "id") String id){
         try {
             return ResponseEntity.ok(fuenteProxyService.importarHechosDeFuente(id));
         } catch (FuenteNoEncontradaException e) {
@@ -37,10 +44,11 @@ public class FuenteProxyController {
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@RequestBody FuenteProxyInputDto fuenteProxyInputDto){
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@Valid @RequestBody FuenteProxyInputDto fuenteProxyInputDto){
         FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
-        return ResponseEntity.ok(fuenteProxy);
+        return ResponseEntity.status(201).body(fuenteProxy);
     }
 
     @PostMapping("/fuentesMetamapa")

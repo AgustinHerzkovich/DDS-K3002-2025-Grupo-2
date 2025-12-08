@@ -3,24 +3,24 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.domain.usuarios.Contribuyente;
+import aplicacion.dto.input.HechoEdicionInputDto;
 import aplicacion.dto.input.HechoInputDto;
-import aplicacion.dto.mappers.HechoInputMapper;
-import aplicacion.dto.mappers.HechoOutputMapper;
+import aplicacion.dto.input.HechoReporteInputDto;
+import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.excepciones.CategoriaYaPresenteException;
-import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
-import aplicacion.excepciones.EtiquetaNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeEtiquetas;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
-import aplicacion.excepciones.HechoNoEncontradoException;
+import aplicacion.excepciones.*;
+import aplicacion.graphql.objects.HechoFiltros;
+import aplicacion.graphql.objects.HechoItem;
+import aplicacion.repositories.CategoriaRepository;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import aplicacion.utils.Md5Hasher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,63 +31,105 @@ import java.util.*;
 
 @Service
 public class HechoService {
-    private final RepositorioDeHechos repositorioDeHechos;
-    private final RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    private final HechoRepository hechoRepository;
+    private final HechoXColeccionRepository hechoXColeccionRepository;
     private final HechoOutputMapper hechoOutputMapper;
     private final NormalizadorDeHechos normalizadorDeHechos;
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
-    public HechoService(RepositorioDeHechos repositorioDeHechos, RepositorioDeHechosXColeccion repositorioDeHechosXColeccion, HechoOutputMapper hechoOutputMapper, NormalizadorDeHechos normalizadorDeHechos, HechoInputMapper hechoInputMapper, ContribuyenteService contribuyenteService, EtiquetaService etiquetaService) {
-        this.repositorioDeHechos = repositorioDeHechos;
-        this.repositorioDeHechosXColeccion = repositorioDeHechosXColeccion;
+    private final CategoriaInputMapper categoriaInputMapper;
+    private final UbicacionInputMapper ubicacionInputMapper;
+    private final MultimediaInputMapper multimediaInputMapper;
+    private final CategoriaRepository categoriaRepository;
+
+    public HechoService(HechoRepository hechoRepository,
+                        HechoXColeccionRepository hechoXColeccionRepository,
+                        HechoOutputMapper hechoOutputMapper,
+                        NormalizadorDeHechos normalizadorDeHechos,
+                        HechoInputMapper hechoInputMapper,
+                        ContribuyenteService contribuyenteService,
+                        EtiquetaService etiquetaService,
+                        CategoriaInputMapper categoriaInputMapper,
+                        UbicacionInputMapper ubicacionInputMapper,
+                        MultimediaInputMapper multimediaInputMapper,
+                        CategoriaRepository categoriaRepository) {
+        this.hechoRepository = hechoRepository;
+        this.hechoXColeccionRepository = hechoXColeccionRepository;
         this.hechoOutputMapper = hechoOutputMapper;
         this.normalizadorDeHechos = normalizadorDeHechos;
         this.hechoInputMapper = hechoInputMapper;
         this.contribuyenteService = contribuyenteService;
         this.etiquetaService = etiquetaService;
+        this.categoriaInputMapper = categoriaInputMapper;
+        this.ubicacionInputMapper = ubicacionInputMapper;
+        this.multimediaInputMapper = multimediaInputMapper;
+        this.categoriaRepository = categoriaRepository;
     }
 
     public void guardarHechos(List<Hecho> hechos) {
         for (Hecho hecho : hechos) {
             guardarOActualizarContribuyenteDeHecho(hecho);
         }
-        repositorioDeHechos.saveAll(hechos);
+        hechoRepository.saveAll(hechos);
     }
 
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return hechoRepository.findAll();
     }
 
     public List<HechoOutputDto> obtenerHechosSinPaginar() {
         return obtenerHechos().stream().map(hechoOutputMapper::map).toList();
     }
 
-    public Page<HechoOutputDto> obtenerHechosPorTextoLibreDto(String categoria,
-                                                              LocalDateTime fechaReporteDesde,
-                                                              LocalDateTime fechaReporteHasta,
-                                                              LocalDateTime fechaAcontecimientoDesde,
-                                                              LocalDateTime fechaAcontecimientoHasta,
-                                                              Double latitud,
-                                                              Double longitud,
-                                                              String textoLibre,
-                                                              Pageable pageable) {
-        return repositorioDeHechos.filtrarHechosPorTextoLibre(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable).map(hechoOutputMapper::map);
-    }
-
-    public Page<Hecho> obtenerHechosPorTextoLibre(String textoLibre, Pageable pageable) {
-        return repositorioDeHechos.findByTextoLibre(textoLibre, pageable);
-    }
-
-    public Page<HechoOutputDto> obtenerHechosAsDTO(String categoria,
+    public Page<HechoOutputDto> obtenerHechosAsDto(String categoria,
                                                    LocalDateTime fechaReporteDesde,
                                                    LocalDateTime fechaReporteHasta,
                                                    LocalDateTime fechaAcontecimientoDesde,
                                                    LocalDateTime fechaAcontecimientoHasta,
                                                    Double latitud,
                                                    Double longitud,
+                                                   Double radio,
+                                                   String textoLibre,
                                                    Pageable pageable) {
-        return repositorioDeHechos.filtrarHechos(categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable).map(hechoOutputMapper::map);
+        // Caso 1: sin texto libre → búsqueda normal
+        if (textoLibre == null || textoLibre.trim().isEmpty()) {
+            return hechoRepository
+                    .filtrarHechos(categoria, fechaReporteDesde, fechaReporteHasta,
+                            fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                            latitud, longitud, radio, pageable)
+                    .map(hechoOutputMapper::map);
+        }
+
+        // Caso 2: buscar primero coincidencia EXACTA
+        Page<Hecho> exactos = hechoRepository.buscarPorTituloExacto(
+                textoLibre.trim(),
+                categoria,
+                fechaReporteDesde,
+                fechaReporteHasta,
+                fechaAcontecimientoDesde,
+                fechaAcontecimientoHasta,
+                latitud,
+                longitud,
+                radio,
+                pageable
+        );
+
+        if (!exactos.isEmpty()) {
+            // Si hay exact matches → devolvemos SOLO esos
+            return exactos.map(hechoOutputMapper::map);
+        }
+
+        // Caso 3: si no hubo coincidencia exacta → full text
+        return hechoRepository
+                .filtrarHechosPorTextoLibre(categoria, fechaReporteDesde, fechaReporteHasta,
+                        fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                        latitud, longitud, radio, textoLibre.trim(), pageable)
+                .map(hechoOutputMapper::map);
+    }
+
+    public Page<Hecho> obtenerHechosPorTextoLibre(String textoLibre, Pageable pageable) {
+        return hechoRepository.findByTextoLibre(textoLibre, pageable);
     }
 
     public void guardarHechoPorColeccion(HechoXColeccion hechoPorColeccion) {
@@ -95,78 +137,110 @@ public class HechoService {
         Coleccion coleccion = hechoPorColeccion.getColeccion();
         // Si el hecho cumple los criterios de pertenencia de la colección, entonces se guarda, en caso contrario no
         if (coleccion.cumpleCriterios(hecho)) {
-            repositorioDeHechosXColeccion.save(hechoPorColeccion);
+            hechoXColeccionRepository.save(hechoPorColeccion);
         }
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable, String userId) throws ContribuyenteNoConfiguradoException, AutorizacionDenegadaException {
+        if (!contribuyenteId.equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para ver estos hechos.");
+        }
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorIdOrderByVisibleDescFechaCargaDesc(contribuyenteId, pageable).map(hechoOutputMapper::map);
     }
 
     public Hecho obtenerHechoPorId(String idHecho)  throws HechoNoEncontradoException{
-        return repositorioDeHechos.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
+        return hechoRepository.findById(idHecho).orElseThrow(() -> new HechoNoEncontradoException("No se encontro el hecho con id: " + idHecho));
     }
 
-    public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException {
+    public HechoOutputDto obtenerHechoDto(String idHecho) throws HechoNoEncontradoException, HechoNoVisibleException {
         Hecho hecho = obtenerHechoPorId(idHecho);
+        if (!hecho.esVisible()) {
+            throw new HechoNoVisibleException("El hecho con id: " + idHecho + " no está visible.");
+        }
         return hechoOutputMapper.map(hecho);
     }
 
-    public Page<Hecho> obtenerHechosPorColeccion(String idColeccion,
-                                                 String categoria,
-                                                 LocalDateTime fechaReporteDesde,
-                                                 LocalDateTime fechaReporteHasta,
-                                                 LocalDateTime fechaAcontecimientoDesde,
-                                                 LocalDateTime fechaAcontecimientoHasta,
-                                                 Double latitud,
-                                                 Double longitud,
-                                                 Pageable pageable) {
-        return repositorioDeHechos.findByFiltrosYColeccion(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
+    public Page<HechoOutputDto> obtenerHechosIrrestrictosPorColeccion(String idColeccion,
+                                                                                      String categoria,
+                                                                                      LocalDateTime fechaReporteDesde,
+                                                                                      LocalDateTime fechaReporteHasta,
+                                                                                      LocalDateTime fechaAcontecimientoDesde,
+                                                                                      LocalDateTime fechaAcontecimientoHasta,
+                                                                                      Double latitud,
+                                                                                      Double longitud,
+                                                                                      Double radio,
+                                                                                      String textoLibre,
+                                                                                      Pageable pageable) {
+        if (textoLibre == null || textoLibre.trim().isEmpty()) {
+            return hechoRepository.findByFiltrosYColeccionIrrestrictos(
+                    idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
+                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
+            ).map(hechoOutputMapper::map);
+        }
+
+        // 1. Buscar exact match
+        Page<Hecho> exactos = hechoRepository.findByFiltrosYColeccionIrrestrictos_TituloExacto(
+                idColeccion, textoLibre.trim(), categoria,
+                fechaReporteDesde, fechaReporteHasta,
+                fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                latitud, longitud, radio, pageable
+        );
+
+        if (!exactos.isEmpty()) {
+            return exactos.map(hechoOutputMapper::map);
+        }
+
+        // 2. Buscar full-text
+        return hechoRepository.findByFiltrosYColeccionIrrestrictosYTextoLibre(
+                idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
+                fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                latitud, longitud, radio, textoLibre.trim(), pageable
+        ).map(hechoOutputMapper::map);
     }
 
-    public Page<Hecho> obtenerHechosPorColeccionYTextoLibre(String idColeccion,
-                                                            String categoria,
-                                                            LocalDateTime fechaReporteDesde,
-                                                            LocalDateTime fechaReporteHasta,
-                                                            LocalDateTime fechaAcontecimientoDesde,
-                                                            LocalDateTime fechaAcontecimientoHasta,
-                                                            Double latitud,
-                                                            Double longitud,
-                                                            String textoLibre,
-                                                            Pageable pageable) {
-        return repositorioDeHechos.findByFiltrosYColeccionYTextoLibre(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
-    }
+    public Page<HechoOutputDto> obtenerHechosCuradosPorColeccion(String idColeccion,
+                                                                                 String categoria,
+                                                                                 LocalDateTime fechaReporteDesde,
+                                                                                 LocalDateTime fechaReporteHasta,
+                                                                                 LocalDateTime fechaAcontecimientoDesde,
+                                                                                 LocalDateTime fechaAcontecimientoHasta,
+                                                                                 Double latitud,
+                                                                                 Double longitud,
+                                                                                 Double radio,
+                                                                                 String textoLibre,
+                                                                                 Pageable pageable) {
+        if (textoLibre == null || textoLibre.trim().isEmpty()) {
+            return hechoRepository.findByFiltrosYColeccionCurados(
+                    idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
+                    fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, radio, pageable
+            ).map(hechoOutputMapper::map);
+        }
 
-    public Page<Hecho> obtenerHechosCuradosPorColeccion(String idColeccion,
-                                                        String categoria,
-                                                        LocalDateTime fechaReporteDesde,
-                                                        LocalDateTime fechaReporteHasta,
-                                                        LocalDateTime fechaAcontecimientoDesde,
-                                                        LocalDateTime fechaAcontecimientoHasta,
-                                                        Double latitud,
-                                                        Double longitud,
-                                                        Pageable pageable) {
-        return repositorioDeHechos.findByFiltrosYColeccionCurados(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, pageable);
-    }
+        // 1. Exact match
+        Page<Hecho> exactos = hechoRepository.findByFiltrosYColeccionCurados_TituloExacto(
+                idColeccion, textoLibre.trim(), categoria,
+                fechaReporteDesde, fechaReporteHasta,
+                fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                latitud, longitud, radio, pageable
+        );
 
-    public Page<Hecho> obtenerHechosCuradosPorColeccionYTextoLibre(String idColeccion,
-                                                                   String categoria,
-                                                                   LocalDateTime fechaReporteDesde,
-                                                                   LocalDateTime fechaReporteHasta,
-                                                                   LocalDateTime fechaAcontecimientoDesde,
-                                                                   LocalDateTime fechaAcontecimientoHasta,
-                                                                   Double latitud,
-                                                                   Double longitud,
-                                                                   String textoLibre,
-                                                                   Pageable pageable) {
-        return repositorioDeHechos.findByFiltrosYColeccionYTextoLibreCurados(idColeccion, categoria, fechaReporteDesde, fechaReporteHasta, fechaAcontecimientoDesde, fechaAcontecimientoHasta, latitud, longitud, textoLibre, pageable);
+        if (!exactos.isEmpty()) {
+            return exactos.map(hechoOutputMapper::map);
+        }
+
+        // 2. Full text
+        return hechoRepository.findByFiltrosYColeccionCuradosYTextoLibre(
+                idColeccion, categoria, fechaReporteDesde, fechaReporteHasta,
+                fechaAcontecimientoDesde, fechaAcontecimientoHasta,
+                latitud, longitud, radio, textoLibre.trim(), pageable
+        ).map(hechoOutputMapper::map);
     }
 
     public void guardarHecho(Hecho hecho) {
         guardarOActualizarContribuyenteDeHecho(hecho);
-        repositorioDeHechos.save(hecho);
+        hechoRepository.save(hecho);
     }
 
     private void guardarOActualizarContribuyenteDeHecho(Hecho hecho) {
@@ -179,12 +253,24 @@ public class HechoService {
     public HechoOutputDto agregarHecho(HechoInputDto hechoInputDTO) {
         Hecho hecho = hechoInputMapper.map(hechoInputDTO);
         normalizadorDeHechos.normalizar(hecho);
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
+        return hechoOutputMapper.map(hecho);
+    }
+
+    public HechoOutputDto agregarHechoReportado(HechoReporteInputDto hechoReporteInputDto) throws ContribuyenteNoConfiguradoException {
+        String autorId = hechoReporteInputDto.getAutor();
+        Contribuyente contribuyente = null;
+        if (autorId != null) {
+            contribuyente = contribuyenteService.obtenerContribuyente(hechoReporteInputDto.getAutor());
+        }
+        Hecho hecho = hechoInputMapper.mapReporte(hechoReporteInputDto, contribuyente);
+        normalizadorDeHechos.normalizar(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 
     public void borrarHechosPorColeccion(Coleccion coleccion) {
-        repositorioDeHechosXColeccion.deleteAllByColeccionId(coleccion.getId());
+        hechoXColeccionRepository.deleteAllByColeccionId(coleccion.getId());
     }
 
     public void quitarHechosDeSublista(List<Hecho> listaOriginal, List<Hecho> hechosAQuitar){
@@ -194,9 +280,10 @@ public class HechoService {
     public List<Hecho> hallarHechosDuplicadosDeBD(List<Hecho> hechosAEvaluar){
         Md5Hasher hasher = Md5Hasher.getInstance();
         List<String> codigosUnicos = hechosAEvaluar.stream().map(Hecho::getClaveUnica).map(hasher::hash).toList();
-        return repositorioDeHechos.findByCodigoHasheadoIn(codigosUnicos);
+        return hechoRepository.findByCodigoHasheadoIn(codigosUnicos);
     }
 
+    @Transactional
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
         List<Fuente> fuentes = coleccion.getFuentes();
         List<Hecho> hechos = fuentes.stream().flatMap(fuente -> fuente.getHechos().stream()).toList();
@@ -224,10 +311,52 @@ public class HechoService {
         }
         return hechosDuplicados;
     }
+
+    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto, String userId) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException, AutorizacionDenegadaException {
+        Hecho hecho = hechoRepository.findById(id)
+                .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
+        this.validarHechoEditable(hecho);
+
+        if (!hecho.getAutor().getId().equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
+        }
+
+        // Buscar o crear la categoría antes de asignarla
+        Categoria categoria = null;
+        if (hechoEdicionInputDto.getCategoria() != null) {
+            String nombreCategoria = hechoEdicionInputDto.getCategoria().getNombre();
+            categoria = categoriaRepository.findByNombre(nombreCategoria)
+                    .orElseGet(() -> categoriaRepository.save(new Categoria(nombreCategoria)));
+        }
+
+        hecho.editar(hechoEdicionInputDto.getTitulo(),
+                hechoEdicionInputDto.getDescripcion(),
+                categoria,
+                hechoEdicionInputDto.getUbicacion() != null ? ubicacionInputMapper.map(hechoEdicionInputDto.getUbicacion()) : null,
+                hechoEdicionInputDto.getFechaAcontecimiento(),
+                hechoEdicionInputDto.getContenidoTexto(),
+                hechoEdicionInputDto.getContenidoMultimedia() != null ? hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null);
+
+        hecho = hechoRepository.save(hecho);
+        return hechoOutputMapper.map(hecho);
+    }
+
+    private void validarHechoEditable(Hecho hecho) throws PlazoEdicionVencidoException, AnonimatoException {
+        LocalDateTime fechaCarga = hecho.getFechaCarga();
+        LocalDateTime fechaActual = LocalDateTime.now();
+        if (!fechaCarga.isAfter(fechaActual.minusWeeks(1))) { // Si pasó más de una semana desde que se subió, se arroja una excepción
+            throw new PlazoEdicionVencidoException();
+        }
+
+        if (hecho.getAnonimato()) {
+            throw new AnonimatoException();
+        }
+    }
+
     @Transactional
     public Etiqueta agregarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException {
         Etiqueta etiqueta;
-        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        Optional<Hecho> hecho = hechoRepository.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
         etiquetaName = normalizadorDeHechos.normalizarEtiqueta(etiquetaName);
@@ -241,28 +370,138 @@ public class HechoService {
             etiqueta = etiquetaService.agregarEtiqueta(etiquetaName);
         }
         hecho.get().getEtiquetas().add(etiqueta);
-        repositorioDeHechos.save(hecho.get());
+        hechoRepository.save(hecho.get());
         return etiqueta;
     }
 
     public HechoOutputDto eliminarEtiqueta(String hechoId, String etiquetaName) throws HechoNoEncontradoException, EtiquetaNoEncontradaException {
-        Optional<Hecho> hecho = repositorioDeHechos.findById(hechoId);
+        Optional<Hecho> hecho = hechoRepository.findById(hechoId);
         if(hecho.isEmpty())
             throw new HechoNoEncontradoException("Hecho " + hechoId + " no encontrado");
         List<Etiqueta> etiquetas = hecho.get().getEtiquetas();
         if(etiquetas.stream().anyMatch(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName))) {
             etiquetas.removeIf(etiqueta -> Objects.equals(etiqueta.getNombre(), etiquetaName));
-            repositorioDeHechos.save(hecho.get());
+            hechoRepository.save(hecho.get());
             return hechoOutputMapper.map(hecho.get());
         }
         throw new EtiquetaNoEncontradaException("No se encontró la etiqueta" + etiquetaName);
     }
 
     public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
-        List<String> opciones = currentSearch.length() >= 3 ? repositorioDeHechos.findAutocompletado(currentSearch, limit) : repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
+        List<String> opciones = currentSearch.length() >= 3 ? hechoRepository.findAutocompletado(currentSearch, limit) : hechoRepository.findAutocompletadoLike(currentSearch, limit);
         if(opciones.isEmpty() && currentSearch.length() >=3){
-            return repositorioDeHechos.findAutocompletadoLike(currentSearch, limit);
+            return hechoRepository.findAutocompletadoLike(currentSearch, limit);
         }
         else return opciones;
+    }
+
+    public Page<HechoItem> obtenerHechosParaMapaGraphql(HechoFiltros filtros, Integer page, Integer limit) {
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<HechoOutputDto> hechosPage;
+        if (filtros == null) {
+             hechosPage = this.obtenerHechosAsDto(null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+        } else {
+            hechosPage = this.obtenerHechosAsDto(filtros.categoria() != null ? filtros.categoria() : null,
+                    filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                    filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                    filtros.latitud()!= null ? filtros.latitud() : null,
+                    filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
+                    filtros.search() != null  ? filtros.search() : null,
+                    pageable);
+        }
+
+        return mapHechosGraphql(hechosPage);
+    }
+
+    public Page<HechoItem> obtenerHechosDeColeccionIrrestrictosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit ){
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<HechoOutputDto> hechosPage;
+        if (filtros == null) {
+            hechosPage = this.obtenerHechosIrrestrictosPorColeccion(idColeccion,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+        } else {
+            hechosPage = this.obtenerHechosIrrestrictosPorColeccion(idColeccion,
+                    filtros.categoria() != null ? filtros.categoria() : null,
+                    filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                    filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                    filtros.latitud()!= null ? filtros.latitud() : null,
+                    filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
+                    filtros.search() != null ? filtros.search() : null,
+                    pageable);
+        }
+
+        return mapHechosGraphql(hechosPage);
+    }
+
+    public Page<HechoItem> obtenerHechosDeColeccionCuradosGraphql(String idColeccion, HechoFiltros filtros, Integer page, Integer limit){
+        Pageable pageable = Pageable.ofSize(limit).withPage(page);
+        Page<HechoOutputDto> hechosPage;
+        if (filtros == null) {
+            hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageable);
+        } else {
+            hechosPage = this.obtenerHechosCuradosPorColeccion(idColeccion,
+                    filtros.categoria() != null ? filtros.categoria() : null,
+                    filtros.fechaReporteDesde() != null ? filtros.fechaReporteDesde().toLocalDateTime() : null,
+                    filtros.fechaReporteHasta() != null ? filtros.fechaReporteHasta().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoDesde() != null ? filtros.fechaAcontecimientoDesde().toLocalDateTime() : null,
+                    filtros.fechaAcontecimientoHasta() != null ? filtros.fechaAcontecimientoHasta().toLocalDateTime(): null,
+                    filtros.latitud()!= null ? filtros.latitud() : null,
+                    filtros.longitud() != null ? filtros.longitud() : null,
+                    filtros.radio() != null ? filtros.radio() : null,
+                    filtros.search() != null ? filtros.search() : null,
+                    pageable);
+        }
+
+        return mapHechosGraphql(hechosPage);
+    }
+
+    private Page<HechoItem> mapHechosGraphql(Page<HechoOutputDto> hechosPage) {
+        return hechosPage.map(hecho -> new HechoItem(
+                hecho.getId(),
+                hecho.getTitulo(),
+                hecho.getDescripcion(),
+                hecho.getUbicacion().getLatitud(),
+                hecho.getUbicacion().getLongitud(),
+                hecho.getCategoria().getNombre(),
+                hecho.getFechaCarga() != null ? hecho.getFechaCarga().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getFechaAcontecimiento() != null ? hecho.getFechaAcontecimiento().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getFechaUltimaModificacion() != null ? hecho.getFechaUltimaModificacion().atOffset(java.time.ZoneOffset.UTC) : null,
+                hecho.getContenidoTexto(),
+                hecho.getAnonimato()
+        ));
     }
 }

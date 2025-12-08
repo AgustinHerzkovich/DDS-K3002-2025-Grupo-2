@@ -1,0 +1,54 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/statsCategorias.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+        <div class="estadisticas-categorias-container">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <div class="panel-categorias">
+                <label for="input-busqueda-categorias" class="sr-only">Buscar categorías</label>
+                <input type="text" id="input-busqueda-categorias" placeholder="Buscar categorías..." />
+
+                <ul id="lista-categorias" class="lista-categorias"></ul>
+                
+                <div class="paginacion-categorias">
+                    <button id="btn-anterior" disabled>Anterior</button>
+                    <span id="pagina-actual">1</span>
+                    <button id="btn-siguiente" disabled>Siguiente</button>
+                </div>
+            </div>
+
+            <div class="panel-detalle-categoria" id="panel-detalle-categoria">
+                <h2 id="nombre-categoria">Seleccione una categoría</h2>
+
+                <div class="tarjeta-grafico" id="tarjeta-provincias" style="display:none;">
+                    <h3>Hechos por provincia</h3>
+                    <div class="slider-container">
+                        <label for="slider-limite-provincias">Mostrar hasta <span id="valor-slider">10</span> provincias</label>
+                        <input type="range" id="slider-limite-provincias" min="1" max="50" value="10" />
+                        <button id="btn-actualizar-provincias" style="display:block; margin-bottom:10px;">Actualizar gráfico</button>
+                    </div>
+                    
+                    
+                    <canvas id="chart-provincias"></canvas>
+                    <button id="btn-descargar-csv" style="display:block;" class="btn-descargar-csv">Descargar como CSV</button>
+                </div>
+
+                <div class="tarjeta-grafico" id="tarjeta-hora-texto" style="display:none;">
+                    <h3 id="hora-mas-hechos" class="hora-mas-hechos"></h3>
+                </div>
+                <div class="tarjeta-grafico" id="tarjeta-hora-grafico" style="display:none;">
+                    <h3>Hechos por hora</h3>                    
+                    <canvas id="chart-hora"></canvas>
+                    <button id="btn-descargar-csv-horas" style="display:block;" class="btn-descargar-csv">Descargar como CSV</button>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="module" src="/js/estadisticas-categorias.js" defer ></script>
+    </main>
+</th:block>

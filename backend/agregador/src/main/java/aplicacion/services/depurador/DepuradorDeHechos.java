@@ -1,15 +1,12 @@
 package aplicacion.services.depurador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.colecciones.fuentes.FuenteDinamica;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
-import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.utils.ProgressBar;
 import org.springframework.stereotype.Service;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -1,10 +1,9 @@
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.SolicitudOutputDto;
-import aplicacion.services.ContribuyenteService;
 import aplicacion.services.SolicitudService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,23 +14,20 @@ import java.util.List;
 @Controller
 public class SolicitudController {
     private final SolicitudService solicitudService;
-    private final ContribuyenteService contribuyenteService;
 
-    public SolicitudController(SolicitudService solicitudService, ContribuyenteService contribuyenteService) {
+    public SolicitudController(SolicitudService solicitudService) {
         this.solicitudService = solicitudService;
-        this.contribuyenteService = contribuyenteService;
     }
 
     @GetMapping("/solicitudes")
-    @PreAuthorize("hasRole('ADMIN')")
     public String paginaSolicitudes(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "3") Integer size,
             Model model) {
+        TokenContext.addToken(model);
 
         PageWrapper<SolicitudOutputDto> pageWrapper = solicitudService.obtenerSolicitudes(page, size)
                 .block();
-
         if (pageWrapper == null) {
             model.addAttribute("solicitudes", List.of());
             model.addAttribute("currentPage", 0);

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SolicitudInputDto {
-    private Long solicitanteId;
+    private String solicitanteId;
     private String hechoId;
     private String motivo;
 }

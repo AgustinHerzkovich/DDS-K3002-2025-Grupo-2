@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.net.http.HttpTimeoutException;
 
@@ -17,6 +18,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleWebClientException(HttpHostConnectException ex) {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
     }
+
+
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<?> handleWebClientException(ResourceAccessException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+    }
+
     @ExceptionHandler(HttpResponseException.class)
     public ResponseEntity<?> handleFailedRequest(HttpResponseException ex) {
         return ResponseEntity.status(ex.getStatusCode()).build();

@@ -1,0 +1,44 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/statsColecciones.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/stats.css}" />
+</th:block>
+
+<th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
+    <main>
+        <div class="estadisticas-colecciones-container">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <div class="panel-colecciones">
+                <label for="input-busqueda-colecciones" class="sr-only">Buscar colecciones</label>
+                <input type="text" id="input-busqueda-colecciones" placeholder="Buscar colecciones..." />
+
+                <ul id="lista-colecciones" class="lista-colecciones"></ul>
+
+                <div class="paginacion-colecciones">
+                    <button id="btn-anterior" disabled>Anterior</button>
+                    <span id="pagina-actual">1</span>
+                    <button id="btn-siguiente" disabled>Siguiente</button>
+                </div>
+            </div>
+
+            <div class="panel-detalle-coleccion" id="panel-detalle-colecciones">
+                <h2 id="nombre-coleccion">Seleccione una colección</h2>
+                <h2 id="desc-coleccion" aria-label="Descripción de la colección"></h2>
+
+                <div class="tarjeta-grafico" id="tarjeta-provincias" style="display:none;">
+                    <h3>Hechos por provincia</h3>
+                    <div class="slider-container">
+                        <label for="slider-limite-provincias">Mostrar hasta <span id="valor-slider">10</span> provincias</label>
+                        <input type="range" id="slider-limite-provincias" min="1" max="50" value="10" />
+                        <button id="btn-actualizar-provincias">Actualizar gráfico</button>
+                    </div>
+                    <canvas id="chart-provincias"></canvas>
+                    <button id="btn-descargar-csv" class="btn-descargar-csv">Descargar como CSV</button>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="module" src="/js/estadisticas-colecciones.js" defer ></script>
+    </main>
+</th:block>

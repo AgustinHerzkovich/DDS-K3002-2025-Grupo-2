@@ -25,10 +25,25 @@
         <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
     <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-actuator</artifactId>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>3.2.3</version>
     </dependency>
+
+    <!-- RATE LIMITING (bucket4j) -->
+    <dependency>
+        <groupId>com.bucket4j</groupId>
+        <artifactId>bucket4j-core</artifactId>
+        <version>8.7.0</version>
+    </dependency>
+
+        <!-- ACTUATOR: Para monitorizar la aplicacion -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,12 +59,23 @@
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-registry-prometheus</artifactId>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
-    <dependency>
-        <groupId>com.github.ben-manes.caffeine</groupId>
-        <artifactId>caffeine</artifactId>
-        <version>3.2.3</version>
-    </dependency>
+
+        <!-- TRACING (ZIPKIN): Para seguir la pista de las peticiones -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter-brave</artifactId>
+        </dependency>
+
+        <!-- Enviar Logs a Loki -->
+        <dependency>
+            <groupId>com.github.loki4j</groupId>
+            <artifactId>loki-logback-appender</artifactId>
+            <version>1.4.2</version>
+        </dependency>
 </dependencies>
 
     <dependencyManagement>
@@ -64,4 +90,15 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>aplicacion.ApiPublicaAplicacion</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

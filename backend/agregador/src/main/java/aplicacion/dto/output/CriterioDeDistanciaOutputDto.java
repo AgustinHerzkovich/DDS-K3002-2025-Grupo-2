@@ -10,7 +10,7 @@ public class CriterioDeDistanciaOutputDto extends CriterioDePertenenciaOutputDto
     private Double distanciaMinima;
 
     public CriterioDeDistanciaOutputDto(Long id, UbicacionOutputDto ubicacionBase, Double distanciaMinima) {
-        super(id);
+        super(id, "DISTANCIA");
         this.ubicacionBase = ubicacionBase;
         this.distanciaMinima = distanciaMinima;
     }

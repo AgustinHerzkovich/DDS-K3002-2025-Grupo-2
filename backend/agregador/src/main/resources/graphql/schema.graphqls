@@ -1,0 +1,46 @@
+scalar DateTime
+
+type Hecho {
+    id: ID!
+    titulo: String
+    descripcion: String
+    latitud: Float
+    longitud: Float
+    categoria: String
+    fechaCarga: DateTime
+    fechaAcontecimiento: DateTime
+    fechaUltimaModificacion: DateTime
+    contenidoTexto: String
+    anonimato: Boolean
+}
+
+type PageInfo {
+    totalElements: Int!
+    totalPages: Int!
+    number: Int!
+    size: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
+
+type HechoItemPage {
+    content: [Hecho!]!
+    pageInfo: PageInfo!
+}
+
+input HechoFiltros {
+    categoria: String
+    fechaReporteDesde: DateTime
+    fechaReporteHasta: DateTime
+    fechaAcontecimientoDesde: DateTime
+    fechaAcontecimientoHasta: DateTime
+    latitud: Float
+    longitud: Float
+    radio: Float
+    search: String
+}
+
+type Query {
+    getHechos(filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
+    getHechosPorColeccion(idColeccion: String, curados: Boolean, filtros: HechoFiltros, page: Int, limit: Int): HechoItemPage!
+}

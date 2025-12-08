@@ -5,10 +5,11 @@ import java.util.List;
 import aplicacion.dto.input.SolicitudInputDto;
 import aplicacion.dto.mappers.SolicitudOutputMapper;
 import aplicacion.dto.output.SolicitudOutputDto;
+import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.HechoNoEncontradoException;
 import aplicacion.excepciones.MotivoSolicitudException;
 import aplicacion.domain.hechos.Hecho;
-import aplicacion.repositorios.RepositorioDeSolicitudes;
+import aplicacion.repositories.SolicitudRepository;
 import aplicacion.domain.solicitudes.*;
 import aplicacion.domain.usuarios.Contribuyente;
 import jakarta.transaction.Transactional;
@@ -20,13 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SolicitudService {
 
-    private final RepositorioDeSolicitudes repositorioDeSolicitudes;
+    private final SolicitudRepository solicitudRepository;
     private final HechoService hechoService;
     private final ContribuyenteService contribuyenteService;
     private final SolicitudOutputMapper solicitudOutputMapper;
 
-    public SolicitudService(RepositorioDeSolicitudes repositorioDeSolicitudes, HechoService hechoService, ContribuyenteService contribuyenteService, SolicitudOutputMapper solicitudOutputMapper) {
-        this.repositorioDeSolicitudes = repositorioDeSolicitudes;
+    public SolicitudService(SolicitudRepository solicitudRepository, HechoService hechoService, ContribuyenteService contribuyenteService, SolicitudOutputMapper solicitudOutputMapper) {
+        this.solicitudRepository = solicitudRepository;
         this.hechoService = hechoService;
         this.contribuyenteService = contribuyenteService;
         this.solicitudOutputMapper = solicitudOutputMapper;
@@ -34,31 +35,31 @@ public class SolicitudService {
 
     public List<SolicitudEliminacion> solicitudesRelacionadas(Long id) {
         SolicitudEliminacion sol;
-        sol = repositorioDeSolicitudes.findById(id).orElse(null);
+        sol = solicitudRepository.findById(id).orElse(null);
         if(sol == null) {
             throw new IllegalArgumentException("Solicitud no encontrada con ID: " + id);
         }
 
-        return repositorioDeSolicitudes.findByHecho(sol.getHecho());
+        return solicitudRepository.findByHecho(sol.getHecho());
     }
 
     public SolicitudEliminacion obtenerSolicitud(Long id) {
-        return repositorioDeSolicitudes.findById(id)
+        return solicitudRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
     public SolicitudOutputDto obtenerSolicitudDTO(Long id) {
-        return repositorioDeSolicitudes.findById(id)
+        return solicitudRepository.findById(id)
                 .map(solicitudOutputMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada con ID: " + id));
     }
 
     public Page<SolicitudOutputDto> obtenerSolicitudesDTO(Pageable pageable) {
-        return repositorioDeSolicitudes.findAllOrderByPendienteFirst(pageable).map(solicitudOutputMapper::map); // Me trae primero las pendientes
+        return solicitudRepository.findAllOrderByPendienteFirst(pageable).map(solicitudOutputMapper::map); // Me trae primero las pendientes
     }
 
     public List<SolicitudEliminacion> obtenerSolicitudes() {
-        return repositorioDeSolicitudes.findAll();
+        return solicitudRepository.findAll();
     }
 
     @Transactional
@@ -67,19 +68,19 @@ public class SolicitudService {
         //Contribuyente solicitante = contribuyenteService.obtenerContribuyentePorId(solicitud.getSolicitante().getId());
         //solicitud.setSolicitante(solicitante);
         //solicitante.agregarSolicitudEliminacion(solicitud);
-        SolicitudEliminacion solicitudGuardada = repositorioDeSolicitudes.save(solicitud);
+        SolicitudEliminacion solicitudGuardada = solicitudRepository.save(solicitud);
         hecho.agregarASolicitudes(solicitud);
         hechoService.guardarHecho(hecho);
         return solicitudGuardada;
     }
 
     public void save(SolicitudEliminacion sol){
-        repositorioDeSolicitudes.save(sol);
+        solicitudRepository.save(sol);
     }
 
     @Transactional
-    public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException{
-        this.validarMotivoSolicitud(solicitudDto.getMotivo());
+    public SolicitudOutputDto guardarSolicitudDto(SolicitudInputDto solicitudDto) throws MotivoSolicitudException , HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
+        this.validarMotivoSolicitud(solicitudDto.getMotivo()); // Por las dudas, pero ya se valida antes
         Hecho hecho = hechoService.obtenerHechoPorId(solicitudDto.getHechoId());
         Contribuyente contribuyente = contribuyenteService.obtenerContribuyentePorId(solicitudDto.getSolicitanteId());
         SolicitudEliminacion solicitud = new SolicitudEliminacion(contribuyente, hecho, solicitudDto.getMotivo());

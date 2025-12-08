@@ -16,8 +16,7 @@ import java.util.List;
 @Setter
 public class Contribuyente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Usamos el id que genera Keycloak
     private Boolean esAdministrador;
     @Embedded
     private IdentidadContribuyente identidad;
@@ -25,12 +24,11 @@ public class Contribuyente {
     private List<Hecho> hechosContribuidos;
     private String mail;
 
-    public Contribuyente(Boolean esAdministrador, IdentidadContribuyente identidad, String mail) {
+    public Contribuyente(String id, Boolean esAdministrador, IdentidadContribuyente identidad, String mail) {
+        this.id = id;
         this.esAdministrador = esAdministrador;
         this.identidad = identidad;
         this.mail = mail;
         this.hechosContribuidos = new ArrayList<>();
     }
-
-    public void agregarHechoContribuido(Hecho hecho) { this.hechosContribuidos.add(hecho); }
 }

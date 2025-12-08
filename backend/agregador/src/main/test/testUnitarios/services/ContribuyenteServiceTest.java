@@ -7,7 +7,7 @@ import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.excepciones.ContribuyenteNoConfiguradoException;
 import aplicacion.excepciones.MailYaExisteException;
-import aplicacion.repositorios.RepositorioDeContribuyentes;
+import aplicacion.repositories.ContribuyenteRepository;
 import aplicacion.services.ContribuyenteService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 class ContribuyenteServiceTest {
 
     @Mock
-    private RepositorioDeContribuyentes repositorioDeContribuyentes;
+    private ContribuyenteRepository repositorioDeContribuyentes;
     @Mock
     private ContribuyenteInputMapper contribuyenteInputMapper;
     @Mock

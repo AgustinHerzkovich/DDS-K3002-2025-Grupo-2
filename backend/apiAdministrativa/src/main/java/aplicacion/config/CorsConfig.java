@@ -8,6 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CorsConfig {
@@ -20,19 +21,19 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Permitir peticiones desde el frontend en el puerto 8094
-        config.setAllowedOrigins(Arrays.asList("http://localhost:" + interfazAgregadorPort));
+        config.setAllowedOrigins(List.of("http://localhost:" + interfazAgregadorPort));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         // Permitir todos los headers
-        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedHeaders(List.of("*"));
 
         // Permitir credenciales (cookies, authorization headers, etc.)
         config.setAllowCredentials(true);
 
         // Exponer todos los headers en la respuesta
-        config.setExposedHeaders(Arrays.asList("*"));
+        config.setExposedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

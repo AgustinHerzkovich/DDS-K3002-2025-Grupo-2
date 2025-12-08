@@ -25,7 +25,6 @@ import java.util.Objects;
 )
 public class Hecho {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @EqualsAndHashCode.Include
     @Column(length = 200)
@@ -66,7 +65,8 @@ public class Hecho {
     @ManyToOne
     private Contribuyente autor;
 
-    public Hecho(String titulo,
+    public Hecho(String id,
+                 String titulo,
                  String descripcion,
                  Categoria categoria,
                  Ubicacion ubicacion,
@@ -76,6 +76,7 @@ public class Hecho {
                  List<Multimedia> contenidoMultimedia,
                  Boolean anonimato,
                  Contribuyente autor) {
+        this.id = id != null ? id : java.util.UUID.randomUUID().toString(); // Si es null, genera UUID; si no, usa el proporcionado
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -102,10 +103,6 @@ public class Hecho {
     }
 
     public void mostrar() { visible = true; }
-
-    public Boolean tieneMismoTitulo(String otroTitulo) {
-        return titulo.equals(otroTitulo);
-    }
 
     public void etiquetar(Etiqueta etiqueta) {
         etiquetas.add(etiqueta);
@@ -147,6 +144,31 @@ public class Hecho {
     @Override
     public String toString(){
         return String.format("(Hecho){titulo: %s ; descripcion: %s ; id: %s}", titulo, descripcion, id);
+    }
+
+    public void editar(String titulo, String descripcion, Categoria categoria, Ubicacion ubicacion, LocalDateTime fecha, String contenidoTexto, List<Multimedia> contenidoMultimedia) {
+        if (titulo != null) {
+            this.titulo = titulo;
+        }
+        if (descripcion != null) {
+            this.descripcion = descripcion;
+        }
+        if (categoria != null) {
+            this.categoria = categoria;
+        }
+        if (ubicacion != null) {
+            this.ubicacion = ubicacion;
+        }
+        if (fecha != null) {
+            this.fechaAcontecimiento = fecha;
+        }
+        if (contenidoTexto != null) {
+            this.contenidoTexto = contenidoTexto;
+        }
+        if (contenidoMultimedia != null) {
+            this.contenidoMultimedia = contenidoMultimedia;
+        }
+        this.setFechaUltimaModificacion(LocalDateTime.now()); // Se auto-updatea la fecha de última edición
     }
 
 }
