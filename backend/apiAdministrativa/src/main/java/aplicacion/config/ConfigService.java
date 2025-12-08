@@ -8,6 +8,8 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 
 @Service
 @Getter
@@ -24,13 +26,14 @@ public class ConfigService {
     private String agregadorID;
 
     public String getUrlAgregador() {
-        return discoveryClient.getInstances(agregadorID)
+        return discoveryClient.getInstances("agregador")
                 .stream()
+                .filter(instance -> Objects.equals(instance.getMetadata().get("agregadorID"), agregadorID))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay instancias de " + agregadorID +  " registradas"))
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + "agregador" +  " registradas"))
                 .getUri()
                 .toString()
-                .concat("/" + agregadorID);
+                .concat("/" + "agregador");
     }
 
     public String getUrlFuentesEstaticas() {

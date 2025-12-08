@@ -5,6 +5,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 public class ConfigService {
@@ -18,9 +19,15 @@ public class ConfigService {
     private String agregadorID;
 
     public String getUrlAgregador() {
+        System.out.println("AGREGADOR ID EN CONFIG SERVICE: " + discoveryClient.getInstances("agregador")
+                .stream()
+                .map(instance -> instance.getMetadata().get("agregadorID"))
+                .toList()
+        );
+
         return discoveryClient.getInstances("agregador")
                 .stream()
-                .filter(instance -> instance.getMetadata().get("agregadorID") != agregadorID)
+                .filter(instance -> Objects.equals(instance.getMetadata().get("agregadorID"), agregadorID))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No hay instancias de " + "agregador" +  " registradas"))
                 .getUri()
@@ -45,4 +52,5 @@ public class ConfigService {
                 .toString()
                 .concat("/" + serviceId);
     }
+
 }
