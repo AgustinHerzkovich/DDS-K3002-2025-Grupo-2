@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -72,28 +70,17 @@ public class MapaController {
             return "mapa";
         }
 
-        List<HechoMapaOutputDto> hechos = Flux.fromIterable(pageWrapper.getContent())
-                .flatMap(hecho -> {
-                    if (hecho.getLatitud() != null &&
-                            hecho.getLongitud() != null) {
-
-                        return geocodingService.obtenerDireccionCorta(
-                                hecho.getLatitud(),
-                                hecho.getLongitud()
-                        ).map(direccion -> {
-                            hecho.setDireccion(direccion);
-                            return hecho;
-                        });
-                    } else {
-                        hecho.setDireccion("Sin ubicación");
-                        return Mono.just(hecho);
-                    }
-                }, 10)
-                .collectList()
-                .block();
-
-        if (hechos == null) {
-            hechos = List.of();
+        List<HechoMapaOutputDto> hechos = pageWrapper.getContent();
+        for (HechoMapaOutputDto hecho : hechos) {
+            if (hecho.getLatitud() != null && hecho.getLongitud() != null) {
+                String direccion = geocodingService.obtenerDireccionCorta(
+                        hecho.getLatitud(),
+                        hecho.getLongitud()
+                );
+                hecho.setDireccion(direccion);
+            } else {
+                hecho.setDireccion("Sin ubicación");
+            }
         }
 
         model.addAttribute("hechos", hechos);

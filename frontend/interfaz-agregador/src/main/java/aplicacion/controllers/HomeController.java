@@ -8,8 +8,6 @@ import aplicacion.services.HechoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -33,25 +31,20 @@ public class HomeController {
 
         if (pageWrapper != null && pageWrapper.getContent() != null) {
             // Obtener direcciones para los hechos usando geocoding
-            List<HechoMapaOutputDto> hechosConDireccion = Flux.fromIterable(pageWrapper.getContent())
-                    .flatMap(hecho -> {
-                        if (hecho.getLatitud() != null && hecho.getLongitud() != null) {
-                            return geocodingService.obtenerDireccionCorta(
-                                    hecho.getLatitud(),
-                                    hecho.getLongitud()
-                            ).map(direccion -> {
-                                hecho.setDireccion(direccion);
-                                return hecho;
-                            });
-                        } else {
-                            hecho.setDireccion("Sin ubicación");
-                            return Mono.just(hecho);
-                        }
-                    }, 5)
-                    .collectList()
-                    .block();
+            List<HechoMapaOutputDto> hechosConDireccion = pageWrapper.getContent();
+            for (HechoMapaOutputDto hecho : hechosConDireccion) {
+                if (hecho.getLatitud() != null && hecho.getLongitud() != null) {
+                    String direccion = geocodingService.obtenerDireccionCorta(
+                            hecho.getLatitud(),
+                            hecho.getLongitud()
+                    );
+                    hecho.setDireccion(direccion);
+                } else {
+                    hecho.setDireccion("Sin ubicación");
+                }
+            }
 
-            model.addAttribute("hechosRecientes", hechosConDireccion != null ? hechosConDireccion : List.of());
+            model.addAttribute("hechosRecientes", hechosConDireccion);
         } else {
             model.addAttribute("hechosRecientes", List.of());
         }

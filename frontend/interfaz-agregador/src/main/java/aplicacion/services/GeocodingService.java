@@ -18,6 +18,10 @@ public class GeocodingService {
             .maximumSize(50000)
             .expireAfterAccess(7, TimeUnit.DAYS)
             .build();
+    private final Cache<String, String> cacheChiquito = Caffeine.newBuilder()
+            .maximumSize(50000)
+            .expireAfterAccess(7, TimeUnit.DAYS)
+            .build();
     public GeocodingService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
                 .baseUrl("https://nominatim.openstreetmap.org")
@@ -28,12 +32,15 @@ public class GeocodingService {
      * Obtiene la dirección a partir de coordenadas (geocoding inverso)
      * Usa la API gratuita de Nominatim de OpenStreetMap
      */
-    public Mono<String> obtenerDireccion(Double latitud, Double longitud) {
+    public String obtenerDireccion(Double latitud, Double longitud) {
         if (latitud == null || longitud == null) {
-            return Mono.just("Ubicación desconocida");
+            return Mono.just("Ubicación desconocida").block();
         }
-
-        return webClient.get()
+        String direccionCacheada = cache.getIfPresent(latitud + "|" + longitud);
+        if(direccionCacheada != null) {
+            return direccionCacheada;
+        }
+        direccionCacheada = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reverse")
                         .queryParam("lat", latitud)
@@ -93,7 +100,9 @@ public class GeocodingService {
                     return "Ubicación desconocida";
                 })
                 .onErrorReturn("Ubicación no disponible")
-                .defaultIfEmpty("Ubicación desconocida");
+                .defaultIfEmpty("Ubicación desconocida").block();
+        cache.put(latitud + "|" + longitud, direccionCacheada);
+        return direccionCacheada;
     }
 
     /**
@@ -147,12 +156,15 @@ public class GeocodingService {
 //                .onErrorReturn("Ubicación no disponible")
 //                .defaultIfEmpty("Ubicación desconocida");
 //    }
-    public Mono<String> obtenerDireccionCorta(Double latitud, Double longitud) {
+    public String obtenerDireccionCorta(Double latitud, Double longitud) {
         if (latitud == null || longitud == null) {
-            return Mono.just("Ubicación desconocida");
+            return Mono.just("Ubicación desconocida").block();
         }
-
-        return webClient.get()
+        String direccionCacheada = cacheChiquito.getIfPresent(latitud + "|" + longitud);
+        if(direccionCacheada != null){
+            return direccionCacheada;
+        }
+        direccionCacheada = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/reverse")
                         .queryParam("lat", latitud)
@@ -192,7 +204,9 @@ public class GeocodingService {
                     return "Ubicación desconocida";
                 })
                 .onErrorReturn("Ubicación no disponible")
-                .defaultIfEmpty("Ubicación desconocida");
+                .defaultIfEmpty("Ubicación desconocida").block();
+        cacheChiquito.put(latitud + "|" + longitud, direccionCacheada);
+        return direccionCacheada;
     }
 }
 

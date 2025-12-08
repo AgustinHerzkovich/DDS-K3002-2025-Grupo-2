@@ -115,7 +115,7 @@ public class HechoService {
             String direccion = geocodingService.obtenerDireccion(
                     hecho.getUbicacion().getLatitud(),
                     hecho.getUbicacion().getLongitud()
-            ).block(); // Bloqueamos para obtener el resultado
+            ); // Bloqueamos para obtener el resultado
 
             hecho.setDireccion(direccion);
         } else if (hecho != null) {
