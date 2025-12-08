@@ -21,6 +21,7 @@ public class DimensionCategoria {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "categoria_id")
     private Long idCategoria;
+    @Column(length = 50)
     private String nombre;
     public DimensionCategoria(String nombre) {
         this.nombre = nombre;

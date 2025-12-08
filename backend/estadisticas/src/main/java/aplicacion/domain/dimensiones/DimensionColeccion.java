@@ -25,8 +25,10 @@ public class DimensionColeccion {
 
     private String idColeccionAgregador;
     @HashCodeExclude
+    @Column(length = 50)
     private String titulo;
     @HashCodeExclude
+    @Column(length = 150)
     private String descripcion;
 
     public static DimensionColeccion fromColeccion(Coleccion coleccion){

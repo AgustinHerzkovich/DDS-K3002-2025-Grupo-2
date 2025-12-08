@@ -94,24 +94,6 @@ public class Hecho {
         this.autor = Boolean.TRUE.equals(anonimato) ? null : autor;
     }
 
-    public void ocultar() {
-        visible = false;
-    }
-
-    public Boolean esVisible() {
-        return visible;
-    }
-
-    public void mostrar() { visible = true; }
-
-    public void etiquetar(Etiqueta etiqueta) {
-        etiquetas.add(etiqueta);
-    }
-
-    public boolean contieneEtiqueta(Etiqueta etiqueta) {
-        return etiquetas.stream().anyMatch(et-> et.esIdenticaA(etiqueta.getNombre()));
-    }
-
     public void agregarASolicitudes(SolicitudEliminacion solicitud) {
         solicitudes.add(solicitud);
     }
@@ -122,6 +104,7 @@ public class Hecho {
             sol.prescribir();
         }
     }
+
     public void anularPrescripcionSolicitudes(){
         // Cuando se anula una solicitud aceptada, todas las demás se de-prescriben (Solo afecta a las prescriptas)
         for(SolicitudEliminacion sol : this.solicitudes){

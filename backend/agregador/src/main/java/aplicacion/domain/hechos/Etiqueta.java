@@ -12,14 +12,10 @@ public class Etiqueta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 20)
+    @Column(length = 50)
     private String nombre;
 
     public Etiqueta(String nombre){
         this.nombre = nombre;
-    }
-
-    public boolean esIdenticaA(String etiquetaNombre) {
-        return this.nombre.equals(etiquetaNombre);
     }
 }
