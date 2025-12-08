@@ -1495,11 +1495,42 @@ public class SwaggerConfig {
                         .title("API Pública de Metamapa")
                         .version("1.0")
                         .description("""
-                                ● Consulta de hechos dentro de una colección.
-                                ● Generar una solicitud de eliminación a un hecho.
-                                ● Navegación filtrada sobre una colección.
-                                ● Navegación curada o irrestricta sobre una colección.
-                                ● Reportar un hecho.""")
+                                ### API Pública de Metamapa
+                                
+                                Bienvenido a la API pública de Metamapa, una plataforma colaborativa para la gestión y visualización de hechos históricos y actuales.
+                                
+                                #### Funcionalidades principales:
+                                * **Consulta de hechos**: Explorar hechos dentro de colecciones específicas
+                                * **Búsqueda y filtrado**: Filtrar hechos por categoría, ubicación, rango de fechas y más
+                                * **Navegación curada**: Ver hechos validados por múltiples fuentes según algoritmos de consenso
+                                * **Navegación irrestricta**: Acceder a todos los hechos sin filtrado de consenso
+                                * **Reportar hechos**: Contribuir con nuevos hechos históricos al sistema
+                                * **Solicitar eliminación**: Reportar hechos incorrectos o inapropiados para revisión
+                                * **Gestión de colecciones**: Ver y explorar colecciones temáticas de hechos
+                                * **Perfil de usuario**: Consultar y actualizar información personal
+                                
+                                #### Tipos de navegación:
+                                * **Curada**: Muestra solo hechos validados según el algoritmo de consenso de la colección
+                                * **Irrestricta**: Muestra todos los hechos disponibles sin filtrado
+                                
+                                #### Categorías de hechos disponibles:
+                                * **Historia**: Eventos históricos relevantes
+                                * **Deportes**: Competiciones y eventos deportivos
+                                * **Cultura**: Festivales, exposiciones y eventos culturales
+                                * **Política**: Eventos y decisiones políticas
+                                * **Ciencia**: Descubrimientos y avances científicos
+                                * **Entretenimiento**: Conciertos, estrenos y eventos de entretenimiento
+                                * **Desastres**: Desastres naturales y emergencias
+                                * **Tecnología**: Innovaciones y lanzamientos tecnológicos
+                                
+                                #### Información importante:
+                                * Algunos endpoints requieren autenticación mediante OAuth2
+                                * Las solicitudes de eliminación son revisadas por administradores
+                                * Los hechos reportados pasan por un proceso de validación
+                                * Puedes filtrar hechos por distancia usando coordenadas geográficas
+                                
+                                Para más información, visita nuestra documentación completa o contacta al equipo de desarrollo.
+                                """)
                         .contact(new io.swagger.v3.oas.models.info.Contact()
                                 .name("DDS K3002 Grupo 2")
                                 .email("aherzkovich@frba.utn.edu.ar"))
@@ -1510,6 +1541,8 @@ public class SwaggerConfig {
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
                                 .url("http://localhost:8085")
-                )).paths(paths);
+                                .description("Servidor de desarrollo")
+                ))
+                .paths(paths);
     }
 }
