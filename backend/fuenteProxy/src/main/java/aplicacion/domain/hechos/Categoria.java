@@ -25,9 +25,5 @@ public class Categoria {
     public Categoria(@JsonProperty("nombre") String nombre) {
         this.nombre = nombre;
     }
-
-    public Boolean esIdenticaA(String categoria_nombre) {
-        return this.nombre.equals(categoria_nombre);
-    }
 }
 

@@ -1,0 +1,29 @@
+<th:block th:fragment="pageStyles">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/logout.css}" />
+    <style>
+        .btn-return {
+            display: none;
+        }
+    </style>
+</th:block>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar cierre de sesion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="logout.css">
+</head>
+<body>
+<div class="logout-container">
+    <div class="logout-card">
+        <h1>¿Esta seguro que quiere cerrar sesión?</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
+        <a href="/" class="btn-cancel">Cancelar</a>
+    </div>
+</div>
+</body>
+</html>

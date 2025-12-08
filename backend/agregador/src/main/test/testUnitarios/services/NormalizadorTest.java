@@ -1,10 +1,7 @@
 package testUnitarios.services;
 
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
-import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.excepciones.EtiquetaNoEncontradaException;
-import aplicacion.repositorios.RepositorioDeCategorias;
-import aplicacion.repositorios.RepositorioDeEtiquetas;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
@@ -17,12 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import testUtils.CategoriaFactory;
 import testUtils.HechoFactory;
-import testUtils.RandomThingsGenerator;
 
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)

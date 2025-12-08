@@ -3,6 +3,7 @@ package aplicacion.dto.input;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -24,5 +25,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class FuenteInputDto {
+    @Size(max = 255, message = "El id no puede tener más de 255 caracteres")
     private String id; // nombre
 }

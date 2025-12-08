@@ -1,0 +1,22 @@
+.hechos-pendientes-container {
+    display: grid;
+    margin: 0 10rem;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.hechos-pendientes-card {
+    background-color: #ebebeb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.hechos-pendientes-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}

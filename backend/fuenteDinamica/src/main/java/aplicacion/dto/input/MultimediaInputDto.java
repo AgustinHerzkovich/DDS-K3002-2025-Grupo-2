@@ -1,16 +1,14 @@
 package aplicacion.dto.input;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Getter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultimediaInputDto {
+    @Size(max = 500, message = "La URL no puede tener más de 500 caracteres")
     private String url;
 }

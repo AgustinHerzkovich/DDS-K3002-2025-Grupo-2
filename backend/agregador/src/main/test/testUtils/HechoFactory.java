@@ -22,6 +22,7 @@ public class HechoFactory {
         Contribuyente autor = anonimato ? null : ContribuyenteFactory.crearContribuyenteAleatorio();
 
         return new Hecho(
+                null, // JPA autogenerará el UUID
                 titulo,
                 descripcion,
                 categoria,

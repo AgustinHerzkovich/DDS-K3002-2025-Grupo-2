@@ -26,7 +26,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf(csrf -> csrf
+                        // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
+                        .ignoringRequestMatchers("/gestionar-solicitud/{id}","/editarIdentidad"))
                 .authorizeHttpRequests(authorize -> authorize
                         // Declaramos explícitamente todas las rutas públicas
                         .requestMatchers(
@@ -41,12 +43,17 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/images/**"),
                                 new AntPathRequestMatcher("/fragments/**"),
-                                new AntPathRequestMatcher("/favicon.ico")
+                                new AntPathRequestMatcher("/stats/**"),
+                                new AntPathRequestMatcher("/favicon.ico"),
+                                // Endpoints de Actuator para monitoreo (Prometheus, health checks, etc.)
+                                new AntPathRequestMatcher("/actuator/**")
                         ).permitAll()
                         // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()
+                ).sessionManagement(
+                        session -> session.invalidSessionUrl("/login?session=invalid")
                 )
-                .oauth2Login(oauth2 -> oauth2
+                .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/keycloak")
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(customOidcUserService)
                         )

@@ -1,15 +1,17 @@
 package aplicacion.dto.output;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ContribuyenteOutputDto {
-    private Long id;
+    private String id;
     private Boolean esAdministrador;
     private IdentidadContribuyenteOutputDto identidad;
     private String mail;
 }
+
+

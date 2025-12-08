@@ -15,7 +15,6 @@
     </parent>
 
     <modules>
-        <module>interfaz-fuente-dinamica</module>
         <module>interfaz-agregador</module>
     </modules>
 

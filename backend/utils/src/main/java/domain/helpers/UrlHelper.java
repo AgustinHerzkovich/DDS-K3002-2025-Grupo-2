@@ -18,6 +18,19 @@ public class UrlHelper {
         }
     }
 
+    public static void appendQueryParamSinEncode(StringBuilder url, String paramName, Object value) {
+        if (value != null && !value.toString().isEmpty()) {
+            if (url.indexOf("?") == -1) {
+                url.append("?");
+            } else {
+                url.append("&");
+            }
+            url.append(paramName)
+                    .append("=")
+                    .append(value.toString());
+        }
+    }
+
     public static String appendAllQueryParams(StringBuilder url, String... params) {
         if (params == null || params.length == 0) {
             return url.toString();
@@ -34,5 +47,19 @@ public class UrlHelper {
         }
 
         return url.toString();
+    }
+
+    public static void appendHeaderParam(StringBuilder url, String headerName, String headerValue) {
+        if (headerValue != null && !headerValue.isEmpty()) {
+            if (url.indexOf("?") == -1) {
+                url.append("?");
+            } else {
+                url.append("&");
+            }
+            url.append("header_")
+                    .append(headerName)
+                    .append("=")
+                    .append(URLEncoder.encode(headerValue, StandardCharsets.UTF_8));
+        }
     }
 }

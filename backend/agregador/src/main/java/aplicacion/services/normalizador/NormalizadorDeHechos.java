@@ -1,7 +1,6 @@
 package aplicacion.services.normalizador;
 
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.hechos.Ubicacion;
 import aplicacion.services.CategoriaService;
 import aplicacion.services.EtiquetaService;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
@@ -17,9 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Component

@@ -1,7 +1,5 @@
 package aplicacion.dto.output;
 
-import aplicacion.dto.output.CriterioDePertenenciaOutputDto;
-import aplicacion.dto.output.UbicacionOutputDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +10,7 @@ public class CriterioDeDistanciaOutputDto extends CriterioDePertenenciaOutputDto
     private Double distanciaMinima;
 
     public CriterioDeDistanciaOutputDto(Long id, UbicacionOutputDto ubicacionBase, Double distanciaMinima) {
-        super(id);
+        super(id, "DISTANCIA");
         this.ubicacionBase = ubicacionBase;
         this.distanciaMinima = distanciaMinima;
     }

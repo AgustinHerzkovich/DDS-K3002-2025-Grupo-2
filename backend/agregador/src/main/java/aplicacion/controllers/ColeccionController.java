@@ -1,6 +1,5 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.dto.input.ColeccionInputDto;
 import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
@@ -9,11 +8,13 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.excepciones.TooHighLimitException;
 import aplicacion.services.ColeccionService;
-import aplicacion.services.FuenteService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.dto.output.HechoOutputDto;
 import java.net.URLDecoder;
@@ -22,30 +23,29 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agregador")
+@RequestMapping
 public class ColeccionController {
     private final ColeccionService coleccionService;
-    private final FuenteService fuenteService;
-    public ColeccionController(ColeccionService coleccionService, FuenteService fuenteService) {
+
+    public ColeccionController(ColeccionService coleccionService) {
         this.coleccionService = coleccionService;
-        this.fuenteService = fuenteService;
     }
 
     // Operaciones CREATE sobre Colecciones
     @PostMapping("/colecciones")
-    public ResponseEntity<ColeccionOutputDto> crearColeccion(@RequestBody ColeccionInputDto coleccion) {//todo ver como mandan el id de agregador
-        System.out.print("hola" + coleccion);
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    public ResponseEntity<ColeccionOutputDto> crearColeccion(@Valid @RequestBody ColeccionInputDto coleccion) {
         ColeccionOutputDto coleccionOutput = coleccionService.guardarColeccion(coleccion);
        //coleccionService.guardarFuentesPorColeccion(coleccion, coleccion.getFuentes());
         System.out.println("Colección creada: " + coleccionOutput.getId());
-        return ResponseEntity.ok(coleccionOutput);
+        return ResponseEntity.status(201).body(coleccionOutput);
     }
 
     // Operaciones READ sobre Colecciones
     @GetMapping("/colecciones")
     public ResponseEntity<Page<ColeccionOutputDto>> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
+                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ColeccionOutputDto> colecciones;
 
@@ -60,12 +60,17 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public ColeccionOutputDto mostrarColeccion(@PathVariable("id") String idColeccion) {
-        return coleccionService.obtenerColeccionDTO(idColeccion);
+    public ResponseEntity<?> mostrarColeccion(@PathVariable(name = "id") String idColeccion) {
+        try {
+            ColeccionOutputDto coleccion = coleccionService.obtenerColeccionDTO(idColeccion);
+            return ResponseEntity.ok(coleccion);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosIrrestrictos(@PathVariable("id") String idColeccion,
+    public ResponseEntity<?> mostrarHechosIrrestrictos(@PathVariable(name = "id") String idColeccion,
                                                           @RequestParam(name = "categoria", required = false) String categoria,
                                                           @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                           @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -73,9 +78,10 @@ public class ColeccionController {
                                                           @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                           @RequestParam(name = "latitud", required = false) Double latitud,
                                                           @RequestParam(name = "longitud", required = false) Double longitud,
+                                                          @RequestParam(name = "radio", required = false) Double radio,
                                                           @RequestParam(name = "search", required = false) String textoLibre,
-                                                          @RequestParam(defaultValue = "0") Integer page,
-                                                          @RequestParam(defaultValue = "100") Integer size){
+                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                          @RequestParam(name = "size", defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -89,12 +95,16 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
-        return ResponseEntity.ok(hechosIrrestrictos);
+        try {
+            Page<HechoOutputDto> hechosIrrestrictos = coleccionService.obtenerHechosIrrestrictosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
+            return ResponseEntity.ok(hechosIrrestrictos);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public ResponseEntity<Page<HechoOutputDto>> mostrarHechosCurados(@PathVariable("id") String idColeccion,
+    public ResponseEntity<?> mostrarHechosCurados(@PathVariable(name = "id") String idColeccion,
                                                      @RequestParam(name = "categoria", required = false) String categoria,
                                                      @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                      @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -102,9 +112,10 @@ public class ColeccionController {
                                                      @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                      @RequestParam(name = "latitud", required = false) Double latitud,
                                                      @RequestParam(name = "longitud", required = false) Double longitud,
+                                                     @RequestParam(name = "radio", required = false) Double radio,
                                                      @RequestParam(name = "search", required = false) String textoLibre,
-                                                     @RequestParam(defaultValue = "0") Integer page,
-                                                     @RequestParam(defaultValue = "100") Integer size){
+                                                     @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                     @RequestParam(name = "size", defaultValue = "100") Integer size){
 
         // Decodificar y convertir strings de fecha a LocalDateTime
         LocalDateTime fechaReporteDesdeDateTime = fechaReporteDesde != null ?
@@ -118,58 +129,69 @@ public class ColeccionController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccionDTO(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, textoLibre, pageable);
-        return ResponseEntity.ok(hechosCurados);
+        try {
+            Page<HechoOutputDto> hechosCurados = coleccionService.obtenerHechosCuradosPorColeccion(idColeccion, categoria, fechaReporteDesdeDateTime, fechaReporteHastaDateTime, fechaAcontecimientoDesdeDateTime, fechaAcontecimientoHastaDateTime, latitud, longitud, radio, textoLibre, pageable);
+            return ResponseEntity.ok(hechosCurados);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     // Operaciones UPDATE sobre Colecciones
     @PatchMapping("/colecciones/{id}/algoritmo")
-    public ResponseEntity<ColeccionOutputDto> modificarAlgoritmo(@PathVariable("id") String idColeccion,
-                                                   @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
-        ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
-        System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
-        return ResponseEntity.ok(coleccion);
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    public ResponseEntity<?> modificarAlgoritmo(@PathVariable(name = "id") String idColeccion,
+                                                   @Valid @RequestBody ModificacionAlgoritmoInputDto nuevoAlgoritmo) {
+        try {
+            ColeccionOutputDto coleccion = coleccionService.modificarAlgoritmoDeColeccion(idColeccion, nuevoAlgoritmo);
+            System.out.println("Coleccion: " + idColeccion + ", nuevo algoritmo: " + nuevoAlgoritmo);
+            return ResponseEntity.ok(coleccion);
+        } catch (ColeccionNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/colecciones/{id}/fuentes")
-    public ResponseEntity<ColeccionOutputDto> agregarFuente(@PathVariable("id") String idColeccion,
-                                                         @RequestBody FuenteInputDto fuenteInputDto) {
-        ColeccionOutputDto coleccionOutputDto;
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> agregarFuente(@PathVariable(name = "id") String idColeccion,
+                                                         @Valid @RequestBody FuenteInputDto fuenteInputDto) {
         try {
-            coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
+            ColeccionOutputDto coleccionOutputDto = coleccionService.agregarFuenteAColeccion(idColeccion, fuenteInputDto);
+            System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
+            return ResponseEntity.ok(coleccionOutputDto);
         }catch (ColeccionNoEncontradaException e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        System.out.println("Coleccion: " + idColeccion + ", nueva fuente: id: " + fuenteInputDto.getId());
-        return ResponseEntity.ok(coleccionOutputDto);
     }
 
     @DeleteMapping("/colecciones/{id}/fuentes/{fuenteId}")
-    public ResponseEntity<ColeccionOutputDto> quitarFuente(@PathVariable("id") String idColeccion,
-                                             @PathVariable("fuenteId") String fuenteId) {
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    public ResponseEntity<?> quitarFuente(@PathVariable(name = "id") String idColeccion,
+                                             @PathVariable(name = "fuenteId") String fuenteId) {
         try {
             ColeccionOutputDto coleccion = coleccionService.quitarFuenteDeColeccion(idColeccion, fuenteId);
             System.out.println("Coleccion: " + idColeccion + ", fuente quitada: id: " + fuenteId);
             return ResponseEntity.ok(coleccion);
         } catch (ColeccionNoEncontradaException | FuenteNoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     // Operaciones DELETE sobre Colecciones
     @DeleteMapping("/colecciones/{id}")
-    public ResponseEntity<Void> eliminarColeccion(@PathVariable("id") String idColeccion) {
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    public ResponseEntity<?> eliminarColeccion(@PathVariable(name = "id") String idColeccion) {
         try {
             coleccionService.eliminarColeccion(idColeccion);
             System.out.println("Coleccion: " + idColeccion + " eliminada");
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (ColeccionNoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     @GetMapping("/colecciones/index")
     public ResponseEntity<List<String>> autoCompletar(@RequestParam(name = "search") String currentSearch, @RequestParam(name = "limit", required = false, defaultValue = "5") Integer limit){
-        if(limit>100 || limit<0)
+        if(limit >100 || limit <0)
             throw new TooHighLimitException(limit);
         List<String> recomendaciones = coleccionService.obtenerAutocompletado(currentSearch, limit);
         return ResponseEntity.ok(recomendaciones);

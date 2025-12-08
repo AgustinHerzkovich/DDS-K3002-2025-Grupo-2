@@ -1,8 +1,10 @@
 package aplicacion.dto.input;
 
-import lombok.Getter;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-@Getter
+@Data
 public class CategoriaInputDto {
+    @Size(max = 50, message = "El nombre de la categoría no puede tener más de 50 caracteres")
     private String nombre;
 }

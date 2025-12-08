@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 import lombok.*;
 import org.apache.commons.lang3.builder.HashCodeExclude;
 
-import java.util.List;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter

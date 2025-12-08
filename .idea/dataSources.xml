@@ -1,34 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="testdb" uuid="ebf8971d-af1b-4860-8360-ca15b0a3bd2d">
-      <driver-ref>h2.unified</driver-ref>
+    <data-source source="LOCAL" name="fuente_dinamica@localhost" uuid="bf694e73-96e2-44e0-a4e5-4501f41d540e">
+      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/agregador/src/main/resources/application.properties</remarks>
-      <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</jdbc-url>
+      <remarks>$PROJECT_DIR$/backend/fuenteDinamica/src/main/resources/application.properties</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3307/fuente_dinamica?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
         <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="agregador@localhost" uuid="622579c6-8a93-46a3-8ef9-fab90378a003">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/agregador/src/main/resources/application.properties</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3307/agregador?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="default@localhost" uuid="3eb76748-e9f6-4fee-86b6-2701762cbe12">
+    <data-source source="LOCAL" name="testdb" uuid="ca2b76d6-2de0-4b0a-a9fb-7b94df79afd4">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/estadisticas/src/main/resources/application.properties</remarks>
+      <remarks>$PROJECT_DIR$/backend/fuenteProxy/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="testdb" uuid="466add2e-2e3b-41ed-b117-e99863f34c89">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/backend/fuenteEstatica/src/main/resources/application.properties</remarks>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="agregador@localhost" uuid="898788f9-23c8-4ba0-90df-ec63755ffdd3">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/backend/agregador/src/main/resources/application.properties</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3308/agregador?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="default@localhost" uuid="f1701421-7126-40f9-9552-fd18c7e9a433">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/backend/estadisticas/src/main/resources/application.properties</remarks>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
       <jdbc-url>jdbc:h2:tcp://localhost:9092/default</jdbc-url>
       <jdbc-additional-properties>
@@ -36,15 +61,6 @@
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
         <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="fuente_dinamica@localhost" uuid="d4279eb7-4b71-4a44-915b-9d3f45dc6ada">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/fuenteDinamica/src/main/resources/application.properties</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/fuente_dinamica?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

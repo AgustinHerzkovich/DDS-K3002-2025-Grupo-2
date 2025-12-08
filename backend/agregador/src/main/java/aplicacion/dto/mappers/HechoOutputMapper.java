@@ -4,8 +4,6 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class HechoOutputMapper implements Mapper<Hecho, HechoOutputDto>{
     private final CategoriaOutputMapper categoriaOutputMapper;
@@ -34,7 +32,8 @@ public class HechoOutputMapper implements Mapper<Hecho, HechoOutputDto>{
                 hecho.getContenidoMultimedia() != null ? hecho.getContenidoMultimedia().stream().map(multimediaOutputMapper::map).toList() : null,
                 hecho.getAnonimato(),
                 hecho.getAutor() != null ? contribuyenteOutputMapper.map(hecho.getAutor()) : null,
-                hecho.getEtiquetas().stream().map(EtiquetaOutputMapper::map).toList()
+                hecho.getEtiquetas().stream().map(EtiquetaOutputMapper::map).toList(),
+                hecho.getVisible()
         );
     }
 }

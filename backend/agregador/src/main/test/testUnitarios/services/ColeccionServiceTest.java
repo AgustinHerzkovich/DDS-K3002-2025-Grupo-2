@@ -1,11 +1,9 @@
 package testUnitarios.services;
 
-import aplicacion.domain.algoritmos.AlgoritmoConsensoIrrestricto;
 import aplicacion.domain.algoritmos.TipoAlgoritmoConsenso;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
-import aplicacion.domain.conexiones.Conexion;
 import aplicacion.domain.conexiones.ConexionFuenteEstatica;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.dto.input.ColeccionInputDto;
@@ -13,9 +11,9 @@ import aplicacion.dto.input.FuenteInputDto;
 import aplicacion.dto.input.ModificacionAlgoritmoInputDto;
 import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.ColeccionOutputDto;
-import aplicacion.dto.output.HechoOutputDto;
-import aplicacion.repositorios.RepositorioDeColecciones;
-import aplicacion.repositorios.RepositorioDeHechosXColeccion;
+import aplicacion.repositories.ColeccionRepository;
+import aplicacion.repositories.HechoXColeccionRepository;
+import aplicacion.services.ColeccionAsyncService;
 import aplicacion.services.ColeccionService;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
@@ -25,7 +23,6 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import testUtils.HechoFactory;
-import testUtils.RandomThingsGenerator;
 
 import java.util.*;
 
@@ -35,8 +32,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ColeccionServiceTest {
 
-    @Mock private RepositorioDeColecciones repositorioDeColecciones;
-    @Mock private RepositorioDeHechosXColeccion repositorioDeHechosXColeccion;
+    @Mock private ColeccionRepository repositorioDeColecciones;
+    @Mock private HechoXColeccionRepository repositorioDeHechosXColeccion;
     @Mock private HechoService hechoService;
     @Mock private ColeccionInputMapper coleccionInputMapper;
     @Mock private ColeccionOutputMapper coleccionOutputMapper;
@@ -45,6 +42,7 @@ class ColeccionServiceTest {
     @Mock private FuenteInputMapper fuenteInputMapper;
 
     @InjectMocks private ColeccionService coleccionService;
+    @InjectMocks private ColeccionAsyncService coleccionAsyncService;
 
     private Coleccion coleccion;
     private ColeccionInputDto inputDto;
@@ -86,7 +84,7 @@ class ColeccionServiceTest {
         when(repositorioDeHechosXColeccion.saveAll(anyList())).thenReturn(List.of());
         when(fuenteService.obtenerHechosPorFuente(anyString())).thenReturn(List.of());
 
-        coleccionService.asociarHechosPreexistentes(coleccion);
+        coleccionAsyncService.asociarHechosPreexistentes(coleccion.getId());
 
         verify(fuenteService, times(2)).obtenerHechosPorFuente(anyString());
     }
@@ -95,10 +93,11 @@ class ColeccionServiceTest {
     @DisplayName("Debe asociar hechos preexistentes de una fuente")
     void asociarHechosPreexistentesDeFuenteAColeccionGuardaHechosXColeccion() {
         Hecho hecho = new Hecho();
+        when(fuenteService.obtenerFuentePorId(fuente.getId())).thenReturn(fuente);
         when(fuenteService.obtenerHechosPorFuente(fuente.getId())).thenReturn(List.of(hecho));
         when(repositorioDeHechosXColeccion.saveAll(anyList())).thenReturn(List.of());
 
-        coleccionService.asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente);
+        coleccionAsyncService.asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente.getId());
 
         verify(repositorioDeHechosXColeccion).saveAll(anyList());
     }

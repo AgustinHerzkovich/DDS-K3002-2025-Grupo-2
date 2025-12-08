@@ -12,6 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FuenteOutputDto {
     private String id;
-    private String ip;
-    private Integer puerto;
+    private String alias;
+    private String tipo;
 }

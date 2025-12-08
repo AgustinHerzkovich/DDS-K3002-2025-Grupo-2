@@ -2,13 +2,17 @@ package aplicacion.controllers;
 
 import aplicacion.services.ArchivoService;
 import aplicacion.services.AwsS3FileServerService;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/fuentesEstaticas")
 public class ArchivoController {
 
@@ -25,17 +29,19 @@ public class ArchivoController {
     }
 
     @PostMapping("/archivos/por-url")
-    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody String url) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> subirArchivoPorUrl(@RequestBody @Size(max = 5000, message = "La url no puede tener más de 5000 caracteres") String url) {
         try {
             url = url.replaceAll("^\"|\"$", "");
             archivoService.subirArchivoDesdeUrl(url);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivo desde URL: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivo subido correctamente desde URL al FileServer");
+        return ResponseEntity.status(201).body("Archivo subido correctamente desde URL al FileServer");
     }
 
     @PostMapping("/archivos")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> subirArchivos(@RequestParam("files") MultipartFile[] files) {
         try {
             for (MultipartFile file : files) {
@@ -44,6 +50,6 @@ public class ArchivoController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al subir archivos: " + e.getMessage());
         }
-        return ResponseEntity.ok("Archivos subidos correctamente al FileServer");
+        return ResponseEntity.status(201).body("Archivos subidos correctamente al FileServer");
     }
 }

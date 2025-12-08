@@ -1,0 +1,111 @@
+.estadisticas-categorias-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex: 1 1 auto;
+    align-items: stretch;
+    min-height: calc(100vh - 200px);
+}
+
+.panel-categorias {
+    background-color: #ffffff;
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+}
+
+.panel-categorias input[type="text"] {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.lista-categorias {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: scroll;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.categoria-item {
+    padding: 8px 12px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.categoria-item:hover {
+    background-color: #f0f0f0;
+}
+
+.paginacion-categorias {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    height: 60px;
+}
+
+.paginacion-categorias button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.paginacion-categorias button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.panel-detalle-categoria {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow-y: auto; 
+}
+
+.hora-mas-hechos {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#slider-limite-provincias {
+    flex: 1;
+}
+
+#btn-actualizar-provincias {
+    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 4px;
+    /* Azul más oscuro para mejor contraste con texto blanco (ratio 4.53:1) */
+    background-color: #1565C0;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#btn-actualizar-provincias:hover {
+    background-color: #0D47A1;
+}
+
+#btn-actualizar-provincias:active {
+    transform: scale(0.95);
+    background-color: #0B3871;
+}

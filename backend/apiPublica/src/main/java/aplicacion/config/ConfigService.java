@@ -10,21 +10,38 @@ import java.io.IOException;
 
 @Service
 public class ConfigService {
-    private final AgregadorConfig config;
-    private DiscoveryClient discoveryClient;
 
-    public ConfigService() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        this.config = mapper.readValue(
-                new ClassPathResource("config.json").getFile(),
-                AgregadorConfig.class
-        );
+    private final DiscoveryClient discoveryClient;
+
+    public ConfigService(DiscoveryClient discoveryClient) throws IOException {
+        this.discoveryClient = discoveryClient;
     }
 
-    public String getUrl() {
+    public String getUrlAgregador() {
         ServiceInstance instance = discoveryClient.getInstances("agregador").getFirst();
 
         return instance.getUri() + "/agregador";
     }
-    public Boolean isPrometheusHabilitado(){return config.isPrometheusHabilitado();}
+
+    public String getUrlEstadisticas() {
+        String placeholder = "estadisticas";
+        return discoveryClient.getInstances(placeholder)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + placeholder +  " registradas"))
+                .getUri()
+                .toString()
+                .concat("/" + placeholder);
+    }
+
+    public String getUrlFuentesDinamicas() {
+        String placeholder = "fuentesDinamicas";
+        return discoveryClient.getInstances(placeholder)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + placeholder +  " registradas"))
+                .getUri()
+                .toString()
+                .concat("/" + placeholder);
+    }
 }

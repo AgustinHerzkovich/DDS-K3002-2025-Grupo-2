@@ -21,6 +21,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import aplicacion.repositories.FuenteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FuenteService {
-    private final RepositorioDeFuentes repositorioDeFuentes;
+    private final FuenteRepository fuenteRepository;
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
     private final DiscoveryClient discoveryClient;
@@ -44,11 +45,11 @@ public class FuenteService {
     //@PersistenceContext
     //private EntityManager entityManager;
 
-    public FuenteService(RepositorioDeFuentes repositorioDeFuentes,
+    public FuenteService(FuenteRepository fuenteRepository,
                          FuenteInputMapper fuenteInputMapper,
                          HechoInputMapper hechoInputMapper,
                          DiscoveryClient discoveryClient) {
-        this.repositorioDeFuentes = repositorioDeFuentes;
+        this.fuenteRepository = fuenteRepository;
         this.fuenteInputMapper = fuenteInputMapper;
         this.hechoInputMapper = hechoInputMapper;
         this.discoveryClient = discoveryClient;
@@ -56,7 +57,7 @@ public class FuenteService {
 
     public Page<Fuente> findByTipo(Integer page, Integer limit, String tipo){
         if(tipo == null)
-            return repositorioDeFuentes.findAll(PageRequest.of(page, limit));
+            return fuenteRepository.findAll(PageRequest.of(page, limit));
         Class<? extends  Fuente> tipoClass = switch (tipo.toLowerCase()) {
             case "estatica", "estática", "e" -> FuenteEstatica.class;
             case "dinamica", "dinámica", "d" -> FuenteDinamica.class;
@@ -64,12 +65,12 @@ public class FuenteService {
             default -> throw new TipoDeFuenteErroneoException("Tipo de fuente no reconocido: '"+tipo+"'.Se acepta estatica, dinamica y proxy");
         };
 
-        return repositorioDeFuentes.findByTipo(tipoClass, PageRequest.of(page, limit));
+        return fuenteRepository.findByTipo(tipoClass, PageRequest.of(page, limit));
     }
 
     @Transactional
     public Fuente guardarFuente(Fuente fuente) {
-        return repositorioDeFuentes.save(fuente);
+        return fuenteRepository.save(fuente);
     }
     /**
      * Recibe una Fuente
@@ -82,8 +83,8 @@ public class FuenteService {
     // Busca si una fuente ya existe segun su id. Si no existe la guarda y la devuelve, si ya existe la devuelve.
     @Transactional
     public Fuente guardarFuenteSiNoExiste(Fuente fuente) {
-        Optional<Fuente> existente = repositorioDeFuentes.findById(fuente.getId());
-        return existente.orElseGet(() -> repositorioDeFuentes.save(fuente));
+        Optional<Fuente> existente = fuenteRepository.findById(fuente.getId());
+        return existente.orElseGet(() -> fuenteRepository.save(fuente));
     }
 
     @Transactional
@@ -105,9 +106,6 @@ public class FuenteService {
     @Transactional
     public Map<Fuente, List<Hecho>> hechosUltimaPeticion(Set<Fuente> fuentes) { // Retornamos una lista de pares, donde el primer elemento es la lista de hechos y el segundo elemento es la fuente de donde se obtuvieron los hechos
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
-        System.out.println("cantidad de fuentes" + fuentes.size());
-
-
 
         for (Fuente fuente : fuentes) {
             String uri = this.obtenerUri(fuente);//todo trycatchear
@@ -122,6 +120,9 @@ public class FuenteService {
         return hashMap;
     }
 
+    public Long obtenerCantidadFuentesConColecciones() {
+        return fuenteRepository.countWithColecciones();
+        }
     private List<HechoInputDto> getHechosUltimaPeticion(String uri, Fuente fuente) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -158,9 +159,7 @@ public class FuenteService {
         return hechos;
     }
 
-    public Long obtenerCantidadFuentes() {
-        return repositorioDeFuentes.count();
-    }
+
 
     private String obtenerUri(Fuente fuente) {
         ServiceInstance instance = discoveryClient.getInstances("CARGADOR"). //TODO CAMBIAR SERVICES NAMES A CARGADOR
@@ -183,13 +182,12 @@ public class FuenteService {
 
     @Transactional
     public List<Hecho> obtenerHechosPorFuente(String idFuente) {
-        return repositorioDeFuentes.findHechosByFuenteId(idFuente);
+        return fuenteRepository.findHechosByFuenteId(idFuente);
     }
 
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
         try{
-
-            return repositorioDeFuentes.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
+            return fuenteRepository.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
         } catch (FuenteNoEncontradaException e){
             try{
 
@@ -275,13 +273,13 @@ public class FuenteService {
     }
 
     public List<Fuente> obtenerTodasLasFuentes(){
-        return repositorioDeFuentes.findAll();
+        return fuenteRepository.findAll();
     }
     @Transactional
     public Fuente cambiarAlias(String id, FuenteAliasDto fuenteAliasDto) {
         Fuente fuente = obtenerFuentePorId(id);
         fuente.setAlias(fuenteAliasDto.getAlias());
-        repositorioDeFuentes.save(fuente);
+        fuenteRepository.save(fuente);
         return fuente;
     }
 

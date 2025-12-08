@@ -5,14 +5,17 @@ import aplicacion.dtos.*;
 import aplicacion.services.EstadisticasService;
 import aplicacion.services.scheduler.ActualizacionEstadisticasScheduler;
 import org.apache.commons.lang3.function.TriFunction;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import aplicacion.utils.CSVConverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @RestController
@@ -28,6 +31,7 @@ public class EstadisticasController {
 
 
     @PostMapping("/actualizar")
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<Void> actualizarEstadisticas() {
         System.out.println("Actualizando estadisticas...");
         actualizacionEstadisticasScheduler.actualizarEstadisticas(); // Tarea scheduleada de inmediato
@@ -40,7 +44,7 @@ public class EstadisticasController {
     }
 
     @GetMapping(value = "/provinciasConMasHechosDeColeccion", produces = { MediaType.APPLICATION_JSON_VALUE, "text/csv" })
-    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(value = "idColeccion", required = false) String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit, @RequestHeader(HttpHeaders.ACCEPT) String accept) throws Exception {
+    public ResponseEntity<?> provinciasDeColeccion(@RequestParam(value = "idColeccion", required = false) String idColeccion,@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "1") Integer limit, @RequestHeader(HttpHeaders.ACCEPT) String accept) {
         if(isPaginaYLimiteInvalid(page, limit)) {
             return ResponseEntity.badRequest().build();
         }
@@ -77,27 +81,33 @@ public class EstadisticasController {
 
     @GetMapping(value = "/solicitudesDeEliminacionSpam", produces = { MediaType.APPLICATION_JSON_VALUE, "text/csv" })
     public ResponseEntity<?> solicitudesSpam(@RequestHeader(HttpHeaders.ACCEPT) String accept) {
-        List<CantidadSolicitudesSpamDTO> cantidad = new ArrayList<>();
-        cantidad.add(estadisticasService.obtenerCantidadSolicitudSpam());
+        List<CantidadSolicitudesPorTipo> cantidades = estadisticasService.obtenerCantidadSolicitudSpam();
         if(accept.contains("text/csv")) {
             try {
-                String csvData = CSVConverter.convert(cantidad);
+                String csvData = CSVConverter.convert(cantidades);
                 return ResponseEntity.status(200).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + "solicitudesDeEliminacionSpam" + ".csv")
                         .body(csvData);
             } catch (Exception e) {
-                ResponseEntity.status(500).body("SE PUDRIO TODO");
+                ResponseEntity.status(500).body(Map.of("error", "Se produjo un error al producir el CSV"));
                 throw new RuntimeException(e);
             }
         }
-        return ResponseEntity.ok(estadisticasService.obtenerCantidadSolicitudSpam());
+        return ResponseEntity.ok(cantidades);
     }
 
     @GetMapping("/coleccionesDisponibles")
-    public ResponseEntity<List<ColeccionDisponibleDTO>> coleccionesDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+    public ResponseEntity<Page<ColeccionDisponibleDTO>> coleccionesDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, @RequestParam(value = "search", required = false) String search) {
         if(isPaginaYLimiteInvalid(page, limit)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(estadisticasService.obtenerColeccionesDisponibles(page, limit));
+        return ResponseEntity.ok(estadisticasService.obtenerColeccionesDisponibles(page, limit, search));
+    }
+    @GetMapping("/categoriasDisponibles")
+    public ResponseEntity<Page<CategoriaDisponibleDTO>> categoriasDisponibles(@RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit, @RequestParam(value = "search", required = false) String search) {
+        if(isPaginaYLimiteInvalid(page, limit)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(estadisticasService.obtenerCategoriasDisponibles(page, limit, search));
     }
 
     public boolean isPaginaYLimiteInvalid(Integer page, Integer limit){

@@ -11,17 +11,21 @@ import aplicacion.dto.mappers.*;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.excepciones.*;
-import aplicacion.repositorios.RepositorioDeHechos;
-import aplicacion.repositorios.RepositorioDeRevisiones;
+import aplicacion.repositories.HechoRepository;
+import aplicacion.repositories.RevisionRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class HechoService {
-    private final RepositorioDeHechos repositorioDeHechos;
+    private final HechoRepository hechoRepository;
     private final ContribuyenteService contribuyenteService;
     private final HechoInputMapper hechoInputMapper;
     private final HechoOutputMapper hechoOutputMapper;
@@ -29,11 +33,12 @@ public class HechoService {
     private final CategoriaInputMapper categoriaInputMapper;
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
-    private final RepositorioDeRevisiones repositorioDeRevisiones;
+    private final RevisionRepository revisionRepository;
+    @Value("${security.active}")
+    boolean seguridadActiva;
 
-
-    public HechoService(RepositorioDeHechos repositorioDeHechos, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RepositorioDeRevisiones repositorioDeRevisiones) {
-        this.repositorioDeHechos = repositorioDeHechos;
+    public HechoService(HechoRepository hechoRepository, ContribuyenteService contribuyenteService, HechoInputMapper hechoInputMapper, HechoOutputMapper hechoOutputMapper, HechoRevisadoOutputMapper hechoRevisadoOutputMapper, CategoriaInputMapper categoriaInputMapper, UbicacionInputMapper ubicacionInputMapper, MultimediaInputMapper multimediaInputMapper, RevisionRepository revisionRepository) {
+        this.hechoRepository = hechoRepository;
         this.contribuyenteService = contribuyenteService;
         this.hechoInputMapper = hechoInputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
@@ -41,57 +46,118 @@ public class HechoService {
         this.categoriaInputMapper = categoriaInputMapper;
         this.ubicacionInputMapper = ubicacionInputMapper;
         this.multimediaInputMapper = multimediaInputMapper;
-        this.repositorioDeRevisiones = repositorioDeRevisiones;
+        this.revisionRepository = revisionRepository;
     }
 
     @Transactional
-    public List<HechoOutputDto> obtenerHechosDeContribuyente( Long contribuyenteId ) throws ContribuyenteNoConfiguradoException {
+    public Page<HechoOutputDto> obtenerHechosDeContribuyente(String contribuyenteId, Pageable pageable) throws ContribuyenteNoConfiguradoException {
         contribuyenteService.obtenerContribuyente(contribuyenteId);
-        return repositorioDeHechos.findByAutorId(contribuyenteId).stream().map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByAutorId(contribuyenteId, pageable).map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true) // Asegura que la sesión esté abierta cuando se haga la serialización
     public List<Hecho> obtenerHechos() {
-        return repositorioDeHechos.findAll();
+        return hechoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<HechoOutputDto> obtenerHechosAceptados(Pageable pageable) {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.ACEPTADO, pageable)
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true)
     public List<HechoOutputDto> obtenerHechosAceptados() {
-        return this.obtenerHechos().stream().filter(Hecho::estaAceptado).map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByEstadoRevision(EstadoRevision.ACEPTADO)
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
     }
+
+    @Transactional(readOnly = true)
+    public Page<HechoOutputDto> obtenerHechosPendientes(Pageable pageable) {
+        return hechoRepository.findByEstadoRevision(EstadoRevision.PENDIENTE, pageable)
+                .map(hechoOutputMapper::map);
+    }
+
     @Transactional(readOnly = true)
     public List<HechoOutputDto> obtenerHechosPendientes() {
-        return this.obtenerHechos().stream().filter(Hecho::estaPendiente).map(hechoOutputMapper::map).toList();
+        return hechoRepository.findByEstadoRevision(EstadoRevision.PENDIENTE)
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA, Pageable pageable) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.PENDIENTE,
+                        fechaMayorA,
+                        pageable
+                )
+                .map(hechoOutputMapper::map);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HechoOutputDto> obtenerHechosPendientesConFechaMayorA(LocalDateTime fechaMayorA) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.PENDIENTE,
+                        fechaMayorA
+                )
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA, Pageable pageable) {
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.ACEPTADO,
+                        fechaMayorA,
+                        pageable
+                )
+                .map(hechoOutputMapper::map);
     }
 
     @Transactional(readOnly = true)
     public List<HechoOutputDto> obtenerHechosAceptadosConFechaMayorA(LocalDateTime fechaMayorA) {
-        return this.obtenerHechosAceptados().stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).toList();
+        return hechoRepository.findByEstadoRevisionAndFechaUltimaModificacionAfter(
+                        EstadoRevision.ACEPTADO,
+                        fechaMayorA
+                )
+                .stream()
+                .map(hechoOutputMapper::map)
+                .toList();
     }
 
     @Transactional //(readOnly = true)
-    public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto) throws ContribuyenteNoConfiguradoException {
-        Long identidadId = hechoInputDto.getContribuyenteId();
+    public HechoOutputDto guardarHecho(HechoInputDto hechoInputDto, String userId) throws ContribuyenteNoConfiguradoException, AutorizacionDenegadaException {
+        String identidadId = hechoInputDto.getAutor();
+
+        if (!Objects.equals(identidadId, userId)) {
+            throw new AutorizacionDenegadaException("El usuario no tiene permiso para guardar un hecho en nombre de otro usuario.");
+        }
+
         Contribuyente autor = null;
         if (!hechoInputDto.getAnonimato() && identidadId == null) {
             throw new ContribuyenteNoConfiguradoException("El contribuyente debe estar configurado si no se carga el hecho en anonimato.");
         }
         if (!hechoInputDto.getAnonimato()) {
-            autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getContribuyenteId());
+            autor = contribuyenteService.obtenerContribuyente(hechoInputDto.getAutor());
         }
         Hecho hecho = hechoInputMapper.map(hechoInputDto, autor);
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 
     public HechoOutputDto obtenerHecho(String id) throws HechoNoEncontradoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+        Hecho hecho = hechoRepository.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         return hechoOutputMapper.map(hecho);
     }
 
     public HechoRevisadoOutputDto modificarEstadoRevision(String id, CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto) throws HechoNoEncontradoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+        Hecho hecho = hechoRepository.findById(id)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         EstadoRevision estadoRevision = cambioEstadoRevisionInputDto.getEstado();
         String sugerencia = cambioEstadoRevisionInputDto.getSugerencia();
@@ -99,23 +165,33 @@ public class HechoService {
         if (estadoRevision == EstadoRevision.ACEPTADO && sugerencia != null) {
             hecho.setSugerencia(sugerencia);
         }
+        hecho.setFechaUltimaModificacion(LocalDateTime.now());
 
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoRevisadoOutputMapper.map(hecho);
     }
 
-    public void guardarRevision(String hechoId, Long administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
-        Hecho hecho = repositorioDeHechos.findById(hechoId)
+    public void guardarRevision(String hechoId, String administradorId) throws HechoNoEncontradoException, ContribuyenteNoConfiguradoException {
+        RevisionHecho revisionHecho;
+        Hecho hecho = hechoRepository.findById(hechoId)
                 .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + hechoId));
-        Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
-        RevisionHecho revisionHecho = new RevisionHecho(administrador, hecho);
-        repositorioDeRevisiones.save(revisionHecho);
+        if(seguridadActiva){
+            Contribuyente administrador = contribuyenteService.obtenerContribuyente(administradorId);
+            revisionHecho = new RevisionHecho(administrador, hecho);
+        }else {
+            revisionHecho = new RevisionHecho(null, hecho);
+        }
+        revisionRepository.save(revisionHecho);
     }
 
-    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException {
-        Hecho hecho = repositorioDeHechos.findById(id)
+    public HechoOutputDto editarHecho(String id, HechoEdicionInputDto hechoEdicionInputDto, String userId) throws HechoNoEncontradoException, PlazoEdicionVencidoException, AnonimatoException, AutorizacionDenegadaException {
+        Hecho hecho = hechoRepository.findById(id)
                     .orElseThrow(() -> new HechoNoEncontradoException("Hecho no encontrado con ID: " + id));
         this.validarHechoEditable(hecho);
+
+        if (seguridadActiva && !hecho.getAutor().getId().equals(userId)) {
+            throw new AutorizacionDenegadaException("El contribuyente no está autorizado para editar este hecho.");
+        }
 
         hecho.editar(hechoEdicionInputDto.getTitulo(),
                 hechoEdicionInputDto.getDescripcion(),
@@ -125,7 +201,7 @@ public class HechoService {
                 hechoEdicionInputDto.getContenidoTexto(),
                 hechoEdicionInputDto.getContenidoMultimedia() != null ? hechoEdicionInputDto.getContenidoMultimedia().stream().map(multimediaInputMapper::map).toList() : null);
 
-        hecho = repositorioDeHechos.save(hecho);
+        hecho = hechoRepository.save(hecho);
         return hechoOutputMapper.map(hecho);
     }
 

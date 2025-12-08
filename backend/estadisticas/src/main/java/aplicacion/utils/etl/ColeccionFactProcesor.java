@@ -4,15 +4,12 @@ import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
 import aplicacion.domain.dimensiones.DimensionUbicacion;
 import aplicacion.domain.facts.FactColeccion;
-import aplicacion.domain.facts.FactHecho;
-import aplicacion.domain.hechosYSolicitudes.Ubicacion;
 import aplicacion.domain.id.FactColeccionId;
-import aplicacion.repositorios.olap.DimensionCategoriaRepository;
-import aplicacion.repositorios.olap.DimensionColeccionRepository;
-import aplicacion.repositorios.olap.DimensionUbicacionRepository;
-import aplicacion.repositorios.olap.FactColeccionRepository;
+import aplicacion.repositories.olap.DimensionCategoriaRepository;
+import aplicacion.repositories.olap.DimensionColeccionRepository;
+import aplicacion.repositories.olap.DimensionUbicacionRepository;
+import aplicacion.repositories.olap.FactColeccionRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ColeccionFactProcesor extends AbstractFactProcessor<FactColeccion, FactColeccionId> {
-    private FactColeccionRepository factColeccionRepository;
+    private final FactColeccionRepository factColeccionRepository;
 
     public ColeccionFactProcesor(FactColeccionRepository factColeccionRepository, DimensionUbicacionRepository dimensionUbicacionRepository, DimensionCategoriaRepository dimensionCategoriaRepository, DimensionColeccionRepository dimensionColeccionRepository){
         this.factColeccionRepository = factColeccionRepository;

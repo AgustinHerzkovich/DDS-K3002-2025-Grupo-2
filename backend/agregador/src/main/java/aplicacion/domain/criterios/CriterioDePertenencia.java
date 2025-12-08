@@ -14,5 +14,6 @@ public abstract class CriterioDePertenencia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String tipo;
     public abstract Boolean cumpleCriterio(Hecho hecho);
 }

@@ -2,26 +2,18 @@ package aplicacion.services;
 
 import aplicacion.domain.dimensiones.DimensionColeccion;
 import aplicacion.domain.facts.FactColeccion;
-import aplicacion.domain.facts.FactHecho;
 import aplicacion.domain.hechosYSolicitudes.Coleccion;
-import aplicacion.domain.hechosYSolicitudes.Hecho;
 import aplicacion.domain.hechosYSolicitudes.HechoXColeccion;
-import aplicacion.repositorios.agregador.ColeccionRepository;
-import aplicacion.repositorios.agregador.HechoRepository;
-import aplicacion.repositorios.agregador.HechoXColeccionRepository;
-import aplicacion.repositorios.olap.*;
-import aplicacion.utils.ConfiguracionGlobal;
+import aplicacion.repositories.agregador.ColeccionRepository;
+import aplicacion.repositories.agregador.HechoXColeccionRepository;
+import aplicacion.repositories.olap.*;
 import aplicacion.utils.etl.ColeccionFactProcesor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class CargaDeColeccionesService {
@@ -30,13 +22,15 @@ public class CargaDeColeccionesService {
     private final ColeccionRepository coleccionRepository;
     private final FactColeccionRepository factColeccionRepository;
     private final ColeccionFactProcesor coleccionFactProcesor;
+    private final DimensionColeccionRepository dimensionColeccionRepository;
     public CargaDeColeccionesService(HechoXColeccionRepository hechoXColeccionRepository,
                                      ColeccionRepository coleccionRepository, DimensionColeccionRepository dimensionColeccionRepository,
                                      DimensionCategoriaRepository dimensionCategoriaRepository,
                                      DimensionUbicacionRepository dimensionUbicacionRepository,
-                                     FactColeccionRepository factColeccionRepository) {
+                                     FactColeccionRepository factColeccionRepository, DimensionColeccionRepository dimensionColeccionRepository1) {
+        this.dimensionColeccionRepository = dimensionColeccionRepository1;
 
-    this.coleccionFactProcesor = new ColeccionFactProcesor(factColeccionRepository, dimensionUbicacionRepository, dimensionCategoriaRepository, dimensionColeccionRepository);
+        this.coleccionFactProcesor = new ColeccionFactProcesor(factColeccionRepository, dimensionUbicacionRepository, dimensionCategoriaRepository, dimensionColeccionRepository);
     this.hechoXColeccionRepository = hechoXColeccionRepository;
     this.coleccionRepository = coleccionRepository;
     this.factColeccionRepository = factColeccionRepository;
@@ -50,6 +44,7 @@ public class CargaDeColeccionesService {
         int c = 0;
         int q = 0;
         factColeccionRepository.deleteAll();
+        dimensionColeccionRepository.deleteAll();
         List<Coleccion> coleccions = coleccionRepository.findAll();
         do {
             Pageable pageable = PageRequest.of(c, tamañoPagina);

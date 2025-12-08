@@ -1,5 +1,6 @@
 package aplicacion.controllers;
 
+import aplicacion.config.TokenContext;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.TipoAlgoritmoConsenso;
 import aplicacion.dto.output.HechoMapaOutputDto;
@@ -23,37 +24,37 @@ public class ColeccionController {
 
     @GetMapping("/colecciones")
     public String paginaColecciones(@RequestParam(name = "search", required = false) String search,
-                                    @RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                    @RequestParam(name = "size", defaultValue = "3") Integer size,
                                     Model model) {
+        TokenContext.addToken(model);
+
         PageWrapper<ColeccionOutputDto> pageWrapper = coleccionService
                 .obtenerColecciones(page, size, search)
                 .block();
 
-        if (pageWrapper == null) {
+        if (pageWrapper == null || pageWrapper.getContent() == null) {
             model.addAttribute("colecciones", List.of());
             model.addAttribute("currentPage", 0);
             model.addAttribute("pageSize", size);
             model.addAttribute("hasNext", false);
             model.addAttribute("hasPrevious", false);
             model.addAttribute("totalPages", 0);
-
-            return "colecciones";
+        } else {
+            model.addAttribute("colecciones", pageWrapper.getContent());
+            model.addAttribute("search", search != null ? search : "");
+            model.addAttribute("currentPage", pageWrapper.getNumber());
+            model.addAttribute("pageSize", pageWrapper.getSize());
+            model.addAttribute("hasNext", !pageWrapper.isLast());
+            model.addAttribute("hasPrevious", !pageWrapper.isFirst());
+            model.addAttribute("totalPages", pageWrapper.getTotalPages());
         }
-
-        model.addAttribute("colecciones", pageWrapper.getContent());
-        model.addAttribute("search", search != null ? search : "");
-        model.addAttribute("currentPage", pageWrapper.getNumber());
-        model.addAttribute("pageSize", pageWrapper.getSize());
-        model.addAttribute("hasNext", !pageWrapper.isLast());
-        model.addAttribute("hasPrevious", !pageWrapper.isFirst());
-        model.addAttribute("totalPages", pageWrapper.getTotalPages());
 
         return "colecciones";
     }
 
     @GetMapping("/colecciones/{id}/hechosIrrestrictos")
-    public String paginaHechosIrrestrictosDeColeccion(@PathVariable("id") String id,
+    public String paginaHechosIrrestrictosDeColeccion(@PathVariable(name = "id") String id,
                                                       @RequestParam(name = "categoria", required = false) String categoria,
                                                       @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                       @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -61,15 +62,18 @@ public class ColeccionController {
                                                       @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                       @RequestParam(name = "latitud", required = false) Double latitud,
                                                       @RequestParam(name = "longitud", required = false) Double longitud,
+                                                      @RequestParam(name = "radio", required = false) Double radio,
                                                       @RequestParam(name = "search", required = false) String search,
-                                                      @RequestParam(defaultValue = "0") Integer page,
-                                                      @RequestParam(defaultValue = "10") Integer size,
+                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                      @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                       Model model) {
+        TokenContext.addToken(model);
+
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosIrrestrictosDeColeccion(
                     id, categoria, fechaReporteDesde, fechaReporteHasta,
                     fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                    latitud, longitud, search, page, size
+                    latitud, longitud, radio, search, page, size
                     ).block();
 
         if (pageWrapper == null) {
@@ -111,7 +115,7 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}/hechosCurados")
-    public String paginaHechosCuradosDeColeccion(@PathVariable("id") String id,
+    public String paginaHechosCuradosDeColeccion(@PathVariable(name = "id") String id,
                                                  @RequestParam(name = "categoria", required = false) String categoria,
                                                  @RequestParam(name = "fechaReporteDesde", required = false) String fechaReporteDesde,
                                                  @RequestParam(name = "fechaReporteHasta", required = false) String fechaReporteHasta,
@@ -119,16 +123,18 @@ public class ColeccionController {
                                                  @RequestParam(name = "fechaAcontecimientoHasta", required = false) String fechaAcontecimientoHasta,
                                                  @RequestParam(name = "latitud", required = false) Double latitud,
                                                  @RequestParam(name = "longitud", required = false) Double longitud,
+                                                 @RequestParam(name = "radio", required = false) Double radio,
                                                  @RequestParam(name = "search", required = false) String search,
-                                                 @RequestParam(defaultValue = "0") Integer page,
-                                                 @RequestParam(defaultValue = "10") Integer size,
+                                                 @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(name = "size", defaultValue = "10") Integer size,
                                                  Model model) {
+        TokenContext.addToken(model);
 
         // Obtener hechos desde la API Pública
         PageWrapper<HechoMapaOutputDto> pageWrapper = coleccionService.obtenerHechosCuradosDeColeccion(
                 id, categoria, fechaReporteDesde, fechaReporteHasta,
                 fechaAcontecimientoDesde, fechaAcontecimientoHasta,
-                latitud, longitud, search, page, size
+                latitud, longitud, radio, search, page, size
         ).block();
 
         if (pageWrapper == null) {
@@ -170,7 +176,9 @@ public class ColeccionController {
     }
 
     @GetMapping("/colecciones/{id}")
-    public String paginaColeccion(@PathVariable("id") String id, Model model) {
+    public String paginaColeccion(@PathVariable(name = "id") String id, Model model) {
+        TokenContext.addToken(model);
+
         ColeccionOutputDto coleccion = coleccionService.obtenerColeccion(id);
         if (coleccion == null) {
             return "error/404"; // Ver si está bien tirar esto o capaz convenga otra cosa

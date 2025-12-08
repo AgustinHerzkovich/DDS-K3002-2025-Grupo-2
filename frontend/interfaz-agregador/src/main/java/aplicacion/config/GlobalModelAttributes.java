@@ -2,7 +2,7 @@ package aplicacion.config;
 
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import aplicacion.services.ContribuyenteService;
-import aplicacion.services.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,19 +11,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.Collection;
-
 @ControllerAdvice
 public class GlobalModelAttributes {
-
     private final ContribuyenteService contribuyenteService;
+
     private static final Logger log = LoggerFactory.getLogger(GlobalModelAttributes.class);
+
     public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
         this.contribuyenteService = contribuyenteService;
     }
 
     @ModelAttribute
-    public void addGlobalAttributes(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
+    public void addGlobalAttributes(HttpServletRequest request, @AuthenticationPrincipal OidcUser oidcUser, Model model) {
+        String currentUri = request.getRequestURI();
+        model.addAttribute("currentUri", currentUri);
         // Setear isLoggedIn globalmente para todos los controllers
         model.addAttribute("isLoggedIn", oidcUser != null);
 
@@ -37,7 +38,7 @@ public class GlobalModelAttributes {
                     .anyMatch(auth -> auth.getAuthority().equalsIgnoreCase("ROLE_ADMIN"));
             model.addAttribute("isAdmin", isAdmin);
 
-            ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(oidcUser.getEmail());
+            ContribuyenteOutputDto contribuyente = contribuyenteService.obtenerContribuyentePorMail(oidcUser);
             if (contribuyente != null) {
                 model.addAttribute("userId", contribuyente.getId()); // ID del usuario
             } else {
@@ -60,9 +61,6 @@ public class GlobalModelAttributes {
             model.addAttribute("lastName", null);
             model.addAttribute("birthDate", null);
         }
-        log.info("Global model attributes set: isLoggedIn=" + model.getAttribute("isLoggedIn") +
-                ", isAdmin=" + model.getAttribute("isAdmin") +
-                ", userId=" + model.getAttribute("userId"));
     }
 }
 

@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class HechoOutputDto {
+    private String id;
     private String titulo;
     private String descripcion;
     private Categoria categoria;

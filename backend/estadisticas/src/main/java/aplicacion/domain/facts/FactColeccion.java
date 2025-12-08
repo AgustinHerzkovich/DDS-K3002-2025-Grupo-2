@@ -2,7 +2,6 @@ package aplicacion.domain.facts;
 
 import aplicacion.domain.dimensiones.DimensionCategoria;
 import aplicacion.domain.dimensiones.DimensionColeccion;
-import aplicacion.domain.dimensiones.DimensionTiempo;
 import aplicacion.domain.dimensiones.DimensionUbicacion;
 import aplicacion.domain.hechosYSolicitudes.Hecho;
 import aplicacion.domain.id.FactColeccionId;

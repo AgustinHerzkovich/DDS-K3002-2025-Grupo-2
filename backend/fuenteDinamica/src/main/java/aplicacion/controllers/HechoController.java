@@ -7,9 +7,16 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.output.HechoRevisadoOutputDto;
 import aplicacion.services.HechoService;
 import aplicacion.excepciones.*;
+import domain.helpers.JwtUtil;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,22 +27,62 @@ import java.util.List;
 public class HechoController {
     private final HechoService hechoService;
 
+    @Value("${security.active}")
+    boolean seguridadActiva;
+
     public HechoController(HechoService hechoService) {
         this.hechoService = hechoService;
+    }
+
+    @GetMapping("/hechosPaginados")
+    public ResponseEntity<Page<HechoOutputDto>> obtenerHechosPaginados(
+            @RequestParam(value = "fechaMayorA", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
+            @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
+    ) {
+        Page<HechoOutputDto> hechos;
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Combinar filtros de fechaMayorA y pendiente
+        if (fechaMayorA != null && pendiente) {
+            // Hechos pendientes con fecha mayor a
+            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA, pageable);
+        } else if (fechaMayorA != null) {
+            // Hechos aceptados con fecha mayor a
+            hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA, pageable);
+        } else if (pendiente) {
+            // Todos los hechos pendientes
+            hechos = hechoService.obtenerHechosPendientes(pageable);
+        } else {
+            // Todos los hechos aceptados
+            hechos = hechoService.obtenerHechosAceptados(pageable);
+        }
+
+        return ResponseEntity.ok(hechos);
     }
 
     @GetMapping("/hechos")
     public ResponseEntity<List<HechoOutputDto>> obtenerHechos(
             @RequestParam(value = "fechaMayorA", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime fechaMayorA,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaMayorA,
             @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente
     ) {
         List<HechoOutputDto> hechos;
-        if (fechaMayorA != null) {
+
+        // Combinar filtros de fechaMayorA y pendiente
+        if (fechaMayorA != null && pendiente) {
+            // Hechos pendientes con fecha mayor a
+            hechos = hechoService.obtenerHechosPendientesConFechaMayorA(fechaMayorA);
+        } else if (fechaMayorA != null) {
+            // Hechos aceptados con fecha mayor a
             hechos = hechoService.obtenerHechosAceptadosConFechaMayorA(fechaMayorA);
-        } else if(pendiente){
+        } else if (pendiente) {
+            // Todos los hechos pendientes
             hechos = hechoService.obtenerHechosPendientes();
-        }else{
+        } else {
+            // Todos los hechos aceptados
             hechos = hechoService.obtenerHechosAceptados();
         }
 
@@ -43,7 +90,7 @@ public class HechoController {
     }
 
     @GetMapping("/hechos/{id}")
-    public ResponseEntity<?> obtenerHecho(@PathVariable("id") String id) {
+    public ResponseEntity<?> obtenerHecho(@PathVariable(name = "id") String id) {
         try{
             HechoOutputDto hecho = hechoService.obtenerHecho(id);
             return ResponseEntity.ok(hecho);
@@ -53,26 +100,60 @@ public class HechoController {
     }
 
     @PostMapping("/hechos")
-    public ResponseEntity<?> agregarHecho(@RequestBody HechoInputDto hechoInputDto) {
+    public ResponseEntity<?> agregarHecho(@Valid @RequestBody HechoInputDto hechoInputDto,
+                                          @RequestHeader(value = "Authorization", required = false) String token) {
         HechoOutputDto hecho;
         try {
-            hecho = hechoService.guardarHecho(hechoInputDto);
+            String userId = null;
+            if(seguridadActiva){
+                // Validar que el usuario sea el autor del hecho
+                if (!hechoInputDto.getAnonimato() && (token == null || token.isEmpty())) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
+
+                // Extraer el ID del usuario del token JWT
+                userId = JwtUtil.extractUserId(token);
+                if (!hechoInputDto.getAnonimato() && userId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
+            }else {
+                userId = null;
+            }
+
+            hecho = hechoService.guardarHecho(hechoInputDto, userId);
             System.out.println("Se ha agregado el hecho: " + hecho.getId());
-            return ResponseEntity.ok(hecho);
+            return ResponseEntity.status(201).body(hecho);
         }catch (ContribuyenteNoConfiguradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (AutorizacionDenegadaException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 
     @PatchMapping("/hechos/{id}/estadoRevision")
-    public ResponseEntity<?> modificarEstadoRevision(@PathVariable("id") String id,
-                                                     @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
-                                                     @RequestHeader(value = "Administrador", required = false) Long administradorId) {
+    @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
+    public ResponseEntity<?> modificarEstadoRevision(@PathVariable(name = "id") String id,
+                                                     @Valid @RequestBody CambioEstadoRevisionInputDto cambioEstadoRevisionInputDto,
+                                                     @RequestHeader(value = "Authorization", required = false) String token) {
         try {
-            HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
-            if (administradorId != null) {
-                hechoService.guardarRevision(id, administradorId);
+            String administradorId = null;
+            if(seguridadActiva){
+                // Validar que el usuario sea el autor del hecho
+                if (token == null || token.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
+
+                // Extraer el ID del usuario del token JWT
+                administradorId = JwtUtil.extractUserId(token);
+                if (administradorId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
+            }else {
+                administradorId = null;
             }
+
+            HechoRevisadoOutputDto hecho = hechoService.modificarEstadoRevision(id, cambioEstadoRevisionInputDto);
+            hechoService.guardarRevision(id, administradorId);
             System.out.println("Se ha modificado el estado de revisión del hecho " + hecho.getTitulo() + "(" + id + ")" + " a " + cambioEstadoRevisionInputDto.getEstado());
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
@@ -81,17 +162,34 @@ public class HechoController {
     }
 
     @PatchMapping("/hechos/{id}")
-    public ResponseEntity<?> editarHecho(@PathVariable("id") String id,
-                                         @RequestBody HechoEdicionInputDto hechoEdicionInputDto) {
+    public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
+                                         @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto,
+                                         @RequestHeader(value = "Authorization", required = false) String token) {
         System.out.println("EDITANDO el hecho: " + id );
+        String userId = null;
         try {
-            HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto);
-            System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")");
+            if(seguridadActiva) {
+                // Validar que el usuario sea el autor del hecho
+                if (token == null || token.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se proporcionó token de autenticación");
+                }
+
+                // Extraer el ID del usuario del token JWT
+                userId = JwtUtil.extractUserId(token);
+                if (userId == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");
+                }
+            }
+            // Si la validación pasa, proceder con la edición
+            HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto, userId);
+            System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")" + " por el usuario: " + userId);
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (PlazoEdicionVencidoException | AnonimatoException e){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (AutorizacionDenegadaException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 }

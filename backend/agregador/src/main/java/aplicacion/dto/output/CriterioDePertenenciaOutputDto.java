@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CriterioDePertenenciaOutputDto {
     private Long id;
+    private String tipo;
 }

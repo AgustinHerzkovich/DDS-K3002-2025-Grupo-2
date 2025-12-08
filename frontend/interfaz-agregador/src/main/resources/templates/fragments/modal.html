@@ -1,0 +1,647 @@
+<div th:fragment="modalHecho" id="modal-hecho" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div class="create-modal-header">
+			<h3 id="modal-crear-hecho-titulo" class="modal-title hidden">
+				Crear Nuevo Hecho
+			</h3>
+			<h3 id="modal-editar-hecho-titulo" class="modal-title hidden">
+				Editar Hecho
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="form-modal-hecho" class="form-body">
+				<div class="row g-2 mb-3">
+					<div class="col-md-7">
+						<label for="modal-hecho-titulo" class="form-label">
+							Título
+							<span class="form-obligatory-icon">
+								*
+							</span>
+							<span class="max-char-span">
+								(Máx.200 caracteres)
+							</span>
+						</label>
+						<input type="text" maxlength="200" class="form-input" id="modal-hecho-titulo" placeholder="Ingrese el título del hecho" required>
+					</div>
+					<div class="col-md-5">
+						<label for="modal-hecho-categoria" class="form-label">
+							Categoría
+							<span class="form-obligatory-icon">
+								*
+							</span>
+						</label>
+						<input type="text" class="form-input" maxlength="50" id="modal-hecho-categoria" placeholder="Ej: Desastre Natural" required>
+					</div>
+				</div>
+				<div class="mb-3">
+					<label for="modal-hecho-descripcion" class="form-label">
+						Descripción
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.1000 caracteres)
+						</span>
+					</label>
+					<textarea class="form-input" maxlength="1000" id="modal-hecho-descripcion" rows="5" placeholder="Ingrese la descripción del hecho" required></textarea>
+				</div>
+				<div class="mb-3">
+					<p class="form-label">
+						Ubicación
+					</p>
+					<div class="mb-2 d-flex items-center">
+						<input type="checkbox" id="modal-hecho-usar-coordenadas" class="form-check-input m-0" aria-label="Usar Coordenadas">
+						<p class="ms-2 text-black">
+							Ingresar manualmente latitud y longitud
+						</p>
+					</div>
+					<div id="modal-hecho-direccion-container" class="row g-2">
+						<div class="col-md-6">
+							<label for="modal-hecho-pais" class="form-label">País<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-pais" placeholder="Ej: Argentina" required>
+						</div>
+						<div class="col-md-6">
+							<label for="modal-hecho-provincia" class="form-label">Provincia<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-provincia" placeholder="Ej: Buenos Aires" required>
+						</div>
+						<div class="col-md-4">
+							<label for="modal-hecho-ciudad" class="form-label">Ciudad<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-ciudad" placeholder="Ej: La Plata" required>
+						</div>
+						<div class="col-md-5">
+							<label for="modal-hecho-calle" class="form-label">Calle<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-calle" placeholder="Ej: Calle 7" required>
+						</div>
+						<div class="col-md-3">
+							<label for="modal-hecho-altura" class="form-label">Altura<span class="form-obligatory-icon">*</span></label>
+							<input type="text" class="form-input" id="modal-hecho-altura" placeholder="Ej: 1234" required>
+						</div>
+					</div>
+					<div id="modal-hecho-coordenadas-container" class="row g-2 hidden">
+						<div class="col-md-6">
+							<label for="modal-hecho-latitud" class="form-label">Latitud<span class="form-obligatory-icon">*</span></label>
+							<input type="number" step="any" class="form-input" id="modal-hecho-latitud" placeholder="-34.603722">
+						</div>
+						<div class="col-md-6">
+							<label for="modal-hecho-longitud" class="form-label">Longitud<span class="form-obligatory-icon">*</span></label>
+							<input type="number" step="any" class="form-input" id="modal-hecho-longitud" placeholder="-58.381592">
+						</div>
+					</div>
+				</div>
+				<div class="row g-2 mb-3">
+					<div class="col-md-5">
+						<label for="modal-hecho-fecha" class="form-label">
+							Fecha y Hora
+							<span class="form-obligatory-icon">
+								*
+							</span>
+						</label>
+						<input id="modal-hecho-fecha" type="datetime-local" class="form-input cursor-pointer" required>
+					</div>
+					<div class="col-md-7">
+						<label for="modal-hecho-contenido-texto" class="form-label">
+							Contenido de Texto
+							<span class="form-obligatory-icon">
+								*
+							</span>
+							<span class="max-char-span">
+								(Máx.500 caracteres)
+							</span>
+						</label>
+						<textarea id="modal-hecho-contenido-texto" class="form-input" maxlength="500" rows="2" placeholder="Describa el hecho..." required></textarea>
+					</div>
+				</div>
+				<div class="mb-3">
+					<p class="form-label">
+						Contenido Multimedia
+						<span class="max-char-span">
+								(Máx.500 caracteres)
+						</span>
+					</p>
+					<p id="sin-multimedia-hecho" class="form-label text-s mb-2 text-muted-high">
+						No hay multimedia asociada al hecho
+					</p>
+					<div id="modal-hecho-multimedia-container"></div>
+					<button id="modal-crear-hecho-agregar-multimedia" type="button" class="btn-primary hidden">
+						+ Añadir Multimedia
+					</button>
+					<button id="modal-editar-hecho-agregar-multimedia" type="button" class="btn-primary hidden">
+						+ Añadir Multimedia
+					</button>
+				</div>
+				<div id="modal-hecho-anonimato-container" th:if="${isLoggedIn}" class="mb-3">
+					<div class="flex items-center">
+						<input type="checkbox" id="modal-hecho-anonimato" class="form-check-input m-0" aria-label="Declararse Anónimo">
+						<p class="ms-2 text-black">
+							Publicar de forma anónima
+						</p>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-hecho', null)}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-hecho')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-hecho', null)}" class="hidden"></div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalCrearColeccion" id="modal-crear-coleccion" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div id="modal-header-crear-coleccion" class="create-modal-header">
+			<h3 class="modal-title">
+				Crear Nueva Colección
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="form-modal-crear-coleccion" class="form-body">
+				<div>
+					<label for="titulo-crear-coleccion" class="form-label">
+						Título
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.50 caracteres)
+						</span>
+					</label>
+					<input type="text" id="titulo-crear-coleccion" maxlength="50" class="form-input" placeholder="Ingrese el título de la colección" required>
+				</div>
+				<div>
+					<label for="descripcion-crear-coleccion" class="form-label">
+						Descripción
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.150 caracteres)
+						</span>
+					</label>
+					<textarea id="descripcion-crear-coleccion" rows="3" maxlength="150" class="form-input" placeholder="Describa la colección" required></textarea>
+				</div>
+				<div>
+					<th:block th:replace="~{fragments/form :: containerCriterios('crear-coleccion')}" />
+					<button id="agregar-criterio-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Criterio">
+						+ Agregar Criterio
+					</button>
+				</div>
+				<div>
+					<th:block th:replace="~{fragments/form :: containerFuentes('crear-coleccion')}" />
+					<button id="agregar-fuente-crear-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
+						+ Agregar Fuente
+					</button>
+				</div>
+				<div>
+					<label for="algoritmo-crear-coleccion" class="form-label">
+						Algoritmo de Consenso
+						<span class="form-obligatory-icon">
+							*
+						</span>
+					</label>
+					<select id="algoritmo-crear-coleccion" class="form-input">
+						<option value="">Seleccione un algoritmo</option>
+						<option value="ABSOLUTO">Absoluto</option>
+						<option value="IRRESTRICTO">Irrestricto</option>
+						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
+						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
+					</select>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-coleccion')}" />
+			<th:block th:insert="~{fragments/form :: spinnerButton('Crear Colección', 'crear-coleccion', null)}" />
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalVerColeccion" id="modal-ver-coleccion" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div id="modal-header-ver-coleccion" class="modal-header bg-[#211bcf]">
+			<h3 class="modal-title">
+				Ver Colección
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<form id="form-modal-ver-coleccion" class="form-body">
+				<div>
+					<p class="form-label">
+						Título:
+					</p>
+					<p id="titulo-ver-coleccion" class="form-info-value"></p>
+				</div>
+				<div>
+					<p class="form-label">
+						Descripción:
+					</p>
+					<p id="descripcion-ver-coleccion" class="form-info-value"></p>
+				</div>
+				<th:block th:replace="~{fragments/form :: containerCriterios('ver-coleccion')}" />
+				<th:block th:replace="~{fragments/form :: containerFuentes('ver-coleccion')}" />
+				<div>
+					<p class="form-label">
+						Algoritmo de Consenso:
+					</p>
+					<p id="algoritmo-ver-coleccion" class="form-info-value"></p>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Volver', 'salir-ver-coleccion')}" />
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalMisHechos" id="modal-mis-hechos" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-lg min-w-[200px] min-h-[200px]">
+		<div class="modal-header bg-black">
+			<h3 class="modal-title">
+				Mis Hechos
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<div id="lista-mis-hechos" class="list-group"></div>
+			<th:block th:replace="~{fragments/pagination-controls :: jsPaginationControls('pagination-mis-hechos')}" />
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Cerrar', 'salir-mis-hechos')}" />
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalEditarPerfil" id="modal-editar-perfil" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-lg">
+
+		<div class="modal-header bg-black">
+			<h3 class="modal-title">
+				Editar Perfil
+			</h3>
+		</div>
+
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="formEditarPerfil" class="form-body">
+				<div>
+					<label for="perfil-nombre" class="form-label">
+						Nombre
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.20 caracteres)
+						</span>
+					</label>
+					<input type="text" id="perfil-nombre" maxlength="20" class="form-input" required>
+				</div>
+				<div>
+					<label for="perfil-apellido" class="form-label">
+						Apellido
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span">
+							(Máx.20 caracteres)
+						</span>
+					</label>
+					<input type="text" id="perfil-apellido" maxlength="20" class="form-input" required>
+				</div>
+				<div>
+					<label for="perfil-email" class="form-label">
+						Email
+						<span class="max-char-span">
+							(Máx.255 caracteres)
+						</span>
+					</label>
+					<input type="email" id="perfil-email" maxlength="255" class="form-input" disabled required>
+				</div>
+				<div>
+					<label for="perfil-fecha-nacimiento" class="form-label">
+						Fecha de Nacimiento
+					</label>
+					<input type="date" id="perfil-fecha-nacimiento" class="form-input" required>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-perfil')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-perfil', null)}" />
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="modalFiltrosMapa" id="filtros-modal" class="panel">
+	<div class="flex justify-between items-center px-4 py-2">
+		<h3 class="text-lg font-bold">
+			Filtros
+		</h3>
+		<div class="flex items-center gap-2.5">
+			<button id="btn-aplicar-filtros" class="btn-secondary" aria-label="Aplicar Filtros">
+				Aplicar
+			</button>
+			<button id="btn-toggle-filtros" class="text-gray-600 hover:text-gray-900 focus:outline-none transition-transform duration-200" aria-label="Cerrar o Abrir Panel de Filtros">
+				<svg id="chevron-filtros-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+				</svg>
+			</button>
+		</div>
+	</div>
+
+	<hr id="filtros-separator" class="mb-4">
+
+	<div id="filtros-content" class="px-4 pb-2">
+		<form id="form-filtros">
+			<div class="mb-4">
+				<label for="categoria" class="form-label">
+					Categoría
+					<span class="max-char-span">
+						(Máx.50 caracteres)
+					</span>
+				</label>
+				<input type="text" id="categoria" name="categoria" maxlength="50" th:value="${categoria}" class="form-input" placeholder="Ingrese categoría...">
+			</div>
+			<div class="mb-4">
+					<p class="form-label">
+						Fecha reporte
+					</p>
+				<div class="flex flex-col gap-1">
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">
+							Desde
+						</p>
+						<input type="datetime-local" id="fechaReporteDesde" name="fechaReporteDesde" th:value="${fechaReporteDesde}" class="form-input" aria-label="Ingresar Fecha Inicial">
+					</div>
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">
+							Hasta
+						</p>
+						<input type="datetime-local" id="fechaReporteHasta" name="fechaReporteHasta" th:value="${fechaReporteHasta}" class="form-input" aria-label="Ingresar Fecha Final">
+					</div>
+				</div>
+			</div>
+			<div class="mb-4">
+					<p class="form-label">
+						Fecha acontecimiento
+					</p>
+				<div class="flex flex-col gap-1">
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">
+							Desde
+						</p>
+						<input type="datetime-local" id="fechaAcontecimientoDesde" name="fechaAcontecimientoDesde" th:value="${fechaAcontecimientoDesde}" class="form-input" aria-label="Ingresar Fecha Inicial">
+					</div>
+					<div class="flex gap-1 items-center">
+						<p class="text-xs font-light w-[36px]">
+							Hasta
+						</p>
+						<input type="datetime-local" id="fechaAcontecimientoHasta" name="fechaAcontecimientoHasta" th:value="${fechaAcontecimientoHasta}" class="form-input" aria-label="Ingresar Fecha Final">
+					</div>
+				</div>
+			</div>
+			<div class="mb-4">
+				<div class="flex gap-2">
+					<p class="form-label">
+						Ubicación
+					</p>
+					<p class="form-label text-xs">
+						(haz clic en el mapa)
+					</p>
+				</div>
+				<div class="grid grid-cols-2 gap-2 mb-2">
+					<div>
+						<label for="filtroLatitud" class="form-label">
+							Latitud
+						</label>
+						<input type="number" step="any" id="filtroLatitud" name="latitud" class="form-input" placeholder="-34.603722" readonly>
+					</div>
+					<div>
+						<label for="filtroLongitud" class="form-label">
+							Longitud
+						</label>
+						<input type="number" step="any" id="filtroLongitud" name="longitud" class="form-input" placeholder="-58.381592" readonly>
+					</div>
+				</div>
+				<div>
+					<label for="filtroRadio" class="form-label">
+						Radio: <span id="radio-value">5</span> km
+					</label>
+					<input type="range" id="filtroRadio" name="radio" min="1" max="100" value="5" step="1">
+				</div>
+			</div>
+			<button type="button" id="btn-limpiar-filtros" class="form-input" aria-label="Limpiar Filtros">
+				Limpiar filtros
+			</button>
+		</form>
+	</div>
+</div>
+<!------------->
+
+<div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div class="modal-header bg-[#dc2626]">
+			<h2 id="modalTitulo" class="modal-title"><span class="sr-only">Título del hecho</span></h2>
+
+		</div>
+		<!--<button class="modal-close" onclick="closeDetalle()">Volver</button>-->
+		<div class="modal-page-body">
+			<div>
+				<p id="modalDescripcion"></p>
+			</div>
+			<div class="modal-meta">
+				<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
+				<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
+				<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
+			</div>
+			<div>
+				<label for="sugerencia" class="form-label">
+					Observación
+				</label>
+				<textarea id="sugerencia" class="form-input" rows="3" placeholder="Ingrese una Observación"></textarea>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn-quaternary" onclick="closeDetalle()">Volver</button>
+			<th:block th:replace="~{fragments/form :: spinnerButton('Rechazar', 'rechazarBtn', 'btn-secondary')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Aceptar', 'aceptarBtn', 'btn-primary')}" />
+		</div>
+	</div>
+</div>
+<!------------->
+<div th:fragment="modalSolicitudEliminacion" id="modal-solicitud-eliminacion" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div class="modal-header bg-[#dc2626]">
+			<h2 class="modal-title">
+				Solicitar eliminación de hecho
+			</h2>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="form-solicitud-eliminacion" class="form-body">
+				<div>
+					<label for="motivo-solicitud-eliminacion" class="form-label">
+						Motivo
+						<span class="form-obligatory-icon">
+							*
+						</span>
+						<span class="max-char-span text-xs">
+							(Mín.500 caracteres)
+							(Máx.2000 caracteres)
+						</span>
+					</label>
+					<textarea id="motivo-solicitud-eliminacion" class="form-input" maxlength="2000" minlength="500" rows="10" placeholder="Ingrese el motivo de la solicitud..." required></textarea>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-solicitar-eliminacion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Enviar', 'enviar-solicitud-eliminacion', null)}" />
+		</div>
+	</div>
+</div>
+<!-------------->
+<div th:fragment="modalEditarColeccion" id="modal-editar-coleccion" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-4xl">
+		<div class="modal-header bg-black">
+			<h3 class="modal-title">
+				Editar Colección
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<div class="flex flex-col">
+				<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+				<small class="text-gray-600">
+					Los cambios se guardarán al hacer click en "Guardar Cambios"
+				</small>
+			</div>
+			<form id="form-editar-coleccion">
+				<div class="mb-4">
+					<label for="algoritmo-editar-coleccion" class="form-label">
+						Algoritmo de Consenso
+						<span class="form-obligatory-icon">
+							*
+						</span>
+					</label>
+					<select id="algoritmo-editar-coleccion" class="form-input" required>
+						<option value="ABSOLUTO">Absoluto</option>
+						<option value="IRRESTRICTO">Irrestricto</option>
+						<option value="MAYORIA_SIMPLE">Mayoría simple</option>
+						<option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
+					</select>
+				</div>
+				<div class="mb-4">
+					<div class="mb-3">
+						<h4 class="form-label font-semibold">
+							Fuentes de la Colección:
+						</h4>
+						<ul id="fuentes-actuales-editar-coleccion" class="flex flex-col gap-2 border rounded p-3 bg-white max-h-60 overflow-y-auto"></ul>
+					</div>
+					<div id="fuente-nueva-container-editar-coleccion" class="mb-3"></div>
+					<button id="agregar-fuente-editar-coleccion" type="button" class="btn-primary" aria-label="Agregar Fuente">
+						+ Agregar Fuente a la lista
+					</button>
+					<div id="operaciones-pendientes-container" class="hidden">
+						<h4 class="form-label font-bold text-orange-600">
+							Operaciones Pendientes
+						</h4>
+						<div id="lista-operaciones-pendientes" class="border rounded p-3 bg-orange-50 max-h-40 overflow-y-auto"></div>
+						<small class="text-orange-600">
+							Estas operaciones se ejecutarán al guardar los cambios
+						</small>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<th:block th:replace="~{fragments/form :: exitModalButton('Cancelar', 'salir-editar-coleccion')}" />
+			<th:block th:replace="~{fragments/form :: spinnerButton('Guardar Cambios', 'editar-coleccion', null)}" />
+		</div>
+	</div>
+</div>
+
+<div th:fragment="modalFuente" id="modal-fuente" class="modal-page hidden">
+	<div class="relative modal-page-format max-w-2xl">
+		<div class="create-modal-header">
+			<h3 id="modal-crear-fuente-titulo" class="modal-title hidden">
+				Crear Nueva fuente
+			</h3>
+		</div>
+		<div class="modal-page-body">
+			<th:block th:replace="~{fragments/form :: avisoCamposObligatorios}" />
+			<form id="form-modal-fuente" class="form-body">
+				<div class="row g-2 mb-3">
+					<div class="col-md-6">
+						<label for="modal-fuente-tipo" class="form-label">
+							Tipo de Fuente
+							<span class="form-obligatory-icon">
+								*
+							</span>
+						</label>
+						<select class="form-input" id="modal-fuente-tipo" required>
+							<option value="">Seleccione un tipo</option>
+							<option value="estatica">Estática</option>
+							<option value="proxy">Proxy</option>
+						</select>
+					</div>
+				</div>
+
+				<div id="modal-fuente-proxy-container" class="row g-2 mb-3 hidden">
+					<div class="col-12">
+						<div class="alert alert-info">
+							<strong>TODO:</strong> Funcionalidad de fuente proxy aún no implementada.
+						</div>
+					</div>
+				</div>
+
+				<div id="modal-fuente-estatica-container" class="hidden">
+					<div class="row g-2 mb-3">
+						<div class="col-12">
+							<label class="form-check-label">
+								<input type="checkbox" id="modal-fuente-cargar-url" class="form-check-input">
+								Cargar mediante URL
+							</label>
+						</div>
+					</div>
+
+					<div id="modal-fuente-archivo-container" class="row g-2 mb-3">
+						<div class="col-12">
+							<label for="modal-fuente-archivos" class="form-label">
+								Archivos
+								<span class="form-obligatory-icon">
+									*
+								</span>
+							</label>
+							<div class="file-drop-zone" id="modal-fuente-drop-zone">
+								<div class="file-drop-content">
+									<i class="fas fa-cloud-upload-alt"></i>
+									<p>Arrastre los archivos aquí o haga clic para seleccionar</p>
+									<input type="file" id="modal-fuente-archivos" multiple accept=".csv,.json,.xml" class="file-input">
+								</div>
+							</div>
+							<div id="modal-fuente-archivos-lista" class="file-list mt-2"></div>
+						</div>
+					</div>
+
+					<div id="modal-fuente-url-container" class="row g-2 mb-3 hidden">
+						<div class="col-12">
+							<label for="modal-fuente-url" class="form-label">
+								URL del archivo
+								<span class="form-obligatory-icon">
+									*
+								</span>
+							</label>
+							<input type="url" class="form-input" id="modal-fuente-url" placeholder="https://ejemplo.com/archivo.csv">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div th:insert="~{fragments/form :: exitModalButton('Cancelar', 'salir-crear-fuente')}" class="hidden"></div>
+			<div th:insert="~{fragments/form :: spinnerButton('Publicar', 'crear-fuente', null)}" class="hidden"></div>
+		</div>
+	</div>
+</div>

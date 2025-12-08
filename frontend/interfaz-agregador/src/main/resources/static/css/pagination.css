@@ -1,22 +1,17 @@
 /* Controles de paginación */
-.pagination-container {
-    margin-top: auto;
-    padding-top: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    bottom: 0;
-    border: 1px solid black;
-}
-
+.pagination-controls-js,
 .pagination-controls {
+    bottom: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 0.75rem;
-    margin-top: 0.5rem;
+    align-items: center;
+    z-index: 20;
     padding: 0.25rem 0.5rem;
+    justify-content: center;
+    margin-top: 4rem;
 }
 
 .pagination-btn {
@@ -24,7 +19,7 @@
     align-items: center;
     gap: 0.3rem;
     padding: 0.3rem 0.7rem;
-    background-color: #4f46e5;
+    background-color: black;
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -34,18 +29,17 @@
 }
 
 .pagination-btn:hover {
-    background-color: #4338ca;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+    opacity: 0.8;
 }
 
 .pagination-btn:active {
     transform: translateY(0);
 }
 
-.pagination-icon {
-    width: 16px;
-    height: 16px;
+.pagination-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none; /* Evita clics en enlaces deshabilitados */
 }
 
 .pagination-info {

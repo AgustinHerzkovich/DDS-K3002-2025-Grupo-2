@@ -1,0 +1,64 @@
+<div th:fragment="paginationControls(previousPageUrl, nextPageUrl)" class="pagination-controls align-self-center inline-block">
+    <a th:if="${hasPrevious}" th:href="${previousPageUrl}" class="pagination-btn">
+        ← Anterior
+    </a>
+
+    <a th:unless="${hasPrevious}" class="pagination-btn" disabled>← Anterior</a>
+
+    <span class="pagination-info">
+        Página
+        <input type="number" min="1" th:max="${totalPages}" th:value="${totalPages > 0 ? currentPage + 1 : 0}" id="pageInput" aria-label="Página actual" style="width: 50px; text-align: center; font-weight: 600;" />
+        de <span th:text="${totalPages}"></span>
+    </span>
+    <a th:if="${hasNext}" th:href="${nextPageUrl}" class="pagination-btn">
+        Siguiente →
+    </a>
+    <a th:unless="${hasNext}" class="pagination-btn" disabled>Siguiente →</a>
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageInput = document.getElementById('pageInput');
+
+            pageInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    let page = parseInt(pageInput.value);
+                    const totalPages = /*[[${totalPages}]]*/ 1;
+
+                    if (page < 1) page = 1;
+                    if (page > totalPages) page = totalPages;
+
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('page', page - 1);
+                    window.location.href = url.toString();
+                }
+            });
+        });
+
+    </script>
+</div>
+
+<div th:fragment="jsPaginationControls(idPrefix)" th:with="btnPrevId=${idPrefix + '-prev'}, btnNextId=${idPrefix + '-next'}, pageInfoId=${idPrefix + '-info'}" class="pagination-controls-js hidden" th:id="${idPrefix}">
+    <button th:id="${btnPrevId}" class="pagination-btn" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+        Anterior
+    </button>
+    <span th:id="${pageInfoId}" class="pagination-info">Página 1 de 1</span>
+    <button th:id="${btnNextId}" class="pagination-btn" disabled>
+        Siguiente
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+    </button>
+
+</div>

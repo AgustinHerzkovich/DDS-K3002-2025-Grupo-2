@@ -1,0 +1,63 @@
+.main-padding {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+}
+
+.font-roboto {
+    font-family: 'Roboto Mono', monospace;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.metamapa-tabbar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem; /* py-3 px-4 */
+    border-bottom: 2px solid currentColor;
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+}
+
+.no-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    width: 100%;
+    min-height: 300px;
+    color: #4b5563;
+    background-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.no-content-message {
+    font-size: 1.125rem;
+    margin: 0;
+    color: #4b5563;
+}
+
+.no-content-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #6b7280;
+    stroke: #6b7280;
+}
+
+::-webkit-scrollbar {
+    width: 6px; /* Achica la barra */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 4px;
+}
