@@ -39,11 +39,11 @@ public class CargarHechosScheduler {
     }
 
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
-    @Transactional
     public void scheduledCargarHechos(){
         cargarHechos();
     }
 
+    @Transactional
     public void cargarHechos() {
 
         System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
