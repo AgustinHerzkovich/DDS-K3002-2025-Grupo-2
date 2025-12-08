@@ -8,12 +8,16 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.time.Duration;
 
 public class SolicitudesHttp {
     private final RestTemplate restTemplate;
 
     public SolicitudesHttp(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
+        this.restTemplate = builder
+                .setConnectTimeout(Duration.ofMinutes(5))   // Timeout de conexión: 5 minutos
+                .setReadTimeout(Duration.ofMinutes(50))     // Timeout de lectura: 50 minutos
+                .build();
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse response) throws IOException {

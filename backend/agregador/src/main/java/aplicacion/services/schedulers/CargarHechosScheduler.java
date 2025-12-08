@@ -108,7 +108,7 @@ public class CargarHechosScheduler {
         }finally {
             fuenteMutexManager.unlockAll(locks);
         }
-        logger.info("Carga de hechos de fuentes remotas finalizada. ({})", (System.nanoTime() - inicioInicial)/1_000_000);
+        logger.info("Carga de hechos de fuentes remotas finalizada. ({}ms)", (System.nanoTime() - inicioInicial)/1_000_000);
     }
 
 }
