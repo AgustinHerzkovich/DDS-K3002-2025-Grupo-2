@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/apiPublica")
 public class EstadisticasController {
-    private final String urlBaseEstadisticas;
     private final SolicitudesHttp solicitudesHttp;
+    private final ConfigService configService;
 
     public EstadisticasController(@Lazy ConfigService configService) {
-        this.urlBaseEstadisticas = configService.getUrlEstadisticas();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
@@ -26,7 +26,7 @@ public class EstadisticasController {
                                                    @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                    @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeColeccion");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/provinciasConMasHechosDeColeccion");
         UrlHelper.appendQueryParamSinEncode(url, "idColeccion", idColeccion);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
@@ -41,7 +41,7 @@ public class EstadisticasController {
     public ResponseEntity<?> categoriaConMasHechosReportados(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                             @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                             @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasConMasHechos");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/categoriasConMasHechos");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
 
@@ -56,7 +56,7 @@ public class EstadisticasController {
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                               @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/provinciasConMasHechosDeCategoria");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/provinciasConMasHechosDeCategoria");
         UrlHelper.appendQueryParamSinEncode(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
@@ -72,7 +72,7 @@ public class EstadisticasController {
                                                          @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                          @RequestParam(name = "limit", defaultValue = "1") Integer limit,
                                                          @RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/horaConMasHechosDeCategoria");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/horaConMasHechosDeCategoria");
         UrlHelper.appendQueryParamSinEncode(url, "nombreCategoria", nombreCategoria);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
@@ -85,7 +85,7 @@ public class EstadisticasController {
 
     @GetMapping("/solicitudesDeEliminacionSpam")
     public ResponseEntity<?> solicitudesSpam(@RequestHeader(name = HttpHeaders.ACCEPT, defaultValue = "application/json") String accept) {
-        String url = urlBaseEstadisticas + "/solicitudesDeEliminacionSpam";
+        String url = configService.getUrlEstadisticas() + "/solicitudesDeEliminacionSpam";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, accept);
@@ -98,7 +98,7 @@ public class EstadisticasController {
     public ResponseEntity<?> categoriasDisponibles(@RequestParam(name = "search", required = false) String search,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/categoriasDisponibles");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/categoriasDisponibles");
         UrlHelper.appendQueryParamSinEncode(url, "search", search);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
@@ -111,7 +111,7 @@ public class EstadisticasController {
     public ResponseEntity<?> coleccionesDisponibles(@RequestParam(name = "search", required = false) String search,
                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                               @RequestParam(name = "limit", defaultValue = "10") Integer limit) {
-        StringBuilder url = new StringBuilder(urlBaseEstadisticas + "/coleccionesDisponibles");
+        StringBuilder url = new StringBuilder(configService.getUrlEstadisticas() + "/coleccionesDisponibles");
         UrlHelper.appendQueryParamSinEncode(url, "search", search);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);

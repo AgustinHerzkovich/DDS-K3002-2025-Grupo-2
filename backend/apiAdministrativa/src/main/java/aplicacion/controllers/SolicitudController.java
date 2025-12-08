@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class SolicitudController {
-    private final String urlBaseAgregador;
+    private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;
 
     public SolicitudController(@Lazy ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrlAgregador();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
@@ -24,13 +24,13 @@ public class SolicitudController {
     public ResponseEntity<?> actualizarEstadoSolicitud(
             @PathVariable(name = "id") Long id,
             @RequestBody String revisionSolicitud) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(urlBaseAgregador + "/solicitudes/" + id + "/estado", revisionSolicitud, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(configService.getUrlAgregador() + "/solicitudes/" + id + "/estado", revisionSolicitud, String.class));
     }
 
     @GetMapping("/solicitudes")
     public ResponseEntity<?> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                     @RequestParam(name = "size", defaultValue = "3") Integer size) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/solicitudes");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/solicitudes");
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
 
@@ -39,6 +39,6 @@ public class SolicitudController {
 
     @GetMapping("/solicitudes/{id}")
     public ResponseEntity<?> obtenerSolicitud(@PathVariable(name = "id") Long id) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.get(urlBaseAgregador + "/solicitudes/" + id, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(configService.getUrlAgregador() + "/solicitudes/" + id, String.class));
     }
 }

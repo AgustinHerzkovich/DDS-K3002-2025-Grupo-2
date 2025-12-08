@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class EstadisticasController {
-    private final String urlBaseEstadisticas;
+    private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
 
     public EstadisticasController(@Lazy ConfigService configService) {
-        this.urlBaseEstadisticas = configService.getUrlEstadisticas();
+        this.configService = configService;
     }
 
     @PostMapping("/estadisticas/actualizar")
     public ResponseEntity<?> actualizarEstadisticas() {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseEstadisticas + "/actualizar", null, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlEstadisticas() + "/actualizar", null, String.class));
     }
 
 }

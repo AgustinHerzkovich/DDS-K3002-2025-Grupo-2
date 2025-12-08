@@ -22,14 +22,12 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/apiPublica")
 public class HechoController {
-    private final String urlBaseAgregador;
-    private final String urlBaseDinamicas;
+    private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;
     private final Cache<String, ResponseEntity<?>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public HechoController(@Lazy ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrlAgregador();
-        this.urlBaseDinamicas = configService.getUrlFuentesDinamicas();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
@@ -131,20 +129,20 @@ public class HechoController {
         graphqlRequest.put("variables", variables);
 
         // Hacer la petición POST al endpoint GraphQL
-        String graphqlUrl = urlBaseAgregador + "/graphql";
+        String graphqlUrl = configService.getUrlAgregador() + "/graphql";
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class));
     }
 
     @GetMapping("/hechos/{id}")
     public ResponseEntity<?> obtenerHechoPorId(@PathVariable(name = "id") String id) {
-        String url = urlBaseAgregador + "/hechos/" + id;
+        String url = configService.getUrlAgregador() + "/hechos/" + id;
         return ResponseWrapper.wrapResponse(solicitudesHttp.get(url, String.class));
     }
 
     @GetMapping("/hechos/index")
     public ResponseEntity<?> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
                                                          @RequestParam(value = "limit", required = false, defaultValue = "5") Integer limite) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/hechos/index");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/hechos/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         String key = texto + "|" + limite;
@@ -159,7 +157,7 @@ public class HechoController {
 
     @PostMapping("/hechos")
     public ResponseEntity<?> agregarHecho(@RequestBody String body) { // Para postear hechos como contribuyente
-        String url = urlBaseDinamicas + "/hechos";
+        String url = configService.getUrlFuentesDinamicas() + "/hechos";
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(url, body, String.class));
     }
 
@@ -201,7 +199,7 @@ public class HechoController {
 
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) { // Para editar hechos como contribuyente
-        String url = urlBaseDinamicas + "/hechos/" + id;
+        String url = configService.getUrlFuentesDinamicas() + "/hechos/" + id;
         return ResponseWrapper.wrapResponse(solicitudesHttp.patch(url, body, String.class));
     }
 

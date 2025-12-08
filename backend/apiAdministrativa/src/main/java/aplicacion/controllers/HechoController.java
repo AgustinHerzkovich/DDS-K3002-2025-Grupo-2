@@ -15,39 +15,37 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class HechoController {
-    private final String urlBaseAgregador;
-    private final String urlBaseDinamicas;
+    private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;
 
     public HechoController(@Lazy ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrlAgregador();
-        this.urlBaseDinamicas = configService.getUrlFuentesDinamicas();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
     @PostMapping("/hechos/{id}/tags")
     public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String id, @RequestBody String body) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/hechos/" + id + "/tags", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlAgregador() + "/hechos/" + id + "/tags", body, String.class));
     }
 
     @DeleteMapping("/hechos/{id}/tags/{nombreTag}")
     public ResponseEntity<?> quitarEtiqueta(@PathVariable(name = "id") String id,
                                              @PathVariable(name = "nombreTag") String nombreTag) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.delete(urlBaseAgregador + "/hechos/" + id + "/tags/" + nombreTag, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.delete(configService.getUrlAgregador() + "/hechos/" + id + "/tags/" + nombreTag, String.class));
     }
 
     @PostMapping("/hechos")
     public ResponseEntity<?> reportarHecho(@RequestBody String body) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/hechos", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlAgregador() + "/hechos", body, String.class));
     }
     @PostMapping("/cargarHechos")
     public ResponseEntity<?> cargarHechos() {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseAgregador + "/cargarHechos", null, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlAgregador() + "/cargarHechos", null, String.class));
     }
 
     @PatchMapping("/hechos/{id}")
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id, @RequestBody String body) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(urlBaseAgregador + "/hechos/" + id, body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(configService.getUrlAgregador() + "/hechos/" + id, body, String.class));
     }
 
     @GetMapping("/hechos")
@@ -55,7 +53,7 @@ public class HechoController {
                                                      @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        StringBuilder url = new StringBuilder(urlBaseDinamicas + "/hechosPaginados");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/hechosPaginados");
         // No encodificar la fecha manualmente porque RestTemplate ya lo hace automáticamente
         UrlHelper.appendQueryParamSinEncode(url, "fechaMayorA", fechaMayorA);
         UrlHelper.appendQueryParamSinEncode(url, "pendiente", pendiente);
@@ -66,7 +64,7 @@ public class HechoController {
 
     @PatchMapping("hechos/{id}/estadoRevision")
     public ResponseEntity<?> actualizarEstadoRevision(@PathVariable(name = "id") String id, @RequestBody String body) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(urlBaseDinamicas + "/hechos/" + id + "/estadoRevision", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.patch(configService.getUrlFuentesDinamicas() + "/hechos/" + id + "/estadoRevision", body, String.class));
     }
 }
 

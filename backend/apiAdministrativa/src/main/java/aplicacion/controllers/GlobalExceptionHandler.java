@@ -1,5 +1,6 @@
 package aplicacion.controllers;
 
+import aplicacion.exceptions.NoInstanceException;
 import org.apache.hc.client5.http.HttpHostConnectException;
 import org.apache.hc.client5.http.HttpResponseException;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpTimeoutException.class)
     public ResponseEntity<?> handleTimeoutException(HttpTimeoutException ex) {
         return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).build();
+    }
+    @ExceptionHandler(NoInstanceException.class)
+    public ResponseEntity<?> handleNoInstances(NoInstanceException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
     }
 }

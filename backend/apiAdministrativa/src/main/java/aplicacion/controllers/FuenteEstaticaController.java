@@ -13,17 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class FuenteEstaticaController {
-    private final String urlBaseEstaticas;
+    private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;
 
     public FuenteEstaticaController(@Lazy ConfigService configService) {
-        this.urlBaseEstaticas = configService.getUrlFuentesEstaticas();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
     @PostMapping("/archivos/por-url")
     public ResponseEntity<?> subirArchivoPorUrl(@RequestBody String body) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseEstaticas + "/archivos/por-url", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlFuentesEstaticas() + "/archivos/por-url", body, String.class));
     }
 
     @PostMapping("/archivos")
@@ -34,6 +34,6 @@ public class FuenteEstaticaController {
             body.add("files", file.getResource());
         }
 
-        return ResponseWrapper.wrapResponse(solicitudesHttp.postMultipart(urlBaseEstaticas + "/archivos", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.postMultipart(configService.getUrlFuentesEstaticas() + "/archivos", body, String.class));
     }
 }

@@ -14,16 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class FuenteProxyController {
-    private final String urlBaseProxy;
+    private final ConfigService configService;
+
     private final SolicitudesHttp solicitudesHttp;
 
     public FuenteProxyController(@Lazy ConfigService configService) {
-        this.urlBaseProxy = configService.getUrlFuentesProxy();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
     @PostMapping("/fuentesProxy")
     public ResponseEntity<?> guardarFuente(@RequestBody String body){
-        return ResponseWrapper.wrapResponse(solicitudesHttp.post(urlBaseProxy + "/fuentesProxy", body, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlFuentesProxy() + "/fuentesProxy", body, String.class));
     }
 }

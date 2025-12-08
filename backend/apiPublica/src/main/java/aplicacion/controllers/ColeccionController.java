@@ -22,15 +22,14 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/apiPublica")
 public class ColeccionController {
-    private final String urlBaseAgregador;
+
     private final SolicitudesHttp solicitudesHttp;
     private final Cache<String, ResponseEntity<?>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
+    private final ConfigService configService;
 
     public ColeccionController(@Lazy ConfigService configService) {
-        System.out.println("antes de getURL");
-        this.urlBaseAgregador = configService.getUrlAgregador();
-        System.out.println("despues de getURL, si no aparece morimos");
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
+        this.configService = configService;
     }
 
     // --- READ ---
@@ -136,7 +135,7 @@ public class ColeccionController {
         graphqlRequest.put("variables", variables);
 
         // Hacer la petición POST al endpoint GraphQL
-        String graphqlUrl = urlBaseAgregador + "/graphql";
+        String graphqlUrl = configService.getUrlAgregador() + "/graphql";
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class));
     }
 
@@ -241,7 +240,7 @@ public class ColeccionController {
         graphqlRequest.put("variables", variables);
 
         // Hacer la petición POST al endpoint GraphQL
-        String graphqlUrl = urlBaseAgregador + "/graphql";
+        String graphqlUrl = configService.getUrlAgregador() + "/graphql";
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(graphqlUrl, graphqlRequest, String.class));
     }
 
@@ -250,7 +249,7 @@ public class ColeccionController {
     public ResponseEntity<?> mostrarColecciones(@RequestParam(name = "search", required = false) String textoBuscado,
                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/colecciones");
         UrlHelper.appendQueryParam(url, "search", textoBuscado);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "size", size);
@@ -259,13 +258,13 @@ public class ColeccionController {
 
     @GetMapping("/colecciones/{id}")
     public ResponseEntity<?> mostrarColeccion(@PathVariable(name = "id") String id) {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.get(urlBaseAgregador + "/colecciones/" + id, String.class));
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(configService.getUrlAgregador() + "/colecciones/" + id, String.class));
     }
 
     @GetMapping("/colecciones/index")
     public ResponseEntity<?> obtenerRecomendaciones(@RequestParam(name = "search", required = true) String texto,
                                                          @RequestParam(name="limit", required = false, defaultValue = "5") Integer limite) {
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/colecciones/index");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/colecciones/index");
         UrlHelper.appendQueryParam(url, "search", texto);
         UrlHelper.appendQueryParam(url, "limit", limite);
         String key = texto + "|" + limite;

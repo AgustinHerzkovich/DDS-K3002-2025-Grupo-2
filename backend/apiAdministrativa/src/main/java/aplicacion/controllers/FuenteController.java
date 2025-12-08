@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/apiAdministrativa")
 public class FuenteController {
-    private final String urlBaseAgregador;
+    private final ConfigService configService;
+
     private final SolicitudesHttp solicitudesHttp;
 
     public FuenteController(@Lazy ConfigService configService) {
-        this.urlBaseAgregador = configService.getUrlAgregador();
+        this.configService = configService;
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
@@ -27,7 +28,7 @@ public class FuenteController {
     public ResponseEntity<?> obtenerFuentes(@RequestParam(value = "tipo", required = false) String tipoFuente,
                                             @RequestParam(name = "page", defaultValue = "0") Integer page,
                                             @RequestParam(name = "limit", defaultValue = "10") Integer limit){
-        StringBuilder url = new StringBuilder(urlBaseAgregador + "/fuentes");
+        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/fuentes");
         UrlHelper.appendQueryParam(url, "tipo", tipoFuente);
         UrlHelper.appendQueryParam(url, "page", page);
         UrlHelper.appendQueryParam(url, "limit", limit);
