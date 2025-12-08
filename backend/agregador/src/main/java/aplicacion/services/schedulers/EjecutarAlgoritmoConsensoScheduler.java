@@ -7,9 +7,12 @@ import aplicacion.clasesIntermedias.HechoXColeccionId;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.repositories.HechoXColeccionRepository;
 import aplicacion.services.ColeccionService;
+import aplicacion.services.FuenteMutexManager;
 import aplicacion.services.FuenteService;
 import aplicacion.services.HechoService;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -28,6 +31,8 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
     private final ColeccionService coleccionService;
     private final FuenteService fuenteService;
     private final HechoXColeccionRepository hechoXColeccionRepository;
+    private final Logger logger = LoggerFactory.getLogger(EjecutarAlgoritmoConsensoScheduler.class);
+
     @Setter
     private volatile Integer horaBajaCarga = 3; // Por default es a las 3 AM
 
@@ -72,7 +77,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
 
     @Transactional
     public void curarHechos() {
-        System.out.println("Se ha iniciado la curación de hechos. Esto puede tardar un rato.");
+        logger.info("Se ha iniciado la curación de hechos.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
             TipoAlgoritmoConsenso tipoAlgoritmoConsenso = coleccion.getTipoAlgoritmoConsenso();
@@ -97,7 +102,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
                 hechoXColeccionRepository.save(hechoXColeccion);
             }
         }
-        System.out.println("Curación de hechos finalizada.");
+        logger.info("Curación de hechos finalizada.");
         // por cada coleccion me fijo su algoritmo
         // busco en el repositorio de hechos por coleccion y me fijo la cantidad de veces que aparecen
         // taggeo los hechos como consensuados/curados

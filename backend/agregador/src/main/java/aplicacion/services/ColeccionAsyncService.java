@@ -9,6 +9,8 @@ import aplicacion.events.FuenteAgregadaAColeccionEvent;
 import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.repositories.ColeccionRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class ColeccionAsyncService {
     private final HechoXColeccionRepository hechoXColeccionRepository;
     private final ColeccionRepository coleccionRepository;
     private final FuenteMutexManager fuenteMutexManager;
+    private final Logger logger = LoggerFactory.getLogger(ColeccionAsyncService.class);
+
     public ColeccionAsyncService(FuenteService fuenteService, HechoXColeccionRepository hechoXColeccionRepository, ColeccionRepository coleccionRepository, FuenteMutexManager fuenteMutexManager) {
         this.fuenteService = fuenteService;
         this.hechoXColeccionRepository = hechoXColeccionRepository;
@@ -40,16 +44,16 @@ public class ColeccionAsyncService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void onColeccionCreada(ColeccionCreadaEvent event) {
-        System.out.println("Evento recibido: Colección creada con ID: " + event.getColeccionId());
+        logger.debug("Evento recibido: Colección creada con ID: {}", event.getColeccionId());
         fuenteMutexManager.lockAll(new HashSet<>(event.getFuentesId()));
-        System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos iniciada");
+        logger.debug("({})  -  Insercion de hechos iniciada", event.getColeccionId());
         try {
             asociarHechosPreexistentes(event.getColeccionId());
         }catch (Exception e){
-            System.err.println("("+event.getColeccionId()+")  -  "+ "Error: No se pudo cargar los hechos de una de las fuentes   -   "+ e.getMessage());
+            logger.error("({})  -  Error: No se pudo cargar los hechos de una de las fuentes   -   {}", event.getColeccionId(), e.getMessage());
         }finally {
             fuenteMutexManager.unlockAll(new HashSet<>(event.getFuentesId()));
-            System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos finalizada exitosamente");
+            logger.debug("({})  -  Insercion de hechos finalizada exitosamente", event.getColeccionId());
         }
     }
 
@@ -59,20 +63,20 @@ public class ColeccionAsyncService {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void onFuenteAgregada(FuenteAgregadaAColeccionEvent event) {
-        System.out.println("Evento recibido: Fuente agregada - Colección: " + event.getColeccionId() + ", Fuente: " + event.getFuenteId());
+        logger.debug("Evento recibido: Fuente agregada - Colección: {}, Fuente: {}", event.getColeccionId(), event.getFuenteId());
         fuenteMutexManager.lock(event.getFuenteId());
-        System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos iniciada");
+        logger.debug("({})  -  Insercion de hechos iniciada", event.getColeccionId());
         try {
             // Recargar la colección en una nueva transacción
             Coleccion coleccion = coleccionRepository.findById(event.getColeccionId())
                     .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + event.getColeccionId()));
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, event.getFuenteId());
         }catch (Exception e){
-            System.err.println("("+event.getColeccionId()+")  -  "+ "Error: no se pudo cargar los hechos de la fuente " + event.getFuenteId() + "  -   "+ e.getMessage());
+            logger.error("({})  -  Error: no se pudo cargar los hechos de la fuente {}  -   {}", event.getColeccionId(), event.getFuenteId(), e.getMessage());
         }
         finally {
             fuenteMutexManager.unlock(event.getFuenteId());
-            System.out.println("("+event.getColeccionId()+")  -  "+"Insercion de hechos finalizada exitosamente");
+            logger.debug("({})  -  Insercion de hechos finalizada exitosamente", event.getColeccionId());
         }
 
     }
@@ -83,7 +87,7 @@ public class ColeccionAsyncService {
         Coleccion coleccion = coleccionRepository.findById(coleccionId)
                 .orElseThrow(() -> new ColeccionNoEncontradaException("Colección no encontrada con ID: " + coleccionId));
 
-        System.out.println("("+coleccionId+")  -  "+"Asociando hechos preexistentes de " + coleccion.getId() + " " + coleccion.getTitulo() + " con " + coleccion.getFuentes().size() + " fuentes");
+        logger.info("({})  -  Asociando hechos preexistentes de {} {} con {} fuentes", coleccionId, coleccion.getId(), coleccion.getTitulo(), coleccion.getFuentes().size());
         List<Fuente> fuentes = coleccion.getFuentes();
         for (Fuente fuente : fuentes) {
             asociarHechosPreexistentesDeFuenteAColeccion(coleccion, fuente.getId());
@@ -92,7 +96,7 @@ public class ColeccionAsyncService {
 
     @Transactional
     public void asociarHechosPreexistentesDeFuenteAColeccion(Coleccion coleccion, String fuenteId){
-        System.out.println("("+coleccion.getId()+")  -  "+"Asociando " + coleccion.getId() + " " + coleccion.getTitulo() + " con fuente " + fuenteId);
+        logger.info("({})  -  Asociando {} {} con fuente {}", coleccion.getId(), coleccion.getId(), coleccion.getTitulo(), fuenteId);
         List<Hecho> hechosDeFuente = fuenteService.obtenerHechosPorFuente(fuenteId);
         List<Hecho> hechosQueCumplenCriterios = hechosDeFuente.stream()
                 .filter(coleccion::cumpleCriterios)

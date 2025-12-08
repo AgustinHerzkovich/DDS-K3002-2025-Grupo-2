@@ -1,6 +1,9 @@
 package aplicacion.services.schedulers;
 
 import aplicacion.prometheus.PrometheusClient;
+import aplicacion.services.FuenteMutexManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -21,6 +24,8 @@ public class CalcularHorarioBajaCargaScheduler {
     private final EjecutarAlgoritmoConsensoScheduler scheduler;
     private final PrometheusClient prometheusClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Logger logger = LoggerFactory.getLogger(CalcularHorarioBajaCargaScheduler.class);
+
 
     public CalcularHorarioBajaCargaScheduler(EjecutarAlgoritmoConsensoScheduler scheduler,
                                              PrometheusClient prometheusClient) {
@@ -38,7 +43,7 @@ public class CalcularHorarioBajaCargaScheduler {
         int horaBaja = calcularHoraBajaCarga(result); // ahora usamos el método reescrito
         scheduler.setHoraBajaCarga(horaBaja);
 
-        System.out.println("Hora de baja carga actualizada a las " + horaBaja + "h");
+        logger.info("Hora de baja carga actualizada a las {}h", horaBaja);
     }
 
     private int calcularHoraBajaCarga(JsonNode result) {

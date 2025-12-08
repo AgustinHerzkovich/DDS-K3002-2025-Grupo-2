@@ -10,7 +10,8 @@ import aplicacion.services.HechoService;
 import aplicacion.services.*;
 import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
-import aplicacion.utils.ProgressBar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class CargarHechosScheduler {
     private final DepuradorDeHechos depuradorDeHechos;
     private final HechoService hechoService;
     private final FuenteMutexManager fuenteMutexManager;
+    private final Logger logger = LoggerFactory.getLogger(CargarHechosScheduler.class);
     @Value("${hechos.lazy-loading}")
     boolean hechosSeCarganSoloSiEstanEnUnaColeccion;
     public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos, HechoService hechoService, FuenteMutexManager fuenteMutexManager) {
@@ -46,7 +48,8 @@ public class CargarHechosScheduler {
     @Transactional
     public void cargarHechos() {
 
-        System.out.println("Se ha iniciado la carga de hechos de las fuentes remotas. Esto puede tardar un rato. ("+ LocalDateTime.now() + ")");
+        logger.info("Carga de hechos de fuentes remotas iniciada");
+        long inicioInicial = System.nanoTime();
 
 
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
@@ -64,50 +67,38 @@ public class CargarHechosScheduler {
         fuenteMutexManager.lockAll(locks);
         try {
 
-            System.out.println("Se normalizaran " + fuenteSet.size() + " fuentes");
+            logger.info("Se normalizaran {} fuentes", fuenteSet.size());
 
         Map<Fuente, List<Hecho>> hechosPorFuente = fuenteService.hechosUltimaPeticion(fuenteSet);
         normalizadorDeHechos.normalizarTodos(hechosPorFuente);
         depuradorDeHechos.depurar(hechosPorFuente); // Depura hechos repetidos
 
-            System.out.println("""
-        
-        
-        ============================
-         Carga de hechos finalizada
-        ============================
-        
-        
-        Se asignaran los hechos a las colecciones...
-        
-        """);
+            logger.info("Carga de hechos finalizada. Asociando hechos a colecciones");
+
+
         Long inicioAsignacion = System.nanoTime();
         int indiceColeccion = 0;
         int indiceFuente = 0;
         for(Coleccion coleccion : colecciones){
             indiceColeccion++;
-            System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
-
+            logger.debug("Asignando hechos de colección {} : {} / {}", coleccion.getId(), indiceColeccion, colecciones.size());
             for(Fuente fuente : coleccion.getFuentes()){
                 indiceFuente++;
                 List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
                 if (hechosObtenidos == null) {
-                    System.out.println("   ⚠ Fuente " + indiceFuente + " (" + fuente.getAlias() + "): No devolvió hechos o falló la conexión. Saltando...");
+                    logger.warn("   ⚠ Fuente {} ({}): No devolvió hechos o falló la conexión. Saltando...", indiceFuente, fuente.getAlias());
                     continue;
                 }
-                ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
                     HechoXColeccion hechoPorColeccion = new HechoXColeccion(hecho, coleccion);
                     hechoService.guardarHechoPorColeccion(hechoPorColeccion);
-                    progressBar.avanzar();
                 }
             }
         indiceFuente = 0;
         }
         Long finAsignacion = System.nanoTime();
-        System.out.printf("\nSe asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
-
+        logger.info("Se asignaron los hechos a las colecciones {} ", String.format("( %2d ms )", (finAsignacion - inicioAsignacion)/1_000_000));
             // abrir map de fuente y lista de hechos, por cada fuente (fuente1, fuente2, ...) cargamos los hechos
             // for (fuente) {fuente.hechos.cargarHechos()} en el metodo que haga esa carga de hechos se hace la validacion de si el hecho ya existe en bd (mediante equals)
             // si ya existe no se carga el hecho pero se carga una entrada en HechoXFuente que asocie esta fuente y el hecho que ya existia
@@ -116,18 +107,11 @@ public class CargarHechosScheduler {
             // en ambos casos se carga la entrada en hechoxfuente, lo que varia es a que hecho apunta.
             // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
         }catch (Exception e){
-            System.err.println("No se pudo concretar la asignacion de hechos");
-            e.printStackTrace();
+            logger.error("No se pudo concretar la asignacion de hechos", e);
         }finally {
             fuenteMutexManager.unlockAll(locks);
         }
-        System.out.println("""
-                
-                =================================
-                 Asignación de hechos finalizada
-                =================================
-                
-                """);
+        logger.info("Carga de hechos de fuentes remotas finalizada. ({})", (System.nanoTime() - inicioInicial)/1_000_000);
     }
 
 }

@@ -5,6 +5,8 @@ import aplicacion.domain.colecciones.fuentes.FuenteDinamica;
 import aplicacion.domain.colecciones.fuentes.FuenteEstatica;
 import aplicacion.domain.colecciones.fuentes.FuenteProxy;
 import aplicacion.services.FuenteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +19,8 @@ import java.util.*;
 @Component
 public class CargarFuentesScheduler {
     private final DiscoveryClient discoveryClient;
+    private final Logger logger = LoggerFactory.getLogger(CargarFuentesScheduler.class);
+
     RestTemplate restTemplate = new RestTemplate();
     private final FuenteService fuenteService;
     public CargarFuentesScheduler(DiscoveryClient discoveryClient, FuenteService fuenteService) {
@@ -35,46 +39,48 @@ public class CargarFuentesScheduler {
         List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
         List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-        System.out.println("Fuentes online: proxy-" + proxy.size() + "  dinamica-"+dinamicas.size() + "  estatica-" + estaticas.size());
+        logger.info("Fuentes online: proxy-{}  dinamica-{}  estatica-{}", proxy.size(), dinamicas.size(), estaticas.size());
         return Map.of(FuenteProxy.class, proxy, FuenteEstatica.class, estaticas, FuenteDinamica.class, dinamicas);
     }
 
     public List<? extends Fuente> obtenerInstanciasDeFuentes(Class<? extends Fuente> tipoFuente, ServiceInstance conexion){
-        System.out.println("Descubriendo fuentes de " + conexion.getUri() + "  " + tipoFuente.getSimpleName());
+        logger.debug("Descubriendo fuentes de {} - {}", conexion.getUri(), tipoFuente.getSimpleName());
         List<? extends Fuente> fuentesObtenidas = null;
         try {
             if (tipoFuente == FuenteEstatica.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesEstaticas", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("FE - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteEstatica::new).toList();
             } else if (tipoFuente == FuenteDinamica.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesDinamicas", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("FD - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteDinamica::new).toList();
             } else if (tipoFuente == FuenteProxy.class) {
                 List<String> fuentes = List.of(Objects.requireNonNull(restTemplate.getForEntity(conexion.getUri() + "/fuentesProxy", String[].class).getBody()));
-                fuentes.forEach(f -> System.out.println("FP - ID: " + f));
                 fuentesObtenidas = fuentes.stream().map(FuenteProxy::new).toList();
             }
+            logger.debug("Se obtuvieron fuentes: {}", fuentesObtenidas);
         } catch (Exception e) {
-            System.err.println("Error al descubrir nuevas fuentes: " + e.getMessage());
+            logger.warn("Problema al descubrir nuevas fuentes de {}: {}", conexion.getUri(), e.getMessage());
         }
         return fuentesObtenidas;
     }
 
     private void cargarFuentes(){
         // Esta funcion lo que hace es cargar las nuevas fuentes y dejarlas vacias en la BD
-        System.out.println("\nCargando fuentes nuevas:\n");
-        Map<Class<? extends Fuente>, List<ServiceInstance>> conexiones = obtenerInstanciasDeConexiones();
-        System.out.println("Conexiones obtenidas. Iniciando importacion de fuentes nuevas");
-        for (Class<? extends Fuente> tipoFuente : conexiones.keySet()){
-            for(ServiceInstance conexion : conexiones.get(tipoFuente)){
-                List<? extends Fuente> fuentes = obtenerInstanciasDeFuentes(tipoFuente, conexion);
-                if(fuentes == null || fuentes.isEmpty())
-                    continue;
-                fuenteService.guardarFuentesSiNoExisten(fuentes);
+        logger.info("Cargando fuentes nuevas:");
+        try {
+            Map<Class<? extends Fuente>, List<ServiceInstance>> conexiones = obtenerInstanciasDeConexiones();
+            logger.info("Conexiones obtenidas. Iniciando importacion de fuentes nuevas");
+            for (Class<? extends Fuente> tipoFuente : conexiones.keySet()){
+                for(ServiceInstance conexion : conexiones.get(tipoFuente)){
+                    List<? extends Fuente> fuentes = obtenerInstanciasDeFuentes(tipoFuente, conexion);
+                    if(fuentes == null || fuentes.isEmpty())
+                        continue;
+                    fuenteService.guardarFuentesSiNoExisten(fuentes);
+                }
             }
+            logger.info("Importación de nuevas fuentes terminada");
+        }catch (Exception e){
+            logger.error("Error al cargar nuevas fuentes: ", e);
         }
-        System.out.println("Importacion de nuevas fuentes terminada");
     }
 }

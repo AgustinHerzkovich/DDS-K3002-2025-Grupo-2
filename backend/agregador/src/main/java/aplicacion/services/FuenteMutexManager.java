@@ -52,12 +52,12 @@ public class FuenteMutexManager {
         logger.debug("Finished locking: " + keys);
     }
     public void unlockAll(Set<String> locks) {
-        System.out.println("Unlocking: " + locks);
+        logger.debug("Unlocking: " + locks);
         for (String lock : locks) {
             if (getMutex(lock).isHeldByCurrentThread()) {
                 getMutex(lock).unlock();
             }
         }
-        System.out.println("Finished Unlocking: " + locks);
+        logger.debug("Finished Unlocking: " + locks);
     }
 }

@@ -15,6 +15,8 @@ import aplicacion.services.SolicitudService;
 import aplicacion.domain.solicitudes.SolicitudEliminacion;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,7 @@ public class SolicitudController {
     private final SolicitudService solicitudService;
     private final HechoService hechoService;
     private final ContribuyenteService contribuyenteService;
+    private final Logger logger = LoggerFactory.getLogger(SolicitudController.class);
 
     public SolicitudController(SolicitudService solicitudService, HechoService hechoService, ContribuyenteService contribuyenteService) {
         this.solicitudService = solicitudService;
@@ -42,7 +45,7 @@ public class SolicitudController {
     public ResponseEntity<?> crearSolicitud(@Valid @RequestBody SolicitudInputDto solicitudDto) {
         try {
             SolicitudOutputDto solicitud = solicitudService.guardarSolicitudDto(solicitudDto);
-            System.out.println("Solicitud creada: " + solicitud.getId() + " para el hecho: " + solicitud.getHechoId());
+            logger.info("Solicitud creada: {} para el hecho: {}", solicitud.getId(), solicitud.getHechoId());
             return ResponseEntity.status(201).body(solicitud);
         } catch (MotivoSolicitudException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -56,7 +59,6 @@ public class SolicitudController {
     public ResponseEntity<Page<SolicitudOutputDto>> obtenerSolicitudes(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                        @RequestParam(name = "size", defaultValue = "3") Integer size) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authorities: " + auth.getAuthorities());
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(solicitudService.obtenerSolicitudesDTO(pageable));
     }
@@ -93,7 +95,7 @@ public class SolicitudController {
         }
         hechoService.guardarHecho(sol.getHecho()); // Actualizamos el hecho (visible)
 
-        System.out.println("Solicitud actualizada: " + sol.getId() + " a estado: " + nuevoEstado);
+        logger.info("Solicitud actualizada: {} a estado: {}", sol.getId(), nuevoEstado);
 
         return ResponseEntity.ok().build();
     }

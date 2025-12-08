@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -41,6 +43,7 @@ public class FuenteService {
     private final FuenteInputMapper fuenteInputMapper;
     private final HechoInputMapper hechoInputMapper;
     private final DiscoveryClient discoveryClient;
+    private final Logger logger = LoggerFactory.getLogger(FuenteService.class);
 
     //@PersistenceContext
     //private EntityManager entityManager;
@@ -84,7 +87,12 @@ public class FuenteService {
     @Transactional
     public Fuente guardarFuenteSiNoExiste(Fuente fuente) {
         Optional<Fuente> existente = fuenteRepository.findById(fuente.getId());
-        return existente.orElseGet(() -> fuenteRepository.save(fuente));
+        if(existente.isEmpty()){
+            Fuente returnFuente = fuenteRepository.save(fuente);
+            logger.info("Fuente creada: {}", fuente.getId());
+            return returnFuente;
+        }
+        return existente.get();
     }
 
     @Transactional
@@ -106,10 +114,10 @@ public class FuenteService {
                 List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
                 guardarFuente(fuente); // Updateo la fuente
                 //entityManager.flush(); // En teoria fuerza la actualizacion
-                System.out.println("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
+                logger.debug("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
                 hashMap.put(fuente, hechos);
             }catch (RuntimeException e){
-                System.err.println(e.getMessage());
+                logger.debug(e.getMessage());
             }
         }
         return hashMap;
@@ -144,14 +152,13 @@ public class FuenteService {
         try {
             ResponseEntity<String> response;
             String json;
-            System.out.println(url);
             response = restTemplate.getForEntity(url, String.class);
             json = response.getBody();
             hechos = mapper.readValue(json, new TypeReference<>() {});
-            System.out.println("Se recibieron correctamente los hechos de la fuente " + fuente.getId() + " " + fuente.getAlias());
+            logger.debug("Se recibieron correctamente los hechos de la fuente " + fuente.getId() + " " + fuente.getAlias());
         } catch (Exception e) {
             fuente.setUltimaPeticion(fechaAnterior); // rollback si falla
-            System.err.println("⚠️ Error al consumir la API en fuente " + fuente.getId() + ": " + e.getMessage());
+            logger.warn("⚠️ Error al consumir la API en fuente " + fuente.getId() + ": " + e.getMessage());
         }
 
         return hechos;
@@ -164,12 +171,12 @@ public class FuenteService {
         List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
         List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-        System.out.println("Instancias de fuentes online  -->  proxy: " + proxy.size() +
+        logger.debug("Instancias de fuentes online  -->  proxy: " + proxy.size() +
                 ", dinámicas: " + dinamicas.size() +
                 ", estáticas: " + estaticas.size());
 
         List<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream).toList();
-        System.out.println("Buscando URI para: " + fuente.getId() + " | " +
+        logger.debug("Buscando URI para: " + fuente.getId() + " | " +
                 "Fuentes disponibles: " +
                         combinadas.stream()
                                 .map(inst -> inst.getMetadata().get("fuentesDisponibles"))
@@ -221,15 +228,15 @@ public class FuenteService {
                         .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka"));
                 switch (tipoFuente) {
                     case "estatica" -> {
-                        System.out.println("Creando fuente estatica con id: " + fuenteId);
+                        logger.info("Creando fuente estatica con id: {}", fuenteId);
                         return new FuenteEstatica(fuenteId);
                     }
                     case "dinamica" -> {
-                        System.out.println("Creando fuente dinamica con id: " + fuenteId);
+                        logger.info("Creando fuente dinamica con id: {}", fuenteId);
                         return new FuenteDinamica(fuenteId);
                     }
                     case "proxy" -> {
-                        System.out.println("Creando fuente prxoy con id: " + fuenteId);
+                        logger.info("Creando fuente prxoy con id: {}", fuenteId);
                         return new FuenteProxy(fuenteId);
                     }
                     default -> {

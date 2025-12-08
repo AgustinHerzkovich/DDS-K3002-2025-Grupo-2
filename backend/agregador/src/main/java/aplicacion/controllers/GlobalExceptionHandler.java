@@ -1,6 +1,9 @@
 package aplicacion.controllers;
 
 import aplicacion.excepciones.*;
+import aplicacion.services.FuenteMutexManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     public ResponseEntity<?> error(HttpStatus status, String detail){
         return ResponseEntity.status(status).body(ProblemDetail.forStatusAndDetail(status, detail));
@@ -33,7 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleAll(Exception ex) {
-        ex.printStackTrace(System.err);
+        logger.error("Error inesperado en peticion REST", ex);
         return error(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno en el servidor");
     }
     @ExceptionHandler(HechoNoEncontradoException.class)

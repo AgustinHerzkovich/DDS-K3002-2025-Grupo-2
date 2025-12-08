@@ -14,6 +14,8 @@ import aplicacion.excepciones.ColeccionNoEncontradaException;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.repositories.ColeccionRepository;
 import aplicacion.repositories.HechoXColeccionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +37,8 @@ public class ColeccionService {
     private final FuenteService fuenteService;
     private final FuenteInputMapper fuenteInputMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final Logger logger = LoggerFactory.getLogger(ColeccionService.class);
+
     public ColeccionService(ColeccionInputMapper coleccionInputMapper, ColeccionOutputMapper coleccionOutputMapper, ColeccionRepository coleccionRepository, HechoService hechoService, HechoXColeccionRepository hechoXColeccionRepository, FuenteService fuenteService, FuenteInputMapper fuenteInputMapper, ApplicationEventPublisher eventPublisher) {
         this.coleccionRepository = coleccionRepository;
         this.hechoService = hechoService;
@@ -125,7 +129,7 @@ public class ColeccionService {
         Coleccion coleccion = obtenerColeccion(idColeccion);
         hechoService.borrarHechosPorColeccion(coleccion);
         coleccionRepository.delete(coleccion);
-        System.out.println("Colección eliminada: " + idColeccion);
+        logger.info("Colección eliminada: {}", idColeccion);
     }
 
     public ColeccionOutputDto modificarAlgoritmoDeColeccion(String idColeccion, ModificacionAlgoritmoInputDto nuevoAlgoritmo) throws ColeccionNoEncontradaException {

@@ -6,11 +6,14 @@ import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.EtiquetaOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.*;
+import aplicacion.services.FuenteMutexManager;
 import aplicacion.services.HechoService;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import aplicacion.services.schedulers.EjecutarAlgoritmoConsensoScheduler;
 import domain.helpers.JwtUtil;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +35,7 @@ public class HechoController {
     private final HechoService hechoService;
     private final CargarHechosScheduler cargarHechosScheduler;
     private final EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler;
+    private final Logger logger = LoggerFactory.getLogger(HechoController.class);
 
     public HechoController(HechoService hechoService, CargarHechosScheduler cargarHechosScheduler, EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler) {
         this.hechoService = hechoService;
@@ -83,9 +87,8 @@ public class HechoController {
     @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
     public ResponseEntity<HechoOutputDto> reportarHecho(@Valid @RequestBody HechoReporteInputDto hechoReporteInputDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authorities: " + auth.getAuthorities());
         HechoOutputDto hecho = hechoService.agregarHechoReportado(hechoReporteInputDto);
-        System.out.println("Hecho creado: " + hecho.getId());
+        logger.info("Hecho creado: {}", hecho.getId());
         return ResponseEntity.status(201).body(hecho);
     }
 
@@ -94,7 +97,7 @@ public class HechoController {
     public ResponseEntity<?> editarHecho(@PathVariable(name = "id") String id,
                                          @Valid @RequestBody HechoEdicionInputDto hechoEdicionInputDto,
                                          @RequestHeader(name = "Authorization", required = false) String token) {
-        System.out.println("EDITANDO el hecho: " + id );
+        logger.debug("EDITANDO el hecho: {}", id);
         try {
             // Validar que el usuario sea el autor del hecho
             if (token == null || token.isEmpty()) {
@@ -109,7 +112,7 @@ public class HechoController {
 
             // Si la validación pasa, proceder con la edición
             HechoOutputDto hecho = hechoService.editarHecho(id, hechoEdicionInputDto, userId);
-            System.out.println("Se ha editado correctamente el hecho: " + hecho.getTitulo() + "(" + id + ")" + " por el usuario: " + userId);
+            logger.trace("Se ha editado correctamente el hecho: {}({}) por el usuario: {}", hecho.getTitulo(), id, userId);
             return ResponseEntity.ok(hecho);
         } catch (HechoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -125,7 +128,7 @@ public class HechoController {
     public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
         try {
             Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
-            System.out.println("Se agrego el tag: " + etiquetaName);
+            logger.debug("Se agrego el tag: {}", etiquetaName);
             return ResponseEntity.ok(EtiquetaOutputMapper.map(etiqueta));
         } catch (HechoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -137,7 +140,7 @@ public class HechoController {
     public ResponseEntity<?> eliminarEtiqueta(@PathVariable(name = "hechoId") String hechoId, @PathVariable(name = "tag") String etiquetaName) {
         try {
             hechoService.eliminarEtiqueta(hechoId, etiquetaName);
-            System.out.println("Se elimino el tag: " + etiquetaName);
+            logger.debug("Se elimino el tag: {}", etiquetaName);
             return ResponseEntity.noContent().build();
         } catch (HechoNoEncontradoException | EtiquetaNoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

@@ -11,6 +11,8 @@ import aplicacion.domain.hechos.Hecho;
 import aplicacion.utils.ProgressBar;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class NormalizadorDeHechos {
     private final NormalizadorDeTerminos normalizadorDeEtiquetas;
     private final CategoriaService categoriaService;
     private final EtiquetaService etiquetaService;
+    private final Logger logger = LoggerFactory.getLogger(NormalizadorDeHechos.class);
     Cache<String, Categoria> categoriaCache = Caffeine.newBuilder().maximumSize(5000).expireAfterWrite(10, TimeUnit.MINUTES).build();
     Cache<String, Etiqueta> etiquetaCache = Caffeine.newBuilder().maximumSize(10000).expireAfterWrite(10, TimeUnit.MINUTES).build();
 
@@ -39,20 +42,14 @@ public class NormalizadorDeHechos {
         List<Hecho> hechos = mapFuentesYhechosANormalizar.values().stream()
                 .flatMap(List::stream)
                 .toList();
-        System.out.println("Hechos a normalizar: " + mapFuentesYhechosANormalizar.values().stream().mapToInt(List::size).sum());
-        System.out.println("Normalizando...");
-        ProgressBar progressBar = new ProgressBar(hechos.size());
+        logger.debug("Hechos a normalizar: {}", mapFuentesYhechosANormalizar.values().stream().mapToInt(List::size).sum());
         long inicio = System.nanoTime();
         for(Hecho hecho : hechos){
             normalizar(hecho);
-            progressBar.avanzar();
         }
         long fin = System.nanoTime();
         long tiempoTotal = fin - inicio;
-        System.out.println("\nNormalización finalizada.\n");
-        if(tiempoTotal != 0) {
-            System.out.printf("             %.2fs en normalizar (%.2f hechos/s)%n", (float) tiempoTotal / 1_000_000_000.0, (float) hechos.size() / (tiempoTotal / 1_000_000_000.0));
-        }
+        logger.debug("Normalización finalizada.{}", tiempoTotal != 0 ? String.format("             %.2fs en normalizar (%.2f hechos/s)%n", (float) tiempoTotal / 1_000_000_000.0, (float) hechos.size() / (tiempoTotal / 1_000_000_000.0)) : "");
     }
 
     public void normalizar(Hecho hecho)  {
