@@ -81,20 +81,20 @@ public class CargarHechosScheduler {
         Se asignaran los hechos a las colecciones...
         
         """);
-            Long inicioAsignacion = System.nanoTime();
-            int indiceColeccion = 0;
-            int indiceFuente = 0;
-            for(Coleccion coleccion : colecciones){
-                indiceColeccion++;
-                System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
+        Long inicioAsignacion = System.nanoTime();
+        int indiceColeccion = 0;
+        int indiceFuente = 0;
+        for(Coleccion coleccion : colecciones){
+            indiceColeccion++;
+            System.out.println("Coleccion: " + indiceColeccion + " / " + colecciones.size());
 
             for(Fuente fuente : coleccion.getFuentes()){
                 indiceFuente++;
                 List<Hecho> hechosObtenidos = hechosPorFuente.get(fuente);
-                /*if (hechosObtenidos == null || hechosObtenidos.isEmpty()) {
+                if (hechosObtenidos == null) {
                     System.out.println("   ⚠ Fuente " + indiceFuente + " (" + fuente.getAlias() + "): No devolvió hechos o falló la conexión. Saltando...");
-                    continue; // Pasamos a la siguiente fuente sin romper el bucle
-                }*/
+                    continue;
+                }
                 ProgressBar progressBar = new ProgressBar(hechosObtenidos.size(), "Fuente: "+indiceFuente+" / " + coleccion.getFuentes().size());
                 // hechosObtenidos = hechosObtenidos.stream.filter(hecho->hecho.noEstaPresente).toList();
                 for (Hecho hecho : hechosObtenidos) {
@@ -103,7 +103,7 @@ public class CargarHechosScheduler {
                     progressBar.avanzar();
                 }
             }
-            indiceFuente = 0;
+        indiceFuente = 0;
         }
         Long finAsignacion = System.nanoTime();
         System.out.printf("\nSe asignaron los hechos a las colecciones ( %2d ms )\n", (finAsignacion - inicioAsignacion)/1_000_000);
@@ -116,7 +116,7 @@ public class CargarHechosScheduler {
             // en ambos casos se carga la entrada en hechoxfuente, lo que varia es a que hecho apunta.
             // DECISION DE DISEÑO: si un hecho esta duplicado, conservamos el que estaba antes en la base de datos y descartamos el nuevo.
         }catch (Exception e){
-            System.err.println("No se pudo concretar la asignacion de hechos scheduleada");
+            System.err.println("No se pudo concretar la asignacion de hechos");
             e.printStackTrace();
         }finally {
             fuenteMutexManager.unlockAll(locks);

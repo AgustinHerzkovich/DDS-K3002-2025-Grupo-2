@@ -88,18 +88,9 @@ public class FuenteService {
     }
 
     @Transactional
-    public void guardarFuentes(List<FuenteInputDto> fuentesDto) {
-        List<Fuente> fuentes = fuentesDto.stream().map(fuenteInputMapper::map).toList();
+    public void guardarFuentesSiNoExisten(List< ? extends Fuente> fuentes) {
         for (Fuente fuente: fuentes) {
-            guardarFuente(fuente); // Se guarda las fuentes que no existan en el repositorio, porque podría ocurrir que entre colecciones repitan fuentes
-        }
-    }
-
-    @Transactional
-    public void guardarFuentesSiNoExisten(List< ? extends FuenteInputDto> fuentesDto) {
-        List<Fuente> fuentes = fuentesDto.stream().map(fuenteInputMapper::map).toList();
-        for (Fuente fuente: fuentes) {
-            guardarFuenteSiNoExiste(fuente); // Las fuentes que ya existen no se guardan
+            guardarFuenteSiNoExiste(fuente);
         }
     }
 
@@ -108,14 +99,18 @@ public class FuenteService {
         Map<Fuente, List<Hecho>> hashMap = new HashMap<>();
 
         for (Fuente fuente : fuentes) {
-            String uri = this.obtenerUri(fuente);//todo trycatchear
-            List<HechoInputDto> hechosDto = getHechosUltimaPeticion(uri, fuente);
-            //fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
-            List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
-            guardarFuente(fuente); // Updateo la fuente
-            //entityManager.flush(); // En teoria fuerza la actualizacion
-            System.out.println("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
-            hashMap.put(fuente, hechos);
+            try {
+                String uri = this.obtenerUri(fuente);
+                List<HechoInputDto> hechosDto = getHechosUltimaPeticion(uri, fuente);
+                //fuente.getHechosUltimaPeticion(discoveryClient, loadBalancerClient);
+                List<Hecho> hechos = hechosDto.stream().map(hechoInputMapper::map).toList();
+                guardarFuente(fuente); // Updateo la fuente
+                //entityManager.flush(); // En teoria fuerza la actualizacion
+                System.out.println("Fuente " + fuente.getId() + " actualizada con última petición: " + fuente.getUltimaPeticion());
+                hashMap.put(fuente, hechos);
+            }catch (RuntimeException e){
+                System.err.println(e.getMessage());
+            }
         }
         return hashMap;
     }
@@ -134,13 +129,11 @@ public class FuenteService {
 
         String url = uri;
 
-
         if (fechaAnterior != null) {
             url += "?fechaMayorA=" + fechaAnterior;
         }
 
         fuente.setUltimaPeticion(LocalDateTime.now());
-
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -170,11 +163,10 @@ public class FuenteService {
         System.out.println("dinamicas count " + dinamicas.size());
         System.out.println("estaticas count " + estaticas.size());
 
-        Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
-        Stream<ServiceInstance> h = combinadas;
-        System.out.println(h.map(ServiceInstance::getMetadata).map(metadata -> metadata.get("fuentesDisponibles")).toList());
+        List<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream).toList();
+        System.out.println(combinadas.stream().map(ServiceInstance::getMetadata).map(metadata -> metadata.get("fuentesDisponibles")).toList());
         System.out.println("Buscando URI para la fuente " + fuente.getId());
-        ServiceInstance instance = combinadas
+        ServiceInstance instance = combinadas.stream()
                 .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId()))//TODO cambiar metadata en fuenteDinamica y fuenteProxy
                 .findFirst()
                 .orElse(null);
@@ -188,7 +180,7 @@ public class FuenteService {
             }
             return uri;
         } else {
-            throw new RuntimeException("No se pudo encontrar una instancia del servicio 'agregador-fuentes'");
+            throw new RuntimeException("No se pudo encontrar una instancia que contenga la fuente " + fuente.getAlias() + "  -- " + fuente.getId() );
         }
     }
 
