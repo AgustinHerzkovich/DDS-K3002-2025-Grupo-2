@@ -18,30 +18,24 @@ public class ConfigService {
     }
 
     public String getUrlAgregador() {
-        ServiceInstance instance = discoveryClient.getInstances("agregador").getFirst();
-
-        return instance.getUri() + "/agregador";
+        return getUrl("agregador");
     }
 
     public String getUrlEstadisticas() {
-        String placeholder = "estadisticas";
-        return discoveryClient.getInstances(placeholder)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay instancias de " + placeholder +  " registradas"))
-                .getUri()
-                .toString()
-                .concat("/" + placeholder);
+        return getUrl("estadisticas");
     }
 
     public String getUrlFuentesDinamicas() {
-        String placeholder = "fuentesDinamicas";
-        return discoveryClient.getInstances(placeholder)
+        return getUrl("fuentesDinamicas");
+    }
+
+    private String getUrl(String serviceId) {
+        return discoveryClient.getInstances(serviceId)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No hay instancias de " + placeholder +  " registradas"))
+                .orElseThrow(() -> new RuntimeException("No hay instancias de " + serviceId +  " registradas"))
                 .getUri()
                 .toString()
-                .concat("/" + placeholder);
+                .concat("/" + serviceId);
     }
 }

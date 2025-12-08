@@ -11,7 +11,6 @@ import aplicacion.dto.mappers.HechoInputMapper;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.excepciones.TipoDeFuenteErroneoException;
-import aplicacion.repositorios.RepositorioDeFuentes;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -34,6 +33,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FuenteService {
@@ -162,11 +162,23 @@ public class FuenteService {
 
 
     private String obtenerUri(Fuente fuente) {
-        ServiceInstance instance = discoveryClient.getInstances("CARGADOR"). //TODO CAMBIAR SERVICES NAMES A CARGADOR
-                stream()
-                .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId())) //TODO cambiar metadata en fuenteDinamica y fuenteProxy
+        List<ServiceInstance> proxy = Optional.ofNullable(discoveryClient.getInstances("fuentesProxy")).orElse(Collections.emptyList());
+        List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
+        List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
+
+        System.out.println("proxy count " + proxy.size() + "\n");
+        System.out.println("dinamicas count " + dinamicas.size());
+        System.out.println("estaticas count " + estaticas.size());
+
+        Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
+        Stream<ServiceInstance> h = combinadas;
+        System.out.println(h.map(ServiceInstance::getMetadata).map(metadata -> metadata.get("fuentesDisponibles")).toList());
+        System.out.println("Buscando URI para la fuente " + fuente.getId());
+        ServiceInstance instance = combinadas
+                .filter(inst -> inst.getMetadata().get("fuentesDisponibles").contains(fuente.getId()))//TODO cambiar metadata en fuenteDinamica y fuenteProxy
                 .findFirst()
                 .orElse(null);
+
         if (instance != null) {
             String uri = instance.getUri().toString();
             switch (fuente.getClass().getSimpleName()) {
@@ -184,15 +196,17 @@ public class FuenteService {
     public List<Hecho> obtenerHechosPorFuente(String idFuente) {
         return fuenteRepository.findHechosByFuenteId(idFuente);
     }
-
     public Fuente obtenerFuentePorId(String fuenteId) throws FuenteNoEncontradaException {
         try{
             return fuenteRepository.findById(fuenteId).orElseThrow(()->new FuenteNoEncontradaException("No se encontró la fuente con id: " + fuenteId));
         } catch (FuenteNoEncontradaException e){
             try{
+                List<ServiceInstance> proxy = Optional.ofNullable(discoveryClient.getInstances("fuentesProxy")).orElse(Collections.emptyList());
+                List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
+                List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-                String tipoFuente = discoveryClient.getInstances("CARGADOR")
-                        .stream()
+                Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
+                String tipoFuente = combinadas
                         .filter(instance -> {
                             String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
                             if (fuentesDisponibles == null) return false;
@@ -233,9 +247,14 @@ public class FuenteService {
 
                 FuenteProxy fuenteProxy;
                 try {
+                    List<ServiceInstance> proxy = Optional.ofNullable(discoveryClient.getInstances("fuentesProxy")).orElse(Collections.emptyList());
+                    List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
+                    List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-                    String fuenteEnProxyId = discoveryClient.getInstances("CARGADOR")
-                            .stream()
+                    Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
+
+                    String fuenteEnProxyId = 
+                            combinadas
                             .filter(instance -> {
                                 String fuentesDisponibles = instance.getMetadata().get("fuentesDisponibles");
                                 return fuentesDisponibles != null && Arrays.asList(fuentesDisponibles.split(",")).contains("agregador-" + agregadorId);
@@ -246,9 +265,14 @@ public class FuenteService {
                     fuenteProxy = new FuenteProxy(fuenteEnProxyId);
                 } catch(FuenteNoEncontradaException exe){
                     try {
+                        List<ServiceInstance> proxy = Optional.ofNullable(discoveryClient.getInstances("fuentesProxy")).orElse(Collections.emptyList());
+                        List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
+                        List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-                        ServiceInstance instancia = discoveryClient.getInstances("CARGADOR")
-                                .stream()
+                        Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
+
+                        ServiceInstance instancia = 
+                                combinadas
                                 .filter(instance -> instance.getMetadata().get("tipoFuente").equals("proxy"))
                                 .findFirst()
                                 .orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + fuenteId + " no encontrada en Eureka como fuente metamapa"));
@@ -285,9 +309,14 @@ public class FuenteService {
 
     public Set<String> obtenerFuentesDisponiblesEnEureka( ) {//todo agregar informacion necesaria para elegir las fuentes en metadatos
         List<String> fuentesIds;
+        List<ServiceInstance> proxy = Optional.ofNullable(discoveryClient.getInstances("fuentesProxy")).orElse(Collections.emptyList());
+        List<ServiceInstance> dinamicas = Optional.ofNullable(discoveryClient.getInstances("fuentesDinamicas")).orElse(Collections.emptyList());
+        List<ServiceInstance> estaticas = Optional.ofNullable(discoveryClient.getInstances("fuentesEstaticas")).orElse(Collections.emptyList());
 
-        fuentesIds = discoveryClient.getInstances("CARGADOR")
-                .stream()
+        Stream<ServiceInstance> combinadas = Stream.of(proxy, dinamicas, estaticas).flatMap(Collection::stream);
+
+        fuentesIds =
+                combinadas
                 .map(instance -> instance.getMetadata().get("fuentesDisponibles"))
                 .toList();
         List <String> agregadores;

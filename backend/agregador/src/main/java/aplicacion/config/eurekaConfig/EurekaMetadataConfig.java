@@ -1,14 +1,13 @@
 package aplicacion.config.eurekaConfig;
 
 import aplicacion.domain.agregadorID.AgregadorID;
-import aplicacion.repositorios.AgregadorIDRepository;
+import aplicacion.repositories.AgregadorIDRepository;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.annotation.PostConstruct;
-import java.util.List;
 import java.util.UUID;
 
 @Configuration
