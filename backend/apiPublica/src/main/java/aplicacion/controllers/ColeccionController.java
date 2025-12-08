@@ -27,7 +27,9 @@ public class ColeccionController {
     private final Cache<String, ResponseEntity<?>> cache = Caffeine.newBuilder().maximumSize(100000).expireAfterWrite(1, TimeUnit.MINUTES).build();
 
     public ColeccionController(@Lazy ConfigService configService) {
+        System.out.println("antes de getURL");
         this.urlBaseAgregador = configService.getUrlAgregador();
+        System.out.println("despues de getURL, si no aparece morimos");
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
