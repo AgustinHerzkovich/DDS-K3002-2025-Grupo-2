@@ -7,6 +7,7 @@ import org.apache.hc.client5.http.HttpHostConnectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import domain.peticiones.SolicitudesHttp;
@@ -20,7 +21,7 @@ public class ContribuyenteController {
     private final SolicitudesHttp solicitudesHttp;
     private final Logger logger = LoggerFactory.getLogger(ContribuyenteController.class);
 
-    public ContribuyenteController(ConfigService configService) {
+    public ContribuyenteController(@Lazy ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
         this.urlBaseDinamicas = configService.getUrlFuentesDinamicas();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());

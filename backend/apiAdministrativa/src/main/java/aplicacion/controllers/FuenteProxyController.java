@@ -4,6 +4,7 @@ import aplicacion.config.ConfigService;
 import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ public class FuenteProxyController {
     private final String urlBaseProxy;
     private final SolicitudesHttp solicitudesHttp;
 
-    public FuenteProxyController(ConfigService configService) {
+    public FuenteProxyController(@Lazy ConfigService configService) {
         this.urlBaseProxy = configService.getUrlFuentesProxy();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }

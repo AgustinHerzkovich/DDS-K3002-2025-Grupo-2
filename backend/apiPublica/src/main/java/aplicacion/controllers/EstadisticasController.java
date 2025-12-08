@@ -5,6 +5,7 @@ import domain.helpers.UrlHelper;
 import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class EstadisticasController {
     private final String urlBaseEstadisticas;
     private final SolicitudesHttp solicitudesHttp;
 
-    public EstadisticasController(ConfigService configService) {
+    public EstadisticasController(@Lazy ConfigService configService) {
         this.urlBaseEstadisticas = configService.getUrlEstadisticas();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }

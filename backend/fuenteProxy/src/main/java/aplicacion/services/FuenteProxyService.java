@@ -59,7 +59,7 @@ public class FuenteProxyService {
         List<Hecho> listaDeHechosADevolver = new ArrayList<>();
 
         for (FuenteProxy fuente : fuentesProxy) {
-            listaDeHechosADevolver.addAll(fuente.importarHechos());
+            listaDeHechosADevolver.addAll(fuente.importarHechos(discoveryClient));
         }
         return listaDeHechosADevolver.stream().filter(hecho -> hecho.getFechaUltimaModificacion().isAfter(fechaMayorA)).map(hechoOutputMapper::map).toList();
     }

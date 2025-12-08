@@ -5,6 +5,7 @@ import domain.helpers.UrlHelper;
 import domain.peticiones.ResponseWrapper;
 import domain.peticiones.SolicitudesHttp;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class HechoController {
     private final String urlBaseDinamicas;
     private final SolicitudesHttp solicitudesHttp;
 
-    public HechoController(ConfigService configService) {
+    public HechoController(@Lazy ConfigService configService) {
         this.urlBaseAgregador = configService.getUrlAgregador();
         this.urlBaseDinamicas = configService.getUrlFuentesDinamicas();
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
