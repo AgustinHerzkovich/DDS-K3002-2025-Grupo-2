@@ -397,9 +397,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
     );
 
     @Query(value = """
-        SELECT DISTINCT(h.titulo)
+        SELECT h.titulo
         FROM hecho h
-        JOIN hecho_coleccion hc ON hc.hecho_id = h.id
         WHERE (:textoLibre IS NULL
                OR MATCH(h.titulo) AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE))
         ORDER BY MATCH(h.titulo) AGAINST(CONCAT(:textoLibre, '*') IN BOOLEAN MODE) DESC
@@ -413,9 +412,8 @@ public interface HechoRepository extends JpaRepository<Hecho, String> {
 
     @Query(value = """
         SELECT
-            DISTINCT(h.titulo)
+            h.titulo
         FROM hecho h
-        JOIN hecho_coleccion hc ON hc.hecho_id = h.id
         WHERE h.titulo LIKE CONCAT(:textoLibre, '%')
         ORDER BY h.titulo
         LIMIT :limit

@@ -38,6 +38,11 @@ public class HechoController {
 
         model.addAttribute("hecho", hecho);
 
+        // Calcular si ha pasado más de una semana desde la fecha de carga
+        boolean puedeEditar = hecho.getFechaCarga() != null &&
+                Duration.between(hecho.getFechaCarga(), LocalDateTime.now()).toDays() <= 7;
+        model.addAttribute("puedeEditarHecho", puedeEditar);
+
         return "hecho";
     }
     @PostMapping("/gestionar-solicitud/{id}")
