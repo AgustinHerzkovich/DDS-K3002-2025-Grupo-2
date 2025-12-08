@@ -55,7 +55,7 @@ public class SolicitudEliminacion {
         if (this.esSpam()){
             this.estado = new EstadoSolicitudSpam();
         }else{
-            if(hecho.esVisible()){
+            if(hecho.getVisible()){
                 this.estado = new EstadoSolicitudPendiente();
             }else{
                 this.estado = new EstadoSolicitudPrescripta();
@@ -112,7 +112,7 @@ public class SolicitudEliminacion {
 
     /////////////////////////////////////
     ///
-    public void preescribirCosolicitudes(){
+    public void prescribirCosolicitudes(){
         hecho.prescribirSolicitudes();
         // Redirige del estado que la llama al hecho, ya que el estado no conoce el hecho pero le quiere mandar un mensake a él
     }
@@ -123,15 +123,15 @@ public class SolicitudEliminacion {
     //////////////////////////////////////
 
     public Boolean hechoVisible(){
-            return hecho.esVisible();
+            return hecho.getVisible();
         }
 
     public void esconderHecho(){
-            hecho.ocultar();
+            hecho.setVisible(false);
         }
 
     public void mostrarHecho(){
-            hecho.mostrar();
+            hecho.setVisible(true);
         }
 
     //////////////////////////////////////

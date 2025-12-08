@@ -25,7 +25,7 @@ public class Contribuyente {
     private List<SolicitudEliminacion> solicitudesEliminacion;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
     private List<Hecho> hechosContribuidos;
-    String mail;
+    private String mail;
 
     public Contribuyente(String id, Boolean esAdministrador, IdentidadContribuyente identidad, String mail) {
         this.id = id;

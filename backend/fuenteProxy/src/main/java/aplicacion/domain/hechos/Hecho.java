@@ -63,8 +63,4 @@ public class Hecho {
         this.contenidoMultimedia = contenidoMultimedia;
         this.etiquetas = new ArrayList<>();
     }
-
-    public Boolean tieneMismoTitulo(String otroTitulo) {
-        return titulo.equals(otroTitulo);
-    }
 }
