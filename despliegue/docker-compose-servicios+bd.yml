@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   # Eureka Server - Service Discovery
+  #todo: quitarlo y ponerlo en un compose aparte
   eureka-server:
     build:
       context: ../backend/EurekaServer
@@ -38,8 +39,8 @@ services:
   # Servicio Agregador
   agregador:
     build:
-      context: ../backend/agregador
-      dockerfile: Dockerfile
+      context: ../backend
+      dockerfile: agregador/Dockerfile
     ports:
       - "8084:8084"
     depends_on:
@@ -90,8 +91,8 @@ services:
   # Servicio Estadísticas
   estadisticas:
     build:
-      context: ../backend/estadisticas
-      dockerfile: Dockerfile
+      context: ../backend
+      dockerfile: estadisticas/Dockerfile
     ports:
       - "8087:8087"
     depends_on:
@@ -127,8 +128,8 @@ services:
   # API Pública
   api-publica:
     build:
-      context: ../backend/apiPublica
-      dockerfile: Dockerfile
+      context: ../backend
+      dockerfile: apiPublica/Dockerfile
     ports:
       - "8085:8085"
     depends_on:
@@ -157,8 +158,8 @@ services:
   # API Administrativa
   api-administrativa:
     build:
-      context: ../backend/apiAdministrativa
-      dockerfile: Dockerfile
+      context: ../backend
+      dockerfile: apiAdministrativa/Dockerfile
     ports:
       - "8086:8086"
     depends_on:
@@ -215,3 +216,5 @@ networks:
 volumes:
   agregador-data:
   estadisticas-data:
+
+#  docker-compose -f docker-compose-servicios+bd.yml up -d --build

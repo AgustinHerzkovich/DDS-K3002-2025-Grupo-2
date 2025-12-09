@@ -1,27 +1,21 @@
-# Etapa 1: Build
+
+
+# File: `apiPublica/Dockerfile`
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copiar archivos de configuración de Maven
-COPY pom.xml .
-COPY src ./src
+COPY pom.xml ./pom.xml
+COPY utils ./utils
+COPY apiPublica/pom.xml ./apiPublica/pom.xml
 
-# Compilar la aplicación
-RUN mvn clean package -DskipTests
+RUN mvn -B -f apiPublica/pom.xml dependency:go-offline
 
-# Etapa 2: Runtime
+COPY apiPublica/src ./apiPublica/src
+
+RUN mvn -B -f apiPublica/pom.xml clean package -DskipTests
+
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-
-# Instalar curl para healthcheck
-RUN apk add --no-cache curl
-
-# Copiar el JAR compilado
-COPY --from=build /app/target/*.jar app.jar
-
-# Exponer puerto
+COPY --from=build /app/apiPublica/target/*.jar app.jar
 EXPOSE 8085
-
-# Comando de inicio
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
+ENTRYPOINT ["java","-jar","app.jar"]

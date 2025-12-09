@@ -1,27 +1,24 @@
-# Etapa 1: Build
+# File: `apiAdministrativa/Dockerfile`
+# language: dockerfile
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copiar archivos de configuración de Maven
-COPY pom.xml .
-COPY src ./src
+# copy root pom and shared modules
+COPY pom.xml ./pom.xml
+COPY utils ./utils
+COPY apiAdministrativa/pom.xml ./apiAdministrativa/pom.xml
 
-# Compilar la aplicación
-RUN mvn clean package -DskipTests
+RUN mvn -B -f apiAdministrativa/pom.xml dependency:go-offline
 
-# Etapa 2: Runtime
+# copy module sources (relative to context ../backend)
+COPY apiAdministrativa/src ./apiAdministrativa/src
+
+RUN mvn -B -f apiAdministrativa/pom.xml clean package -DskipTests
+
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-
-# Instalar curl para healthcheck
-RUN apk add --no-cache curl
-
-# Copiar el JAR compilado
-COPY --from=build /app/target/*.jar app.jar
-
-# Exponer puerto
+COPY --from=build /app/apiAdministrativa/target/*.jar app.jar
 EXPOSE 8086
+ENTRYPOINT ["java","-jar","app.jar"]
 
-# Comando de inicio
-ENTRYPOINT ["java", "-jar", "app.jar"]
 
