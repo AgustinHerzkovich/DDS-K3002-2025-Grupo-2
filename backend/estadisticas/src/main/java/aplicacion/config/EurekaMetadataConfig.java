@@ -16,7 +16,6 @@ public class EurekaMetadataConfig {
     @Autowired
     private ApplicationInfoManager appInfoManager;
 
-    private String agregadorID;
 
     @Value("${estadisticas.id}")
     private String estadisticasID;

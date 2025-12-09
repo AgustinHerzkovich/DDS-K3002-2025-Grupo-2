@@ -27,7 +27,7 @@
                         <div class="carousel-inner">
                             <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
                                  th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" aria-label="Multimedia" class="d-block h-[200px] w-[200px]">
+                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" aria-label="Multimedia" class="d-block">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" aria-label="Anterior multimedia" data-bs-target="#carouselHecho" data-bs-slide="prev">

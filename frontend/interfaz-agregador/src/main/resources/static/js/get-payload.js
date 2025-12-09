@@ -36,13 +36,9 @@ function getPayloadColeccion(inputsObligatorios) {
         const selectNombre = inputsObligatorios.nombresFuentes[index];
         let nombre;
 
-        if (tipo.value === "dinamica") {
-            nombre = selectNombre.getAttribute('data-fuente-dinamica-id');
-        } else {
-            nombre = selectNombre.value;
-        }
+        nombre = selectNombre.value;
 
-        if ((nombre && (tipo.value === "estatica" || tipo.value === "proxy")) || (tipo.value === "dinamica" && nombre)) {
+        if (nombre && (tipo.value === "estatica" || tipo.value === "proxy" || tipo.value === "dinamica")) {
             if(tipo.value) {
                 fuentes.push({
                     tipo: tipo.value,
