@@ -9,7 +9,9 @@ import aplicacion.services.depurador.DepuradorDeHechos;
 import aplicacion.services.normalizador.NormalizadorDeHechos;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,14 @@ public class CargarHechosScheduler {
     private final Logger logger = LoggerFactory.getLogger(CargarHechosScheduler.class);
     @Value("${hechos.lazy-loading}")
     boolean hechosSeCarganSoloSiEstanEnUnaColeccion;
+
+    @Autowired @Lazy
+    private CargarHechosScheduler cargarHechosScheduler;
+    // Parece una tontería, pero supuestamente, esto hace que la llamada del scheduler
+    // pase por un "proxy" que permite que spring inicie la transacción. No es necesario
+    // en el endpoint, ya que se está enviando desde otro Bean y esto del proxy se
+    // hace solo, pero cuando es desde aca sí que hace falta.
+
     public CargarHechosScheduler(FuenteService fuenteService, ColeccionService coleccionService, NormalizadorDeHechos normalizadorDeHechos, DepuradorDeHechos depuradorDeHechos, HechoService hechoService, FuenteMutexManager fuenteMutexManager) {
         this.fuenteService = fuenteService;
         this.coleccionService = coleccionService;
@@ -39,7 +49,7 @@ public class CargarHechosScheduler {
 
     @Scheduled(initialDelay = 30000, fixedRate = 3600000) // Se ejecuta cada 1 hora
     public void scheduledCargarHechos(){
-        cargarHechos();
+        cargarHechosScheduler.cargarHechos();
     }
 
     @Transactional

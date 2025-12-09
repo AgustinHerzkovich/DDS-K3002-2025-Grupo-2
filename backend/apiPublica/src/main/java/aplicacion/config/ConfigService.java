@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConfigService {
-    Cache<String, String> cache = Caffeine.newBuilder().maximumSize(10).expireAfterWrite(30, TimeUnit.SECONDS).build();
+    Cache<String, String> cache = Caffeine.newBuilder().maximumSize(10).expireAfterWrite(2, TimeUnit.SECONDS).build();
     private final DiscoveryClient discoveryClient;
 
     public ConfigService(DiscoveryClient discoveryClient) throws IOException {
