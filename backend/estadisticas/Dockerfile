@@ -1,27 +1,23 @@
-# Etapa 1: Build
 FROM maven:3.9-eclipse-temurin-21 AS build
+
 WORKDIR /app
 
-# Copiar archivos de configuración de Maven
 COPY pom.xml .
-COPY src ./src
+COPY estadisticas/pom.xml ./estadisticas/pom.xml
+COPY utils ./utils
 
-# Compilar la aplicación
-RUN mvn clean package -DskipTests
+RUN mvn dependency:go-offline -f estadisticas/pom.xml
 
-# Etapa 2: Runtime
+COPY estadisticas/src ./estadisticas/src
+
+RUN mvn clean package -f estadisticas/pom.xml -DskipTests
+
 FROM eclipse-temurin:21-jre-alpine
+
 WORKDIR /app
 
-# Instalar curl para healthcheck
-RUN apk add --no-cache curl
+COPY --from=build /app/estadisticas/target/*.jar app.jar
 
-# Copiar el JAR compilado
-COPY --from=build /app/target/*.jar app.jar
-
-# Exponer puerto
 EXPOSE 8087
 
-# Comando de inicio
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
