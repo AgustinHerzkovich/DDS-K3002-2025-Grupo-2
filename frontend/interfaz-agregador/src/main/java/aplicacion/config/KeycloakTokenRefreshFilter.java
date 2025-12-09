@@ -61,6 +61,7 @@ public class KeycloakTokenRefreshFilter extends OncePerRequestFilter {
 
         // Autenticación existe pero el client no es válido
         // logout y recargar la página
+        // Solo pasaria esto si reinicio el server, no me lo identifica en invalidSessionStrategy pero llega hasta aca igual
         Cookie cookie = new Cookie("JSESSIONID", "");
         cookie.setMaxAge(0);
         cookie.setPath("/");
