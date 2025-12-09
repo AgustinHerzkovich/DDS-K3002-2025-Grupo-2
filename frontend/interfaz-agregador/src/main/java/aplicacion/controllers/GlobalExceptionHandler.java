@@ -26,20 +26,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WebClientResponseException.class)
     public String handleWebClientResponseException(WebClientResponseException ex, HttpServletRequest request, HttpServletResponse response, Model model) {
         TokenContext.addToken(model);
-        if (ex.getStatusCode().value() == 401) {
-            request.getSession().invalidate();
-            SecurityContextHolder.clearContext();
-
-            request.getSession().setAttribute("REDIRECT_URL_AFTER_LOGIN", request.getRequestURI());
-            String loginUrl = "/oauth2/authorization/keycloak";
-            try {
-                response.sendRedirect(loginUrl);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return null;
-        }
-
         return "error/" + ex.getStatusCode().value();
     }
 }
