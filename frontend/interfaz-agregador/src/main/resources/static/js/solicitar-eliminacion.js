@@ -32,7 +32,7 @@ async function enviarSolicitudEliminacion(inputMotivo) {
         mostrarCargando("enviar-solicitud-eliminacion");
 
         const payload = {
-            solicitanteId: solicitanteId,
+            solicitanteId: autorData.id,
             hechoId: hechoId,
             motivo: inputMotivo.value
         }

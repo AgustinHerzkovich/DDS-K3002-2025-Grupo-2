@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function agregarEtiqueta() {
-    const input = document.getElementById("nuevaEtiqueta");
+    const input = document.getElementById("nueva-etiqueta");
     const nombre = input.value.trim();
     if (!nombre) {
         alert("Ingrese un nombre para la etiqueta");

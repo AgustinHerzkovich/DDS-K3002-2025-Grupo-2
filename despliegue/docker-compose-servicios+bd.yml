@@ -5,8 +5,8 @@ services:
   #todo: quitarlo y ponerlo en un compose aparte
   eureka-server:
     build:
-      context: ../backend/EurekaServer
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: backend/EurekaServer/Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -39,8 +39,8 @@ services:
   # Servicio Agregador
   agregador:
     build:
-      context: ../backend
-      dockerfile: agregador/Dockerfile
+      context: ..
+      dockerfile: backend/agregador/Dockerfile
     ports:
       - "8084:8084"
     depends_on:
@@ -91,8 +91,8 @@ services:
   # Servicio Estadísticas
   estadisticas:
     build:
-      context: ../backend
-      dockerfile: estadisticas/Dockerfile
+      context: ..
+      dockerfile: backend/estadisticas/Dockerfile
     ports:
       - "8087:8087"
     depends_on:
@@ -128,8 +128,8 @@ services:
   # API Pública
   api-publica:
     build:
-      context: ../backend
-      dockerfile: apiPublica/Dockerfile
+      context: ..
+      dockerfile: backend/apiPublica/Dockerfile
     ports:
       - "8085:8085"
     depends_on:
@@ -158,8 +158,8 @@ services:
   # API Administrativa
   api-administrativa:
     build:
-      context: ../backend
-      dockerfile: apiAdministrativa/Dockerfile
+      context: ..
+      dockerfile: backend/apiAdministrativa/Dockerfile
     ports:
       - "8086:8086"
     depends_on:
@@ -185,8 +185,8 @@ services:
   # Interfaz Agregador (Frontend)
   interfaz-agregador:
     build:
-      context: ../frontend/interfaz-agregador
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: frontend/interfaz-agregador/Dockerfile
     depends_on:
       api-publica:
         condition: service_healthy

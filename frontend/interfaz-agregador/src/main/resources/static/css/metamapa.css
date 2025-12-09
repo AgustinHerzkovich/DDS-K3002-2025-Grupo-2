@@ -59,3 +59,10 @@
     background: #cccccc;
     border-radius: 4px;
 }
+
+.texto-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;   /* cantidad de líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

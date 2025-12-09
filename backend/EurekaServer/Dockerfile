@@ -1,12 +1,18 @@
 # Etapa 1: Build
 FROM maven:3.9-eclipse-temurin-21 AS build
-WORKDIR /app
+WORKDIR /workspace
 
-# Copiar archivos de configuración de Maven
-COPY pom.xml .
-COPY src ./src
+COPY pom.xml ./pom.xml
+COPY backend/pom.xml ./backend/pom.xml
+COPY backend/utils ./backend/utils
 
-# Compilar la aplicación
+# Construir e instalar utils en el repositorio local
+RUN mvn -B -f backend/utils/pom.xml clean install -DskipTests
+
+COPY backend/EurekaServer/pom.xml ./backend/EurekaServer/pom.xml
+COPY backend/EurekaServer/src ./backend/EurekaServer/src
+
+WORKDIR /workspace/backend/EurekaServer
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Runtime
@@ -17,7 +23,7 @@ WORKDIR /app
 RUN apk add --no-cache curl
 
 # Copiar el JAR compilado
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /workspace/backend/EurekaServer/target/eurekaServer-*.jar app.jar
 
 # Exponer puerto
 EXPOSE 8761

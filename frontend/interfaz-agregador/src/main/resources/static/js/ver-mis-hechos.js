@@ -61,10 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             html += `
                                 <div class="list-group-item">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h4 class="font-medium text-gray-900 mb-0.5">${hecho.titulo}</h4>
+                                        <h4 class="texto-clamp font-medium text-gray-900 mb-0.5">${hecho.titulo}</h4>
                                         ${actionButton}
                                     </div>
-                                    <p>${hecho.descripcion}</p>
+                                    <p class="texto-clamp">${hecho.descripcion}</p>
                                     <small>Fecha: ${new Date(hecho.fechaAcontecimiento).toLocaleDateString()}</small>
                                 </div>`
                         });

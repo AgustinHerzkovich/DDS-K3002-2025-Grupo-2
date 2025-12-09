@@ -3,20 +3,28 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
 
 COPY pom.xml ./pom.xml
-COPY utils ./utils
-COPY agregador/pom.xml ./agregador/pom.xml
+COPY backend/pom.xml ./backend/pom.xml
+COPY backend/utils ./backend/utils
 
-RUN mvn dependency:go-offline -f agregador/pom.xml
+# Construir e instalar utils en el repositorio local
+RUN mvn -B -f backend/utils/pom.xml clean install -DskipTests
 
-COPY agregador/src ./agregador/src
+COPY backend/agregador/pom.xml ./backend/agregador/pom.xml
 
-RUN mvn clean package -f agregador/pom.xml -DskipTests
+RUN mvn dependency:go-offline -f backend/agregador/pom.xml
+
+COPY backend/agregador/src ./backend/agregador/src
+
+RUN mvn clean package -f backend/agregador/pom.xml -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY --from=build /workspace/agregador/target/*.jar app.jar
+# Instalar curl para healthcheck
+RUN apk add --no-cache curl
+
+COPY --from=build /workspace/backend/agregador/target/*.jar app.jar
 
 EXPOSE 8084
 

@@ -13,8 +13,8 @@
 
 
 <th:block th:replace="~{fragments/layout :: layout(~{::main}, false)}">
-	<main class="main-padding">
-		<h1 class="page-title">
+	<main class="main-padding justify-center flex flex-column">
+		<h1 class="page-title mb-12">
 			Hechos Pendientes
 		</h1>
 
@@ -24,11 +24,6 @@
 					<th:block th:replace="~{fragments/cards :: cardHechoPendiente(${hecho})}" />
 				</div>
 			</div>
-
-			<th:block th:replace="~{fragments/pagination-controls :: paginationControls(
-				'/hechos-pendientes?page=' + ${currentPage - 1} + '&size=10',
-				'/hechos-pendientes?page=' + ${currentPage + 1} + '&size=10'
-				)}" />
 
 			<th:block th:unless="${#lists.isEmpty(hechosPendientes)}" th:replace="~{fragments/modal :: modalHechosPendientes}" />
 		</div>
@@ -41,5 +36,10 @@
 				No hay hechos pendientes en este momento
 			</p>
 		</div>
+
+		<th:block th:replace="~{fragments/pagination-controls :: paginationControls(
+				'/hechos-pendientes?page=' + ${currentPage - 1} + '&size=10',
+				'/hechos-pendientes?page=' + ${currentPage + 1} + '&size=10'
+				)}" />
 	</main>
 </th:block>

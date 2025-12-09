@@ -68,12 +68,6 @@
     position: static !important;
 }
 
-.right-section {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-}
-
 .btn-update-wrapper {
     display: flex;
 
