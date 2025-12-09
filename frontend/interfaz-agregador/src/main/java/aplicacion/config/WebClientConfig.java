@@ -20,7 +20,7 @@ public class WebClientConfig {
     public WebClient apiAdministrativaWebClient(
             OAuth2AuthorizedClientService clientService) {
         return WebClient.builder()
-                .baseUrl("http://localhost:8086/apiAdministrativa")
+                .baseUrl("http://api-administrativa:8086/apiAdministrativa")
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024) // 16MB

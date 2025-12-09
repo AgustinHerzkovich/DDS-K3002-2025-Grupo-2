@@ -19,34 +19,13 @@ public class ConfigService {
     public ConfigService(DiscoveryClient discoveryClient) throws IOException {
         this.discoveryClient = discoveryClient;
     }
-    @Value("${agregador.id}")
-    private String agregadorID;
-
-    @Value("${estadisticas.id}")
-    private String estadisticasID;
 
     public String getUrlAgregador() {
-
-        return cache.get("agregador", srv -> discoveryClient.getInstances("agregador")
-                .stream()
-                .filter(instance -> Objects.equals(instance.getMetadata().get("agregadorID"), agregadorID))
-                .findFirst()
-                .orElseThrow(() -> new NoInstanceException("agregador"))
-                .getUri()
-                .toString()
-                .concat("/" + "agregador")
-        );
+        return getUrl("agregador");
     }
 
     public String getUrlEstadisticas() {
-        return discoveryClient.getInstances("estadisticas")
-                .stream()
-                .filter(instance -> instance.getMetadata().get("estadisticasID").equals(estadisticasID))
-                .findFirst()
-                .orElseThrow(() -> new NoInstanceException("estadisticas"))
-                .getUri()
-                .toString()
-                .concat("/estadisticas");
+        return getUrl("estadisticas");
     }
 
     public String getUrlFuentesDinamicas() {

@@ -95,7 +95,7 @@ const query = `
   }
 `;
 
-fetch('http://localhost:8084/graphql', {
+fetch('http://agregador:8084/graphql', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const variables = {
   limit: 50
 };
 
-fetch('http://localhost:8084/graphql', {
+fetch('http://agregador:8084/graphql', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -198,12 +198,12 @@ resultado.content.forEach(hecho => {
 ## Testing
 
 Para probar las queries, podés usar:
-1. GraphiQL: http://localhost:8084/graphiql
+1. GraphiQL: http://agregador:8084/graphiql
 2. Postman con body raw JSON
 3. curl:
 
 ```bash
-curl -X POST http://localhost:8084/graphql \
+curl -X POST http://agregador:8084/graphql \
   -H "Content-Type: application/json" \
   -d '{"query":"query { hechosEnMapa(page: 0, limit: 10) { content { id titulo } } }"}'
 ```

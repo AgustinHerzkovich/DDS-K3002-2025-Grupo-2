@@ -183,7 +183,7 @@ async function cargarFuentesPorTipo(numero, tipo) {
         selectNombre.innerHTML = '<option value="">Cargando fuentes...</option>';
         selectNombre.disabled = true;
 
-        const response = await fetch(`http://localhost:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
+        const response = await fetch(`http://api-administrativa:8086/apiAdministrativa/fuentes?tipo=${tipo}&limit=100`, {
             headers: { 'Authorization': 'Bearer ' + jwtToken }
         });
 

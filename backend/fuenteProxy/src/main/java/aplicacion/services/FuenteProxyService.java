@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class FuenteProxyService {
@@ -43,6 +44,7 @@ public class FuenteProxyService {
         this.discoveryClient = discoveryClient;
     }
 
+    @Transactional
     public void pedirHechos() {
         List<FuenteProxy> fuentesProxy = fuenteProxyRepository.findAll();
         for (FuenteProxy fuente : fuentesProxy) {
@@ -50,7 +52,7 @@ public class FuenteProxyService {
             fuenteProxyRepository.save(fuente);
         }
     }
-
+    @Transactional
     public List<HechoOutputDto> importarHechos() {
         List<FuenteProxy> fuentesProxy = fuenteProxyRepository.findAll();
         List<Hecho> listaDeHechosADevolver = new ArrayList<>();
@@ -60,6 +62,7 @@ public class FuenteProxyService {
        return listaDeHechosADevolver.stream().map(hechoOutputMapper::map).toList();
     }
 
+    @Transactional
     public List<HechoOutputDto> importarHechosConFechaMayorA(LocalDateTime fechaMayorA) {
         List<FuenteProxy> fuentesProxy = fuenteProxyRepository.findAll();
         List<Hecho> listaDeHechosADevolver = new ArrayList<>();
@@ -89,14 +92,12 @@ public class FuenteProxyService {
             RestTemplate restTemplate = new RestTemplate();
             //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
             try {
-                String endpointHechos = endpointHechosAgregador(((FuenteMetamapa) fuente).getAgregadorId());
-                System.out.println("\n\n" + endpointHechos + "\n\n");
-                List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
-                System.out.println(hechos.isEmpty());
-                return hechos;
+                String endpointHechos = ((FuenteMetamapa) fuente).getUrl()+ "/agregador/hechosSinPaginar";
+
+                return List.of(Objects.requireNonNull(restTemplate.getForObject(endpointHechos, Hecho[].class)));
             }catch (Exception e){
                 System.out.println(e.getMessage());
-                System.out.println("Error al obtener hechos desde el agregador con ID: " + ((FuenteMetamapa) fuente).getAgregadorId());
+                System.out.println("Error al obtener hechos desde el agregador con ID: " + ((FuenteMetamapa) fuente).getUrl());
                 return List.of();
             }
 
@@ -106,7 +107,7 @@ public class FuenteProxyService {
         }
 
     }
-    public String endpointHechosAgregador(String agregadorID) {
+    /*public String endpointHechosAgregador(String agregadorID) {
         String baseURL = discoveryClient.getInstances("AGREGADOR")
                 .stream()
                 .filter(instance -> instance.getMetadata().get("agregadorID").equals(agregadorID))
@@ -114,7 +115,7 @@ public class FuenteProxyService {
                 .map(instance -> instance.getUri().toString())
                 .orElseThrow(() -> new RuntimeException(" No se encontraron instancias para el servicio: " + agregadorID));
         return baseURL + "/agregador/hechosSinPaginar";
-    }
+    }*/
     @Transactional
     public List<HechoOutputDto> importarHechosDeFuente(String id) throws FuenteNoEncontradaException {
         FuenteProxy fuente = fuenteProxyRepository.findById(id).orElseThrow(() -> new FuenteNoEncontradaException("Fuente " + id + "no encontrada"));

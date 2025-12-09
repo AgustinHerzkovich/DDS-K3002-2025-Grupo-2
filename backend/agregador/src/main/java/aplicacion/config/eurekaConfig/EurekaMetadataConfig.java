@@ -1,4 +1,4 @@
-package aplicacion.config.eurekaConfig;
+/*package aplicacion.config.eurekaConfig;
 
 import aplicacion.domain.agregadorID.AgregadorID;
 import aplicacion.repositories.AgregadorIDRepository;
@@ -40,4 +40,4 @@ public class EurekaMetadataConfig {
         appInfoManager.registerAppMetadata(appInfoManager.getInfo().getMetadata());
         appInfoManager.setInstanceStatus(InstanceInfo.InstanceStatus.UP);
     }
-}
+}*/

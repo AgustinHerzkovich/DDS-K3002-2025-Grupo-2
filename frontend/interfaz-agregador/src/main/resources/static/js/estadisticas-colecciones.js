@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function cargarDatosColeccion() {
-        fetch(`http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`)
+        fetch(`http://api-publica:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`)
             .then(resp => resp.json())
             .then(data => {
                 if (data.length === 0) {
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
             search: busquedaActual
         });
 
-        fetch(`http://localhost:8085/apiPublica/estadisticas/colecciones?${params.toString()}`)
+        fetch(`http://api-publica:8085/apiPublica/estadisticas/colecciones?${params.toString()}`)
             .then(resp => resp.json())
             .then(data => {
                 listaColecciones.innerHTML = "";
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarColecciones();
     });
 
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, () => `estadisticas-${limiteColecciones}_provincias_con_mas_hechos-coleccion_${nombreColeccion.textContent}.csv`)
+    configurarDescargaCSV("btn-descargar-csv", () => `http://api-publica:8085/apiPublica/provinciasConMasHechosDeColeccion?idColeccion=${encodeURIComponent(idColeccion)}&limit=${limiteColecciones}`, () => `estadisticas-${limiteColecciones}_provincias_con_mas_hechos-coleccion_${nombreColeccion.textContent}.csv`)
 
 
     cargarColecciones();

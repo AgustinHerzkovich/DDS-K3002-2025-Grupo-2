@@ -38,7 +38,7 @@ async function enviarSolicitudEliminacion(inputMotivo) {
         }
         console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
 
-        const response = await fetch('http://localhost:8085/apiPublica/solicitudes', {
+        const response = await fetch('http://api-publica:8085/apiPublica/solicitudes', {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(payload)

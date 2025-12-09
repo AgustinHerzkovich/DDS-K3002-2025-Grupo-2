@@ -223,19 +223,20 @@ public class FuenteService {
                 combinadas
                 .map(instance -> instance.getMetadata().get("fuentesDisponibles"))
                 .toList();
+        /*
         List <String> agregadores;
         agregadores = discoveryClient.getInstances("AGREGADOR")
                 .stream()
                 .map(instance -> instance.getMetadata().get("agregadorID"))
                 .map(agregadorid -> "agregador-"+agregadorid)
                 .toList();
-
+        */
         Set<String> setFuentesIds = new HashSet<>(fuentesIds);
-        setFuentesIds.addAll(agregadores);
+        //setFuentesIds.addAll(agregadores);
         setFuentesIds.addAll(this.obtenerTodasLasFuentes().stream().map(Fuente::getId).collect(Collectors.toSet()));
         return setFuentesIds;
     }
-
+/*
     public List<AgregadorOutputDto> getAgregadores() {
         List <String> agregadores = discoveryClient.getInstances("agregador")
                 .stream()
@@ -244,5 +245,5 @@ public class FuenteService {
                 .toList();
 
         return agregadores.stream().map(AgregadorOutputDto::new).toList();
-    }
+    }*/
 }

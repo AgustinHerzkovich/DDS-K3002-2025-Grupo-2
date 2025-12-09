@@ -30,7 +30,7 @@
         <script type="module">
             import { configurarDescargaCSV } from "../js/botonDescargarCSV.js";
             document.addEventListener("DOMContentLoaded", () => {
-                fetch("http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam")
+                fetch("http://api-publica:8085/apiPublica/solicitudesDeEliminacionSpam")
                     .then(resp => resp.json())
                     .then(data => {
 
@@ -128,7 +128,7 @@
                         document.getElementById("contenedor-grafico-solicitudes").style.display = "none";
                         document.getElementById("contenedor-error-solicitudes").style.display = "flex";
                     });
-                configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam`, "estadisticas - solicitudes según estado.csv")
+                configurarDescargaCSV("btn-descargar-csv", () => `http://api-publica:8085/apiPublica/solicitudesDeEliminacionSpam`, "estadisticas - solicitudes según estado.csv")
 
             });
         </script>

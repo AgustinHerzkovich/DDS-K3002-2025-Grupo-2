@@ -967,7 +967,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://localhost:8086")
+                                .url("http://api-administrativa:8086")
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

@@ -42,7 +42,7 @@ public class HechoService {
     @PostConstruct
     public void init() {
         this.webClientPublica = WebClient.builder()
-                .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
+                .baseUrl("http://api-publica:" + apiPublicaPort + "/apiPublica")
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
@@ -51,7 +51,7 @@ public class HechoService {
                         .build())
                 .build();
         this.webClientAdministrativa = WebClient.builder()
-                .baseUrl("http://localhost:" + apiAdministrativaPort + "/apiAdministrativa")
+                .baseUrl("http://api-administrativa:" + apiAdministrativaPort + "/apiAdministrativa")
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024) // 20MB

@@ -32,10 +32,4 @@ public class FuenteController {
     public ResponseEntity<FuenteOutputDto> renameFuente(@Valid @RequestBody FuenteAliasDto fuenteAliasDto, @PathVariable(name = "id") String id){
         return ResponseEntity.ok(fuenteOutputMapper.map(fuenteService.cambiarAlias(id, fuenteAliasDto)));
     }
-
-    @GetMapping("/agregadores") // mostrar todas las instancias de agregador que están levantadas y que conoce eureka server
-    public ResponseEntity<List<AgregadorOutputDto>> getAgregadores() {
-        return ResponseEntity.ok(fuenteService.getAgregadores());
-    }
-
 }

@@ -613,10 +613,9 @@
 					<!-- Contenedor para Metamapa -->
 					<div id="modal-fuente-proxy-metamapa-container" class="col-12 hidden">
 						<div class="mb-3">
-							<label for="modal-fuente-proxy-agregador" class="form-label obligatorio">Seleccionar Agregador</label>
-							<select id="modal-fuente-proxy-agregador" class="form-select" required>
-								<option value="">Cargando agregadores...</option>
-							</select>
+							<label for="modal-fuente-proxy-url" class="form-label obligatorio">URL del Agregador</label>
+							<input type="url" id="modal-fuente-proxy-url" class="form-control" placeholder="https://ejemplo.com/api" required>
+							<small class="form-text text-muted">Ingrese la URL base del agregador (se validará agregando /hechos al final)</small>
 						</div>
 					</div>
 				</div>

@@ -36,7 +36,7 @@ async function actualizarColeccion(coleccion) {
 
         const algoritmoConsenso = document.getElementById("algoritmo-editar-coleccion").value
         if(algoritmoConsenso !== coleccion.tipoAlgoritmoConsenso) {
-            const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccion.id}/algoritmo`, {
+            const response = await fetch(`http://api-administrativa:8086/apiAdministrativa/colecciones/${coleccion.id}/algoritmo`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ async function actualizarColeccion(coleccion) {
 
         const fuentesAEliminar = coleccion.fuentes.filter(fuente => !window.coleccionActual.fuentes.some(fuenteActual => fuenteActual.id === fuente.id))
         for (const fuenteAEliminar of fuentesAEliminar) {
-            const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccion.id}/fuentes/${fuenteAEliminar.id}`, {
+            const response = await fetch(`http://api-administrativa:8086/apiAdministrativa/colecciones/${coleccion.id}/fuentes/${fuenteAEliminar.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer ' + jwtToken
@@ -70,7 +70,7 @@ async function actualizarColeccion(coleccion) {
 
         const fuentesNuevas = window.coleccionActual.fuentes.filter(fuenteActual => !coleccion.fuentes.some(fuente => fuente.id === fuenteActual.id))
         for (const fuenteNueva of fuentesNuevas) {
-            const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${coleccion.id}/fuentes`, {
+            const response = await fetch(`http://api-administrativa:8086/apiAdministrativa/colecciones/${coleccion.id}/fuentes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FuenteMetamapaInputMapper {
     public FuenteMetamapa map(FuenteMetamapaInputDto fuenteMetamapaInputDto) {
-        return new FuenteMetamapa(fuenteMetamapaInputDto.getAgregadorId());
+        return new FuenteMetamapa(fuenteMetamapaInputDto.getUrl());
     }
 }

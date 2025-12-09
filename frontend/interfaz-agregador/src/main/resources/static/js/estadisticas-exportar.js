@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
         limit4=valor
     }, 25, 1, 1); // 25 para no mostrar "todas" ni usar 2000000000 horas
 
-    configurarDescargaCSV("btn-hechos-provincias", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeColeccion?limit=${limit1}`, () => `estadisticas-${limit1 >= 2000000000 ? "todas_las_provincias" : limit1 + "_provincias_con_mas_hechos"}-todas_las_colecciones.csv`);
-    configurarDescargaCSV("btn-hechos-categorias", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?limit=${limit2}`, () => `estadisticas-${limit2 >= 2000000000 ? "todas_las_categorias" : limit2 + "_categorias_con_mas_hechos"}.csv`);
-    configurarDescargaCSV("btn-hechos-provincia-categoria", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?limit=${limit3}`, () => `estadisticas-${limit3 >= 2000000000 ? "todas_las_provincias" : limit3 + "_provincias_con_mas_hechos"}-todas_las_categorias.csv`);
-    configurarDescargaCSV("btn-hora-mas-hechos", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?limit=${limit4}`, () => `estadisticas-${limit4 >= 24 ? "las_24_horas" : limit4 + "_horas_con_mas_hechos"}-todas_las_categorias.csv`);
-    configurarDescargaCSV("btn-solicitudes-spam", "http://localhost:8085/apiPublica/solicitudesDeEliminacionSpam", "estadisticas-solicitudes_segun_estado.csv");
+    configurarDescargaCSV("btn-hechos-provincias", () => `http://api-publica:8085/apiPublica/provinciasConMasHechosDeColeccion?limit=${limit1}`, () => `estadisticas-${limit1 >= 2000000000 ? "todas_las_provincias" : limit1 + "_provincias_con_mas_hechos"}-todas_las_colecciones.csv`);
+    configurarDescargaCSV("btn-hechos-categorias", () => `http://api-publica:8085/apiPublica/categoriasConMasHechos?limit=${limit2}`, () => `estadisticas-${limit2 >= 2000000000 ? "todas_las_categorias" : limit2 + "_categorias_con_mas_hechos"}.csv`);
+    configurarDescargaCSV("btn-hechos-provincia-categoria", () => `http://api-publica:8085/apiPublica/provinciasConMasHechosDeCategoria?limit=${limit3}`, () => `estadisticas-${limit3 >= 2000000000 ? "todas_las_provincias" : limit3 + "_provincias_con_mas_hechos"}-todas_las_categorias.csv`);
+    configurarDescargaCSV("btn-hora-mas-hechos", () => `http://api-publica:8085/apiPublica/horaConMasHechosDeCategoria?limit=${limit4}`, () => `estadisticas-${limit4 >= 24 ? "las_24_horas" : limit4 + "_horas_con_mas_hechos"}-todas_las_categorias.csv`);
+    configurarDescargaCSV("btn-solicitudes-spam", "http://api-publica:8085/apiPublica/solicitudesDeEliminacionSpam", "estadisticas-solicitudes_segun_estado.csv");
 
 
 });

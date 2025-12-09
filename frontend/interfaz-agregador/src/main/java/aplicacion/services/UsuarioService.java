@@ -21,7 +21,7 @@ public class UsuarioService {
 
     @PostConstruct
     public void init() {
-        this.webClient = WebClient.create("http://localhost:" + apiPublicaPort + "/apiPublica");
+        this.webClient = WebClient.create("http://api-publica:" + apiPublicaPort + "/apiPublica");
     }
 
     public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {

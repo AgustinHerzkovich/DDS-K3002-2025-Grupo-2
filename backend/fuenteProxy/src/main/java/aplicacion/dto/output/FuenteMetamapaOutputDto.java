@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FuenteMetamapaOutputDto {
     private String id;
-    private String agregadorId;
+    private String url;
 }

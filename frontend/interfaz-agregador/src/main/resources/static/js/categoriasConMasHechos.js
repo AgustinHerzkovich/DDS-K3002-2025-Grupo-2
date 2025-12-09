@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function cargarGrafico() {
-        fetch(`http://localhost:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`)
+        fetch(`http://api-publica:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`)
             .then(resp => resp.json())
             .then(data => {
                 if (!data || data.length === 0) {
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`, () => `estadisticas-${limit}_categorias_con_mas_hechos.csv`)
+    configurarDescargaCSV("btn-descargar-csv", () => `http://api-publica:8085/apiPublica/categoriasConMasHechos?page=0&limit=${limit}`, () => `estadisticas-${limit}_categorias_con_mas_hechos.csv`)
 
     actualizarSlider();
     cargarGrafico();

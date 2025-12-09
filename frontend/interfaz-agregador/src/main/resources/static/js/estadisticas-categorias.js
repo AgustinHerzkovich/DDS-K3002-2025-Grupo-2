@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function cargarDatosCategoria(nombreCategoria) {
         document.getElementById("nombre-categoria").textContent = nombreCategoria;
 
-        fetch(`http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`)
+        fetch(`http://api-publica:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=${limiteProvincias}`)
             .then(resp => resp.json())
             .then(data => {
                 if (data.length === 0) {
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-        fetch(`http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=100`)
+        fetch(`http://api-publica:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${encodeURIComponent(nombreCategoria)}&limit=100`)
             .then(resp => resp.json())
             .then(data => {
                 const contenedorHora = document.getElementById("tarjeta-hora-texto");
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
             search: busquedaActual
         });
 
-        fetch(`http://localhost:8085/apiPublica/estadisticas/categorias?${params.toString()}`)
+        fetch(`http://api-publica:8085/apiPublica/estadisticas/categorias?${params.toString()}`)
             .then(resp => resp.json())
             .then(data => {
                 listaCategorias.innerHTML = "";
@@ -228,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
         paginaActual = 0;
         cargarCategorias();
     });
-    configurarDescargaCSV("btn-descargar-csv", () => `http://localhost:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=${limiteProvincias}`, () => `estadisticas-${limiteProvincias}_provincias_con_mas_hechos-categoria_${nombreCategoria.textContent}.csv`)
-    configurarDescargaCSV("btn-descargar-csv-horas", () => `http://localhost:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=100`, () => `estadisticas-hechos_por_hora-categoria_${nombreCategoria.textContent}.csv`)
+    configurarDescargaCSV("btn-descargar-csv", () => `http://api-publica:8085/apiPublica/provinciasConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=${limiteProvincias}`, () => `estadisticas-${limiteProvincias}_provincias_con_mas_hechos-categoria_${nombreCategoria.textContent}.csv`)
+    configurarDescargaCSV("btn-descargar-csv-horas", () => `http://api-publica:8085/apiPublica/horaConMasHechosDeCategoria?nombreCategoria=${(nombreCategoria.textContent)}&limit=100`, () => `estadisticas-hechos_por_hora-categoria_${nombreCategoria.textContent}.csv`)
 
     cargarCategorias();
 });

@@ -11,6 +11,7 @@ import aplicacion.services.schedulers.CargarHechosScheduler;
 import aplicacion.services.schedulers.EjecutarAlgoritmoConsensoScheduler;
 import domain.helpers.JwtUtil;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -124,7 +125,7 @@ public class HechoController {
 
     @PostMapping("/hechos/{id}/tags")
     @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
-    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
+    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @Size(max = 50, message = "La etiqueta no puede tener más de 500 caracteres") @RequestBody String etiquetaName) {
         try {
             Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
             logger.debug("Se agrego el tag: {}", etiquetaName);

@@ -1,0 +1,130 @@
+version: "3.9"
+
+services:
+
+  eureka-server:
+    image: agustinherzkovich/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
+    networks:
+      - metamapa
+
+  agregador:
+    image: agustinherzkovich/agregador:latest
+    container_name: agregador
+    depends_on:
+      - eureka-server
+    ports:
+      - "8084:8084"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: agregador
+    networks:
+      - metamapa
+
+  api-publica:
+    image: agustinherzkovich/api-publica:latest
+    container_name: api-publica
+    depends_on:
+      - eureka-server
+    ports:
+      - "8085:8085"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: api-publica
+    networks:
+      - metamapa
+
+  api-administrativa:
+    image: agustinherzkovich/api-administrativa:latest
+    container_name: api-administrativa
+    depends_on:
+      - eureka-server
+    ports:
+      - "8086:8086"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: api-administrativa
+    networks:
+      - metamapa
+
+  estadisticas:
+    image: agustinherzkovich/estadisticas:latest
+    container_name: estadisticas
+    depends_on:
+      - eureka-server
+    ports:
+      - "8087:8087"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: estadisticas
+    networks:
+      - metamapa
+
+  interfaz-agregador:
+    image: agustinherzkovich/interfaz-agregador:latest
+    container_name: interfaz-agregador
+    depends_on:
+      - eureka-server
+      - api-publica
+      - api-administrativa
+    ports:
+      - "8094:8094"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
+    networks:
+      - metamapa
+
+  fuente-estatica:
+    image: agustinherzkovich/fuente-estatica:latest
+    container_name: fuente-estatica
+    depends_on:
+      - eureka-server
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: fuente-estatica
+    networks:
+      - metamapa
+
+  fuente-dinamica:
+    image: agustinherzkovich/fuente-dinamica:latest
+    container_name: fuente-dinamica
+    depends_on:
+      - eureka-server
+    ports:
+      - "8082:8082"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: fuente-dinamica
+    networks:
+      - metamapa
+
+  fuente-proxy:
+    image: agustinherzkovich/fuente-proxy:latest
+    container_name: fuente-proxy
+    depends_on:
+      - eureka-server
+    ports:
+      - "8083:8083"
+    volumes:
+      - fuente-proxy-data:/app/data
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: fuente-proxy
+    networks:
+      - metamapa
+
+networks:
+  metamapa:
+    driver: bridge
+
+volumes:
+  fuente-proxy-data:
+
+# docker-compose -f docker-compose-despliegue.yml up -d

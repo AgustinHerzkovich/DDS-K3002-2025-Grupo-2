@@ -1,5 +1,6 @@
 package aplicacion.prometheus;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URI;
@@ -12,7 +13,8 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class PrometheusClient {
 
-    private final String prometheusUrl = "http://localhost:9090"; // Cambiá si es necesario
+    @Value("${prometheus.url}")
+    private String prometheusUrl;
 
     public String query(String promql) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();

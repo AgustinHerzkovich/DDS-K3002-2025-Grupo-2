@@ -24,7 +24,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Esto permite peticiones únicamente desde las apis
-        config.setAllowedOrigins(Arrays.asList("http://localhost:" + apiPublicaPort, "http://localhost:" + apiAdministrativaPort));
+        config.setAllowedOrigins(Arrays.asList("http://api-publica:" + apiPublicaPort, "http://api-administrativa:" + apiAdministrativaPort));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

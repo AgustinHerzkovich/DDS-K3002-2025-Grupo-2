@@ -5,7 +5,7 @@ function validarFormularioModalFuente() {
     const url = document.getElementById('modal-fuente-url');
     const dropZone = document.getElementById('modal-fuente-drop-zone');
     const tipoProxy = document.getElementById('modal-fuente-proxy-tipo');
-    const agregador = document.getElementById('modal-fuente-proxy-agregador');
+    const proxyUrl = document.getElementById('modal-fuente-proxy-url');
 
     // Limpiar estados de error previos de elementos especiales
     dropZone.classList.remove('form-not-completed');
@@ -39,8 +39,13 @@ function validarFormularioModalFuente() {
         if (tipoProxy.value === 'demo') {
             // Para demo no hay validaciones adicionales, usa biblioteca "prueba" por defecto
         } else if (tipoProxy.value === 'metamapa') {
-            // Validar que se haya seleccionado un agregador
-            validarInputsObligatorios([agregador]);
+            // Validar que se haya ingresado una URL
+            validarInputsObligatorios([proxyUrl]);
+            // Validación adicional de formato URL
+            if (proxyUrl.value.trim() && !isValidUrl(proxyUrl.value.trim())) {
+                proxyUrl.classList.add('form-not-completed');
+                proxyUrl.classList.remove('form-input');
+            }
         }
     }
 
@@ -50,7 +55,7 @@ function validarFormularioModalFuente() {
         archivos,
         url,
         tipoProxy,
-        agregador
+        proxyUrl
     };
 }
 

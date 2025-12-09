@@ -33,9 +33,4 @@ public class FuenteProxyController {
         }
         return ResponseWrapper.wrapResponse(solicitudesHttp.post(configService.getUrlFuentesProxy() + path, body, String.class));
     }
-
-    @GetMapping("/agregadores")
-    public ResponseEntity<?> obtenerAgregadores() {
-        return ResponseWrapper.wrapResponse(solicitudesHttp.get(configService.getUrlAgregador() + "/agregadores", String.class));
-    }
 }

@@ -36,24 +36,4 @@ public class FuenteDemo extends FuenteProxy {
     public FuenteDemo() {
         this.hechoBuilder = new HechoBuilder();
     }
-    /*
-    @Override
-    public void pedirHechos() {
-        // basicamente pide hechos hasta que el map que llega esta vacio. Es la logica de negocio que indica el enunciado y es lo que hay que seguir
-
-        // delegar peticion de hechos a la biblioteca
-        Map<String, Object> datos;
-        Hecho hecho;
-        while((datos = biblioteca.siguienteHecho(url, ultimaConsulta)) != null) {
-            hecho = hechoBuilder.construirHecho(datos);
-            hechos.add(hecho);
-        }
-    }
-
-    @Override
-    public List<Hecho> importarHechos(DiscoveryClient discoveryClient) {
-        return hechos;
-    }*/
-
-
 }

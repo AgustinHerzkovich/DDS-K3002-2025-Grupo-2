@@ -42,7 +42,7 @@ public class ContribuyenteService {
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://localhost:" + apiPublicaPort + "/apiPublica")
+                .baseUrl("http://api-publica:" + apiPublicaPort + "/apiPublica")
                 .build();
     }
 

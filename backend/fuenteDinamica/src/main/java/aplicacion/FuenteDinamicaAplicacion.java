@@ -23,7 +23,7 @@ public class FuenteDinamicaAplicacion {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://localhost:"+interfazAgregadorPort).allowedMethods("*").allowedHeaders("*"); //establece que front puede hacer peticiones al back, donde puede definir los metodos y headers permitidos
+        registry.addMapping("/**").allowedOrigins("http://interfaz-agregador:"+interfazAgregadorPort).allowedMethods("*").allowedHeaders("*"); //establece que front puede hacer peticiones al back, donde puede definir los metodos y headers permitidos
       }
     };
   }

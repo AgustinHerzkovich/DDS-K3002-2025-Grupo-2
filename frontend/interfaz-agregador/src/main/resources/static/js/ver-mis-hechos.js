@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnNext = document.getElementById("pagination-mis-hechos-next");
     const pageInfo = document.getElementById("pagination-mis-hechos-info");
 
-    const baseEndpoint = `http://localhost:8085/apiPublica/contribuyentes/${autorId}/hechos`;
+    const baseEndpoint = `http://api-publica:8085/apiPublica/contribuyentes/${autorId}/hechos`;
 
     let currentPage = 0;
     const pageSize = 10;

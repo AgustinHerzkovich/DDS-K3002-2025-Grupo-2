@@ -27,25 +27,13 @@ public class ConfigService {
         this.discoveryClient = discoveryClient;
     }
 
-    @Value("${agregador.id}")
-    private String agregadorID;
-
     public String getUrlAgregador() {
-        return cache.get( "agregador", srv ->
-        discoveryClient.getInstances("agregador")
-                .stream()
-                .filter(instance -> Objects.equals(instance.getMetadata().get("agregadorID"), agregadorID))
-                .findFirst()
-                .orElseThrow(() -> new NoInstanceException("agregador"))
-                .getUri()
-                .toString()
-                .concat("/" + "agregador"));
+        return getUrl("agregador");
     }
 
     public String getUrlFuentesEstaticas() {
         return getUrl("fuentesEstaticas");
     }
-
 
     public String getUrlFuentesProxy() {
         return getUrl("fuentesProxy");

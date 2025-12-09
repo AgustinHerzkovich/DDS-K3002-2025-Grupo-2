@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const proxyTipoSelect = document.getElementById("modal-fuente-proxy-tipo");
     const proxyDemoContainer = document.getElementById("modal-fuente-proxy-demo-container");
     const proxyMetamapaContainer = document.getElementById("modal-fuente-proxy-metamapa-container");
-    const proxyAgregadorSelect = document.getElementById("modal-fuente-proxy-agregador");
+    const proxyUrlInput = document.getElementById("modal-fuente-proxy-url");
 
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear fuente")) {
         // Debug: verificar que todos los elementos del file upload están disponibles
@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 proxyDemoContainer.classList.remove('hidden');
             } else if (tipoProxySeleccionado === 'metamapa') {
                 proxyMetamapaContainer.classList.remove('hidden');
-                cargarAgregadores();
             }
         });
 
@@ -232,44 +231,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    async function cargarAgregadores() {
-        try {
-            proxyAgregadorSelect.innerHTML = '<option value="">Cargando agregadores...</option>';
-            proxyAgregadorSelect.disabled = true;
-
-            const response = await fetch('http://localhost:8086/apiAdministrativa/agregadores', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + jwtToken
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al cargar agregadores');
-            }
-
-            const agregadores = await response.json();
-
-            proxyAgregadorSelect.innerHTML = '<option value="">Seleccionar agregador...</option>';
-
-            if (agregadores && agregadores.length > 0) {
-                agregadores.forEach(agregador => {
-                    const option = document.createElement('option');
-                    option.value = agregador.id;
-                    option.textContent = agregador.id;
-                    proxyAgregadorSelect.appendChild(option);
-                });
-            } else {
-                proxyAgregadorSelect.innerHTML = '<option value="">No hay agregadores disponibles</option>';
-            }
-
-            proxyAgregadorSelect.disabled = false;
-        } catch (error) {
-            console.error('Error al cargar agregadores:', error);
-            proxyAgregadorSelect.innerHTML = '<option value="">Error al cargar agregadores</option>';
-            alert('Error al cargar la lista de agregadores');
-        }
-    }
 });
 
 async function publicarFuente(inputsObligatorios) {
@@ -286,7 +247,7 @@ async function publicarFuente(inputsObligatorios) {
         if (tipoFuente === 'estatica') {
             if (cargaUrl) {
                 // Cargar por URL - el backend espera solo el string de la URL
-                endpoint = 'http://localhost:8086/apiAdministrativa/archivos/por-url';
+                endpoint = 'http://api-administrativa:8086/apiAdministrativa/archivos/por-url';
                 headers['Content-Type'] = 'application/json';
                 const urlValue = inputsObligatorios.url.value.trim();
                 requestData = JSON.stringify(urlValue);
@@ -294,7 +255,7 @@ async function publicarFuente(inputsObligatorios) {
                 console.log('Request body:', requestData);
             } else {
                 // Cargar archivos - el parámetro debe llamarse 'files' no 'archivos'
-                endpoint = 'http://localhost:8086/apiAdministrativa/archivos';
+                endpoint = 'http://api-administrativa:8086/apiAdministrativa/archivos';
                 const formData = new FormData();
 
                 // Agregar todos los archivos seleccionados con el nombre 'files'
@@ -313,7 +274,7 @@ async function publicarFuente(inputsObligatorios) {
             if (tipoProxy === 'demo') {
                 // Para demo, enviar biblioteca con tipo "prueba"
                 // Si hubiera URL, se incluiría en el body
-                endpoint = 'http://localhost:8086/apiAdministrativa/fuentesProxy?tipo=demo';
+                endpoint = 'http://api-administrativa:8086/apiAdministrativa/fuentesProxy?tipo=demo';
                 const body = {
                     biblioteca: {
                         tipo: "prueba"
@@ -323,11 +284,37 @@ async function publicarFuente(inputsObligatorios) {
                 // if (urlDemo) { body.url = urlDemo; }
                 requestData = JSON.stringify(body);
             } else if (tipoProxy === 'metamapa') {
-                // Para metamapa, enviar agregadorId
-                const agregadorId = inputsObligatorios.agregador.value;
-                endpoint = 'http://localhost:8086/apiAdministrativa/fuentesProxy?tipo=metamapa';
+                // Para metamapa, primero validar que el endpoint /hechos existe
+                const baseUrl = inputsObligatorios.proxyUrl.value.trim();
+
+                // Normalizar la URL eliminando barras finales si existen
+                const normalizedUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+                const validationUrl = `${normalizedUrl}/hechos`;
+
+                console.log('Validando endpoint:', validationUrl);
+
+                // Intentar hacer fetch al endpoint /hechos
+                try {
+                    const validationResponse = await fetch(validationUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + jwtToken
+                        }
+                    });
+
+                    if (!validationResponse.ok) {
+                        throw new Error(`El endpoint ${validationUrl} no está disponible (Status: ${validationResponse.status})`);
+                    }
+
+                    console.log('Endpoint validado exitosamente');
+                } catch (validationError) {
+                    throw new Error(`No se pudo validar el endpoint ${validationUrl}. Verifique que la URL sea correcta y el servicio esté disponible.\n${validationError.message}`);
+                }
+
+                // Si la validación fue exitosa, preparar el request para crear la fuente proxy
+                endpoint = 'http://api-administrativa:8086/apiAdministrativa/fuentesProxy?tipo=metamapa';
                 requestData = JSON.stringify({
-                    agregadorId: agregadorId
+                    url: normalizedUrl
                 });
             } else {
                 throw new Error('Tipo de proxy no válido');

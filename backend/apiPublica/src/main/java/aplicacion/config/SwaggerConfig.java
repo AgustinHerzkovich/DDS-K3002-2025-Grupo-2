@@ -1540,7 +1540,7 @@ public class SwaggerConfig {
                 )
                 .servers(List.of(
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://localhost:8085")
+                                .url("http://api-publica:8085")
                                 .description("Servidor de desarrollo")
                 ))
                 .paths(paths);

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         debounceTimer = setTimeout(async () => {
-            const endpoint = tipo === "colecciones" ? "http://localhost:8085/apiPublica/colecciones/index" : "http://localhost:8085/apiPublica/hechos/index";
+            const endpoint = tipo === "colecciones" ? "http://api-publica:8085/apiPublica/colecciones/index" : "http://api-publica:8085/apiPublica/hechos/index";
             console.log(endpoint)
             try {
                 const response = await fetch(`${endpoint}?search=${encodeURIComponent(query)}&limit=5`);

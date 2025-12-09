@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apiPublica")
-@CrossOrigin(origins = "http://localhost:8094", allowCredentials = "true")
+@CrossOrigin(origins = "http://interfaz-agregador:8094", allowCredentials = "true")
 public class SolicitudController {
     private final ConfigService configService;
     private final SolicitudesHttp solicitudesHttp;

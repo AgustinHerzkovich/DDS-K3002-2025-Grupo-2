@@ -26,7 +26,7 @@ function cargarHechos() {
     btnYes.onclick = function () {
         mostrarSpinner();
 
-        fetch('http://localhost:8086/apiAdministrativa/cargarHechos', {
+        fetch('http://api-administrativa:8086/apiAdministrativa/cargarHechos', {
             method: "POST",
             headers: { 'Authorization': 'Bearer ' + jwtToken },
         })

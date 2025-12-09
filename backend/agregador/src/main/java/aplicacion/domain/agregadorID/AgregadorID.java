@@ -1,4 +1,4 @@
-package aplicacion.domain.agregadorID;
+/*package aplicacion.domain.agregadorID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,4 +21,4 @@ public class AgregadorID {
         this.agregadorID = agregadorID;
     }
 
-}
+}*/

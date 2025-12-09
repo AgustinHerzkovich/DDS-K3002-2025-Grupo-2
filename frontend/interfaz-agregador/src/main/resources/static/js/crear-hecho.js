@@ -55,8 +55,8 @@ async function publicarHecho(inputsObligatorios) {
         console.log(`Enviando Payload: ${JSON.stringify(payload, null, 2)}`);
 
         const endpoint = isAdmin
-            ? 'http://localhost:8086/apiAdministrativa/hechos'
-            : 'http://localhost:8085/apiPublica/hechos';
+            ? 'http://api-administrativa:8086/apiAdministrativa/hechos'
+            : 'http://api-publica:8085/apiPublica/hechos';
 
         const headers = {
             'Content-Type': 'application/json',

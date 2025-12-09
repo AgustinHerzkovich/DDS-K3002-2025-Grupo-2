@@ -22,7 +22,7 @@ async function eliminarColeccion(id) {
         eliminarBtn.classList.add("hidden")
         spinnerEliminarColeccion.classList.remove("hidden")
 
-        const response = await fetch(`http://localhost:8086/apiAdministrativa/colecciones/${id}`, {
+        const response = await fetch(`http://api-administrativa:8086/apiAdministrativa/colecciones/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
         })

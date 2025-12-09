@@ -55,7 +55,7 @@
                 btnYes.onclick = function () {
                     mostrarSpinner();
 
-                    fetch('http://localhost:8086/apiAdministrativa/estadisticas/actualizar', {
+                    fetch('http://api-administrativa:8086/apiAdministrativa/estadisticas/actualizar', {
                         method: "POST",
                         headers: { 'Authorization': 'Bearer ' + jwtToken },
                     })

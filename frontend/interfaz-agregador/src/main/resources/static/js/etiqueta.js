@@ -24,9 +24,14 @@ function agregarEtiqueta() {
         return;
     }
 
+    if (nombre.length > 50) {
+        alert("El nombre de la etiqueta no puede superar los 50 caracteres");
+        return;
+    }
+
     mostrarCargando("btn-agregar-etiqueta");
 
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
+    fetch(`http://api-administrativa:8086/apiAdministrativa/hechos/${hechoId}/tags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
         body: JSON.stringify(nombre)
@@ -98,7 +103,7 @@ function eliminarEtiqueta(nombreEtiqueta, btnId) {
 
     mostrarCargando(btnId);
 
-    fetch(`http://localhost:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
+    fetch(`http://api-administrativa:8086/apiAdministrativa/hechos/${hechoId}/tags/${nombreCodificado}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken }
     })
