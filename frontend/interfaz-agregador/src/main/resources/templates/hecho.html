@@ -165,17 +165,17 @@
                     </div>
                 </div>
             </div>
-            <div class="contenido-texto">
-                <h3 class="fw-bold">
-                    Contenido Texto
-                </h3>
-                <p th:if="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" th:text="*{contenidoTexto}">
-                    Aquí va el contenido de texto del hecho...
-                </p>
-                <p th:unless="*{contenidoTexto != null and !contenidoTexto.isEmpty()}" class="contenido-vacio">
-                    No hay contenido de texto en este hecho
-                </p>
-            </div>
+        </div>
+        <div class="contenido-texto">
+            <h3 class="fw-bold">
+                Contenido Texto
+            </h3>
+            <p th:if="${hecho.contenidoTexto != null and !hecho.contenidoTexto.isEmpty()}" th:text="${hecho.contenidoTexto}">
+                Aquí va el contenido de texto del hecho...
+            </p>
+            <p th:unless="${hecho.contenidoTexto != null and !hecho.contenidoTexto.isEmpty()}" class="contenido-vacio">
+                No hay contenido de texto en este hecho!
+            </p>
         </div>
     </main>
 </th:block>
