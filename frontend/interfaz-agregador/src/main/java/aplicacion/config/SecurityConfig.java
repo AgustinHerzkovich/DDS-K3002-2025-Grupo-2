@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -25,10 +28,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, KeycloakTokenRefreshFilter keycloakTokenRefreshFilter) throws Exception {
         http.csrf(csrf -> csrf
                         // Spring Security 6+ usa RequestMatcher. La ruta debe ser el endpoint POST.
                         .ignoringRequestMatchers("/gestionar-solicitud/{id}","/editarIdentidad"))
+                .addFilterBefore(keycloakTokenRefreshFilter, OAuth2AuthorizationRequestRedirectFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         // Declaramos explícitamente todas las rutas públicas
                         .requestMatchers(
@@ -51,7 +55,11 @@ public class SecurityConfig {
                         // Cualquier otra petición requerirá autenticación
                         .anyRequest().authenticated()
                 ).sessionManagement(
-                        session -> session.invalidSessionUrl("/login?session=invalid")
+                        session -> session.invalidSessionStrategy((request, response) -> {
+                            if (request.getUserPrincipal() != null) { // Solo te manda a login si expiro la sesion
+                                response.sendRedirect("/login?session=invalid");
+                            }
+                        })
                 )
                 .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/keycloak")
                         .userInfoEndpoint(userInfo -> userInfo
@@ -69,6 +77,11 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+    @Bean
+    public KeycloakTokenRefreshFilter keycloakTokenRefreshFilter(
+            OAuth2AuthorizedClientManager clientManager, OAuth2AuthorizedClientRepository authorizedClientRepository) {
+        return new KeycloakTokenRefreshFilter(clientManager, authorizedClientRepository);
     }
 
 }
