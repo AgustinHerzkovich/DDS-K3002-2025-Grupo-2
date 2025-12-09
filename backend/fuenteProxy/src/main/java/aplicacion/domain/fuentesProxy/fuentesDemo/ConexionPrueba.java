@@ -31,10 +31,10 @@ public class ConexionPrueba extends Conexion {
             datos.put("categoria",categoria1 ); // ejemplo si tu enum tiene esto
             datos.put("latitud", -34.6037);
             datos.put("longitud", -58.3816);
-            datos.put("fecha_acontecimiento", LocalDateTime.now().minusDays(1));
+            datos.put("fechaAcontecimiento", LocalDateTime.now().minusDays(1));
             datos.put("origen", Origen.EXTERNO);
-            datos.put("contenido_texto", "Contenido del primer hecho");
-            datos.put("contenido_multimedia", new ArrayList<Multimedia>());
+            datos.put("contenidoTexto", "Contenido del primer hecho");
+            datos.put("contenidoMultimedia", new ArrayList<Multimedia>());
             return datos;
         } else if (contador == 2) {
             Map<String, Object> datos = new HashMap<>();
@@ -43,10 +43,10 @@ public class ConexionPrueba extends Conexion {
             datos.put("categoria", categoria2 );
             datos.put("latitud", -34.60);
             datos.put("longitud", -58.38);
-            datos.put("fecha_acontecimiento", LocalDateTime.now().minusHours(3));
+            datos.put("fechaAcontecimiento", LocalDateTime.now().minusHours(3));
             datos.put("origen", Origen.EXTERNO);
-            datos.put("contenido_texto", "Contenido del segundo hecho");
-            datos.put("contenido_multimedia", new ArrayList<Multimedia>());
+            datos.put("contenidoTexto", "Contenido del segundo hecho");
+            datos.put("contenidoMultimedia", new ArrayList<Multimedia>());
             return datos;
         } else {
             return null; // corta el while en FuenteDemo
