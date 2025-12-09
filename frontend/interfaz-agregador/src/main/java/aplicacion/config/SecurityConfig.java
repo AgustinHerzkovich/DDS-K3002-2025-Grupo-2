@@ -1,6 +1,7 @@
 package aplicacion.config;
 
 import aplicacion.services.CustomOidcUserService;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,9 +57,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 ).sessionManagement(
                         session -> session.invalidSessionStrategy((request, response) -> {
-                            if (request.getUserPrincipal() != null) { // Solo te manda a login si expiro la sesion
-                                response.sendRedirect("/login?session=invalid");
-                            }
+                           // Si expiro la sesion, la cookie ya no me sirve, por lo que la elimino para que se vea como si hiciera logout
+                                Cookie cookie = new Cookie("JSESSIONID", "");
+                                cookie.setMaxAge(0);
+                                cookie.setPath("/");
+                                response.addCookie(cookie);
+                                response.sendRedirect(request.getRequestURI());
                         })
                 )
                 .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/keycloak")
