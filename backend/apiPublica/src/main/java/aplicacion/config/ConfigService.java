@@ -36,7 +36,14 @@ public class ConfigService {
     }
 
     public String getUrlEstadisticas() {
-        return getUrl("estadisticas");
+        return discoveryClient.getInstances("estadisticas")
+                .stream()
+                .filter(instance -> instance.getMetadata().get("estadisticasID").equals(agregadorID))
+                .findFirst()
+                .orElseThrow(() -> new NoInstanceException("estadisticas"))
+                .getUri()
+                .toString()
+                .concat("/estadisticas");
     }
 
     public String getUrlFuentesDinamicas() {

@@ -53,7 +53,7 @@ public class HechoController {
                                                      @RequestParam(value = "pendiente", required = false, defaultValue = "false") Boolean pendiente,
                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                      @RequestParam(name = "size", defaultValue = "10") Integer size) {
-        StringBuilder url = new StringBuilder(configService.getUrlAgregador() + "/hechosPaginados");
+        StringBuilder url = new StringBuilder(configService.getUrlFuentesDinamicas() + "/hechosPaginados");
         // No encodificar la fecha manualmente porque RestTemplate ya lo hace automáticamente
         UrlHelper.appendQueryParamSinEncode(url, "fechaMayorA", fechaMayorA);
         UrlHelper.appendQueryParamSinEncode(url, "pendiente", pendiente);
