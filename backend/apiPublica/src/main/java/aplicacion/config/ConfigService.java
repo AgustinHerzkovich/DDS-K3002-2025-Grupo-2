@@ -22,6 +22,9 @@ public class ConfigService {
     @Value("${agregador.id}")
     private String agregadorID;
 
+    @Value("${estadisticas.id}")
+    private String estadisticasID;
+
     public String getUrlAgregador() {
 
         return cache.get("agregador", srv -> discoveryClient.getInstances("agregador")
@@ -38,7 +41,7 @@ public class ConfigService {
     public String getUrlEstadisticas() {
         return discoveryClient.getInstances("estadisticas")
                 .stream()
-                .filter(instance -> instance.getMetadata().get("estadisticasID").equals(agregadorID))
+                .filter(instance -> instance.getMetadata().get("estadisticasID").equals(estadisticasID))
                 .findFirst()
                 .orElseThrow(() -> new NoInstanceException("estadisticas"))
                 .getUri()
