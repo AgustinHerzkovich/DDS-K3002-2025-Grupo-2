@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const fileInput = document.getElementById("modal-fuente-archivos");
     const fileList = document.getElementById("modal-fuente-archivos-lista");
 
+    // Referencias para fuente proxy
+    const proxyTipoSelect = document.getElementById("modal-fuente-proxy-tipo");
+    const proxyDemoContainer = document.getElementById("modal-fuente-proxy-demo-container");
+    const proxyMetamapaContainer = document.getElementById("modal-fuente-proxy-metamapa-container");
+    const proxyAgregadorSelect = document.getElementById("modal-fuente-proxy-agregador");
+
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear fuente")) {
         // Debug: verificar que todos los elementos del file upload están disponibles
         console.log('Elementos encontrados:');
@@ -58,6 +64,22 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 archivoContainer.classList.remove('hidden');
                 urlContainer.classList.add('hidden');
+            }
+        });
+
+        // Listener para cambio de tipo de fuente proxy
+        proxyTipoSelect.addEventListener('change', function() {
+            const tipoProxySeleccionado = this.value;
+
+            // Ocultar todos los contenedores de proxy
+            proxyDemoContainer.classList.add('hidden');
+            proxyMetamapaContainer.classList.add('hidden');
+
+            if (tipoProxySeleccionado === 'demo') {
+                proxyDemoContainer.classList.remove('hidden');
+            } else if (tipoProxySeleccionado === 'metamapa') {
+                proxyMetamapaContainer.classList.remove('hidden');
+                cargarAgregadores();
             }
         });
 
@@ -209,6 +231,45 @@ document.addEventListener("DOMContentLoaded", function() {
             fileList.appendChild(fileItem);
         });
     }
+
+    async function cargarAgregadores() {
+        try {
+            proxyAgregadorSelect.innerHTML = '<option value="">Cargando agregadores...</option>';
+            proxyAgregadorSelect.disabled = true;
+
+            const response = await fetch('http://localhost:8086/apiAdministrativa/agregadores', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cargar agregadores');
+            }
+
+            const agregadores = await response.json();
+
+            proxyAgregadorSelect.innerHTML = '<option value="">Seleccionar agregador...</option>';
+
+            if (agregadores && agregadores.length > 0) {
+                agregadores.forEach(agregador => {
+                    const option = document.createElement('option');
+                    option.value = agregador.id;
+                    option.textContent = agregador.id;
+                    proxyAgregadorSelect.appendChild(option);
+                });
+            } else {
+                proxyAgregadorSelect.innerHTML = '<option value="">No hay agregadores disponibles</option>';
+            }
+
+            proxyAgregadorSelect.disabled = false;
+        } catch (error) {
+            console.error('Error al cargar agregadores:', error);
+            proxyAgregadorSelect.innerHTML = '<option value="">Error al cargar agregadores</option>';
+            alert('Error al cargar la lista de agregadores');
+        }
+    }
 });
 
 async function publicarFuente(inputsObligatorios) {
@@ -216,7 +277,7 @@ async function publicarFuente(inputsObligatorios) {
         mostrarCargando("crear-fuente")
 
         const tipoFuente = inputsObligatorios.tipoFuente.value;
-        const cargaUrl = inputsObligatorios.cargarUrl.checked;
+        const cargaUrl = inputsObligatorios.cargarUrl ? inputsObligatorios.cargarUrl.checked : false;
 
         let endpoint = '';
         let requestData;
@@ -245,8 +306,35 @@ async function publicarFuente(inputsObligatorios) {
                 // No establecer Content-Type para FormData, el browser lo hará automáticamente
             }
         } else if (tipoFuente === 'proxy') {
-            // TODO: Implementar cuando esté disponible
-            throw new Error('La funcionalidad de fuente proxy aún no está implementada');
+            const tipoProxy = inputsObligatorios.tipoProxy.value;
+
+            headers['Content-Type'] = 'application/json';
+
+            if (tipoProxy === 'demo') {
+                // Para demo, enviar biblioteca con tipo "prueba"
+                // Si hubiera URL, se incluiría en el body
+                endpoint = 'http://localhost:8086/apiAdministrativa/fuentesProxy?tipo=demo';
+                const body = {
+                    biblioteca: {
+                        tipo: "prueba"
+                    }
+                };
+                // Si hubiera un campo de URL para demo, se agregaría aquí:
+                // if (urlDemo) { body.url = urlDemo; }
+                requestData = JSON.stringify(body);
+            } else if (tipoProxy === 'metamapa') {
+                // Para metamapa, enviar agregadorId
+                const agregadorId = inputsObligatorios.agregador.value;
+                endpoint = 'http://localhost:8086/apiAdministrativa/fuentesProxy?tipo=metamapa';
+                requestData = JSON.stringify({
+                    agregadorId: agregadorId
+                });
+            } else {
+                throw new Error('Tipo de proxy no válido');
+            }
+
+            console.log('Creando fuente proxy:', tipoProxy);
+            console.log('Request body:', requestData);
         }
 
         console.log('Enviando request a:', endpoint);

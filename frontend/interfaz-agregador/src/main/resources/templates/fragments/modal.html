@@ -446,7 +446,6 @@
 			<h2 id="modalTitulo" class="modal-title"><span class="sr-only">Título del hecho</span></h2>
 
 		</div>
-		<!--<button class="modal-close" onclick="closeDetalle()">Volver</button>-->
 		<div class="modal-page-body">
 			<div>
 				<p id="modalDescripcion"></p>
@@ -589,9 +588,35 @@
 				</div>
 
 				<div id="modal-fuente-proxy-container" class="row g-2 mb-3 hidden">
-					<div class="col-12">
-						<div class="alert alert-info">
-							<strong>TODO:</strong> Funcionalidad de fuente proxy aún no implementada.
+					<div class="col-12 mb-3">
+						<label for="modal-fuente-proxy-tipo" class="form-label obligatorio">Tipo de Fuente Proxy</label>
+						<select id="modal-fuente-proxy-tipo" class="form-select" required>
+							<option value="">Seleccionar tipo...</option>
+							<option value="demo">Demo</option>
+							<option value="metamapa">Metamapa</option>
+						</select>
+					</div>
+
+					<!-- Contenedor para Demo -->
+					<div id="modal-fuente-proxy-demo-container" class="col-12 hidden">
+						<div class="mb-3">
+							<label for="modal-fuente-proxy-biblioteca" class="form-label obligatorio">Biblioteca</label>
+							<input type="text" id="modal-fuente-proxy-biblioteca" class="form-control" value="prueba" disabled>
+							<small class="text-muted">Por ahora solo tenemos implementada la biblioteca de prueba</small>
+						</div>
+						<div class="mb-3">
+							<label for="modal-fuente-proxy-url-demo" class="form-label">URL</label>
+							<input type="text" id="modal-fuente-proxy-url-demo" class="form-control" placeholder="URL no requerida para biblioteca de prueba" disabled>
+						</div>
+					</div>
+
+					<!-- Contenedor para Metamapa -->
+					<div id="modal-fuente-proxy-metamapa-container" class="col-12 hidden">
+						<div class="mb-3">
+							<label for="modal-fuente-proxy-agregador" class="form-label obligatorio">Seleccionar Agregador</label>
+							<select id="modal-fuente-proxy-agregador" class="form-select" required>
+								<option value="">Cargando agregadores...</option>
+							</select>
 						</div>
 					</div>
 				</div>

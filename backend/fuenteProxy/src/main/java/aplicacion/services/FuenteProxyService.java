@@ -3,11 +3,11 @@ package aplicacion.services;
 import aplicacion.domain.fuentesProxy.FuenteProxy;
 import aplicacion.domain.fuentesProxy.fuentesDemo.FuenteDemo;
 import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
-import aplicacion.dto.input.FuenteProxyInputDto;
-import aplicacion.dto.mappers.FuenteProxyInputMapper;
-import aplicacion.dto.mappers.FuenteProxyOutputMapper;
-import aplicacion.dto.mappers.HechoOutputMapper;
-import aplicacion.dto.output.FuenteProxyOutputDto;
+import aplicacion.dto.input.FuenteDemoInputDto;
+import aplicacion.dto.input.FuenteMetamapaInputDto;
+import aplicacion.dto.mappers.*;
+import aplicacion.dto.output.FuenteDemoOutputDto;
+import aplicacion.dto.output.FuenteMetamapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import aplicacion.repositories.FuenteProxyRepository;
@@ -25,16 +25,20 @@ import java.util.Map;
 @Service
 public class FuenteProxyService {
     private final FuenteProxyRepository fuenteProxyRepository;
-    private final FuenteProxyInputMapper fuenteProxyInputMapper;
-    private final FuenteProxyOutputMapper fuenteProxyOutputMapper;
+    private final FuenteDemoInputMapper fuenteDemoInputMapper;
+    private final FuenteMetamapaInputMapper fuenteMetamapaInputMapper;
+    private final FuenteDemoOutputMapper fuenteDemoOutputMapper;
+    private final FuenteMetamapaOutputMapper fuenteMetamapaOutputMapper;
     private final HechoOutputMapper hechoOutputMapper;
     private final DiscoveryClient discoveryClient;
 
 
-    public FuenteProxyService(DiscoveryClient discoveryClient, FuenteProxyRepository fuenteProxyRepository, FuenteProxyInputMapper fuenteProxyInputMapper, FuenteProxyOutputMapper fuenteProxyOutputMapper, HechoOutputMapper hechoOutputMapper) {
+    public FuenteProxyService(DiscoveryClient discoveryClient, FuenteProxyRepository fuenteProxyRepository, FuenteDemoInputMapper fuenteDemoInputMapper, FuenteMetamapaInputMapper fuenteMetamapaInputMapper, FuenteDemoOutputMapper fuenteDemoOutputMapper, FuenteMetamapaOutputMapper fuenteMetamapaOutputMapper, HechoOutputMapper hechoOutputMapper) {
         this.fuenteProxyRepository = fuenteProxyRepository;
-        this.fuenteProxyInputMapper = fuenteProxyInputMapper;
-        this.fuenteProxyOutputMapper = fuenteProxyOutputMapper;
+        this.fuenteDemoInputMapper = fuenteDemoInputMapper;
+        this.fuenteMetamapaInputMapper = fuenteMetamapaInputMapper;
+        this.fuenteDemoOutputMapper = fuenteDemoOutputMapper;
+        this.fuenteMetamapaOutputMapper = fuenteMetamapaOutputMapper;
         this.hechoOutputMapper = hechoOutputMapper;
         this.discoveryClient = discoveryClient;
     }
@@ -85,14 +89,14 @@ public class FuenteProxyService {
             RestTemplate restTemplate = new RestTemplate();
             //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
             try {
-                String endpointHechos = endpointHechosAgregador(((FuenteMetamapa) fuente).getAgregadorID());
+                String endpointHechos = endpointHechosAgregador(((FuenteMetamapa) fuente).getAgregadorId());
                 System.out.println("\n\n" + endpointHechos + "\n\n");
                 List<Hecho> hechos = List.of(restTemplate.getForObject(endpointHechos, Hecho[].class));
                 System.out.println(hechos.isEmpty());
                 return hechos;
             }catch (Exception e){
                 System.out.println(e.getMessage());
-                System.out.println("Error al obtener hechos desde el agregador con ID: " + ((FuenteMetamapa) fuente).getAgregadorID());
+                System.out.println("Error al obtener hechos desde el agregador con ID: " + ((FuenteMetamapa) fuente).getAgregadorId());
                 return List.of();
             }
 
@@ -117,18 +121,18 @@ public class FuenteProxyService {
         return this.importarHechosFuentes(fuente).stream().map(hechoOutputMapper::map).toList();
     }
 
-    public FuenteProxyOutputDto guardarFuente(FuenteProxyInputDto fuenteProxyInputDto) {
-        FuenteProxy fuenteProxy = fuenteProxyRepository.save(fuenteProxyInputMapper.map(fuenteProxyInputDto));
-        return fuenteProxyOutputMapper.map(fuenteProxy);
+    public FuenteDemoOutputDto guardarFuenteDemo(FuenteDemoInputDto fuenteDemoInputDto) {
+        FuenteDemo fuenteDemo = fuenteProxyRepository.save(fuenteDemoInputMapper.map(fuenteDemoInputDto));
+        return fuenteDemoOutputMapper.map(fuenteDemo);
     }
 
     public List<String> obtenerFuentesDisponibles() {
         return fuenteProxyRepository.findAll().stream().map(fp -> fp.getId()).toList();
     }
 
-    public FuenteMetamapa guardarFuenteMetamapa(String agregadorID) {
-        FuenteMetamapa fuenteMetamapa = new FuenteMetamapa(agregadorID);
-        return fuenteProxyRepository.save(fuenteMetamapa);
+    public FuenteMetamapaOutputDto guardarFuenteMetamapa(FuenteMetamapaInputDto fuenteMetamapaInputDto) {
+        FuenteMetamapa fuenteMetamapa = fuenteProxyRepository.save(fuenteMetamapaInputMapper.map(fuenteMetamapaInputDto));
+        return fuenteMetamapaOutputMapper.map(fuenteMetamapa);
     }
 }
 

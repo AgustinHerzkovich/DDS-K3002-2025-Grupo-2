@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FuenteProxyInputDto {
+public class FuenteDemoInputDto {
     private Conexion biblioteca;
-    @Size(max = 1000, message = "La URL no puede tener más de 1000 caracteres")
+    @Size(max = 1000, message = "El URL no puede tener más de 1000 caracteres")
     private String url;
 }

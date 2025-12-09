@@ -21,10 +21,15 @@
             Colecciones
         </h1>
         <div th:replace="~{fragments/search-bar :: searchBar('colecciones')}" class="justify-content-center"></div>
-        <div th:unless="${colecciones == null || colecciones.isEmpty()}" class="flex flex-col justify-center">
-                        <div class="colecciones-container">
-                <div th:each="coleccion : ${colecciones}" class="coleccion-card" th:data-id="${coleccion.id}">
-                    <th:block th:replace="~{fragments/cards :: cardColeccion(${coleccion})}" />
+        <div th:unless="${colecciones == null || colecciones.isEmpty()}" class="flex flex-col justify-center items-center">
+            <div class="w-[55%] flex flex-col">
+                <div th:if="${isAdmin}" class="btn-update-wrapper">
+                    <button class="btn-update" onclick="cargarHechos()">Actualizar hechos</button>
+                </div>
+                <div class="colecciones-container">
+                    <div th:each="coleccion : ${colecciones}" class="coleccion-card" th:data-id="${coleccion.id}">
+                        <th:block th:replace="~{fragments/cards :: cardColeccion(${coleccion})}" />
+                    </div>
                 </div>
             </div>
 
@@ -64,10 +69,6 @@
             <div id="spinner-overlay" class="spinner-overlay" style="display: none;">
                 <div class="spinner"></div>
             </div>
-        </div>
-
-        <div th:if="${isAdmin}" class="btn-update-wrapper">
-            <button class="btn-update" onclick="cargarHechos()">Cargar hechos</button>
         </div>
     </main>
 </th:block>

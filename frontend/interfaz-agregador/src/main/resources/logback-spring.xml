@@ -7,7 +7,7 @@
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
             <!-- URL donde corre Loki en Docker -->
-            <url>http://15.229.10.54:3100/loki/api/v1/push</url>
+            <url>http://15.228.250.174:3100/loki/api/v1/push</url>
         </http>
         <format>
             <label>

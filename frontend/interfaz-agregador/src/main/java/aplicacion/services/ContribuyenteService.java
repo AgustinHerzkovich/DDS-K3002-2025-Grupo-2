@@ -113,7 +113,7 @@ public class ContribuyenteService {
             HttpEntity<Map<String, Object>> kcRequest = new HttpEntity<>(kcUpdateRequest, headers);
 
             restTemplate.exchange(
-                    "http://15.229.10.54:8888/admin/realms/metamapa/users/" + keycloakUserId,
+                    "http://15.228.250.174:8888/admin/realms/metamapa/users/" + keycloakUserId,
                     HttpMethod.PUT,
                     kcRequest,
                     Void.class
@@ -167,7 +167,7 @@ public class ContribuyenteService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        String tokenUrl = "http://15.229.10.54:8888/realms/" + realm + "/protocol/openid-connect/token";
+        String tokenUrl = "http://15.228.250.174:8888/realms/" + realm + "/protocol/openid-connect/token";
 
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(

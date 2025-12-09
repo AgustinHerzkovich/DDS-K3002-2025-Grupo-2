@@ -2,6 +2,7 @@ package aplicacion.controllers;
 
 import aplicacion.dto.input.FuenteAliasDto;
 import aplicacion.dto.mappers.FuenteOutputMapper;
+import aplicacion.dto.output.AgregadorOutputDto;
 import aplicacion.dto.output.FuenteOutputDto;
 import aplicacion.excepciones.InvalidPageException;
 import aplicacion.services.FuenteService;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -31,9 +33,9 @@ public class FuenteController {
         return ResponseEntity.ok(fuenteOutputMapper.map(fuenteService.cambiarAlias(id, fuenteAliasDto)));
     }
 
-    @GetMapping("/fuentesDisponibles") // mostrar fuentes dispobibles en el eurekaServer pero no todas estan agregadas/cargadas al agregador
-    public ResponseEntity<Set<String>> getFuentesDisponibles(){
-        return ResponseEntity.ok(fuenteService.obtenerFuentesDisponiblesEnEureka());
+    @GetMapping("/agregadores") // mostrar todas las instancias de agregador que están levantadas y que conoce eureka server
+    public ResponseEntity<List<AgregadorOutputDto>> getAgregadores() {
+        return ResponseEntity.ok(fuenteService.getAgregadores());
     }
 
 }

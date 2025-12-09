@@ -7,6 +7,7 @@ import aplicacion.dto.input.HechoInputDto;
 import aplicacion.dto.mappers.FuenteInputMapper;
 import aplicacion.dto.mappers.FuenteProxyInputMapper;
 import aplicacion.dto.mappers.HechoInputMapper;
+import aplicacion.dto.output.AgregadorOutputDto;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 import aplicacion.domain.hechos.Hecho;
 import aplicacion.excepciones.TipoDeFuenteErroneoException;
@@ -233,5 +234,15 @@ public class FuenteService {
         setFuentesIds.addAll(agregadores);
         setFuentesIds.addAll(this.obtenerTodasLasFuentes().stream().map(Fuente::getId).collect(Collectors.toSet()));
         return setFuentesIds;
+    }
+
+    public List<AgregadorOutputDto> getAgregadores() {
+        List <String> agregadores = discoveryClient.getInstances("agregador")
+                .stream()
+                .map(instance -> instance.getMetadata().get("agregadorID"))
+                .map(agregadorid -> "agregador-"+agregadorid)
+                .toList();
+
+        return agregadores.stream().map(AgregadorOutputDto::new).toList();
     }
 }

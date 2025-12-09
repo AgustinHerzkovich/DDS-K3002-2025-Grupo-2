@@ -4,6 +4,8 @@ function validarFormularioModalFuente() {
     const archivos = document.getElementById('modal-fuente-archivos');
     const url = document.getElementById('modal-fuente-url');
     const dropZone = document.getElementById('modal-fuente-drop-zone');
+    const tipoProxy = document.getElementById('modal-fuente-proxy-tipo');
+    const agregador = document.getElementById('modal-fuente-proxy-agregador');
 
     // Limpiar estados de error previos de elementos especiales
     dropZone.classList.remove('form-not-completed');
@@ -29,14 +31,26 @@ function validarFormularioModalFuente() {
                 dropZone.classList.remove('form-not-completed');
             }
         }
+    } else if (tipoFuente.value === 'proxy') {
+        // Validar tipo de proxy
+        validarInputsObligatorios([tipoProxy]);
+
+        // Validar campos específicos según el tipo de proxy
+        if (tipoProxy.value === 'demo') {
+            // Para demo no hay validaciones adicionales, usa biblioteca "prueba" por defecto
+        } else if (tipoProxy.value === 'metamapa') {
+            // Validar que se haya seleccionado un agregador
+            validarInputsObligatorios([agregador]);
+        }
     }
-    // No hay validaciones específicas para proxy ya que muestra un TODO
 
     return {
         tipoFuente,
         cargarUrl,
         archivos,
-        url
+        url,
+        tipoProxy,
+        agregador
     };
 }
 
@@ -62,6 +76,8 @@ function limpiarModalFuente(modal) {
     document.getElementById('modal-fuente-proxy-container').classList.add('hidden');
     document.getElementById('modal-fuente-estatica-container').classList.add('hidden');
     document.getElementById('modal-fuente-url-container').classList.add('hidden');
+    document.getElementById('modal-fuente-proxy-demo-container').classList.add('hidden');
+    document.getElementById('modal-fuente-proxy-metamapa-container').classList.add('hidden');
 
     // Mostrar contenedor de archivo por defecto
     document.getElementById('modal-fuente-archivo-container').classList.remove('hidden');

@@ -13,13 +13,13 @@ import aplicacion.domain.fuentesProxy.FuenteProxy;
 @Setter
 public class FuenteMetamapa extends FuenteProxy {
 
-    private String agregadorID;
+    private String agregadorId;
 
 
 
 
-    public FuenteMetamapa(String agregadorID) {
-        this.agregadorID =agregadorID;
+    public FuenteMetamapa(String agregadorId) {
+        this.agregadorId = agregadorId;
     }
     //private String endpointColecciones = "https://7239874289/agregador/coleccion/1";
     //private String endpointSolicitudes = "https://7239874289/agregador/solicitud";

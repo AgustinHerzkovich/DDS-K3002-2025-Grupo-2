@@ -1,8 +1,9 @@
 package aplicacion.controllers;
 
-import aplicacion.domain.fuentesProxy.fuentesMetamapa.FuenteMetamapa;
-import aplicacion.dto.input.FuenteProxyInputDto;
-import aplicacion.dto.output.FuenteProxyOutputDto;
+import aplicacion.dto.input.FuenteDemoInputDto;
+import aplicacion.dto.input.FuenteMetamapaInputDto;
+import aplicacion.dto.output.FuenteDemoOutputDto;
+import aplicacion.dto.output.FuenteMetamapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 
@@ -44,17 +45,18 @@ public class FuenteProxyController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/fuentesDemo")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<FuenteProxyOutputDto> guardarFuente(@Valid @RequestBody FuenteProxyInputDto fuenteProxyInputDto){
-        FuenteProxyOutputDto fuenteProxy = fuenteProxyService.guardarFuente(fuenteProxyInputDto);
-        return ResponseEntity.status(201).body(fuenteProxy);
+    public ResponseEntity<FuenteDemoOutputDto> guardarFuenteDemo(@Valid @RequestBody FuenteDemoInputDto fuenteDemoInputDto){
+        FuenteDemoOutputDto fuenteDemo = fuenteProxyService.guardarFuenteDemo(fuenteDemoInputDto);
+        return ResponseEntity.status(201).body(fuenteDemo);
     }
 
     @PostMapping("/fuentesMetamapa")
-    public ResponseEntity<FuenteMetamapa> guardarFuenteMetamapa(@RequestBody String agregadorID){
-        FuenteMetamapa fuenteMetamapa = fuenteProxyService.guardarFuenteMetamapa(agregadorID);
-        return ResponseEntity.ok(fuenteMetamapa);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FuenteMetamapaOutputDto> guardarFuenteMetamapa(@Valid @RequestBody FuenteMetamapaInputDto fuenteMetamapaInputDto){
+        FuenteMetamapaOutputDto fuenteMetamapa = fuenteProxyService.guardarFuenteMetamapa(fuenteMetamapaInputDto);
+        return ResponseEntity.status(201).body(fuenteMetamapa);
     }
 
     @GetMapping

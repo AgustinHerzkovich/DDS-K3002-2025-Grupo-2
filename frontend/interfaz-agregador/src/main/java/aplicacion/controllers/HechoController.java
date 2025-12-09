@@ -38,10 +38,18 @@ public class HechoController {
 
         model.addAttribute("hecho", hecho);
 
-        // Calcular si ha pasado más de una semana desde la fecha de carga
-        boolean puedeEditar = hecho.getFechaCarga() != null &&
-                Duration.between(hecho.getFechaCarga(), LocalDateTime.now()).toDays() <= 7;
-        model.addAttribute("puedeEditarHecho", puedeEditar);
+        // Calcular días restantes para editar (plazo: 7 días desde la carga)
+        if (hecho.getFechaCarga() != null) {
+            long diasTranscurridos = java.time.Duration.between(hecho.getFechaCarga(), java.time.LocalDateTime.now()).toDays();
+            long diasRestantes = 7 - diasTranscurridos;
+            boolean puedeEditar = diasRestantes > 0;
+
+            model.addAttribute("puedeEditarHecho", puedeEditar);
+            model.addAttribute("diasRestantesEdicion", diasRestantes);
+        } else {
+            model.addAttribute("puedeEditarHecho", false);
+            model.addAttribute("diasRestantesEdicion", 0);
+        }
 
         return "hecho";
     }

@@ -23,20 +23,19 @@
                     <div class="categoria-badge" th:text="'Categoría: ' + *{categoria.nombre}">
                         Categoría
                     </div>
-                    <div id="carouselHecho" class="carousel slide carousel-container"
-                         th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
+                    <div id="carouselHecho" class="carousel slide carousel-container" th:if="*{contenidoMultimedia != null and !contenidoMultimedia.isEmpty()}">
                         <div class="carousel-inner">
                             <div th:each="multimedia, iterStat : *{contenidoMultimedia}"
                                  th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" class="d-block max-h-[400px] max-w-[400px] object-contain">
+                                <img th:src="${multimedia.url}" th:alt="${multimedia.tipo}" aria-label="Multimedia" class="d-block h-[200px] w-[200px]">
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselHecho" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" aria-label="Anterior multimedia" data-bs-target="#carouselHecho" data-bs-slide="prev">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselHecho" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" aria-label="Siguiente multimedia" data-bs-target="#carouselHecho" data-bs-slide="next">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="carousel-arrow">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
@@ -136,14 +135,33 @@
                             </span>
                         </span>
                     </div>
-                    <div th:if="${isLoggedIn}" class="relative flex items-center gap-4">
-                        <button id="solicitar-eliminacion" class="btn-solicitar">
-                            Solicitar eliminación
-                        </button>
-                        <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
-                        <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId and puedeEditarHecho}">
-                            <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar', null)}" />
-                        </th:block>
+                    <div th:if="${isLoggedIn}">
+                        <div class="relative flex items-center gap-4">
+                            <button id="solicitar-eliminacion" class="btn-solicitar">
+                                Solicitar eliminación
+                            </button>
+                            <th:block th:replace="~{fragments/modal :: modalSolicitudEliminacion}" />
+                            <th:block th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId}">
+                                <th:block th:if="${puedeEditarHecho}">
+                                    <th:block th:replace="~{fragments/form :: spinnerButton('Editar Hecho', 'hecho-editar', null)}" />
+                                </th:block>
+                                <th:block th:unless="${puedeEditarHecho}">
+                                    <button id="hecho-editar" class="btn-primary opacity-50 cursor-not-allowed" disabled>
+                                        Editar Hecho
+                                    </button>
+                                </th:block>
+                            </th:block>
+                        </div>
+                        <div th:if="${!hecho.anonimato and hecho.autor != null and hecho.autor.id == userId and diasRestantesEdicion != null}"
+                             class="text-sm mt-2">
+                            <span th:if="${diasRestantesEdicion > 0}" class="text-gray-600">
+                                Te quedan <strong th:text="${diasRestantesEdicion}">X</strong>
+                                <span th:text="${diasRestantesEdicion == 1 ? 'día' : 'días'}">días</span> para editar este hecho
+                            </span>
+                            <span th:unless="${diasRestantesEdicion > 0}" class="text-red-600">
+                                El plazo de edición expiró
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
