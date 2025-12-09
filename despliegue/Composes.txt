@@ -1,0 +1,9 @@
+Agregador + apis + estadisticas + bds + interfaz
+
+EurekaServer
+
+FuenteProxy + Bd
+
+FuenteDinamica + Bd
+
+FuenteEstatica + Bd
