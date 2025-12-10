@@ -11,7 +11,7 @@
     <modules>
         <module>frontend</module>
         <module>backend</module>
-        <module>EurekaServer</module>
+        <module>eurekaServer</module>
     </modules>
 
     <properties>

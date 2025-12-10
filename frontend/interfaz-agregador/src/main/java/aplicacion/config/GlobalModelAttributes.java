@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
-    @Value("${api.publica.ip}")
-    private String apiPublicaIp;
-    @Value("${api.publica.port}")
-    private Integer apiPublicaPort;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
-    @Value("${api.administrativa.ip}")
-    private String apiAdministrativaIp;
-    @Value("${api.administrativa.port}")
-    private Integer apiAdministrativaPort;
+    @Value("${api.administrativa.url}")
+    private String apiAdministrativaUrl;
 
     private final ContribuyenteService contribuyenteService;
 
@@ -39,8 +35,6 @@ public class GlobalModelAttributes {
         // Setear isLoggedIn globalmente para todos los controllers
         model.addAttribute("isLoggedIn", oidcUser != null);
 
-        String apiPublicaUrl = "http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica";
-        String apiAdministrativaUrl = "http://" + apiAdministrativaIp + ":" + apiAdministrativaPort + "/apiAdministrativa";
         model.addAttribute("apiPublicaUrl", apiPublicaUrl);
         model.addAttribute("apiAdministrativaUrl", apiAdministrativaUrl);
 

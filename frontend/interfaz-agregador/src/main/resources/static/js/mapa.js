@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Hechos en JS:", hechos);
-
     const map = L.map('map', {zoomControl: false})
         .setView([-34.6037, -58.3816], 5);
 
@@ -63,7 +61,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filtroLatitud) filtroLatitud.value = lat;
         if (filtroLongitud) filtroLongitud.value = lng;
-
-        console.log('Ubicación seleccionada:', lat, lng);
     });
 })

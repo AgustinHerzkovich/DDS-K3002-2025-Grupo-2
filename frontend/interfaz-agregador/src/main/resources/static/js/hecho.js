@@ -121,7 +121,6 @@ async function obtenerDireccionEditarHecho() {
         )
 
         const data = await response.json()
-        console.log("DATA NOMINATIM →", data);
         if (!data || !data.address) {
             throw new Error('No se pudo obtener la ubicación geográfica.');
         }

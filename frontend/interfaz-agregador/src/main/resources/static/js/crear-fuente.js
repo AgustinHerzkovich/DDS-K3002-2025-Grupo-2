@@ -23,11 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const proxyUrlInput = document.getElementById("modal-fuente-proxy-url");
 
     if(allElementsFound([modal, openBtn, closeBtn, confirmBtn], "crear fuente")) {
-        // Debug: verificar que todos los elementos del file upload están disponibles
-        console.log('Elementos encontrados:');
-        console.log('dropZone:', dropZone);
-        console.log('fileInput:', fileInput);
-        console.log('fileList:', fileList);
         listenOpenModal(modal, openBtn, () => {
             document.getElementById("dropdown-menu").classList.add("hidden")
             crearFuenteTitle.classList.remove("hidden")
@@ -88,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (e.target === fileInput) {
                 return;
             }
-            console.log('Dropzone clicked, triggering file input...');
             e.preventDefault();
             e.stopPropagation();
 
@@ -121,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         fileInput.addEventListener('change', (e) => {
-            console.log('File input changed, files selected:', e.target.files.length);
             const files = e.target.files;
             if (files.length > 0) {
                 handleFiles(files);
@@ -251,8 +244,6 @@ async function publicarFuente(inputsObligatorios) {
                 headers['Content-Type'] = 'application/json';
                 const urlValue = inputsObligatorios.url.value.trim();
                 requestData = JSON.stringify(urlValue);
-                console.log('Enviando URL:', urlValue);
-                console.log('Request body:', requestData);
             } else {
                 // Cargar archivos - el parámetro debe llamarse 'files' no 'archivos'
                 endpoint = apiAdministrativaUrl + '/archivos';
@@ -291,8 +282,6 @@ async function publicarFuente(inputsObligatorios) {
                 const normalizedUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
                 const validationUrl = `${normalizedUrl}/hechos`;
 
-                console.log('Validando endpoint:', validationUrl);
-
                 // Intentar hacer fetch al endpoint /hechos
                 try {
                     const validationResponse = await fetch(validationUrl, {
@@ -305,8 +294,6 @@ async function publicarFuente(inputsObligatorios) {
                     if (!validationResponse.ok) {
                         throw new Error(`El endpoint ${validationUrl} no está disponible (Status: ${validationResponse.status})`);
                     }
-
-                    console.log('Endpoint validado exitosamente');
                 } catch (validationError) {
                     throw new Error(`No se pudo validar el endpoint ${validationUrl}. Verifique que la URL sea correcta y el servicio esté disponible.\n${validationError.message}`);
                 }
@@ -319,13 +306,7 @@ async function publicarFuente(inputsObligatorios) {
             } else {
                 throw new Error('Tipo de proxy no válido');
             }
-
-            console.log('Creando fuente proxy:', tipoProxy);
-            console.log('Request body:', requestData);
         }
-
-        console.log('Enviando request a:', endpoint);
-        console.log('Headers:', headers);
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -333,16 +314,11 @@ async function publicarFuente(inputsObligatorios) {
             body: requestData
         });
 
-        console.log('Response status:', response.status);
-
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Error response:', errorText);
             throw new Error(errorText ? `Error al crear la fuente (${response.status}):\n${errorText}` : `Error al crear la fuente (${response.status})`)
         }
-
-        const responseText = await response.text();
-        console.log('Success response:', responseText);
 
         alert('Fuente creada exitosamente');
         document.getElementById("salir-crear-fuente").click();

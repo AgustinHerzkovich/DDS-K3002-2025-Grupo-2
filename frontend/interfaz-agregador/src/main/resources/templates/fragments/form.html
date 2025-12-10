@@ -5,7 +5,7 @@
 
 <button th:fragment="smallSpinnerButton(btnName, btnId, btnClass)" th:id="${btnId}" th:class="${btnClass != null ? btnClass : 'btn-primary'}" type="button" aria-label="Eliminar" style="display: flex; align-items: center; justify-content: center;">
 	<span th:text="${btnName}" th:id="|nombre-${btnId}|"></span>
-	<div th:id="|spinner-${btnId}|" class="hidden border-2 border-white border-t-transparent rounded-full animate-spin" style="width: 0.75rem; height: 0.75rem;"></div>
+	<div th:id="|spinner-${btnId}|" class="hidden border-2 border-white border-t-transparent rounded-full animate-spin w-[0.75rem] h-[0.75rem]"></div>
 </button>
 
 <button th:fragment="exitModalButton(cancelBtnName, cancelBtnId)"

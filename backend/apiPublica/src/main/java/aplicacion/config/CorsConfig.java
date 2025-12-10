@@ -13,17 +13,15 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${interfaz.agregador.port}")
-    private Integer interfazAgregadorPort;
-    @Value("${interfaz.agregador.ip}")
-    private String interfazAgregadorIp;
+    @Value("${interfaz.agregador.url}")
+    private String interfazAgregadorUrl;
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
         // Esto permite peticiones únicamente desde el frontend
-        config.setAllowedOrigins(List.of("http://" + interfazAgregadorIp + ":" + interfazAgregadorPort));
+        config.setAllowedOrigins(List.of(interfazAgregadorUrl));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

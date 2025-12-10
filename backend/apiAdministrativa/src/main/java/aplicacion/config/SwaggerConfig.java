@@ -931,6 +931,27 @@ public class SwaggerConfig {
                 )
         );
 
+        // ============= HEALTH CHECK =============
+        paths.addPathItem("/health", new PathItem()
+                .get(new Operation()
+                        .tags(List.of("health-controller"))
+                        .summary("Health check del servicio")
+                        .description("Verifica que el servicio de API Administrativa esté funcionando correctamente")
+                        .responses(new ApiResponses()
+                                .addApiResponse("200", new ApiResponse()
+                                        .description("Servicio funcionando correctamente")
+                                        .content(new Content()
+                                                .addMediaType("application/json",
+                                                        new MediaType()
+                                                                .schema(new ObjectSchema()
+                                                                        .addProperty("status", new StringSchema().example("ok"))
+                                                                )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
 
         return new OpenAPI()
                 .info(new io.swagger.v3.oas.models.info.Info()

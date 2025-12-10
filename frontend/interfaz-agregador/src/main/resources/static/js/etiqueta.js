@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 0; i < eliminarEtiquetaBtns.length; i++) {
             const etiquetaNombre = eliminarEtiquetaBtns[i].dataset.nombre;
             const btnId = `btn-eliminar-${etiquetaNombre}`;
-            console.log(`Nombre etiqueta ${i+1}: ${etiquetaNombre}`)
 
             const borrarBtn = document.getElementById(`eliminar-etiqueta-${etiquetaNombre}`)
             borrarBtn.addEventListener("click", () => eliminarEtiqueta(etiquetaNombre, btnId));

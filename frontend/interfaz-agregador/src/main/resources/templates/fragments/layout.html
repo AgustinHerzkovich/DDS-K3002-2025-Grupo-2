@@ -39,7 +39,6 @@
         <th:block th:replace="~{fragments/footer :: footer}" />
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
         <th:block th:replace="~{fragments/header :: headerScripts}" />
         <script src="/js/listen-event.js" defer></script>
@@ -72,13 +71,11 @@
                 apellido: [[${lastName}]],
                 fechaNacimiento: [[${birthDate}]]
             };
-            console.log('Datos del autor:', window.autorData);
 
             const isAdmin = /*[[${isAdmin}]]*/ {};
             const jwtToken = /*[[${JWT_Token}]]*/ {};
             const apiPublicaUrl = /*[[${apiPublicaUrl}]]*/ {};
             const apiAdministrativaUrl = /*[[${apiAdministrativaUrl}]]*/ {};
-            // console.log('Token JWT:', jwtToken); -- Descomentar para debug
             /*]]>*/
         </script>
     </body>

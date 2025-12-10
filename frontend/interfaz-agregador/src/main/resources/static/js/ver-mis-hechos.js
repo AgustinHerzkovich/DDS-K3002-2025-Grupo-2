@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     currentPage = data.number !== undefined ? data.number : page;
 
                     if (content.length !== 0) {
-                        console.log("Hechos cargados:", content);
                         let html = "";
                         content.forEach(hecho => {
                             const actionButton = hecho.visible

@@ -30,6 +30,9 @@
 							<span class="form-obligatory-icon">
 								*
 							</span>
+							<span class="max-char-span text-xs">
+								(Máx. 50 caracteres)
+							</span>
 						</label>
 						<input type="text" class="form-input" maxlength="50" id="modal-hecho-categoria" placeholder="Ej: Desastre Natural" required>
 					</div>
@@ -443,15 +446,20 @@
 <div th:fragment="modalHechosPendientes" id="detalleModal" class="modal hidden">
 	<div class="relative modal-page-format max-w-2xl">
 		<div class="modal-header bg-[#dc2626]">
-			<h2 id="modalTitulo" class="modal-title"><span class="sr-only">Título del hecho</span></h2>
-
+			<h2 id="modalTitulo" class="modal-title">
+				<span class="sr-only">
+					Título del hecho
+				</span>
+			</h2>
 		</div>
 		<div class="modal-page-body">
 			<div>
 				<p id="modalDescripcion"></p>
 			</div>
 			<div class="modal-meta">
-				<div><strong>Fecha:</strong> <span id="modalFecha"></span></div>
+				<div>
+					<strong>
+						Fecha:</strong> <span id="modalFecha"></span></div>
 				<div><strong>Ubicación:</strong> <span id="modalUbicacion"></span></div>
 				<div><strong>Autor:</strong> <span id="modalAutor"></span></div>
 			</div>

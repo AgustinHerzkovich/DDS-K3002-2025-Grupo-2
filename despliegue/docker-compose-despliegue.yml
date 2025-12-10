@@ -41,7 +41,7 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-publica
       API_PUBLICA_IP: api-publica
-      INTERFAZ_AGREGADOR_IP: interfaz-agregador
+      INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
     networks:
       - metamapa
 
@@ -56,8 +56,8 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: api-administrativa
-      INTERFAZ_AGREGADOR_IP: interfaz-agregador
       API_ADMINISTRATIVA_IP: api-administrativa
+      INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
     networks:
       - metamapa
 
@@ -72,6 +72,24 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: estadisticas
+    networks:
+      - metamapa
+
+  interfaz-agregador:
+    image: agustinherzkovich/interfaz-agregador:latest
+    container_name: interfaz-agregador
+    restart: unless-stopped
+    depends_on:
+      - eureka-server
+      - api-publica
+      - api-administrativa
+    ports:
+      - "8094:8094"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
+      API_PUBLICA_URL: http://api-publica:8085/apiPublica
+      API_ADMINISTRATIVA_URL: http://api-administrativa:8086/apiAdministrativa
     networks:
       - metamapa
 

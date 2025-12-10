@@ -11,7 +11,7 @@ import java.util.List;
 public class FuenteDinamicaIdController {
     @Value("${fuente.id}")
     private String idFuente;
-    @GetMapping("/fuentesDinamicas")
+    @GetMapping
     public ResponseEntity<List<String>> obtenerId(){
         return ResponseEntity.ok(List.of(idFuente));
     }

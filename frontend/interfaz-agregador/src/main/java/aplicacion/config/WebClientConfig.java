@@ -16,14 +16,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 // Configuración de WebClient para comunicarse con la API Administrativa
 @Configuration
 public class WebClientConfig {
-    @Value("${api.administrativa.ip}")
-    private String apiAdministrativaIp;
+    @Value("${api.administrativa.url}")
+    private String apiAdministrativaUrl;
 
     @Bean
     public WebClient apiAdministrativaWebClient(
             OAuth2AuthorizedClientService clientService) {
         return WebClient.builder()
-                .baseUrl("http://" + apiAdministrativaIp + ":8086/apiAdministrativa")
+                .baseUrl(apiAdministrativaUrl)
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024) // 16MB

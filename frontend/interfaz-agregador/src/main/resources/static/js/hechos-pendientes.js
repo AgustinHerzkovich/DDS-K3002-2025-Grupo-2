@@ -1,19 +1,37 @@
-// Función modificada para recibir el ID directamente
+document.addEventListener("DOMContentLoaded", function () {
+    const detailButtons = document.querySelectorAll('.btn-ver-hecho-pendiente');
+    detailButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Obtenemos el ID del atributo data-id (th:attr="data-id...") y lo pasamos a openDetalle
+            const id = this.dataset.id;
+            openDetalle(id);
+        });
+    });
+
+    // Event listeners para los botones de aceptar y rechazar
+    const aceptarBtn = document.getElementById('aceptarBtn');
+    const rechazarBtn = document.getElementById('rechazarBtn');
+
+    if (aceptarBtn) {
+        aceptarBtn.addEventListener('click', () => gestionar('ACEPTADO'));
+    }
+
+    if (rechazarBtn) {
+        rechazarBtn.addEventListener('click', () => gestionar('RECHAZADO'));
+    }
+});
+
 function openDetalle(id) {
     currentId = id;
-    console.log('LOG 1: Llamada a openDetalle con ID:', id);
     // Buscar objeto localmente en el array provisto por el servidor
     const hecho = hechosPendientes.find(h => String(h.id) === String(id));
     if (hecho) {
-        console.log('LOG 2: Hecho encontrado:', hecho);
         document.getElementById('modalTitulo').textContent = hecho.titulo || '';
         document.getElementById('modalDescripcion').textContent = hecho.descripcion || '';
         document.getElementById('modalFecha').textContent = hecho.fechaAcontecimiento ? new Date(hecho.fechaAcontecimiento).toLocaleString() : '';
         document.getElementById('modalUbicacion').textContent = hecho.ubicacion ? (hecho.ubicacion.latitud + ', ' + hecho.ubicacion.longitud) : 'N/D';
-        console.log('LOG 3: Mostrando modal de detalle.');
         document.getElementById('modalAutor').textContent = hecho.autor != null ? hecho.autor.identidad.nombre + ' ' + hecho.autor.identidad.apellido : 'Anónimo';
     } else {
-        // LOG 2b: Si no encuentra el objeto (posible problema de tipo de dato del ID)
         console.error('LOG 2b: Error, Hecho no encontrado para ID:', id);
     }
     document.getElementById('sugerencia').value = '';
@@ -69,32 +87,4 @@ document.addEventListener('click', function (e) {
     if (e.target.classList.contains('modal') && !e.target.closest('.modal-content')) {
         closeDetalle();
     }
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('LOG 5: DOMContentLoaded ejecutado. Adjuntando listeners.');
-    const detailButtons = document.querySelectorAll('.btn-ver-hecho-pendiente');
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            console.log('LOG 6: Botón Ver Detalle clickeado.');
-            // Obtenemos el ID del atributo data-id (th:attr="data-id...") y lo pasamos a openDetalle
-            const id = this.dataset.id;
-            openDetalle(id);
-        });
-    });
-
-    // Event listeners para los botones de aceptar y rechazar
-    const aceptarBtn = document.getElementById('aceptarBtn');
-    const rechazarBtn = document.getElementById('rechazarBtn');
-
-    if (aceptarBtn) {
-        aceptarBtn.addEventListener('click', () => gestionar('ACEPTADO'));
-    }
-
-    if (rechazarBtn) {
-        rechazarBtn.addEventListener('click', () => gestionar('RECHAZADO'));
-    }
-
-    console.log('LOG 7: Lista de hechos del servidor:', hechosPendientes);
 });

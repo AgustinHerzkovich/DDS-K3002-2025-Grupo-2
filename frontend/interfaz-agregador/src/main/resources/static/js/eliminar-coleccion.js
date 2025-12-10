@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if(allElementsFound([coleccionesCards], "eliminar colección")) {
         coleccionesCards.forEach((coleccionCard, index) => {
             const coleccionId = coleccionCard.dataset.id;
-            console.log(`ID Colección ${index + 1}: ${coleccionId}`)
 
             const borrarBtn = document.getElementById(`eliminar-coleccion-${coleccionId}`)
             borrarBtn.addEventListener("click", async function(){await eliminarColeccion(coleccionId)});

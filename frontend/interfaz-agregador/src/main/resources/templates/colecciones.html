@@ -24,7 +24,9 @@
         <div th:unless="${colecciones == null || colecciones.isEmpty()}" class="flex flex-col justify-center items-center">
             <div class="w-[55%] flex flex-col">
                 <div th:if="${isAdmin}" class="btn-update-wrapper">
-                    <button class="btn-update" onclick="cargarHechos()">Actualizar hechos</button>
+                    <button id="actualizar-hechos-colecciones" class="btn-update">
+                        Actualizar hechos
+                    </button>
                 </div>
                 <div class="colecciones-container">
                     <div th:each="coleccion : ${colecciones}" class="coleccion-card" th:data-id="${coleccion.id}">

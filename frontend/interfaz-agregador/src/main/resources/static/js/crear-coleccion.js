@@ -27,7 +27,6 @@ async function crearColeccion(inputsObligatorios) {
         mostrarCargando("crear-coleccion");
 
         const payload = getPayloadColeccion(inputsObligatorios)
-        console.log("Enviando Payload:", JSON.stringify(payload, null, 2));
 
         const response = await fetch(apiAdministrativaUrl + '/colecciones', {
             method: 'POST',

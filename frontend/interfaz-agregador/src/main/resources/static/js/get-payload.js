@@ -69,8 +69,6 @@ async function getPayloadModalHecho(inputsObligatorios) {
             const latitud = inputsObligatorios.lat.value
             const longitud = inputsObligatorios.lon.value
 
-            console.log(`https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=${latitud}&lon=${longitud}`)
-
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=${latitud}&lon=${longitud}`,
                 { headers: { "User-Agent": "MetaMapa/1.0" } }

@@ -16,14 +16,12 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private WebClient webClient;
-    @Value("${api.publica.port}")
-    private Integer apiPublicaPort;
-    @Value("${api.publica.ip}")
-    private String apiPublicaIp;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     @PostConstruct
     public void init() {
-        this.webClient = WebClient.create("http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica");
+        this.webClient = WebClient.create(apiPublicaUrl);
     }
 
     public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {

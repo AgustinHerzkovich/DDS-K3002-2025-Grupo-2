@@ -32,10 +32,8 @@ public class ContribuyenteService {
     @Value("${keycloak.admin-client.secret}")
     private String ADMIN_CLIENT_SECRET;
     private WebClient webClient;
-    @Value("${api.publica.port}")
-    private Integer apiPublicaPort;
-    @Value("${api.publica.ip}")
-    private String apiPublicaIp;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     public ContribuyenteService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -44,7 +42,7 @@ public class ContribuyenteService {
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl("http://" + apiPublicaIp + ":" + apiPublicaPort + "/apiPublica")
+                .baseUrl(apiPublicaUrl)
                 .build();
     }
 

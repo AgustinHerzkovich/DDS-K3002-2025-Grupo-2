@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("actualizar-hechos-colecciones").addEventListener("click", cargarHechos);
+})
+
 function mostrarConfirmacion() {
     document.getElementById("confirm-overlay").style.display = "flex";
 }
