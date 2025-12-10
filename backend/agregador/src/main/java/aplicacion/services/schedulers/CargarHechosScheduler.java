@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -118,7 +119,8 @@ public class CargarHechosScheduler {
         }finally {
             fuenteMutexManager.unlockAll(locks);
         }
-        logger.info("Carga de hechos de fuentes remotas finalizada. ({}ms)", (System.nanoTime() - inicioInicial)/1_000_000);
+        Duration duracion = Duration.ofNanos(System.nanoTime() - inicioInicial);
+        logger.info("Carga de hechos de fuentes remotas finalizada. ({}h {}m {}s {}ms)", duracion.toHours(), duracion.toMinutesPart(), duracion.toSecondsPart(), duracion.toMillisPart());
     }
 
 }

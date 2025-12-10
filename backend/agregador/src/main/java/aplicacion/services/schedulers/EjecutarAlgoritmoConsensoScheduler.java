@@ -12,12 +12,15 @@ import aplicacion.services.HechoService;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +37,9 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
 
     @Setter
     private volatile Integer horaBajaCarga = 3; // Por default es a las 3 AM
+    @Autowired
+    @Lazy
+    private EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler;
 
     public EjecutarAlgoritmoConsensoScheduler(HechoService hechoService, ColeccionService coleccionService, HechoXColeccionRepository hechoXColeccionRepository, FuenteService fuenteService) {
         this.hechoService = hechoService;
@@ -45,7 +51,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.addTriggerTask(
-                this::curarHechos,
+                ejecutarAlgoritmoConsensoScheduler::curarHechos, // Garantiza que se realice correctamente la transacción
                 triggerContext -> {
                     Calendar nextExecution = Calendar.getInstance();
                     Date lastExecution = triggerContext.lastActualExecutionTime();
@@ -76,6 +82,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
 
     @Transactional
     public void curarHechos() {
+        Long inicio = System.nanoTime();
         logger.info("Se ha iniciado la curación de hechos.");
         List<Coleccion> colecciones = coleccionService.obtenerColecciones();
         for (Coleccion coleccion : colecciones) {
@@ -91,7 +98,7 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
             }
 
             Map<Hecho, Long> conteoHechos = hechoService.contarHechosPorFuente(coleccion);
-            Long totalFuentes = fuenteService.obtenerCantidadFuentesConColecciones();
+            Long totalFuentes = (long) coleccion.getFuentes().size(); // Solo considero las fuentes de esta colección
 
             List<Hecho> hechosCurados = algoritmoConsenso.curarHechos(conteoHechos, totalFuentes);
             for (Hecho hecho : hechosCurados) {
@@ -100,8 +107,10 @@ public class EjecutarAlgoritmoConsensoScheduler implements SchedulingConfigurer 
                 hechoXColeccion.setConsensuado(true);
                 hechoXColeccionRepository.save(hechoXColeccion);
             }
+            logger.info("Coleccion {} ({}) curada", coleccion.getTitulo(), coleccion.getId());
         }
-        logger.info("Curación de hechos finalizada.");
+        Duration duracion = Duration.ofNanos(System.nanoTime() - inicio);
+        logger.info("Curación de hechos finalizada. ({}h {}m {}s)", duracion.toHours(), duracion.toMinutesPart(), duracion.toSecondsPart());
         // por cada coleccion me fijo su algoritmo
         // busco en el repositorio de hechos por coleccion y me fijo la cantidad de veces que aparecen
         // taggeo los hechos como consensuados/curados

@@ -3,6 +3,7 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
+import aplicacion.domain.criterios.CriterioDePertenencia;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
@@ -287,6 +288,7 @@ public class HechoService {
     public Map<Hecho, Long> contarHechosPorFuente(Coleccion coleccion) {
         List<Fuente> fuentes = coleccion.getFuentes();
         List<Hecho> hechos = fuentes.stream().flatMap(fuente -> fuente.getHechos().stream()).toList();
+        hechos = hechos.stream().filter(h -> coleccion.getCriteriosDePertenencia().stream().allMatch(c->c.cumpleCriterio(h))).toList(); // No considera los hechos excluidos
         Set<Hecho> hechosUnicos = new HashSet<>(hechos);
         Map<Hecho, Long> returnMap = new HashMap<>();
         for(Hecho hechoUnico : hechosUnicos){
