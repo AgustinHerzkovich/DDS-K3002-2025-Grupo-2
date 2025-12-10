@@ -15,16 +15,16 @@ import lombok.Setter;
 public class CriterioDeDistancia extends CriterioDePertenencia {
     @Embedded
     private Ubicacion ubicacionBase;
-    private Double distanciaMinima;
+    private Double distanciaMaxima;
 
-    public CriterioDeDistancia(Ubicacion ubicacionBase, Double distanciaMinima) {
+    public CriterioDeDistancia(Ubicacion ubicacionBase, Double distanciaMaxima) {
         this.ubicacionBase = ubicacionBase;
-        this.distanciaMinima = distanciaMinima;
+        this.distanciaMaxima = distanciaMaxima;
     }
 
     @Override
     public Boolean cumpleCriterio(Hecho hecho){
         Ubicacion ubicacionHecho = hecho.getUbicacion();
-        return ubicacionBase.distanciaA(ubicacionHecho) >= distanciaMinima;
+        return ubicacionBase.distanciaA(ubicacionHecho) <= distanciaMaxima;
     }
 }

@@ -15,10 +15,19 @@ function validarFormularioModalCrearColeccion() {
         criteriosParaValidar.push(tipoCriterio);
 
         if (tipoCriterio.value === 'DISTANCIA') {
-            const lat = document.getElementById(`criterio-latitud-${criterioId}`);
-            const lon = document.getElementById(`criterio-longitud-${criterioId}`);
-            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}`);
-            criteriosParaValidar.push(lat, lon, dist);
+            const usarCoordenadas = document.getElementById(`criterio-usar-coordenadas-${criterioId}`);
+            const dist = document.getElementById(`criterio-distancia-maxima-${criterioId}`);
+
+            if (usarCoordenadas && usarCoordenadas.checked) {
+                const lat = document.getElementById(`criterio-latitud-${criterioId}`);
+                const lon = document.getElementById(`criterio-longitud-${criterioId}`);
+                criteriosParaValidar.push(lat, lon, dist);
+            } else {
+                const pais = document.getElementById(`criterio-pais-${criterioId}`);
+                const provincia = document.getElementById(`criterio-provincia-${criterioId}`);
+                const ciudad = document.getElementById(`criterio-ciudad-${criterioId}`);
+                criteriosParaValidar.push(pais, provincia, ciudad, dist);
+            }
         } else if (tipoCriterio.value === 'FECHA') {
             const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}`);
             const fechaFin = document.getElementById(`criterio-fecha-final-${criterioId}`);
@@ -83,34 +92,74 @@ function agregarCriterioColeccion(numeroCriterio, sufix) {
             </select>
 
             <div id="campos-distancia-${numeroCriterio}" class="space-y-2 hidden">
-                <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center mb-2">
+                    <input type="checkbox" id="criterio-usar-coordenadas-${numeroCriterio}" class="mr-2">
+                    <label for="criterio-usar-coordenadas-${numeroCriterio}" class="text-xs font-medium text-gray-600">
+                        Ingresar coordenadas manualmente
+                    </label>
+                </div>
+                
+                <div id="criterio-direccion-container-${numeroCriterio}">
                     <div>
-                        <label for="criterio-latitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
-                            Latitud Base
+                        <label for="criterio-pais-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                            País
                             <span class="form-obligatory-icon">
                                 *
                             </span>
                         </label>
-                        <input type="number" step="any" id="criterio-latitud-${numeroCriterio}" class="form-input" placeholder="-34.603722">
+                        <input type="text" id="criterio-pais-${numeroCriterio}" class="form-input" placeholder="Argentina">
                     </div>
                     <div>
-                        <label for="criterio-longitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
-                            Longitud Base
+                        <label for="criterio-provincia-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                            Provincia
                             <span class="form-obligatory-icon">
                                 *
                             </span>
                         </label>
-                        <input type="number" step="any" id="criterio-longitud-${numeroCriterio}" class="form-input" placeholder="-58.381592">
+                        <input type="text" id="criterio-provincia-${numeroCriterio}" class="form-input" placeholder="Buenos Aires">
+                    </div>
+                    <div>
+                        <label for="criterio-ciudad-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                            Ciudad
+                            <span class="form-obligatory-icon">
+                                *
+                            </span>
+                        </label>
+                        <input type="text" id="criterio-ciudad-${numeroCriterio}" class="form-input" placeholder="Buenos Aires">
                     </div>
                 </div>
+                
+                <div id="criterio-coordenadas-container-${numeroCriterio}" class="hidden">
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label for="criterio-latitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                                Latitud Base
+                                <span class="form-obligatory-icon">
+                                    *
+                                </span>
+                            </label>
+                            <input type="number" step="any" id="criterio-latitud-${numeroCriterio}" class="form-input" placeholder="-34.603722">
+                        </div>
+                        <div>
+                            <label for="criterio-longitud-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                                Longitud Base
+                                <span class="form-obligatory-icon">
+                                    *
+                                </span>
+                            </label>
+                            <input type="number" step="any" id="criterio-longitud-${numeroCriterio}" class="form-input" placeholder="-58.381592">
+                        </div>
+                    </div>
+                </div>
+                
                 <div>
-                    <label for="criterio-distancia-minima-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
-                        Distancia Mínima (km)
+                    <label for="criterio-distancia-maxima-${numeroCriterio}" class="block text-xs font-medium text-gray-600 mb-1">
+                        Distancia Máxima (km)
                         <span class="form-obligatory-icon">
                             *
                         </span>
                     </label>
-                    <input type="number" step="any" id="criterio-distancia-minima-${numeroCriterio}" class="form-input" placeholder="100">
+                    <input type="number" step="any" id="criterio-distancia-maxima-${numeroCriterio}" class="form-input" placeholder="100">
                 </div>
             </div>
 
@@ -264,9 +313,9 @@ function autocompletarCriteriosColeccion(coleccion, sufix) {
             longitud.value = criterioDePertenencia.ubicacionBase.longitud
             longitud.disabled = true;
 
-            const distanciaMinima = document.getElementById(`criterio-distancia-minima-${index}`)
-            distanciaMinima.value = criterioDePertenencia.distanciaMinima;
-            distanciaMinima.disabled = true
+            const distanciaMaxima = document.getElementById(`criterio-distancia-maxima-${index}`)
+            distanciaMaxima.value = criterioDePertenencia.distanciaMaxima;
+            distanciaMaxima.disabled = true
 
             document.getElementById(`campos-distancia-${index}`).classList.remove("hidden");
 

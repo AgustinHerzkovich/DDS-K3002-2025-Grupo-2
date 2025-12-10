@@ -3,15 +3,18 @@
     <!-- Importar configuración por defecto de Spring Boot (para colorear la consola) -->
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+    <!-- Importar propiedades de application.properties -->
+    <springProperty scope="context" name="lokiUrl" source="loki.url" defaultValue="http://localhost:3100/loki/api/v1/push"/>
+
     <!-- Configuración para enviar logs a LOKI -->
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
             <!-- URL donde corre Loki en Docker -->
-            <url>http://15.228.250.174:3100/loki/api/v1/push</url>
+            <url>${lokiUrl}</url>
         </http>
         <format>
             <label>
-                <pattern>app=api-administrativa,host=${HOSTNAME},level=%level</pattern>
+                <pattern>app=agregador,host=${HOSTNAME},level=%level</pattern>
             </label>
             <message>
                 <pattern>${FILE_LOG_PATTERN}</pattern>

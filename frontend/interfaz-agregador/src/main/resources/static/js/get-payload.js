@@ -1,22 +1,75 @@
-function getPayloadColeccion(inputsObligatorios) {
+async function getPayloadColeccion(inputsObligatorios) {
     const criteriosDePertenencia = [];
     const fuentes = [];
 
-    inputsObligatorios.criteriosItems.forEach(criterioItem => {
+    for (const criterioItem of inputsObligatorios.criteriosItems) {
         const criterioId = criterioItem.dataset.id;
         const tipoCriterio = document.getElementById(`criterio-tipo-${criterioId}`);
 
         if (tipoCriterio.value === "DISTANCIA") {
-            const lat = document.getElementById(`criterio-latitud-${criterioId}`);
-            const lon = document.getElementById(`criterio-longitud-${criterioId}`);
-            const dist = document.getElementById(`criterio-distancia-minima-${criterioId}`);
+            const usarCoordenadas = document.getElementById(`criterio-usar-coordenadas-${criterioId}`);
+            const dist = document.getElementById(`criterio-distancia-maxima-${criterioId}`);
+            let ubicacion = {};
 
-            if(lat.value && lon.value && dist.value) {
-                criteriosDePertenencia.push({
-                    tipo: 'distancia',
-                    ubicacionBase: { latitud: parseFloat(lat.value), longitud: parseFloat(lon.value) },
-                    distanciaMinima: parseFloat(dist.value)
-                });
+            try {
+                if (usarCoordenadas && usarCoordenadas.checked) {
+                    // Usar coordenadas manuales
+                    const lat = document.getElementById(`criterio-latitud-${criterioId}`);
+                    const lon = document.getElementById(`criterio-longitud-${criterioId}`);
+
+                    if (lat.value && lon.value) {
+                        const latitud = lat.value;
+                        const longitud = lon.value;
+
+                        // Validar que las coordenadas existan
+                        const response = await fetch(
+                            `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=${latitud}&lon=${longitud}`,
+                            { headers: { "User-Agent": "MetaMapa/1.0" } }
+                        );
+
+                        const data = await response.json();
+
+                        if (!data || !data.address) {
+                            throw new Error(`Las coordenadas ingresadas no son válidas para el criterio ${criterioId}.`);
+                        }
+
+                        ubicacion = { latitud: parseFloat(latitud), longitud: parseFloat(longitud) };
+                    }
+                } else {
+                    // Geocodificar dirección
+                    const pais = document.getElementById(`criterio-pais-${criterioId}`);
+                    const provincia = document.getElementById(`criterio-provincia-${criterioId}`);
+                    const ciudad = document.getElementById(`criterio-ciudad-${criterioId}`);
+
+                    if (pais.value && provincia.value && ciudad.value) {
+                        const direccionCompleta = `${ciudad.value.trim()}, ${provincia.value.trim()}, ${pais.value.trim()}`;
+
+                        const response = await fetch(
+                            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccionCompleta)}`,
+                            { headers: { "User-Agent": "MetaMapa/1.0" } }
+                        );
+
+                        const data = await response.json();
+
+                        if (!Array.isArray(data) || data.length === 0) {
+                            throw new Error(`No se pudo geocodificar la ubicación: "${direccionCompleta}".\nVerifique los datos ingresados.`);
+                        }
+
+                        ubicacion = { latitud: parseFloat(data[0].lat), longitud: parseFloat(data[0].lon) };
+                    }
+                }
+
+                if (ubicacion.latitud && ubicacion.longitud && dist.value) {
+                    criteriosDePertenencia.push({
+                        tipo: 'distancia',
+                        ubicacionBase: ubicacion,
+                        distanciaMaxima: parseFloat(dist.value)
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+                throw error;
             }
         } else if (tipoCriterio.value === "FECHA") {
             const fechaIni = document.getElementById(`criterio-fecha-inicial-${criterioId}`);
@@ -30,7 +83,7 @@ function getPayloadColeccion(inputsObligatorios) {
                 });
             }
         }
-    });
+    }
 
     inputsObligatorios.tiposFuentes.forEach((tipo, index) => {
         const selectNombre = inputsObligatorios.nombresFuentes[index];

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CriterioDeDistanciaInputDto extends CriterioDePertenenciaInputDto {
     private UbicacionInputDto ubicacionBase;
-    private Double distanciaMinima;
+    private Double distanciaMaxima;
 }

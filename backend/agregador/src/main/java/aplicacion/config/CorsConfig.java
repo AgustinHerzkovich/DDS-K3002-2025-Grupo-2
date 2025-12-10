@@ -12,23 +12,18 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
-    @Value("${api.publica.port}")
-    private Integer apiPublicaPort;
-    @Value("${api.publica.ip}")
-    private String apiPublicaIp;
-
-    @Value("${api.administrativa.port}")
-    private Integer apiAdministrativaPort;
-    @Value("${api.administrativa.ip}")
-    private String apiAdministrativaIp;
+    @Value("${api.administrativa.url}")
+    private String apiAdministrativaUrl;
 
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
         // Esto permite peticiones únicamente desde las apis
-        config.setAllowedOrigins(Arrays.asList("http://" + apiPublicaIp + ":" + apiPublicaPort, "http://" + apiAdministrativaIp +":" + apiAdministrativaPort));
+        config.setAllowedOrigins(Arrays.asList(apiPublicaUrl, apiAdministrativaUrl));
 
         // Permitir todos los métodos HTTP (GET, POST, PUT, DELETE, etc.)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));

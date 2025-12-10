@@ -183,6 +183,23 @@ function listenCriterioColeccion(numeroCriterio, sufix) {
             document.getElementById(`campos-fecha-${numeroCriterio}`).classList.add("hidden");
         }
     })
+
+    // Listener para el checkbox de usar coordenadas
+    const usarCoordenadasCheckbox = document.getElementById(`criterio-usar-coordenadas-${numeroCriterio}`);
+    if (usarCoordenadasCheckbox) {
+        usarCoordenadasCheckbox.addEventListener("change", () => {
+            const camposDireccion = document.getElementById(`criterio-direccion-container-${numeroCriterio}`);
+            const camposCoordenadas = document.getElementById(`criterio-coordenadas-container-${numeroCriterio}`);
+
+            if (usarCoordenadasCheckbox.checked) {
+                camposDireccion.classList.add("hidden");
+                camposCoordenadas.classList.remove("hidden");
+            } else {
+                camposCoordenadas.classList.add("hidden");
+                camposDireccion.classList.remove("hidden");
+            }
+        });
+    }
 }
 
 function listenScrollableArrowHome(scrollArrowBtn) {

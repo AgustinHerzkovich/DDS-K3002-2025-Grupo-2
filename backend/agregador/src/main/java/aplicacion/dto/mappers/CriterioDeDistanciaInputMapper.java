@@ -15,7 +15,7 @@ public class CriterioDeDistanciaInputMapper implements Mapper<CriterioDeDistanci
     public CriterioDeDistancia map(CriterioDeDistanciaInputDto criterioDeDistanciaInputDto) {
         return new CriterioDeDistancia(
                 ubicacionInputMapper.map(criterioDeDistanciaInputDto.getUbicacionBase()),
-                criterioDeDistanciaInputDto.getDistanciaMinima()
+                criterioDeDistanciaInputDto.getDistanciaMaxima()
         );
     }
 }

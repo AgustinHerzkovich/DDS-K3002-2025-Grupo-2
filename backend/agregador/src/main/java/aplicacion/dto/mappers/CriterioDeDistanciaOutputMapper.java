@@ -16,7 +16,7 @@ public class CriterioDeDistanciaOutputMapper implements Mapper<CriterioDeDistanc
         return new CriterioDeDistanciaOutputDto(
                 criterio.getId(),
                 ubicacionOutputMapper.map(criterio.getUbicacionBase()),
-                criterio.getDistanciaMinima()
+                criterio.getDistanciaMaxima()
         );
     }
 }

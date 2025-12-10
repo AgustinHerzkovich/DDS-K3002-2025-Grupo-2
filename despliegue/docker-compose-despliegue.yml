@@ -22,10 +22,17 @@ services:
     ports:
       - "8084:8084"
     environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://15.229.10.54:3308/agregador?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: agregador
-      API_PUBLICA_IP: api-publica
-      API_ADMINISTRATIVA_IP: api-administrativa
+      API_PUBLICA_URL: http://api-publica:8085
+      API_ADMINISTRATIVA_URL: http://api-administrativa:8086
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      PROMETHEUS_URL: http://15.228.250.174:9090
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -42,6 +49,8 @@ services:
       EUREKA_INSTANCE_HOSTNAME: api-publica
       API_PUBLICA_IP: api-publica
       INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -58,6 +67,8 @@ services:
       EUREKA_INSTANCE_HOSTNAME: api-administrativa
       API_ADMINISTRATIVA_IP: api-administrativa
       INTERFAZ_AGREGADOR_URL: http://interfaz-agregador:8094
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -70,8 +81,17 @@ services:
     ports:
       - "8087:8087"
     environment:
+      SPRING_DATASOURCE_AGREGADOR_JDBC_URL: jdbc:mysql://15.229.10.54:3308/agregador
+      SPRING_DATASOURCE_AGREGADOR_USERNAME: root
+      SPRING_DATASOURCE_AGREGADOR_PASSWORD: root
+      SPRING_DATASOURCE_ESTADISTICAS_JDBC_URL: jdbc:mysql://15.229.10.54:3309/estadisticas
+      SPRING_DATASOURCE_ESTADISTICAS_USERNAME: root
+      SPRING_DATASOURCE_ESTADISTICAS_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: estadisticas
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -90,6 +110,9 @@ services:
       EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
       API_PUBLICA_URL: http://api-publica:8085/apiPublica
       API_ADMINISTRATIVA_URL: http://api-administrativa:8086/apiAdministrativa
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -104,6 +127,9 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: fuente-estatica
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -116,8 +142,14 @@ services:
     ports:
       - "8082:8082"
     environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://15.229.10.54:3307/fuente_dinamica?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: fuente-dinamica
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
@@ -134,6 +166,9 @@ services:
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: fuente-proxy
+      KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
+      ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
+      LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
     networks:
       - metamapa
 
