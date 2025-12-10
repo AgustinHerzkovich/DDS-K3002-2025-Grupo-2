@@ -1,8 +1,8 @@
 package aplicacion.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,17 +13,21 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
+
 // Configuración de WebClient para comunicarse con la API Administrativa
 @Configuration
 public class WebClientConfig {
-    @Value("${api.administrativa.url}")
-    private String apiAdministrativaUrl;
+    private final ConfigService configService;
+
+    public WebClientConfig(@Lazy ConfigService configService) {
+        this.configService = configService;
+    }
 
     @Bean
     public WebClient apiAdministrativaWebClient(
             OAuth2AuthorizedClientService clientService) {
         return WebClient.builder()
-                .baseUrl(apiAdministrativaUrl)
+                .baseUrl(configService.getUrlApiAdministrativa())
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->
                                 configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024) // 16MB

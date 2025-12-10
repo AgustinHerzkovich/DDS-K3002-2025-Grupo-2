@@ -18,17 +18,14 @@ public class ConfigService {
         this.discoveryClient = discoveryClient;
     }
 
-    public String getUrlAgregador() {
-        return getUrl("agregador");
+    public String getUrlApiPublica() {
+        return getUrl("apiPublica");
     }
 
-    public String getUrlEstadisticas() {
-        return getUrl("estadisticas");
+    public String getUrlApiAdministrativa() {
+        return getUrl("apiAdministrativa");
     }
 
-    public String getUrlFuentesDinamicas() {
-        return getUrl("fuentesDinamicas");
-    }
 
     private String getUrl(String serviceId) {
         return cache.get(serviceId, srv -> discoveryClient.getInstances(serviceId)

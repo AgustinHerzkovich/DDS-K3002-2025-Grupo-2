@@ -1,9 +1,11 @@
 package aplicacion.services;
 
+import aplicacion.config.ConfigService;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -32,17 +34,18 @@ public class ContribuyenteService {
     @Value("${keycloak.admin-client.secret}")
     private String ADMIN_CLIENT_SECRET;
     private WebClient webClient;
-    @Value("${api.publica.url}")
-    private String apiPublicaUrl;
 
-    public ContribuyenteService(UsuarioService usuarioService) {
+    private final ConfigService configService;
+
+    public ContribuyenteService(@Lazy ConfigService configService, UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
+        this.configService = configService;
     }
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl(apiPublicaUrl)
+                .baseUrl(configService.getUrlApiPublica())
                 .build();
     }
 

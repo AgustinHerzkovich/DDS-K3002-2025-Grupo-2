@@ -1,12 +1,13 @@
 package aplicacion.services;
 
+import aplicacion.config.ConfigService;
 import aplicacion.dto.GraphQLHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,24 +25,24 @@ import java.util.ArrayList;
 
 @Service
 public class HechoService {
-    @Value("${api.publica.url}")
-    private String apiPublicaUrl;
-
     private WebClient webClientPublica;
 
     private final WebClient webClientAdministrativa;
     private final GeocodingService geocodingService;
 
+    private final ConfigService configService;
+
     // Inyectar el bean apiAdministrativaWebClient que tiene el filtro de autenticación
-    public HechoService(GeocodingService geocodingService, WebClient apiAdministrativaWebClient) {
+    public HechoService(GeocodingService geocodingService, WebClient apiAdministrativaWebClient, @Lazy ConfigService configService) {
         this.geocodingService = geocodingService;
         this.webClientAdministrativa = apiAdministrativaWebClient;
+        this.configService = configService;
     }
 
     @PostConstruct
     public void init() {
         this.webClientPublica = WebClient.builder()
-                .baseUrl(apiPublicaUrl)
+                .baseUrl(configService.getUrlApiPublica())
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

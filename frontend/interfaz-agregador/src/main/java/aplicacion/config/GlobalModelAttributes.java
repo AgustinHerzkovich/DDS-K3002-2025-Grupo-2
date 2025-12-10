@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
@@ -14,18 +15,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
-    @Value("${api.publica.url}")
-    private String apiPublicaUrl;
-
-    @Value("${api.administrativa.url}")
-    private String apiAdministrativaUrl;
-
     private final ContribuyenteService contribuyenteService;
+
+    private final ConfigService configService;
 
     private static final Logger log = LoggerFactory.getLogger(GlobalModelAttributes.class);
 
-    public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
+    public GlobalModelAttributes(ContribuyenteService contribuyenteService, @Lazy ConfigService configService) {
         this.contribuyenteService = contribuyenteService;
+        this.configService = configService;
     }
 
     @ModelAttribute
@@ -35,8 +33,8 @@ public class GlobalModelAttributes {
         // Setear isLoggedIn globalmente para todos los controllers
         model.addAttribute("isLoggedIn", oidcUser != null);
 
-        model.addAttribute("apiPublicaUrl", apiPublicaUrl);
-        model.addAttribute("apiAdministrativaUrl", apiAdministrativaUrl);
+        model.addAttribute("apiPublicaUrl", configService.getUrlApiPublica());
+        model.addAttribute("apiAdministrativaUrl", configService.getUrlApiAdministrativa());
 
         // Si el usuario está loggeado, también agregar su nombre
         if (oidcUser != null) {

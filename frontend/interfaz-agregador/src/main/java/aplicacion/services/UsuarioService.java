@@ -1,10 +1,12 @@
 package aplicacion.services;
 
+import aplicacion.config.ConfigService;
 import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,16 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private WebClient webClient;
-    @Value("${api.publica.url}")
-    private String apiPublicaUrl;
+
+    private final ConfigService configService;
+
+    public UsuarioService(@Lazy ConfigService configService) {
+        this.configService = configService;
+    }
 
     @PostConstruct
     public void init() {
-        this.webClient = WebClient.create(apiPublicaUrl);
+        this.webClient = WebClient.create(configService.getUrlApiPublica());
     }
 
     public ContribuyenteOutputDto registrarUsuarioSiNoExiste(OidcUser oidcUser) {

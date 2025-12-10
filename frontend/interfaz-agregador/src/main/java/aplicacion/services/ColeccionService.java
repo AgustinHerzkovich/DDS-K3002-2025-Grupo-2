@@ -1,12 +1,13 @@
 package aplicacion.services;
 
+import aplicacion.config.ConfigService;
 import aplicacion.dto.GraphQLHechosCuradosResponse;
 import aplicacion.dto.GraphQLHechosIrrestrictosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -20,13 +21,16 @@ import java.net.URI;
 public class ColeccionService {
     private WebClient webClient;
 
-    @Value("${api.publica.url}")
-    private String apiPublicaUrl;
+    private final ConfigService configService;
+
+    public ColeccionService(@Lazy ConfigService configService) {
+        this.configService = configService;
+    }
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl(apiPublicaUrl)
+                .baseUrl(configService.getUrlApiPublica())
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

@@ -103,15 +103,11 @@ services:
     restart: unless-stopped
     depends_on:
       - eureka-server
-      - api-publica
-      - api-administrativa
     ports:
       - "8094:8094"
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
-      API_PUBLICA_URL: http://api-publica:8085/apiPublica
-      API_ADMINISTRATIVA_URL: http://api-administrativa:8086/apiAdministrativa
       KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
       ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
