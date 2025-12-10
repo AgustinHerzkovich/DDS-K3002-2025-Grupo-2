@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fuentesProxy")
+@RequestMapping
 public class FuenteProxyController {
     private final FuenteProxyService fuenteProxyService;
 

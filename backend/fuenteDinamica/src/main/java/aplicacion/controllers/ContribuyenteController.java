@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/fuentesDinamicas")
+@RequestMapping
 public class ContribuyenteController {
     private final ContribuyenteService contribuyenteService;
     private final HechoService hechoService;

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fuentesEstaticas")
+@RequestMapping
 public class HechoController {
     private final ArchivoService archivoService;
 

@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/health")
+@RequestMapping
 public class HealthController {
-    @GetMapping
+    @GetMapping("/health")
     public ResponseEntity<Map<String, String>> checkHealth(){
         return ResponseEntity.ok(Map.of("status", "ok"));
     }

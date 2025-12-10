@@ -5,6 +5,7 @@ services:
   eureka-server:
     image: agustinherzkovich/eureka-server:latest
     container_name: eureka-server
+    restart: unless-stopped
     ports:
       - "8761:8761"
     environment:
@@ -15,6 +16,7 @@ services:
   agregador:
     image: agustinherzkovich/agregador:latest
     container_name: agregador
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -30,6 +32,7 @@ services:
   api-publica:
     image: agustinherzkovich/api-publica:latest
     container_name: api-publica
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -45,6 +48,7 @@ services:
   api-administrativa:
     image: agustinherzkovich/api-administrativa:latest
     container_name: api-administrativa
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -60,6 +64,7 @@ services:
   estadisticas:
     image: agustinherzkovich/estadisticas:latest
     container_name: estadisticas
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -70,26 +75,10 @@ services:
     networks:
       - metamapa
 
-  interfaz-agregador:
-    image: agustinherzkovich/interfaz-agregador:latest
-    container_name: interfaz-agregador
-    depends_on:
-      - eureka-server
-      - api-publica
-      - api-administrativa
-    ports:
-      - "8094:8094"
-    environment:
-      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      EUREKA_INSTANCE_HOSTNAME: interfaz-agregador
-      API_PUBLICA_IP: api-publica
-      API_ADMINISTRATIVA_IP: api-administrativa
-    networks:
-      - metamapa
-
   fuente-estatica:
     image: agustinherzkovich/fuente-estatica:latest
     container_name: fuente-estatica
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -103,6 +92,7 @@ services:
   fuente-dinamica:
     image: agustinherzkovich/fuente-dinamica:latest
     container_name: fuente-dinamica
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:
@@ -116,6 +106,7 @@ services:
   fuente-proxy:
     image: agustinherzkovich/fuente-proxy:latest
     container_name: fuente-proxy
+    restart: unless-stopped
     depends_on:
       - eureka-server
     ports:

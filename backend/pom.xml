@@ -23,7 +23,6 @@
         <module>estadisticas</module>
         <module>apiPublica</module>
         <module>apiAdministrativa</module>
-        <module>EurekaServer</module>
     </modules>
 
     <dependencies>

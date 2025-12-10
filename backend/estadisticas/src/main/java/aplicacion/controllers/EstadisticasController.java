@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @RestController
-@RequestMapping("/estadisticas")
+@RequestMapping
 public class EstadisticasController {
     ActualizacionEstadisticasScheduler actualizacionEstadisticasScheduler;
     EstadisticasService estadisticasService;

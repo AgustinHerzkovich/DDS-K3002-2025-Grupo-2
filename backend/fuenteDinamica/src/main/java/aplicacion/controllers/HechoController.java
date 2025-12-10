@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fuentesDinamicas")
+@RequestMapping
 public class HechoController {
     private final HechoService hechoService;
 

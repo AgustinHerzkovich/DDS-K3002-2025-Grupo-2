@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/fuentesEstaticas")
+@RequestMapping
 public class ArchivoController {
 
     private final ArchivoService archivoService;
