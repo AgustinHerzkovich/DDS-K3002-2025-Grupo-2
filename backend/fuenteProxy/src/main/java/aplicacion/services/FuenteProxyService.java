@@ -92,8 +92,7 @@ public class FuenteProxyService {
             RestTemplate restTemplate = new RestTemplate();
             //String url = "https://mocki.io/v1/66ea9586-9ada-4bab-a974-58abbe005292";
             try {
-                String endpointHechos = ((FuenteMetamapa) fuente).getUrl()+ "/agregador/hechosSinPaginar";
-
+                String endpointHechos = ((FuenteMetamapa) fuente).getUrl()+ "/hechosSinPaginar";
                 return List.of(Objects.requireNonNull(restTemplate.getForObject(endpointHechos, Hecho[].class)));
             }catch (Exception e){
                 System.out.println(e.getMessage());

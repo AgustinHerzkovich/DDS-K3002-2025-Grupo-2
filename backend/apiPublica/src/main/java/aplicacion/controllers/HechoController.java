@@ -31,6 +31,7 @@ public class HechoController {
         this.solicitudesHttp = new SolicitudesHttp(new RestTemplateBuilder());
     }
 
+
     @GetMapping("/hechos")
     public ResponseEntity<?> obtenerHechos(
             @RequestParam(name = "categoria", required = false) String categoria,
@@ -138,6 +139,13 @@ public class HechoController {
         String url = configService.getUrlAgregador() + "/hechos/" + id;
         return ResponseWrapper.wrapResponse(solicitudesHttp.get(url, String.class));
     }
+
+    @GetMapping("/hechosSinPaginar")
+    public ResponseEntity<?> obtenerHechosSinPaginar() {
+        String url = configService.getUrlAgregador() + "/hechosSinPaginar";
+        return ResponseWrapper.wrapResponse(solicitudesHttp.get(url, String.class));
+    }
+
 
     @GetMapping("/hechos/index")
     public ResponseEntity<?> obtenerRecomendaciones(@RequestParam(name="search", required = true) String texto,
