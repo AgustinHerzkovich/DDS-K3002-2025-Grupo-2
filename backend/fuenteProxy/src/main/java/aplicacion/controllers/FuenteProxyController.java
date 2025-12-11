@@ -8,6 +8,7 @@ import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.FuenteNoEncontradaException;
 
 import aplicacion.services.FuenteProxyService;
+import aplicacion.services.schedulers.PedirHechosScheduler;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -22,9 +23,11 @@ import java.util.List;
 @RequestMapping
 public class FuenteProxyController {
     private final FuenteProxyService fuenteProxyService;
+    private final PedirHechosScheduler pedirHechosScheduler;
 
-    public FuenteProxyController(FuenteProxyService fuenteProxyService) {
+    public FuenteProxyController(FuenteProxyService fuenteProxyService, PedirHechosScheduler pedirHechosScheduler) {
         this.fuenteProxyService = fuenteProxyService;
+        this.pedirHechosScheduler = pedirHechosScheduler;
     }
 
     @GetMapping("/hechos")
@@ -62,5 +65,11 @@ public class FuenteProxyController {
     @GetMapping
     public ResponseEntity<List<String>> obtenerFuentesDisponibles(){
         return ResponseEntity.ok(fuenteProxyService.obtenerFuentesDisponibles());
+    }
+
+    @PostMapping("/actualizarHechos")
+    public ResponseEntity<Void> actualizarHechos() {
+        pedirHechosScheduler.pedirHechos();
+        return ResponseEntity.ok().build();
     }
 }

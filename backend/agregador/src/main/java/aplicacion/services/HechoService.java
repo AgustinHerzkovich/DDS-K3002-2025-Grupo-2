@@ -3,7 +3,6 @@ package aplicacion.services;
 import aplicacion.domain.colecciones.Coleccion;
 import aplicacion.clasesIntermedias.HechoXColeccion;
 import aplicacion.domain.colecciones.fuentes.Fuente;
-import aplicacion.domain.criterios.CriterioDePertenencia;
 import aplicacion.domain.hechos.Categoria;
 import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
@@ -39,7 +38,6 @@ public class HechoService {
     private final HechoInputMapper hechoInputMapper;
     private final ContribuyenteService contribuyenteService;
     private final EtiquetaService etiquetaService;
-    private final CategoriaInputMapper categoriaInputMapper;
     private final UbicacionInputMapper ubicacionInputMapper;
     private final MultimediaInputMapper multimediaInputMapper;
     private final CategoriaRepository categoriaRepository;
@@ -51,7 +49,6 @@ public class HechoService {
                         HechoInputMapper hechoInputMapper,
                         ContribuyenteService contribuyenteService,
                         EtiquetaService etiquetaService,
-                        CategoriaInputMapper categoriaInputMapper,
                         UbicacionInputMapper ubicacionInputMapper,
                         MultimediaInputMapper multimediaInputMapper,
                         CategoriaRepository categoriaRepository) {
@@ -62,7 +59,6 @@ public class HechoService {
         this.hechoInputMapper = hechoInputMapper;
         this.contribuyenteService = contribuyenteService;
         this.etiquetaService = etiquetaService;
-        this.categoriaInputMapper = categoriaInputMapper;
         this.ubicacionInputMapper = ubicacionInputMapper;
         this.multimediaInputMapper = multimediaInputMapper;
         this.categoriaRepository = categoriaRepository;
