@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +17,6 @@ import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
-    @Bean
-    public GroupedOpenApi manualApi() {
-        return GroupedOpenApi.builder()
-                .group("manual")
-                .packagesToScan("")
-                .build();
-    }
 
     @Value("${api.administrativa.ip}")
     private String apiAdministrativaIp;
