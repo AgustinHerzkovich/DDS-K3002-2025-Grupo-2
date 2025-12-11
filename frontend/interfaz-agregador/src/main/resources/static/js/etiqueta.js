@@ -30,10 +30,12 @@ function agregarEtiqueta() {
 
     mostrarCargando("btn-agregar-etiqueta");
 
+    const bodyEtiqueta = { nombre: nombre };
+
     fetch(apiAdministrativaUrl + `/hechos/${hechoId}/tags`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
-        body: JSON.stringify(nombre)
+        body: JSON.stringify(bodyEtiqueta)
     })
         .then(response => {
             if (!response.ok) throw new Error("Error al agregar etiqueta. Puede que este repetida");

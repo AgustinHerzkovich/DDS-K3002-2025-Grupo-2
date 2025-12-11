@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.domain.hechos.Etiqueta;
+import aplicacion.dto.input.EtiquetaInputDto;
 import aplicacion.dto.input.HechoEdicionInputDto;
 import aplicacion.dto.input.HechoReporteInputDto;
 import aplicacion.dto.mappers.EtiquetaOutputMapper;
@@ -129,10 +130,10 @@ public class HechoController {
 
     @PostMapping("/hechos/{id}/tags")
     @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
-    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
+    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @Valid @RequestBody EtiquetaInputDto etiquetaInputDto) {
         try {
-            Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
-            logger.debug("Se agrego el tag: {}", etiquetaName);
+            Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaInputDto.getNombre());
+            logger.debug("Se agrego el tag: {}", etiquetaInputDto.getNombre());
             return ResponseEntity.ok(EtiquetaOutputMapper.map(etiqueta));
         } catch (HechoNoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

@@ -31,8 +31,8 @@ public class ContribuyenteService {
     @Value("${keycloak.admin-client.id}")
     private String ADMIN_CLIENT_ID;
 
-    @Value("${keycloak.admin-client.secret}")
-    private String ADMIN_CLIENT_SECRET;
+    private final String ADMIN_CLIENT_SECRET;
+
     private WebClient webClient;
 
     private final ConfigService configService;
@@ -43,6 +43,7 @@ public class ContribuyenteService {
     public ContribuyenteService(@Lazy ConfigService configService, UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
         this.configService = configService;
+        this.ADMIN_CLIENT_SECRET = System.getenv("KEYCLOAK_ADMIN_CLIENT_SECRET");
     }
 
     @PostConstruct
