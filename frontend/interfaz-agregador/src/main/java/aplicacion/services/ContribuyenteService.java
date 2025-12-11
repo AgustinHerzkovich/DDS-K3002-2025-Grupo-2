@@ -37,6 +37,9 @@ public class ContribuyenteService {
 
     private final ConfigService configService;
 
+    @Value("${keycloak.url}")
+    private String urlKeycloak;
+
     public ContribuyenteService(@Lazy ConfigService configService, UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
         this.configService = configService;
@@ -116,7 +119,7 @@ public class ContribuyenteService {
             HttpEntity<Map<String, Object>> kcRequest = new HttpEntity<>(kcUpdateRequest, headers);
 
             restTemplate.exchange(
-                    "http://15.228.250.174:8888/admin/realms/metamapa/users/" + keycloakUserId,
+                    urlKeycloak + "/admin/realms/metamapa/users/" + keycloakUserId,
                     HttpMethod.PUT,
                     kcRequest,
                     Void.class
@@ -170,7 +173,7 @@ public class ContribuyenteService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-        String tokenUrl = "http://15.228.250.174:8888/realms/" + realm + "/protocol/openid-connect/token";
+        String tokenUrl = urlKeycloak + "/realms/" + realm + "/protocol/openid-connect/token";
 
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(

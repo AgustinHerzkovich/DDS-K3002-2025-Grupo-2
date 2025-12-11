@@ -54,7 +54,7 @@ async function publicarHecho(inputsObligatorios) {
 
         const endpoint = isAdmin
             ? apiAdministrativaUrl + '/hechos'
-            : apiPublicaUrl + 'hechos';
+            : apiPublicaUrl + '/hechos';
 
         const headers = {
             'Content-Type': 'application/json',

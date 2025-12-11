@@ -7,6 +7,7 @@ import aplicacion.dto.mappers.EtiquetaOutputMapper;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.excepciones.*;
 import aplicacion.services.HechoService;
+import aplicacion.services.schedulers.CalcularHorarioBajaCargaScheduler;
 import aplicacion.services.schedulers.CargarHechosScheduler;
 import aplicacion.services.schedulers.EjecutarAlgoritmoConsensoScheduler;
 import domain.helpers.JwtUtil;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -36,11 +38,13 @@ public class HechoController {
     private final CargarHechosScheduler cargarHechosScheduler;
     private final EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler;
     private final Logger logger = LoggerFactory.getLogger(HechoController.class);
+    private final CalcularHorarioBajaCargaScheduler calcularHorarioBajaCargaScheduler;
 
-    public HechoController(HechoService hechoService, CargarHechosScheduler cargarHechosScheduler, EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler) {
+    public HechoController(HechoService hechoService, CargarHechosScheduler cargarHechosScheduler, EjecutarAlgoritmoConsensoScheduler ejecutarAlgoritmoConsensoScheduler, CalcularHorarioBajaCargaScheduler calcularHorarioBajaCargaScheduler) {
         this.hechoService = hechoService;
         this.cargarHechosScheduler = cargarHechosScheduler;
         this.ejecutarAlgoritmoConsensoScheduler = ejecutarAlgoritmoConsensoScheduler;
+        this.calcularHorarioBajaCargaScheduler = calcularHorarioBajaCargaScheduler;
     }
 
     @GetMapping("/hechos")
@@ -125,7 +129,7 @@ public class HechoController {
 
     @PostMapping("/hechos/{id}/tags")
     @PreAuthorize("@securityConfig.seguridadActiva ? hasRole('ADMIN') : true")
-    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @Size(max = 50, message = "La etiqueta no puede tener más de 500 caracteres") @RequestBody String etiquetaName) {
+    public ResponseEntity<?> agregarEtiqueta(@PathVariable(name = "id") String hechoId, @RequestBody String etiquetaName) {
         try {
             Etiqueta etiqueta = hechoService.agregarEtiqueta(hechoId, etiquetaName);
             logger.debug("Se agrego el tag: {}", etiquetaName);
@@ -159,6 +163,17 @@ public class HechoController {
     public ResponseEntity<Void> curarHechos() { // Endpoint para disparar la ejecución del algoritmo de consenso manualmente (si es necesario)
         ejecutarAlgoritmoConsensoScheduler.curarHechos();
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/actualizarHorarioBajaCarga")
+    public ResponseEntity<Void> actualizarHorarioBajaCarga() { // Endpoint para disparar el cálculo del horario de baja carga manualmente (si es necesario)
+        try {
+            calcularHorarioBajaCargaScheduler.actualizarHorarioBajaCarga();
+            return ResponseEntity.ok().build();
+        } catch (IOException | InterruptedException e) {
+            logger.error("Error al actualizar el horario de baja carga: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/hechos/index")

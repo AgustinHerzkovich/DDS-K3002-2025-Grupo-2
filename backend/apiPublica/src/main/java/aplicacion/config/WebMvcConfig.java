@@ -14,6 +14,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authorizationInterceptor)
-                .addPathPatterns("/apiPublica/**"); // se aplica a todos los endpoints
+                .addPathPatterns("/**"); // se aplica a todos los endpoints
     }
 }

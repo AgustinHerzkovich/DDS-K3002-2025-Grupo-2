@@ -1,3 +1,43 @@
+<th:block th:fragment="pageScripts">
+    <script th:inline="javascript">
+        const userId = /*[[${userId}]]*/ null;
+
+        function aprobarSolicitud(solicitudId) {
+            if (!confirm('¿Estás seguro de que deseas aprobar esta solicitud?')) {
+                return;
+            }
+            modificarEstadoSolicitud(solicitudId, 'ACEPTADA');
+        }
+
+        function rechazarSolicitud(solicitudId) {
+            if (!confirm('¿Estás seguro de que deseas rechazar esta solicitud?')) {
+                return;
+            }
+            modificarEstadoSolicitud(solicitudId, 'RECHAZADA');
+        }
+
+        function modificarEstadoSolicitud(solicitudId, nuevoEstado) {
+            fetch(apiAdministrativaUrl + `/solicitudes/${solicitudId}/estado`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Authorization' : 'Bearer ' + jwtToken },
+                body: JSON.stringify({ nuevoEstado: nuevoEstado, adminId: userId }),
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            // Recargar la página para mostrar el estado actualizado
+                            window.location.reload();
+                        } else {
+                            alert('Error al actualizar el estado de la solicitud');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al actualizar el estado de la solicitud');
+                    });
+        }
+    </script>
+</th:block>
+
 <th:block th:fragment="pageStyles">
     <link rel="stylesheet" type="text/css" th:href="@{/css/solicitudes.css}" />
 </th:block>
