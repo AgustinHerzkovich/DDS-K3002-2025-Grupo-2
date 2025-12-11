@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function cargarGrafico() {
-        fetch(apiPublicaUrl + `categoriasConMasHechos?page=0&limit=${limit}`)
+        fetch(apiPublicaUrl + `/categoriasConMasHechos?page=0&limit=${limit}`)
             .then(resp => resp.json())
             .then(data => {
                 if (!data || data.length === 0) {
