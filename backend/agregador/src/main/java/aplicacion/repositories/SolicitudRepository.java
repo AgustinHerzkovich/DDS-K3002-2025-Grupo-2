@@ -13,15 +13,23 @@ import org.springframework.stereotype.Repository;
 public interface SolicitudRepository extends JpaRepository<SolicitudEliminacion, Long> {
     List<SolicitudEliminacion> findByHecho(Hecho hecho);
 
-    @Query("""
-        SELECT s
-        FROM SolicitudEliminacion s
-        ORDER BY 
-            CASE 
-                WHEN s.estado.class = EstadoSolicitudPendiente THEN 0
+    @Query(value = """
+        SELECT s.*
+        FROM solicitud_eliminacion s
+        JOIN estado_solicitud e ON e.id = s.estado_id
+        WHERE s.fecha_subida >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+        ORDER BY
+            CASE
+                WHEN e.dtype = 'EstadoSolicitudPendiente' THEN 0
                 ELSE 1
             END,
-            s.fechaSubida DESC
-    """)
+            s.fecha_subida DESC
+    """,
+    countQuery = """
+        SELECT COUNT(s.id)
+        FROM solicitud_eliminacion s
+        WHERE s.fecha_subida >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+    """,
+    nativeQuery = true)
     Page<SolicitudEliminacion> findAllOrderByPendienteFirst(Pageable pageable);
 }
