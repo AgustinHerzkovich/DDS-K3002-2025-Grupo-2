@@ -5,9 +5,12 @@ import aplicacion.excepciones.CategoriaNoEncontradaException;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Categoria;
 
+import java.util.List;
+
 @Service
 public class CategoriaService {
     private final CategoriaRepository categoriaRepository;
+
     public CategoriaService(CategoriaRepository categoriaRepository) {
         this.categoriaRepository = categoriaRepository;
     }
@@ -18,5 +21,13 @@ public class CategoriaService {
 
     public Categoria agregarCategoria(String nombre) {
         return categoriaRepository.save(new Categoria(nombre));
+    }
+
+    public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
+        List<String> opciones = currentSearch.length() >= 3 ? categoriaRepository.findAutocompletado(currentSearch, limit) : categoriaRepository.findAutocompletadoLike(currentSearch, limit);
+        if(opciones.isEmpty() && currentSearch.length() >=3){
+            return categoriaRepository.findAutocompletadoLike(currentSearch, limit);
+        }
+        else return opciones;
     }
 }

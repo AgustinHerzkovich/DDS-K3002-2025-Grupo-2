@@ -5,6 +5,8 @@ import aplicacion.excepciones.EtiquetaNoEncontradaException;
 import aplicacion.domain.hechos.Etiqueta;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EtiquetaService {
     private final EtiquetaRepository etiquetaRepository;
@@ -19,5 +21,13 @@ public class EtiquetaService {
 
     public Etiqueta agregarEtiqueta(String nombre) {
         return etiquetaRepository.save(new Etiqueta(nombre));
+    }
+
+    public List<String> obtenerAutocompletado(String currentSearch, Integer limit) {
+        List<String> opciones = currentSearch.length() >= 3 ? etiquetaRepository.findAutocompletado(currentSearch, limit) : etiquetaRepository.findAutocompletadoLike(currentSearch, limit);
+        if(opciones.isEmpty() && currentSearch.length() >=3){
+            return etiquetaRepository.findAutocompletadoLike(currentSearch, limit);
+        }
+        else return opciones;
     }
 }

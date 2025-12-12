@@ -41,6 +41,28 @@ public class FullTextIndexInitializer {
                 jdbcTemplate.execute("CREATE FULLTEXT INDEX idx_fulltext_coleccion ON coleccion (titulo, descripcion)");
             }
 
+            // Etiqueta
+            boolean etiquetaIndexExists = Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                    "SELECT COUNT(1) FROM INFORMATION_SCHEMA.STATISTICS " +
+                            "WHERE table_schema = DATABASE() AND table_name = 'etiqueta' AND index_name = 'idx_fulltext_etiqueta'",
+                    Boolean.class
+            ));
+
+            if (!etiquetaIndexExists) {
+                jdbcTemplate.execute("CREATE FULLTEXT INDEX idx_fulltext_etiqueta ON etiqueta (nombre)");
+            }
+
+            // Categoria
+            boolean categoriaIndexExists = Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                    "SELECT COUNT(1) FROM INFORMATION_SCHEMA.STATISTICS " +
+                            "WHERE table_schema = DATABASE() AND table_name = 'categoria' AND index_name = 'idx_fulltext_categoria'",
+                    Boolean.class
+            ));
+
+            if (!categoriaIndexExists) {
+                jdbcTemplate.execute("CREATE FULLTEXT INDEX idx_fulltext_categoria ON categoria (nombre)");
+            }
+
             logger.info("FullText indexes checked/created successfully!");
         } catch (Exception e) {
             logger.warn("Error creating FullText indexes: {}", e.getMessage());
