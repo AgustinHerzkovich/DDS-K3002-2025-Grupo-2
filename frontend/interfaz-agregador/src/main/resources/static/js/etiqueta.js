@@ -92,7 +92,7 @@ function agregarEtiqueta() {
         })
         .catch(err => {
             console.error(err);
-            alert("Error al agregar la etiqueta");
+            alert(err.message);
         })
         .finally(() => {
             ocultarCargando("btn-agregar-etiqueta");
