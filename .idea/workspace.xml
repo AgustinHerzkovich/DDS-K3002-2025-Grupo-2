@@ -5,30 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8d8b220-ee77-4621-9d51-3d68fccab3fe" name="Changes" comment="empiezo con inputoutput dto en agregador">
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/InterfazAgregadorAplicacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/java/aplicacion/InterfazFuenteDinamicaAplicacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/java/aplicacion/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/agregador/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/agregador/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/apiAdministrativa/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apiAdministrativa/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/apiPublica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/apiPublica/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/dashboard/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/dashboard/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/estadisticas/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/estadisticas/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fuenteDinamica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteDinamica/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fuenteEstatica/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteEstatica/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/fuenteProxy/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/fuenteProxy/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/controllers/ColeccionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/java/aplicacion/controllers/ColeccionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/css/hecho.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/css/hecho.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/autocomplete.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/autocomplete.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/coleccion.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/coleccion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/crear-hecho.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/crear-hecho.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/editar-hecho.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/editar-hecho.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/etiqueta.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/static/js/etiqueta.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/fragments/menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/fragments/menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/hecho.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/hecho.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/solicitudes.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/interfaz-agregador/src/main/resources/templates/solicitudes.html" afterDir="false" />
     </list>
     <list id="de5a9eed-d7da-4954-ba5a-a17bc255e55f" name="Changes by Admin" comment="" />
     <list id="3e46b43f-ee85-4c6e-9fe3-aed9b0a9284b" name="Changes by Lucas" comment="" />
+    <list id="20925b86-bede-4164-baf7-dffd04e5d3ee" name="Changes by Martin" comment="" />
     <list id="ad98645f-8eb6-4672-a1f0-d095df565697" name="Changes by nicol" comment="" />
     <list id="1ddfc1ae-8d2a-4600-be1c-f05b349ecd92" name="Changes by user" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -186,7 +180,6 @@
     <option name="blackListedRootsPaths">
       <list>
         <option value="$PROJECT_DIR$" />
-        <option value="$PROJECT_DIR$/frontend/interfaz-fuente-dinamica" />
       </list>
     </option>
   </component>
@@ -225,29 +218,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="Python.FlaskServer">
       <module name="fuenteDinamica" />
       <option name="ENV_FILES" value="" />
@@ -260,33 +230,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Python.FlaskServer">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Tox" factoryName="Tox">
@@ -316,42 +259,6 @@
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Autodetect">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <module name="fuenteDinamica" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -447,6 +354,43 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="AgregadorAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="agregador" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.AgregadorAplicacion" />
@@ -500,20 +444,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Dashboard" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="dashboard" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.Dashboard" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="domain.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="EstadisticasAplicacion (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true">
       <module name="estadisticas" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.EstadisticasAplicacion" />
       <extension name="coverage">
@@ -533,13 +464,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EstadisticasAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="estadisticas" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="domain.EstadisticasAplicacion" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="FuenteDinamicaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="fuenteDinamica" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.FuenteDinamicaAplicacion" />
@@ -555,11 +479,6 @@
       </method>
     </configuration>
     <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <envs>
-        <env name="AWS_REGION" value="us-east-2" />
-        <env name="AWS_SECRET_ACCESS_KEY" value="Mb2AiWH5ruqhwBbA4AE1nYJRL4NexeyRYXBRyKUA" />
-        <env name="AWS_ACCESS_KEY_ID=REDACTED
-      </envs>
       <module name="fuenteEstatica" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.FuenteEstaticaAplicacion" />
       <method v="2">
@@ -567,11 +486,6 @@
       </method>
     </configuration>
     <configuration name="FuenteEstaticaAplicacion" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <envs>
-        <env name="AWS_REGION" value="us-east-2" />
-        <env name="AWS_SECRET_ACCESS_KEY" value="Mb2AiWH5ruqhwBbA4AE1nYJRL4NexeyRYXBRyKUA" />
-        <env name="AWS_ACCESS_KEY_ID=REDACTED
-      </envs>
       <module name="fuenteEstatica" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="aplicacion.FuenteEstaticaAplicacion" />
       <method v="2">
@@ -605,6 +519,55 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Autodetect">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="fuenteDinamica" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.Agregador" />
       <item itemvalue="Application.FuenteEstatica" />
@@ -614,13 +577,11 @@
       <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteDinamica" />
       <item itemvalue="JUnit.testColeccionConsumeHechos.verHechosFuenteEstatica" />
       <item itemvalue="Spring Boot.AgregadorAplicacion" />
-      <item itemvalue="Spring Boot.EstadisticasAplicacion" />
       <item itemvalue="Spring Boot.FuenteDinamicaAplicacion" />
       <item itemvalue="Spring Boot.FuenteEstaticaAplicacion" />
       <item itemvalue="Spring Boot.FuenteProxyAplicacion" />
       <item itemvalue="Spring Boot.ApiAdministrativaAplicacion" />
-      <item itemvalue="Spring Boot.Dashboard" />
-      <item itemvalue="Spring Boot.EstadisticasAplicacion (1)" />
+      <item itemvalue="Spring Boot.EstadisticasAplicacion" />
       <item itemvalue="Spring Boot.InterfazAgregadorAplicacion" />
       <item itemvalue="Spring Boot.ApiPublicaAplicacion" />
     </list>
@@ -628,8 +589,7 @@
       <list>
         <item itemvalue="Spring Boot.InterfazAgregadorAplicacion" />
         <item itemvalue="Spring Boot.ApiAdministrativaAplicacion" />
-        <item itemvalue="Spring Boot.Dashboard" />
-        <item itemvalue="Spring Boot.EstadisticasAplicacion (1)" />
+        <item itemvalue="Spring Boot.EstadisticasAplicacion" />
         <item itemvalue="Spring Boot.ApiPublicaAplicacion" />
       </list>
     </recent_temporary>
@@ -798,7 +758,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/agregador/src/main/java/aplicacion/controllers/ColeccionController.java</url>
           <line>56</line>
-          <properties class="aplicacion.controllers.ColeccionController" method="mostrarHechosIrrestrictos">
+          <properties class="aplicacion.controllers.ColeccionController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -813,5 +773,13 @@
         <watch expression="vistos" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
