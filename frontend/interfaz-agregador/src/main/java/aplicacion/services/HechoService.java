@@ -1,12 +1,15 @@
 package aplicacion.services;
 
 import aplicacion.config.ConfigService;
+import aplicacion.controllers.HechoController;
 import aplicacion.dto.GraphQLHechosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,7 @@ public class HechoService {
 
     private final WebClient webClientAdministrativa;
     private final GeocodingService geocodingService;
+    private final Logger logger = LoggerFactory.getLogger(HechoService.class);
 
     private final ConfigService configService;
 
@@ -87,8 +91,7 @@ public class HechoService {
                     PageWrapper<HechoMapaOutputDto> emptyWrapper = new PageWrapper<>();
                     emptyWrapper.setContent(new ArrayList<>());
                     return emptyWrapper;
-                })
-                .doOnError(e -> System.err.println("Error al obtener hechos de la API Pública: " + e.getMessage()));
+                });
     }
 
     public HechoOutputDto obtenerHecho(String id) {
@@ -96,7 +99,7 @@ public class HechoService {
                 .uri("/hechos/{id}", id)
                 .retrieve()
                 .bodyToMono(HechoOutputDto.class)
-                .doOnError(e -> System.err.println("Error al obtener hecho con ID " + id + " de la API Pública: " + e.getMessage()))
+                .doOnError(e -> logger.error("Error al obtener hecho con ID {} de la API Pública: {}", id, e.getMessage()))
                 .block();
 
         // Calcular la dirección completa si tiene ubicación
@@ -177,7 +180,7 @@ public class HechoService {
                     emptyWrapper.setContent(new java.util.ArrayList<>());
                     return emptyWrapper;
                 })
-                .doOnError(e -> System.err.println("Error al obtener hechos con filtros de la API Pública: " + e.getMessage()));
+                .doOnError(e -> logger.error("Error al obtener hechos con filtros de la API Pública: {}", e.getMessage()));
     }
 
 
@@ -196,7 +199,7 @@ public class HechoService {
                     .retrieve()
                     .onStatus(status -> status.is4xxClientError(), resp ->
                             resp.bodyToMono(String.class).flatMap(msg -> {
-                                System.err.println("Error 4xx en hechos pendientes: " + msg);
+                                logger.error("Error 4xx en hechos pendientes: {}", msg);
                                 return Mono.error(new RuntimeException(msg));
                             })
                     )
@@ -206,13 +209,13 @@ public class HechoService {
             if (pageWrapper == null || pageWrapper.getContent() == null) {
                 return new PageWrapper<>();
             }
-            System.out.println("Servicio: Cargados " + pageWrapper.getContent().size() + " hechos pendientes de " + pageWrapper.getTotalElements() + " totales.");
+            logger.info("Servicio: Cargados {} hechos pendientes de {} totales.", pageWrapper.getContent().size(), pageWrapper.getTotalElements());
             return pageWrapper;
         } catch (WebClientResponseException e) {
-            System.err.println("ERROR WebClient al obtener hechos pendientes: " + e.getStatusCode() + " - " + e.getResponseBodyAsString());
+            logger.error("ERROR WebClient al obtener hechos pendientes: {} - {}", e.getStatusCode(), e.getResponseBodyAsString());
             throw e; // Se propaga al errorhandler
         } catch (Exception e) {
-            System.err.println("ERROR al obtener hechos pendientes: " + e.getMessage());
+            logger.error("ERROR al obtener hechos pendientes: {}", e.getMessage());
         }
 
         return new PageWrapper<>();
@@ -236,7 +239,7 @@ public class HechoService {
 
             throw new HttpClientErrorException(e.getStatusCode(), e.getResponseBodyAsString());
         } catch (Exception e) {
-            System.err.println("ERROR al gestionar revision para ID " + hechoId + ": " + e.getMessage());
+            logger.error("ERROR al gestionar revision para ID {}: {}", hechoId, e.getMessage());
             throw e;
         }
     }

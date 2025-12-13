@@ -2,10 +2,12 @@ package aplicacion.services;
 
 import aplicacion.repositories.CategoriaRepository;
 import aplicacion.excepciones.CategoriaNoEncontradaException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import aplicacion.domain.hechos.Categoria;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -29,5 +31,11 @@ public class CategoriaService {
             return categoriaRepository.findAutocompletadoLike(currentSearch, limit);
         }
         else return opciones;
+    }
+    public List<String> obtenerCategorias(int cantidad) {
+        return categoriaRepository.findAll(PageRequest.of(0, cantidad))
+                .stream()
+                .map(Categoria::getNombre)
+                .collect(Collectors.toList());
     }
 }

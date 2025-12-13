@@ -31,4 +31,7 @@ public class Termino {
         return Objects.equals(nombre, otroTermino.nombre);
     }
 
+    public String toString(){
+        return "(" + nombre + (refiereA == null ? "" : " -> " + refiereA.getNombre()) + ")";
+    }
 }

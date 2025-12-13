@@ -10,8 +10,10 @@ import aplicacion.domain.hechos.Etiqueta;
 import aplicacion.domain.hechos.Hecho;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,15 +28,26 @@ public class NormalizadorDeHechos {
     private final CategoriaService categoriaService;
     private final EtiquetaService etiquetaService;
     private final Logger logger = LoggerFactory.getLogger(NormalizadorDeHechos.class);
-    Cache<String, Categoria> categoriaCache = Caffeine.newBuilder().maximumSize(5000).expireAfterWrite(10, TimeUnit.MINUTES).build();
-    Cache<String, Etiqueta> etiquetaCache = Caffeine.newBuilder().maximumSize(10000).expireAfterWrite(10, TimeUnit.MINUTES).build();
+    Cache<String, Categoria> categoriaCache;
+    Cache<String, Etiqueta> etiquetaCache;
 
-    public NormalizadorDeHechos(CategoriaService categoriaService, EtiquetaService etiquetaService) {
-        Integer umbralLevenshtein = 1;
-        normalizadorDeEtiquetas = new NormalizadorDeTerminos(umbralLevenshtein);
-        normalizadorDeCategorias = new NormalizadorDeTerminos(umbralLevenshtein);
+    public NormalizadorDeHechos(
+            @Value("${normalizador.categorias.terminos.max-size:10000}") Integer categoriasMaxSize,
+            @Value("${normalizador.categorias.terminos.umbral-levenshtein:1}") Integer categoriasLevenshtein,
+            @Value("${normalizador.categorias.cache.max-size:5000}") Integer categoriasCacheSize,
+            @Value("${normalizador.etiquetas.terminos.max-size:10000}") Integer etiquetasMaxSize,
+            @Value("${normalizador.etiquetas.terminos.umbral-levenshtein:1}") Integer etiquetasLevenshtein,
+            @Value("${normalizador.etiquetas.cache.max-size:5000}") Integer etiquetasCacheSize,
+            CategoriaService categoriaService,
+            EtiquetaService etiquetaService) {
+        normalizadorDeEtiquetas = new NormalizadorDeTerminos(etiquetasLevenshtein, etiquetasMaxSize);
+        normalizadorDeEtiquetas.agregarTerminos(etiquetaService.obtenerEtiquetas(etiquetasMaxSize));
+        normalizadorDeCategorias = new NormalizadorDeTerminos(categoriasLevenshtein, categoriasMaxSize);
+        normalizadorDeCategorias.agregarTerminos(categoriaService.obtenerCategorias(categoriasMaxSize));
         this.etiquetaService = etiquetaService;
         this.categoriaService = categoriaService;
+        this.etiquetaCache =  Caffeine.newBuilder().maximumSize(etiquetasCacheSize).expireAfterWrite(10, TimeUnit.MINUTES).build();
+        this.categoriaCache = Caffeine.newBuilder().maximumSize(categoriasCacheSize).expireAfterWrite(10, TimeUnit.MINUTES).build();
     }
 
     public void normalizarTodos(Map<Fuente, List<Hecho>> mapFuentesYhechosANormalizar){

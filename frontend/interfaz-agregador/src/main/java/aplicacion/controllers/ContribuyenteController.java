@@ -6,6 +6,8 @@ import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.services.ContribuyenteService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 public class ContribuyenteController {
+    private final Logger logger = LoggerFactory.getLogger(ContribuyenteController.class);
 
     private final ContribuyenteService contribuyenteService;
 
@@ -77,16 +80,16 @@ public class ContribuyenteController {
                 session.invalidate();
             }
 
-            System.out.println("Sesión invalidada. Devolviendo 204 para que el frontend redirija.");
+            logger.warn("Sesión invalidada. Devolviendo 204 para que el frontend redirija.");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         } catch (HttpClientErrorException httpEx) {
             // Captura de errores 4xx/5xx específicos del microservicio (propagados desde el servicio)
-            System.err.println("ERROR API de Identidad (" + httpEx.getStatusCode() + "): " + httpEx.getResponseBodyAsString());
+            logger.error("ERROR API de Identidad ({}): {}", httpEx.getStatusCode(), httpEx.getResponseBodyAsString());
             return ResponseEntity.status(httpEx.getStatusCode()).body(httpEx.getResponseBodyAsString());
         } catch (RuntimeException e) {
             // Captura de errores generales (incluyendo fallos de Keycloak Admin API)
-            System.err.println("ERROR FATAL al procesar identidad: " + e.getMessage());
+            logger.error("ERROR FATAL al procesar identidad: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo en el servicio o comunicación interna.\"}");
         }
     }

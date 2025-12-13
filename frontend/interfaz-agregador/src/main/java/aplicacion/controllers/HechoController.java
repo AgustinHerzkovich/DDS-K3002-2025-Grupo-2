@@ -3,6 +3,8 @@ import aplicacion.config.TokenContext;
 import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import aplicacion.dto.output.HechoOutputDto;
 import aplicacion.services.HechoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +18,7 @@ import org.springframework.web.client.HttpClientErrorException;
 @Controller
 public class HechoController {
     private final HechoService hechoService;
-
+    private final Logger logger = LoggerFactory.getLogger(HechoController.class);
     public HechoController(HechoService hechoService) {
         this.hechoService = hechoService;
     }
@@ -60,16 +62,16 @@ public class HechoController {
         try {
             ResponseEntity<String> response = this.hechoService.gestionarRevision(hechoId, cambioEstadoDto);
 
-            System.out.println("Gestión de solicitud enviada para ID: " + hechoId);
+            logger.debug("Gestión de solicitud enviada para ID: {}", hechoId);
 
             return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
 
         } catch (HttpClientErrorException httpEx) {
 
-            System.err.println(" ERROR API de Revisión (" + httpEx.getStatusCode() + "): " + httpEx.getResponseBodyAsString());
+            logger.error(" ERROR API de Revisión ({}): {}", httpEx.getStatusCode(), httpEx.getResponseBodyAsString());
             return ResponseEntity.status(httpEx.getStatusCode()).body(httpEx.getResponseBodyAsString());
         } catch (Exception e) {
-            System.err.println("ERROR FATAL al gestionar hecho ID " + hechoId + ": " + e.getMessage());
+            logger.error("ERROR FATAL al gestionar hecho ID {}: {}", hechoId, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"Fallo de comunicación.\"}");
         }
     }

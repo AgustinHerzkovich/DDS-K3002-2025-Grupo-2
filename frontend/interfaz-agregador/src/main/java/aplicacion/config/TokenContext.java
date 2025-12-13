@@ -1,5 +1,8 @@
 package aplicacion.config;
 
+import aplicacion.controllers.HechoController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -10,6 +13,7 @@ import org.springframework.ui.Model;
 public class TokenContext {
     private static final ThreadLocal<String> tokenThreadLocal = new ThreadLocal<>();
     private static OAuth2AuthorizedClientService clientService;
+    private static final Logger logger = LoggerFactory.getLogger(TokenContext.class);
 
     // Metodo para inyectar el servicio desde un componente Spring
     public static void setClientService(OAuth2AuthorizedClientService service) {
@@ -47,7 +51,7 @@ public class TokenContext {
             }
         } catch (Exception e) {
             // Log error but don't fail
-            System.err.println("Error obteniendo token de seguridad: " + e.getMessage());
+            logger.error("Error obteniendo token de seguridad: {}", e.getMessage());
         }
         return null;
     }

@@ -1,8 +1,11 @@
 package aplicacion.controllers;
 
 import aplicacion.config.TokenContext;
+import aplicacion.exceptions.NoInstanceException;
+import aplicacion.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,10 +19,14 @@ import java.io.IOException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    public String handleDefaultException(){
+        return "error/500";
+    }
+
     @ExceptionHandler(WebClientRequestException.class)
     public String handleWebClientRequestException(WebClientRequestException ex, Model model) {
         TokenContext.addToken(model);
-
         return "error/502";
     }
 
@@ -27,5 +34,10 @@ public class GlobalExceptionHandler {
     public String handleWebClientResponseException(WebClientResponseException ex, HttpServletRequest request, HttpServletResponse response, Model model) {
         TokenContext.addToken(model);
         return "error/" + ex.getStatusCode().value();
+    }
+
+    @ExceptionHandler(NoInstanceException.class)
+    public String handleWebClientResponseException(NoInstanceException ex, HttpServletRequest request, HttpServletResponse response, Model model) {
+        return "error/502";
     }
 }

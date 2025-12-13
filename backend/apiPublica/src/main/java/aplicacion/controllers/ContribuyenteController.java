@@ -1,6 +1,7 @@
 package aplicacion.controllers;
 
 import aplicacion.config.ConfigService;
+import aplicacion.exceptions.NoInstanceException;
 import domain.helpers.UrlHelper;
 import domain.peticiones.ResponseWrapper;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class ContribuyenteController {
     public ResponseEntity<?> agregarContribuyente(@RequestBody String body) {
         try {
             solicitudesHttp.post(configService.getUrlFuentesDinamicas() + "/contribuyentes", body, String.class);
-        }catch (ResourceAccessException e){
+        }catch (ResourceAccessException | NoInstanceException e){
             logger.warn("No fue posible conectarse con fuente dinamica durante un POST de contribuyente");
         } catch (Exception e){
             logger.error("Hubo un error posteando un contribuyente a fuente dinamica. ", e);

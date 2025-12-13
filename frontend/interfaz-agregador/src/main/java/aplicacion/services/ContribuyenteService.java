@@ -1,9 +1,12 @@
 package aplicacion.services;
 
 import aplicacion.config.ConfigService;
+import aplicacion.controllers.HechoController;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
@@ -23,6 +26,8 @@ import java.util.*;
 public class ContribuyenteService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final UsuarioService usuarioService;
+    private final Logger logger = LoggerFactory.getLogger(ContribuyenteService.class);
+
     @Value("${keycloak.realm}")
     private String realm;
 
@@ -75,19 +80,18 @@ public class ContribuyenteService {
 
             if (e.getStatusCode() == HttpStatus.NOT_FOUND){
                 if(registerIfNotFound){
-                    System.out.println("Usuario no encontrado en GET ( "+oidcUser.getEmail()+" / "+oidcUser.getSubject()+" ) \n Registrando nuevamente...");
+                    logger.info("Usuario no encontrado en GET ( {} / {} ) \n Registrando nuevamente...", oidcUser.getEmail(), oidcUser.getSubject());
                     ContribuyenteOutputDto contribuyenteCreado = usuarioService.registrarUsuarioSiNoExiste(oidcUser);
                     return contribuyenteCreado;
                 }else {
-                    System.err.println("Usuario no encontrado en GET ( "+oidcUser.getEmail()+" / "+oidcUser.getSubject()+" ) \n Registro automático desactivado. Devolviendo usuario null.");
+                    logger.error("Usuario no encontrado en GET ( {} / {} ) \n Registro automático desactivado. Devolviendo usuario null.", oidcUser.getEmail(), oidcUser.getSubject());
                 }
             }
 
             throw e;
         }
         catch (Exception e) {
-            System.err.println("Error al obtener contribuyente por mail: " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Error al obtener contribuyente por mail.",  e);
             return null;
         }
     }
@@ -125,11 +129,11 @@ public class ContribuyenteService {
                     kcRequest,
                     Void.class
             );
-            System.out.println(" Keycloak actualizado para el usuario: " + keycloakUserId);
+            logger.info(" Keycloak actualizado para el usuario: {}", keycloakUserId);
 
         } catch (HttpClientErrorException httpEx) {
-            System.err.println(" ERROR Keycloak Admin Token: " + httpEx.getStatusCode());
-            System.err.println(" Respuesta de Keycloak: " + httpEx.getResponseBodyAsString());
+            logger.error(" ERROR Keycloak Admin Token: {}", httpEx.getStatusCode());
+            logger.error(" Respuesta de Keycloak: {}", httpEx.getResponseBodyAsString());
             throw new RuntimeException("Fallo al actualizar Keycloak. Código: " + httpEx.getStatusCode(), httpEx);
         } catch (Exception e) {
             throw new RuntimeException("Fallo de red o error inesperado al actualizar Keycloak.", e);
@@ -147,11 +151,11 @@ public class ContribuyenteService {
 
         } catch (org.springframework.web.reactive.function.client.WebClientResponseException webClientEx) {
 
-            System.err.println("ERROR API de Identidad (" + webClientEx.getStatusCode() + "): " + webClientEx.getResponseBodyAsString());
+            logger.error("ERROR API de Identidad ({}): {}", webClientEx.getStatusCode(), webClientEx.getResponseBodyAsString());
             throw new HttpClientErrorException(webClientEx.getStatusCode(), webClientEx.getResponseBodyAsString());
 
         } catch (Exception e) {
-            System.err.println("ERROR al procesar identidad: " + e.getMessage());
+            logger.error("ERROR al procesar identidad: {}", e.getMessage());
             throw new RuntimeException("Fallo de comunicación interna al actualizar la identidad.", e);
         }
 
@@ -187,7 +191,7 @@ public class ContribuyenteService {
             return response.getBody().get("access_token").toString();
 
         } catch (Exception e) {
-            System.err.println(" ERROR al obtener Admin Token de Keycloak: " + e.getMessage());
+            logger.error(" ERROR al obtener Admin Token de Keycloak: {}", e.getMessage());
             throw new RuntimeException("Fallo al obtener el token de administrador.", e);
         }
 

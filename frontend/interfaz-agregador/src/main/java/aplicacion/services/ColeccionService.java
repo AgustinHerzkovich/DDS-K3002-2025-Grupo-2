@@ -1,12 +1,15 @@
 package aplicacion.services;
 
 import aplicacion.config.ConfigService;
+import aplicacion.controllers.HechoController;
 import aplicacion.dto.GraphQLHechosCuradosResponse;
 import aplicacion.dto.GraphQLHechosIrrestrictosResponse;
 import aplicacion.dto.PageWrapper;
 import aplicacion.dto.output.ColeccionOutputDto;
 import aplicacion.dto.output.HechoMapaOutputDto;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.net.URI;
 @Service
 public class ColeccionService {
     private WebClient webClient;
+    private final Logger logger = LoggerFactory.getLogger(ColeccionService.class);
 
     private final ConfigService configService;
 
@@ -53,7 +57,7 @@ public class ColeccionService {
                 })
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<PageWrapper<ColeccionOutputDto>>() {})
-                .doOnError(e -> System.err.println("Error al obtener colecciones de la API Pública: " + e.getMessage()));
+                .doOnError(e -> logger.error("Error al obtener colecciones de la API Pública: {}", e.getMessage()));
     }
 
     public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechosIrrestrictosDeColeccion(String idColeccion,
@@ -98,7 +102,7 @@ public class ColeccionService {
                     emptyWrapper.setContent(new java.util.ArrayList<>());
                     return emptyWrapper;
                 })
-                .doOnError(e -> System.err.println("Error al obtener hechos irrestrictos de la colección de la API Pública: " + e.getMessage()));
+                .doOnError(e -> logger.error("Error al obtener hechos irrestrictos de la colección de la API Pública: {}", e.getMessage()));
     }
 
     public Mono<PageWrapper<HechoMapaOutputDto>> obtenerHechosCuradosDeColeccion(String idColeccion,
@@ -143,7 +147,7 @@ public class ColeccionService {
                     emptyWrapper.setContent(new java.util.ArrayList<>());
                     return emptyWrapper;
                 })
-                .doOnError(e -> System.err.println("Error al obtener hechos curados de la colección de la API Pública: " + e.getMessage()));
+                .doOnError(e -> logger.error("Error al obtener hechos curados de la colección de la API Pública: " + e.getMessage()));
     }
 
     private URI getUri(String idColeccion, String categoria, String fechaReporteDesde, String fechaReporteHasta, String fechaAcontecimientoDesde, String fechaAcontecimientoHasta, Double latitud, Double longitud, Double radio, String search, Integer page, Integer size, UriBuilder uriBuilder) {
@@ -191,7 +195,7 @@ public class ColeccionService {
                         .build(idColeccion))
                 .retrieve()
                 .bodyToMono(ColeccionOutputDto.class)
-                .doOnError(e -> System.err.println("Error al obtener la colección de la API Pública: " + e.getMessage()))
+                .doOnError(e -> logger.error("Error al obtener la colección de la API Pública: {}", e.getMessage()))
                 .block();
     }
 }

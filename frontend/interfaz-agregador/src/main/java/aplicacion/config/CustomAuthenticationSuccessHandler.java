@@ -32,14 +32,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             // Ejecutar la lógica de creación de contribuyente y guardar el ID
             ContribuyenteOutputDto contribuyenteCreado = usuarioService.registrarUsuarioSiNoExiste(oidcUser);
             request.getSession().setAttribute("CONTRIBUYENTE_ID", contribuyenteCreado.getId());
-            System.out.println("Contribuyente registrado y ID guardado en sesión: " + contribuyenteCreado.getId());
         }
-
-        System.out.println("=== Authorities del usuario ===");
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            System.out.println(" -> " + authority.getAuthority());
-        }
-        System.out.println("==============================");
 
         String targetUrl = (String) request.getSession().getAttribute("REDIRECT_URL_AFTER_LOGIN");
 

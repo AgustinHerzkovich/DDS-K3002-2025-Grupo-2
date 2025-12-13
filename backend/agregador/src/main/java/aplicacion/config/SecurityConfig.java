@@ -1,6 +1,8 @@
 package aplicacion.config;
 
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +29,11 @@ public class SecurityConfig {
     @Getter
     @Value("${security.active}")
     boolean seguridadActiva;
+    private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         if(!seguridadActiva){
+            logger.warn("Seguridad activa: false");
             http
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()

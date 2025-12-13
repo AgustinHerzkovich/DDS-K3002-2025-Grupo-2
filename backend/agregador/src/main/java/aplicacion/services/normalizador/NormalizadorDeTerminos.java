@@ -1,17 +1,22 @@
 package aplicacion.services.normalizador;
 
+import aplicacion.utils.MemorySafeList;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.text.similarity.LevenshteinDetailedDistance;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
+
 public class NormalizadorDeTerminos {
-    List<Termino> terminosConocidos = new ArrayList<>();
+
+    MemorySafeList<Termino> terminosConocidos;
     @Getter @Setter
     LevenshteinDetailedDistance levenshtein;
-    public NormalizadorDeTerminos(Integer umbral){
+    public NormalizadorDeTerminos(Integer umbral, Integer normalizadorDeTerminosMaxSize){
         levenshtein = new LevenshteinDetailedDistance(umbral);
+        terminosConocidos = new MemorySafeList<>(normalizadorDeTerminosMaxSize);
     }
 
     // Normaliza dado un umbral personalizado
@@ -26,6 +31,9 @@ public class NormalizadorDeTerminos {
     public void agregarTermino(String nombre) {
         Termino nuevoTermino = new Termino(nombre);
         terminosConocidos.add(nuevoTermino);
+    }
+    public void agregarTerminos(List<String> nombres) {
+        terminosConocidos.addAll(nombres.stream().map(Termino::new).toList());
     }
 
     // Agrega un termino como sinonimo de otro. Si el primero no existe como termino, tira NoSuchElementException

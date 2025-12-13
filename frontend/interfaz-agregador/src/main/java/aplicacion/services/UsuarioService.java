@@ -5,6 +5,8 @@ import aplicacion.dto.input.ContribuyenteInputDto;
 import aplicacion.dto.input.IdentidadContribuyenteInputDto;
 import aplicacion.dto.output.ContribuyenteOutputDto;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,7 +20,7 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private WebClient webClient;
-
+    private Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     private final ConfigService configService;
 
     public UsuarioService(@Lazy ConfigService configService) {
@@ -63,9 +65,9 @@ public class UsuarioService {
                     .retrieve()
                     .bodyToMono(ContribuyenteOutputDto.class) // <--- Obtiene el cuerpo de la respuesta
                     .block();
-            System.out.println("Se registro al usuario en Metamapa");
+            logger.debug("Se registro un usuario en Metamapa");
         } catch (Exception e) {
-            System.err.println("Error al registrar el usuario en el backend: " + e.getMessage());
+            logger.error("Error al registrar el usuario en el backend: {}", e.getMessage());
         }
 
         return contribuyenteDevueltoDto;
