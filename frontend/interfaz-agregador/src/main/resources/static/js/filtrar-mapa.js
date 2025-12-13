@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
         listenLimpiarFiltrosMapa(filtrosContent)
         listenRadioSliderMapa()
 
+        // Inicializar autocompletado de categorías
+        initializeAutocomplete("categoria", apiPublicaUrl + "/categorias/index")
+
         aplicarBtn.addEventListener('click', async function(e) {
             e.preventDefault();
             aplicarFiltros();
