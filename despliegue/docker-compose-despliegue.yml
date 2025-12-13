@@ -103,6 +103,8 @@ services:
     restart: unless-stopped
     depends_on:
       - eureka-server
+      - api-publica
+      - api-administrativa
     ports:
       - "8094:8094"
     environment:
@@ -169,6 +171,22 @@ services:
       KEYCLOAK_URL: http://15.228.250.174:8888/realms/metamapa
       ZIPKIN_URL: http://15.228.250.174:9411/api/v2/spans
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
+    networks:
+      - metamapa
+  
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nignx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - interfaz-agregador
+      - agregador
+      - api-publica
+      - api-administrativa
     networks:
       - metamapa
 
