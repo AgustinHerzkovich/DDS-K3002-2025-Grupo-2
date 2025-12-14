@@ -115,6 +115,8 @@ services:
       LOKI_URL: http://15.228.250.174:3100/loki/api/v1/push
       STATIC_LOCATIONS: classpath:/static/
       THYMELEAF_PREFIX: classpath:/templates/
+      API_PUBLICA_URL: https://metamapa.site/api-publica/apiPublica
+      API_ADMINISTRATIVA_URL: https://metamapa.site/api-administrativa/apiAdministrativa
     networks:
       - metamapa
 

@@ -10,6 +10,7 @@ import aplicacion.dto.output.HechoMapaOutputDto;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -25,16 +26,13 @@ public class ColeccionService {
     private WebClient webClient;
     private final Logger logger = LoggerFactory.getLogger(ColeccionService.class);
 
-    private final ConfigService configService;
-
-    public ColeccionService(@Lazy ConfigService configService) {
-        this.configService = configService;
-    }
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl(configService.getUrlApiPublica())
+                .baseUrl(apiPublicaUrl)
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

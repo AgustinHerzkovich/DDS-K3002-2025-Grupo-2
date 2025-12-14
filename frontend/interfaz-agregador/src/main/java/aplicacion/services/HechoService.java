@@ -10,6 +10,7 @@ import aplicacion.dto.input.CambioEstadoRevisionInputDto;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -34,19 +35,19 @@ public class HechoService {
     private final GeocodingService geocodingService;
     private final Logger logger = LoggerFactory.getLogger(HechoService.class);
 
-    private final ConfigService configService;
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
 
     // Inyectar el bean apiAdministrativaWebClient que tiene el filtro de autenticación
-    public HechoService(GeocodingService geocodingService, WebClient apiAdministrativaWebClient, @Lazy ConfigService configService) {
+    public HechoService(GeocodingService geocodingService, WebClient apiAdministrativaWebClient) {
         this.geocodingService = geocodingService;
         this.webClientAdministrativa = apiAdministrativaWebClient;
-        this.configService = configService;
     }
 
     @PostConstruct
     public void init() {
         this.webClientPublica = WebClient.builder()
-                .baseUrl(configService.getUrlApiPublica())
+                .baseUrl(apiPublicaUrl)
                 // aumento el buffer para respuestas grandes
                 .exchangeStrategies(ExchangeStrategies.builder()
                         .codecs(configurer ->

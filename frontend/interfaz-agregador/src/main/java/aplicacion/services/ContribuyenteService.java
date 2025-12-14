@@ -40,21 +40,21 @@ public class ContribuyenteService {
 
     private WebClient webClient;
 
-    private final ConfigService configService;
-
     @Value("${keycloak.url}")
     private String urlKeycloak;
 
-    public ContribuyenteService(@Lazy ConfigService configService, UsuarioService usuarioService) {
+    @Value("${api.publica.url}")
+    private String apiPublicaUrl;
+
+    public ContribuyenteService(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        this.configService = configService;
         this.ADMIN_CLIENT_SECRET = System.getenv("KEYCLOAK_ADMIN_CLIENT_SECRET");
     }
 
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl(configService.getUrlApiPublica())
+                .baseUrl(apiPublicaUrl)
                 .build();
     }
 

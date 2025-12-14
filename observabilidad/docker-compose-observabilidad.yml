@@ -5,6 +5,7 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
+    restart: unless-stopped
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
@@ -21,7 +22,7 @@ services:
     depends_on:
       - prometheus
       - loki
-    restart: always
+    restart: unless-stopped
 
   # Trazas distribuidas
   zipkin:
@@ -29,6 +30,7 @@ services:
     container_name: zipkin
     ports:
       - "9411:9411"
+    restart: unless-stopped
 
   # Logs centralizados
   loki:
@@ -37,7 +39,7 @@ services:
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
-    restart: always
+    restart: unless-stopped
 
 # Para iniciar los servicios de observabilidad:
 # docker-compose -f docker-compose-observabilidad.yml up -d
