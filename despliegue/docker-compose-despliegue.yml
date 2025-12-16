@@ -117,6 +117,8 @@ services:
       THYMELEAF_PREFIX: classpath:/templates/
       API_PUBLICA_URL: https://metamapa.site/api-publica/apiPublica
       API_ADMINISTRATIVA_URL: https://metamapa.site/api-administrativa/apiAdministrativa
+      SWAGGER_PUBLICA_URL: http://15.229.120.11:8085/apiPublica/documentacion-apis
+      SWAGGER_ADMINISTRATIVA_URL: http://15.229.120.11:8086/apiAdministrativa/documentacion-apis
     networks:
       - metamapa
 

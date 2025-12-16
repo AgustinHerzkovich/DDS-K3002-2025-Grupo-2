@@ -16,10 +16,10 @@
             <span class="text-gray-400">-</span>
             <a href="mailto:aherzkovich@frba.utn.edu.ar" class="hover:text-gray-300 transition">Contacto</a>
             <span class="text-gray-400">-</span>
-            <a th:href="${apiPublicaUrl} + '/documentacion-apis'" class="hover:text-gray-300 transition">Documentación API Pública</a>
+            <a th:href="${swaggerPublicaUrl}" class="hover:text-gray-300 transition">Documentación API Pública</a>
             <div th:if="${isAdmin}">
                 <span class="text-gray-400">-</span>
-                <a th:href="${apiAdministrativaUrl} + '/documentacion-apis'" class="hover:text-gray-300 transition">Documentación API Administrativa</a>
+                <a th:href="${swaggerAdministrativaUrl}" class="hover:text-gray-300 transition">Documentación API Administrativa</a>
             </div>
         </div>
 

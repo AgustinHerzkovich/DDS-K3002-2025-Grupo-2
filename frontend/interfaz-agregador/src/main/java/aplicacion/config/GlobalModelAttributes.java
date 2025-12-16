@@ -21,9 +21,13 @@ public class GlobalModelAttributes {
 
     @Value("${api.publica.url}")
     private String apiPublicaUrl;
+    @Value("${swagger.publica.url}")
+    private String swaggerPublicaUrl;
 
     @Value("${api.administrativa.url}")
     private String apiAdministrativaUrl;
+    @Value("${swagger.administrativa.url}")
+    private String swaggerAdministrativaUrl;
 
     public GlobalModelAttributes(ContribuyenteService contribuyenteService) {
         this.contribuyenteService = contribuyenteService;
@@ -38,6 +42,8 @@ public class GlobalModelAttributes {
 
         model.addAttribute("apiPublicaUrl", apiPublicaUrl);
         model.addAttribute("apiAdministrativaUrl", apiAdministrativaUrl);
+        model.addAttribute("swaggerPublicaUrl", swaggerPublicaUrl);
+        model.addAttribute("swaggerAdministrativaUrl", swaggerAdministrativaUrl);
 
         // Si el usuario está loggeado, también agregar su nombre
         if (oidcUser != null) {
