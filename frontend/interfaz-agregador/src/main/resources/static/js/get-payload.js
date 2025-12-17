@@ -138,8 +138,8 @@ async function getPayloadModalHecho(inputsObligatorios) {
             const pais = inputsObligatorios.pais.value.trim();
             const provincia = inputsObligatorios.provincia.value.trim();
             const ciudad = inputsObligatorios.ciudad.value.trim();
-            const calle = inputsObligatorios.calle.value.trim();
-            const altura = inputsObligatorios.altura.value.trim();
+            const calle = inputsObligatorios.calle ? inputsObligatorios.calle.value.trim() : "";
+            const altura = inputsObligatorios.altura ? inputsObligatorios.altura.value.trim() : "";
 
             const direccionCompleta = `${calle} ${altura}, ${ciudad}, ${provincia}, ${pais}`;
 

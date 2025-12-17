@@ -21,44 +21,7 @@
 
             <div th:unless="${solicitudes == null || solicitudes.isEmpty()}" class="solicitudes-grid">
                 <div th:each="solicitud : ${solicitudes}" class="solicitud-card">
-                    <h2 class="solicitud-card-title">
-                        Solicitud
-                    </h2>
-
-                    <!-- Botón para ver el hecho - solo visible si está pendiente -->
-                    <a th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}"
-                       th:href="@{/hechos/{id}(id=${solicitud.hechoId})}" class="btn-hecho">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                        </svg>
-                        Ver Hecho
-                    </a>
-
-                    <div class="card-content">
-                        <!-- Motivo -->
-                        <div class="info-section">
-                            <div class="info-label">Motivo:</div>
-                            <p class="info-value" th:text="${solicitud.motivo}">Motivo de ejemplo</p>
-                        </div>
-
-                        <!-- Estado -->
-                        <div class="info-section">
-                            <div class="info-label">Estado:</div>
-                            <p class="info-value" th:text="${solicitud.estado.estado}">PENDIENTE</p>
-                        </div>
-
-                        <!-- Fecha de Subida -->
-                        <div class="info-section">
-                            <div class="info-label">Fecha de Subida:</div>
-                            <p class="info-value" th:text="${#temporals.format(solicitud.fechaSubida, 'dd/MM/yyyy HH:mm')}">01/01/2025 10:00</p>
-                        </div>
-                    </div>
-
-                    <!-- Botones Aprobar y Rechazar -->
-                    <div class="botones-revision" th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}">
-                        <th:block th:replace="~{fragments/form :: spinnerButton('Aprobar', |aprobar-solicitud-${solicitud.id}|, 'btn-aprobar')}"></th:block>
-                        <th:block th:replace="~{fragments/form :: spinnerButton('Rechazar', |rechazar-solicitud-${solicitud.id}|, 'btn-rechazar')}"></th:block>
-                    </div>
+                    <th:block th:replace="~{fragments/cards :: cardSolicitud(${solicitud})}" />
                 </div>
             </div>
 

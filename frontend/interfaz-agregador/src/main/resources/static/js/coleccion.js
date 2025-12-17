@@ -300,101 +300,89 @@ function autocompletarFuentesColeccion(coleccion, sufix) {
 }
 
 async function autocompletarCriteriosColeccion(coleccion, sufix) {
-    try {
-        for (const [index, criterioDePertenencia] of coleccion.criteriosDePertenencia.entries()) {
-            agregarCriterioColeccion(index, sufix)
+    for (const [index, criterioDePertenencia] of coleccion.criteriosDePertenencia.entries()) {
+        agregarCriterioColeccion(index, sufix)
 
-            const criterioTipo = document.getElementById(`criterio-tipo-${index}`);
-            criterioTipo.value = criterioDePertenencia.tipo
-            criterioTipo.disabled = true;
+        const criterioTipo = document.getElementById(`criterio-tipo-${index}`);
+        criterioTipo.value = criterioDePertenencia.tipo
+        criterioTipo.disabled = true;
 
-            if(criterioDePertenencia.tipo === 'DISTANCIA') {
-                const checkboxUsarCoordenadasLabel = document.getElementById(`criterio-coordenadas-label-${index}`);
-                checkboxUsarCoordenadasLabel.innerText = "Mostrar coordenadas"
+        if(criterioDePertenencia.tipo === 'DISTANCIA') {
+            const checkboxUsarCoordenadasLabel = document.getElementById(`criterio-coordenadas-label-${index}`);
+            checkboxUsarCoordenadasLabel.innerText = "Mostrar coordenadas"
 
-                const coordenadasContainer = document.getElementById(`criterio-coordenadas-container-${index}`);
-                const direccionContainer =  document.getElementById(`criterio-direccion-container-${index}`);
-                document.getElementById(`criterio-usar-coordenadas-${index}`).addEventListener("change", (e) => {
-                    if(e.target.checked) {
-                        coordenadasContainer.classList.remove("hidden");
-                        direccionContainer.classList.add("hidden");
-                    } else {
-                        coordenadasContainer.classList.add("hidden");
-                        direccionContainer.classList.remove("hidden");
-                    }
-                })
-
-                const latitud = document.getElementById(`criterio-latitud-${index}`)
-                latitud.value = criterioDePertenencia.ubicacionBase.latitud
-                latitud.disabled = true;
-
-                const longitud = document.getElementById(`criterio-longitud-${index}`)
-                longitud.value = criterioDePertenencia.ubicacionBase.longitud
-                longitud.disabled = true;
-
-                // Crear clave única para el caché basada en las coordenadas
-                const cacheKey = `${latitud.value},${longitud.value}`;
-                let data;
-
-                // Verificar si la respuesta ya está en caché
-                if (openStreetMapCache[cacheKey]) {
-                    data = openStreetMapCache[cacheKey];
+            const coordenadasContainer = document.getElementById(`criterio-coordenadas-container-${index}`);
+            const direccionContainer =  document.getElementById(`criterio-direccion-container-${index}`);
+            document.getElementById(`criterio-usar-coordenadas-${index}`).addEventListener("change", (e) => {
+                if(e.target.checked) {
+                    coordenadasContainer.classList.remove("hidden");
+                    direccionContainer.classList.add("hidden");
                 } else {
-                    const response = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=${latitud.value}&lon=${longitud.value}`,
-                        { headers: { "User-Agent": "MetaMapa/1.0" } }
-                    );
-
-                    data = await response.json();
-
-                    if (!data || data.error || !data.address) {
-                        throw new Error('No se pudo obtener la ubicación geográfica de la colección.');
-                    }
-
-                    // Guardar en caché
-                    openStreetMapCache[cacheKey] = data;
+                    coordenadasContainer.classList.add("hidden");
+                    direccionContainer.classList.remove("hidden");
                 }
+            })
+
+            const latitud = document.getElementById(`criterio-latitud-${index}`)
+            latitud.value = criterioDePertenencia.ubicacionBase.latitud
+            latitud.disabled = true;
+
+            const longitud = document.getElementById(`criterio-longitud-${index}`)
+            longitud.value = criterioDePertenencia.ubicacionBase.longitud
+            longitud.disabled = true;
+
+            // Crear clave única para el caché basada en las coordenadas
+            const cacheKey = `${latitud.value},${longitud.value}`;
+            let data;
+
+            // Verificar si la respuesta ya está en caché
+            if (openStreetMapCache[cacheKey]) {
+                data = openStreetMapCache[cacheKey];
+            } else {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&lat=${latitud.value}&lon=${longitud.value}`,
+                    { headers: { "User-Agent": "MetaMapa/1.0" } }
+                );
+
+                data = await response.json();
 
                 if (!data || data.error || !data.address) {
-                    throw new Error('No se pudo obtener la ubicación geográfica de la colección.');
+                    data = { address: {}}
                 }
-
-                const pais = document.getElementById(`criterio-pais-${index}`)
-                pais.value = data.address.country || 'No se encuentra el país';
-                pais.disabled = true
-
-                const provincia = document.getElementById(`criterio-provincia-${index}`)
-                provincia.value = data.address.state || 'No se encuentra la provincia';
-                provincia.disabled = true
-
-                const ciudad = document.getElementById(`criterio-ciudad-${index}`)
-                ciudad.value = data.address.city || data.address.town || data.address.village || 'No se encuentra la ciudad';
-                ciudad.disabled = true
-
-                const distanciaMaxima = document.getElementById(`criterio-distancia-maxima-${index}`)
-                distanciaMaxima.value = criterioDePertenencia.distanciaMaxima;
-                distanciaMaxima.disabled = true
-
-                document.getElementById(`campos-distancia-${index}`).classList.remove("hidden");
-            } else  if(criterioDePertenencia.tipo === 'FECHA') {
-                const fechaInicial = document.getElementById(`criterio-fecha-inicial-${index}`)
-                fechaInicial.value = criterioDePertenencia.fechaInicial;
-                fechaInicial.disabled = true;
-
-                const fechaFinal = document.getElementById(`criterio-fecha-final-${index}`)
-                fechaFinal.value = criterioDePertenencia.fechaFinal;
-                fechaFinal.disabled = true;
-
-                document.getElementById(`campos-fecha-${index}`).classList.remove("hidden");
+                openStreetMapCache[cacheKey] = data;
             }
 
-            document.getElementById(`eliminar-criterio-${index}`).remove()
-            document.querySelectorAll(`#modal-${sufix} .form-obligatory-icon`).forEach(icon => icon.remove())
+            const pais = document.getElementById(`criterio-pais-${index}`)
+            pais.value = data.address.country || 'No se encuentra el país';
+            pais.disabled = true
+
+            const provincia = document.getElementById(`criterio-provincia-${index}`)
+            provincia.value = data.address.state || 'No se encuentra la provincia';
+            provincia.disabled = true
+
+            const ciudad = document.getElementById(`criterio-ciudad-${index}`)
+            ciudad.value = data.address.city || data.address.town || data.address.village || 'No se encuentra la ciudad';
+            ciudad.disabled = true
+
+            const distanciaMaxima = document.getElementById(`criterio-distancia-maxima-${index}`)
+            distanciaMaxima.value = criterioDePertenencia.distanciaMaxima;
+            distanciaMaxima.disabled = true
+
+            document.getElementById(`campos-distancia-${index}`).classList.remove("hidden");
+        } else  if(criterioDePertenencia.tipo === 'FECHA') {
+            const fechaInicial = document.getElementById(`criterio-fecha-inicial-${index}`)
+            fechaInicial.value = criterioDePertenencia.fechaInicial;
+            fechaInicial.disabled = true;
+
+            const fechaFinal = document.getElementById(`criterio-fecha-final-${index}`)
+            fechaFinal.value = criterioDePertenencia.fechaFinal;
+            fechaFinal.disabled = true;
+
+            document.getElementById(`campos-fecha-${index}`).classList.remove("hidden");
         }
-    } catch (error) {
-        console.error(error);
-        alert(error.message);
-        throw error
+
+        document.getElementById(`eliminar-criterio-${index}`).remove()
+        document.querySelectorAll(`#modal-${sufix} .form-obligatory-icon`).forEach(icon => icon.remove())
     }
 }
 

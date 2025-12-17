@@ -9,8 +9,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 await rechazarSolicitud(solicitud.id);
             })
         }
+
+        const verMasBtn = document.getElementById(`ver-mas-${solicitud.id}`);
+        const verMenosBtn = document.getElementById(`ver-menos-${solicitud.id}`);
+        const motivoSolicitud = document.getElementById(`motivo-${solicitud.id}`)
+        verMasBtn.addEventListener("click",  function() {
+            motivoSolicitud.classList.remove("texto-corto")
+            motivoSolicitud.classList.add("texto-expandido")
+            verMenosBtn.classList.remove("hidden")
+            verMasBtn.classList.add("hidden")
+        })
+
+        verMenosBtn.addEventListener("click",  function() {
+            motivoSolicitud.classList.remove("texto-expandido")
+            motivoSolicitud.classList.add("texto-corto")
+            verMenosBtn.classList.add("hidden")
+            verMasBtn.classList.remove("hidden")
+        })
     })
 })
+
 
 async function aprobarSolicitud(solicitudId) {
     if (!confirm('¿Estás seguro de que deseas aprobar esta solicitud?')) {

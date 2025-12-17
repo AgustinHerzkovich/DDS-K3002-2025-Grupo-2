@@ -108,9 +108,63 @@
 			</p>
 		</div>
 	</div>
-	<div class="botones-revision">
-		<button type="button" class="btn-ver-hecho-pendiente" th:attr="data-id=${hecho.id}">
+	<div class="botones-revision justify-end">
+		<button type="button" class="btn-ver-hecho ver-hecho-pendiente" th:attr="data-id=${hecho.id}">
 			Ver Detalle
 		</button>
+	</div>
+</th:block>
+
+<th:block th:fragment="cardSolicitud(solicitud)">
+	<div class="card-content">
+		<!-- Motivo -->
+		<div class="info-section">
+			<div class="info-label">
+				Motivo:
+			</div>
+			<p th:id="|motivo-${solicitud.id}|" class="info-value texto-corto"  th:text="${solicitud.motivo}">
+				Motivo de ejemplo
+			</p>
+
+			<button th:id="|ver-mas-${solicitud.id}|" class="btn-ver-motivo" type="button">
+				Ver más
+			</button>
+			<button th:id="|ver-menos-${solicitud.id}|" class="btn-ver-motivo hidden" type="button">
+				Ver menos
+			</button>
+		</div>
+
+		<!-- Estado -->
+		<div class="info-section">
+			<div class="info-label">
+				Estado:
+			</div>
+			<p class="info-value" th:text="${solicitud.estado.estado}">
+				PENDIENTE
+			</p>
+		</div>
+
+		<!-- Fecha de Subida -->
+		<div class="info-section">
+			<div class="info-label">
+				Fecha de Subida:
+			</div>
+			<p class="info-value" th:text="${#temporals.format(solicitud.fechaSubida, 'dd/MM/yyyy HH:mm')}">
+				01/01/2025 10:00
+			</p>
+		</div>
+	</div>
+
+	<!-- Botones Aprobar y Rechazar -->
+	<div class="botones-revision justify-center" th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}">
+		<a th:if="${#strings.equalsIgnoreCase(solicitud.estado.estado, 'PENDIENTE')}"
+		   th:href="@{/hechos/{id}(id=${solicitud.hechoId})}" class="btn-ver-hecho rounded-[8px]">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+			</svg>
+			Ver Hecho
+		</a>
+		<th:block th:replace="~{fragments/form :: spinnerButton('Rechazar', |rechazar-solicitud-${solicitud.id}|, 'btn-rechazar')}"></th:block>
+		<th:block th:replace="~{fragments/form :: spinnerButton('Aceptar', |aprobar-solicitud-${solicitud.id}|, 'btn-aprobar')}"></th:block>
 	</div>
 </th:block>

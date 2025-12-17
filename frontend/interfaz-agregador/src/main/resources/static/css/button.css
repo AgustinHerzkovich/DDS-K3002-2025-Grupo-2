@@ -73,16 +73,17 @@
 }
 
 .btn-ver-coleccion {
-    background-color: #211bcf;
+    background-color: #2563eb;
     border: none;
     color: white;
     padding: 5px;
     border-radius: 1rem;
     font-size: 0.8rem;
+    cursor: pointer;
 }
 
 .btn-ver-coleccion:hover {
-    background-color: #211baf;
+    background-color: #211bcf;
 }
 
 .btn-editar-coleccion {
@@ -105,6 +106,7 @@
     color: white;
     font-size: 0.875rem;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .btn-eliminar-coleccion:hover {
@@ -165,7 +167,6 @@
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-    justify-content: flex-end;
 }
 
 .gestion-buttons {
@@ -176,7 +177,7 @@
 }
 
 .btn-aprobar, .btn-rechazar {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -265,4 +266,45 @@
 .btn-update.active::before {
     background-color: rgba(127, 29, 29, 0.2);
     border-color: #b91c1c;
+}
+
+.btn-ver-hecho {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.btn-ver-hecho:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.btn-ver-hecho svg {
+    width: 14px;
+    height: 14px;
+    color: inherit;
+}
+
+.btn-ver-motivo {
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 4px;
+}
+
+.btn-ver-motivo:hover {
+    text-decoration: underline;
 }

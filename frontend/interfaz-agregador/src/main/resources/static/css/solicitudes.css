@@ -12,6 +12,7 @@
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     margin-bottom: 2rem;
+    align-items: flex-start;
 }
 
 /* Tarjeta de solicitud - FONDO OSCURO */
@@ -24,6 +25,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
 }
 
 .solicitud-card:hover {
@@ -31,90 +33,11 @@
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Título de la tarjeta */
-.solicitud-card-title {
-    color: black;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-}
-
-/* Contenido de la tarjeta */
-.card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-/* Botón Ver Hecho */
-.btn-hecho {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #B91C1C; /* Rojo oscuro con buen contraste (ratio 5.14:1) */
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    width: fit-content;
-}
-
-.btn-hecho:hover {
-    background-color: #991B1B; /* Rojo aún más oscuro para hover */
-}
-
-.btn-hecho .icon {
-    width: 16px;
-    height: 16px;
-}
-
 /* Secciones de información */
 .info-section {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-}
-
-.info-value {
-    word-wrap: break-word;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    max-width: 100%;
-}
-
-/* Badge de estado */
-.estado-badge {
-    display: inline-block;
-    padding: 0.375rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    width: fit-content;
-}
-
-.estado-pendiente {
-    background-color: #fbbf24;
-    color: #78350f;
-}
-
-.estado-aceptada {
-    background-color: #10b981;
-    color: #064e3b;
-}
-
-.estado-rechazada {
-    background-color: #ef4444;
-    color: #7f1d1d;
-}
-
-.botones-revision {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    justify-content: center;
 }
 
 /* Mensaje cuando no hay solicitudes */
@@ -154,4 +77,17 @@
     .page-title {
         font-size: 2rem;
     }
+}
+
+/*Ver mas*/
+.texto-corto {
+    display: -webkit-box;
+    -webkit-line-clamp: 10; /* cantidad de líneas visibles */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+
+.texto-expandido {
+    display: block;
 }

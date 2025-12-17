@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const detailButtons = document.querySelectorAll('.btn-ver-hecho-pendiente');
+    const detailButtons = document.querySelectorAll('.ver-hecho-pendiente');
     detailButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Obtenemos el ID del atributo data-id (th:attr="data-id...") y lo pasamos a openDetalle

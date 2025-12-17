@@ -21,8 +21,6 @@ function validarFormularioModalHecho() {
         pais,
         provincia,
         ciudad,
-        calle,
-        altura,
         fechaYHora,
         lat,
         lon,
@@ -33,6 +31,8 @@ function validarFormularioModalHecho() {
 
     return {
         ...inputsObligatoriosEstaticos,
+        calle,
+        altura,
         inputsMultimedia,
         usarCoordenadas,
         anonimato
